@@ -29,4 +29,9 @@ public class DashboardActivityTest {
                 .check(matches(withText(containsString("Dashboard"))));
     }
 
+    @Test
+    public void chartIsBeingDisplayed() {
+        onView(withId(R.id.main_graph));
+    }
+
 }

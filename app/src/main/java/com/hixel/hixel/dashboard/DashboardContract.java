@@ -6,6 +6,7 @@ import com.hixel.hixel.BaseView;
 public interface DashboardContract {
 
     interface View extends BaseView<Presenter> {
+        void showMainGraph();
     }
 
     interface Presenter extends BasePresenter {
