@@ -26,7 +26,7 @@ public class DashboardActivityTest {
     @Test
     public void toolbarDisplaysDashboardAsTitle() {
         onView(withId(R.id.toolbar_title))
-                .check(matches(withText(containsString("DashboardActivity"))));
+                .check(matches(withText(containsString("Dashboard"))));
     }
 
 }
