@@ -5,20 +5,19 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.hixel.hixel.R;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View {
 
     private DashboardContract.Presenter mPresenter;
-
+    private ActivityDashboardBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_dashboard);
 
-        ActivityDashboardBinding binding =
-                DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
 
         // Setup Toolbar
         setSupportActionBar(binding.toolbar.toolbar);
@@ -34,6 +33,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     @Override
     public void showMainGraph() {
-
+        BarChart chart = binding.chart;
     }
 }
