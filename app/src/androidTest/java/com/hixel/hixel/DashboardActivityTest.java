@@ -2,7 +2,7 @@ package com.hixel.hixel;
 
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
-import com.hixel.hixel.dashboard.Dashboard;
+import com.hixel.hixel.dashboard.DashboardActivity;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,16 +17,16 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class DashboardTest {
+public class DashboardActivityTest {
 
     @Rule
-    public ActivityTestRule<Dashboard> dashboardActivityTestRule =
-            new ActivityTestRule<>(Dashboard.class);
+    public ActivityTestRule<DashboardActivity> dashboardActivityTestRule =
+            new ActivityTestRule<>(DashboardActivity.class);
 
     @Test
     public void toolbarDisplaysDashboardAsTitle() {
         onView(withId(R.id.toolbar_title))
-                .check(matches(withText(containsString("Dashboard"))));
+                .check(matches(withText(containsString("DashboardActivity"))));
     }
 
 }
