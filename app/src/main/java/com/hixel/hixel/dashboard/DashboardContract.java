@@ -1,11 +1,16 @@
 package com.hixel.hixel.dashboard;
 
+import com.hixel.hixel.BasePresenter;
+import com.hixel.hixel.BaseView;
+
 public interface DashboardContract {
-    interface View {
+
+    interface View extends BaseView<Presenter> {
+
         void setupToolbar();
     }
 
-    interface Presenter {
+    interface Presenter extends BasePresenter {
 
     }
 }
