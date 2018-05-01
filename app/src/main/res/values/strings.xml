@@ -1,3 +1,5 @@
 <resources>
   <string name="app_name">Hixel</string>
+  <string name="dashboard">Dashboard</string>
+  <string name="default_text">Default</string>
 </resources>
