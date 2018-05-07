@@ -21,4 +21,16 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     public String getCompanyName() {
         return company.getName();
     }
+
+    public String getLeverage() {
+        return Double.toString(company.getLeverage());
+    }
+
+    public String getLiquidity() {
+        return Double.toString(company.getLiquidity());
+    }
+
+    public String getHealth() {
+        return Double.toString(company.getHealth());
+    }
 }
