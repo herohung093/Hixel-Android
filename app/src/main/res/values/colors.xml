@@ -5,4 +5,8 @@
   <color name="textColorDefault">#FFFFFF</color>
   <color name="colorAccent">#FF4081</color>
   <color name="navbar">#fffafa</color>
+
+  <color name="good">#4BCA81</color>
+  <color name="average">#FFB75D</color>
+  <color name="bad">#C23934</color>
 </resources>

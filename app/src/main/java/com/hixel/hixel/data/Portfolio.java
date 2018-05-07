@@ -1,10 +1,9 @@
 package com.hixel.hixel.data;
 
-
 import java.util.ArrayList;
 
 public class Portfolio {
-    ArrayList<Company> companies;
+    private ArrayList<Company> companies;
 
     public Portfolio(ArrayList<Company> companies) {
         this.companies = companies;
@@ -17,5 +16,4 @@ public class Portfolio {
     public ArrayList<Company> getCompanies() {
         return this.companies;
     }
-
 }
