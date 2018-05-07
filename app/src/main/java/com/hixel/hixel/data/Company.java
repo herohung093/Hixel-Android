@@ -9,11 +9,15 @@ public class Company implements Serializable {
     private String name;
     private String ticker;
     private double health;
+    private double liquidity;
+    private double leverage;
 
     public Company(String name, String ticker, double health) {
         this.name = name;
         this.ticker = ticker;
         this.health = health;
+        this.liquidity = 1.5;
+        this.leverage = 1.5;
     }
 
     public String getName() {
@@ -26,5 +30,13 @@ public class Company implements Serializable {
 
     public double getHealth() {
         return this.health;
+    }
+
+    public double getLiquidity() {
+        return this.liquidity;
+    }
+
+    public double getLeverage() {
+        return this.leverage;
     }
 }

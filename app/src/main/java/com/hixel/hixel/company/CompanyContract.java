@@ -13,5 +13,9 @@ public interface CompanyContract {
     interface Presenter extends BasePresenter {
         String getCompanyName();
         void setCompany(Company company);
+        String getHealth();
+        String getLeverage();
+        String getLiquidity();
+
     }
 }

@@ -38,8 +38,8 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         TextView leverage = findViewById(R.id.leverage_score);
         TextView health = findViewById(R.id.health_score);
 
-        liquidity.setText(presenter.getLiquidityScore());
-        leverage.setText(presenter.getLeverageScore());
-        health.setText(presenter.getHealthScore());
+        liquidity.setText(presenter.getLiquidity());
+        leverage.setText(presenter.getLeverage());
+        health.setText(presenter.getHealth());
     }
 }
