@@ -11,9 +11,13 @@ public class CompanyPresenter implements CompanyContract.Presenter {
         companyView.setPresenter(this);
     }
 
-    public void start() {}
+    public void start() {
 
+    }
 
+    public void setCompany(Company company) {
+        this.company = company;
+    }
     public String getCompanyName() {
         return company.getName();
     }

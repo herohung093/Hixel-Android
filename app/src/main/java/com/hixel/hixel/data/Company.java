@@ -1,6 +1,11 @@
 package com.hixel.hixel.data;
 
-public class Company {
+
+import java.io.Serializable;
+
+// Implementing serializable while we can to prevent coupling with the android SDK
+public class Company implements Serializable {
+
     private String name;
     private String ticker;
     private double health;

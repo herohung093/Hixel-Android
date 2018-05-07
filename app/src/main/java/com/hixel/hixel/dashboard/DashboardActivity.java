@@ -31,13 +31,12 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         setSupportActionBar(binding.toolbar.toolbar);
         binding.toolbar.toolbarTitle.setText(R.string.dashboard);
 
-
         mPresenter = new DashboardPresenter(this);
         mPresenter.start();
 
         // Set up list of companies
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
-        RecyclerView.Adapter mAdapter = new DashboardAdapter(mPresenter);
+        RecyclerView.Adapter mAdapter = new DashboardRecyclerViewAdapter(this, mPresenter);
 
         mRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);

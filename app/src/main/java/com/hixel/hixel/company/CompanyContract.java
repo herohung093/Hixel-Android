@@ -2,6 +2,7 @@ package com.hixel.hixel.company;
 
 import com.hixel.hixel.BasePresenter;
 import com.hixel.hixel.BaseView;
+import com.hixel.hixel.data.Company;
 
 public interface CompanyContract {
 
@@ -11,5 +12,6 @@ public interface CompanyContract {
 
     interface Presenter extends BasePresenter {
         String getCompanyName();
+        void setCompany(Company company);
     }
 }
