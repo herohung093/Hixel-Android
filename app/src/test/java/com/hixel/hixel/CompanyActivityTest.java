@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class CompanyTest {
+public class CompanyActivityTest {
 
     @Test
     public void creation_isCorrect() {

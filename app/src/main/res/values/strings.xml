@@ -3,4 +3,6 @@
   <string name="dashboard">Dashboard</string>
   <string name="default_text">Default</string>
   <string name="health">Health</string>
+  <string name="liquidity_score">Liquidity Score</string>
+  <string name="leverage_score">Leverage Score</string>
 </resources>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+  <android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sample.android.databinding.company.CompanyActivity">
+
+    <include
+      android:id="@+id/toolbar"
+      layout="@layout/toolbar">
+    </include>
+
+    <include
+      android:id="@+id/bottom_nav"
+      layout="@layout/bottom_navigation">
+    </include>
+    <android.support.v7.widget.CardView
+      android:layout_width="0dp"
+      android:layout_height="174dp"
+      android:layout_marginBottom="8dp"
+      app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.46"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/toolbar"
+      app:layout_constraintVertical_bias="0.0">
+      <TextView
+        android:id="@+id/liquidity_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_text"/>
+      <TextView
+        android:id="@+id/liquidity_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_text"/>
+      <TextView
+        android:id="@+id/health_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_text"/>
+      <TextView
+        android:id="@+id/health_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_text"/>
+      <TextView
+        android:id="@+id/leverage_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_text"/>
+      <TextView
+        android:id="@+id/leverage_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_text"/>
+    </android.support.v7.widget.CardView>
+
+  </android.support.constraint.ConstraintLayout>
+</layout>
