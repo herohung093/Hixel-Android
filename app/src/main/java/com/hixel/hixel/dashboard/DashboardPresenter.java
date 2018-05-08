@@ -31,11 +31,17 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
     private void loadPortfolio() {
         ArrayList<Company> companies = new ArrayList<>();
-        companies.add(new Company("Apple", "AAPL", 0.61));
-        companies.add(new Company("Tesla", "AAPL", 0.82));
-        companies.add(new Company("Twitter", "AAPL", 0.30));
-        companies.add(new Company("Snapchat", "AAPL", 0.54));
-        companies.add(new Company("Facebook", "AAPL", 0.25));
+        companies.add(new Company("Apple", "AAPL", 0.61, 0.75, 1.5));
+        companies.add(new Company("Tesla", "TSLA", 0.82, 1.5, 1.2));
+        companies.add(new Company("Twitter", "TWTR", 0.30, 1.2, 2.2));
+        companies.add(new Company("Snapchat", "SNAP", 0.54, 0.4, 0.3));
+        companies.add(new Company("Facebook", "FB", 0.25, 1.5, 1.5));
+        companies.add(new Company("Berkshire Hathaway", "BRK.A",0.1, 2.0, 2.0));
+        companies.add(new Company("Wells Fargo", "WFC", 0.2, 2.0, 2.0));
+        companies.add(new Company("Walmart", "WMT", 0.6, 2.0, 2.0));
+        companies.add(new Company("Kraft Heinz Co", "KHC", 0.2, 2.0, 2.0));
+        companies.add(new Company("Ford Motor", "F", 0.01, 1.0, 1.0));
+
         this.portfolio = new Portfolio(companies);
     }
 
@@ -82,11 +88,13 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     public void sortByLeverage() {
         Collections.sort(portfolio.getCompanies(),
                 (c1, c2) -> Double.compare(c1.getLeverage(), c2.getLeverage()));
+        Collections.reverse(portfolio.getCompanies());
     }
 
     @Override
     public void sortByLiquidity() {
         Collections.sort(portfolio.getCompanies(),
                 (c1, c2) -> Double.compare(c1.getLiquidity(), c2.getLiquidity()));
+        Collections.reverse(portfolio.getCompanies());
     }
 }

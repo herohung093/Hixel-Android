@@ -11,7 +11,7 @@
     android:id="@+id/company_card_view"
     android:layout_width="350dp"
     android:layout_height="77dp"
-    android:layout_marginTop="16dp"
+    android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
@@ -35,25 +35,52 @@
 
       <TextView
         android:id="@+id/company_name"
+        android:textStyle="bold"
         android:layout_width="129dp"
-        android:layout_height="32dp"
 
+        android:layout_height="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="204dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="204dp"
         android:text="@string/default_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/company_ticker"
+        app:layout_constraintBottom_toBottomOf="@+id/company_ticker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.888"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.076"/>
 
       <TextView
         android:id="@+id/company_ticker"
         android:layout_width="113dp"
         android:layout_height="20dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/default_text"
+        android:textColor="@color/secondaryTextColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.804"/>
+
+      <TextView
+        android:id="@+id/company_health"
+        android:textStyle="bold"
+        android:layout_width="60dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -62,39 +89,23 @@
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-      <TextView
-        android:id="@+id/company_health"
-        android:layout_width="82dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="11dp"
-        android:layout_marginLeft="11dp"
-        android:text="@string/default_text"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/health_title"
         app:layout_constraintTop_toTopOf="parent"/>
 
       <TextView
         android:id="@+id/health_title"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="17dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginEnd="109dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginRight="109dp"
+        android:layout_marginStart="232dp"
+        android:layout_marginLeft="232dp"
         android:text="@string/health"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/company_ticker"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     </android.support.constraint.ConstraintLayout>
 

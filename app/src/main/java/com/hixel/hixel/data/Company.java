@@ -12,12 +12,12 @@ public class Company implements Serializable {
     private double liquidity;
     private double leverage;
 
-    public Company(String name, String ticker, double health) {
+    public Company(String name, String ticker, double health, double liquidity, double leverage) {
         this.name = name;
         this.ticker = ticker;
         this.health = health;
-        this.liquidity = 1.5;
-        this.leverage = 1.5;
+        this.liquidity = liquidity;
+        this.leverage = leverage;
     }
 
     public String getName() {

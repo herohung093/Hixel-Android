@@ -39,7 +39,7 @@ public class DashboardRecyclerViewAdapter
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.companyName.setText(presenter.getCompanies().get(position).getName());
         holder.companyTicker.setText(presenter.getCompanies().get(position).getTicker());
-        holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.2f%%",
+        holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
                 presenter.getCompanies().get(position).getHealth()*100));
         holder.companyHealth.setTextColor(presenter.setHealthColor(position));
 
