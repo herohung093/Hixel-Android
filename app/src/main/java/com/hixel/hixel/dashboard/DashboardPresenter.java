@@ -26,7 +26,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
     @Override
     public void populateGraph() {
-        mDashboardView.showMainGraph(portfolio.getCompanies());
+        //mDashboardView.showMainGraph(portfolio.getCompanies());
     }
 
     private void loadPortfolio() {

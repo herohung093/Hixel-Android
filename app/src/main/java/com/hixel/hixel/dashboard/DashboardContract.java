@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public interface DashboardContract {
 
     interface View extends BaseView<Presenter> {
-        void showMainGraph(ArrayList<Company> companies);
+        // void showMainGraph(ArrayList<Company> companies);
     }
 
     interface Presenter extends BasePresenter {

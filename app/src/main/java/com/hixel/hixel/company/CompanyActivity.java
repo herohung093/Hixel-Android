@@ -34,17 +34,8 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
 
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
-
         toolbarTitle.setText(presenter.getCompanyName());
 
-        setCompanyDetails();
-    }
-
-    public void setPresenter(@NonNull CompanyContract.Presenter presenter) {
-        this.presenter = presenter;
-    }
-
-    public void setCompanyDetails() {
         TextView liquidity = findViewById(R.id.liquidity_score);
         TextView leverage = findViewById(R.id.leverage_score);
         TextView health = findViewById(R.id.health_score);
@@ -55,5 +46,9 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         leverage.setTextColor(presenter.setLeverageColor());
         health.setText(presenter.getHealth());
         health.setTextColor(presenter.setHealthColor());
+    }
+
+    public void setPresenter(@NonNull CompanyContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 }

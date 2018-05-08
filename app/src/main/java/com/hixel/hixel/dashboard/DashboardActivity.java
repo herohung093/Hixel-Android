@@ -30,32 +30,31 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         OnItemSelectedListener {
 
     private DashboardContract.Presenter mPresenter;
-    private ActivityDashboardBinding binding;
     RecyclerView.Adapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
-
-        // Setup Toolbar
+        ActivityDashboardBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
         setSupportActionBar(binding.toolbar.toolbar);
         binding.toolbar.toolbarTitle.setText(R.string.dashboard);
 
+        // Init presenter
         mPresenter = new DashboardPresenter(this);
         mPresenter.start();
 
-        Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.company_dropdown, android.R.layout.simple_spinner_item);
+
+        Spinner spinner = binding.spinner;
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.company_dropdown, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
-        // Set up list of companies
-        RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
+        RecyclerView mRecyclerView = binding.recyclerView;
         mAdapter = new DashboardRecyclerViewAdapter(this, mPresenter);
-
         mRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -67,6 +66,18 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }
 
     @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String item = parent.getItemAtPosition(position).toString();
+        mPresenter.sortCompanies(item);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    /*@Override
     public void showMainGraph(ArrayList<Company> companies) {
         ArrayList<BarEntry> entries = new ArrayList<>();
 
@@ -93,17 +104,5 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         chart.animateY(1000);
         chart.animateX(1000);
         chart.invalidate(); // refresh
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String item = parent.getItemAtPosition(position).toString();
-        mPresenter.sortCompanies(item);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    }*/
 }
