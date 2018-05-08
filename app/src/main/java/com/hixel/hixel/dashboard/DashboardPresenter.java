@@ -4,6 +4,9 @@ import android.graphics.Color;
 import com.hixel.hixel.data.Company;
 import com.hixel.hixel.data.Portfolio;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class DashboardPresenter implements DashboardContract.Presenter {
 
@@ -53,5 +56,37 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         return color;
     }
 
+    @Override
+    public void sortCompanies(String item) {
+        switch (item) {
+            case "Health":
+                sortByHealth();
+                break;
+            case "Leverage":
+                sortByLeverage();
+                break;
+            case "Liquidity":
+                sortByLiquidity();
+                break;
+        }
+    }
 
+    @Override
+    public void sortByHealth() {
+        Collections.sort(portfolio.getCompanies(),
+                (c1, c2) -> Double.compare(c1.getHealth(), c2.getHealth()));
+        Collections.reverse(portfolio.getCompanies());
+    }
+
+    @Override
+    public void sortByLeverage() {
+        Collections.sort(portfolio.getCompanies(),
+                (c1, c2) -> Double.compare(c1.getLeverage(), c2.getLeverage()));
+    }
+
+    @Override
+    public void sortByLiquidity() {
+        Collections.sort(portfolio.getCompanies(),
+                (c1, c2) -> Double.compare(c1.getLiquidity(), c2.getLiquidity()));
+    }
 }

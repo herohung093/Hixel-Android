@@ -15,5 +15,9 @@ public interface DashboardContract {
         void populateGraph();
         ArrayList<Company> getCompanies();
         int setHealthColor(int position);
+        void sortCompanies(String item);
+        void sortByHealth();
+        void sortByLeverage();
+        void sortByLiquidity();
     }
 }

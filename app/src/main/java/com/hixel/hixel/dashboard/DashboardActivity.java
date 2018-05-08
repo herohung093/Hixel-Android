@@ -8,6 +8,11 @@ import android.os.Bundle;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
@@ -17,10 +22,13 @@ import com.hixel.hixel.data.Company;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import java.util.ArrayList;
 
-public class DashboardActivity extends AppCompatActivity implements DashboardContract.View {
+public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
+        OnItemSelectedListener {
 
     private DashboardContract.Presenter mPresenter;
     private ActivityDashboardBinding binding;
+    RecyclerView.Adapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +42,15 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mPresenter = new DashboardPresenter(this);
         mPresenter.start();
 
+        Spinner spinner = findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.company_dropdown, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
         // Set up list of companies
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
-        RecyclerView.Adapter mAdapter = new DashboardRecyclerViewAdapter(this, mPresenter);
+        mAdapter = new DashboardRecyclerViewAdapter(this, mPresenter);
 
         mRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -75,5 +89,17 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         chart.animateY(1000);
         chart.animateX(1000);
         chart.invalidate(); // refresh
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String item = parent.getItemAtPosition(position).toString();
+        mPresenter.sortCompanies(item);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

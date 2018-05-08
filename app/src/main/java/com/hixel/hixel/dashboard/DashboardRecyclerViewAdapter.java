@@ -16,8 +16,8 @@ import java.util.Locale;
 
 public class DashboardRecyclerViewAdapter
         extends RecyclerView.Adapter<DashboardRecyclerViewAdapter.ViewHolder>{
-
     private static final String TAG = "DashboardRecyclerView";
+
     private final DashboardContract.Presenter presenter;
     private Context mContext;
 
@@ -43,16 +43,14 @@ public class DashboardRecyclerViewAdapter
                 presenter.getCompanies().get(position).getHealth()*100));
         holder.companyHealth.setTextColor(presenter.setHealthColor(position));
 
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, CompanyActivity.class);
-                intent.putExtra("company",
-                        presenter.getCompanies().get(holder.getAdapterPosition()));
+        holder.parentLayout.setOnClickListener((View view) -> {
+            Intent intent = new Intent(mContext, CompanyActivity.class);
+            intent.putExtra("company",
+                    presenter.getCompanies().get(holder.getAdapterPosition()));
 
-                mContext.startActivity(intent);
-            }
+            mContext.startActivity(intent);
         });
+
     }
 
     @Override
