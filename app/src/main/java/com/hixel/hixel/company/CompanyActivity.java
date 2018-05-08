@@ -3,11 +3,16 @@ package com.hixel.hixel.company;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 import com.hixel.hixel.R;
+import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.dashboard.DashboardContract;
 import com.hixel.hixel.data.Company;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
@@ -26,6 +31,13 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         presenter = new CompanyPresenter(this);
         presenter.setCompany((Company) getIntent().getSerializableExtra("company"));
         presenter.start();
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView toolbarTitle = findViewById(R.id.toolbar_title);
+
+        toolbarTitle.setText(presenter.getCompanyName());
+
         setCompanyDetails();
     }
 

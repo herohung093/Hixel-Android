@@ -1,5 +1,6 @@
 package com.hixel.hixel.company;
 
+import android.graphics.Color;
 import com.hixel.hixel.data.Company;
 
 public class CompanyPresenter implements CompanyContract.Presenter {
@@ -18,6 +19,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     public void setCompany(Company company) {
         this.company = company;
     }
+
     public String getCompanyName() {
         return company.getName();
     }
@@ -33,4 +35,5 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     public String getHealth() {
         return Double.toString(company.getHealth());
     }
+
 }

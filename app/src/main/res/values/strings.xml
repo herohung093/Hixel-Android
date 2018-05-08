@@ -5,6 +5,8 @@
   <string name="health">Health</string>
   <string name="liquidity_score">Liquidity Score</string>
   <string name="leverage_score">Leverage Score</string>
+  <string name="Liquidity">Liquidity</string>
+  <string name="Leverage">Leverage</string>
 
   <string-array name="company_dropdown">
     <item>Health</item>
