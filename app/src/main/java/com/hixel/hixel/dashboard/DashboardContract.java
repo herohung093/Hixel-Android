@@ -19,5 +19,6 @@ public interface DashboardContract {
         void sortByHealth();
         void sortByLeverage();
         void sortByLiquidity();
+
     }
 }

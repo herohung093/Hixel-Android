@@ -17,5 +17,9 @@ public interface CompanyContract {
         String getLeverage();
         String getLiquidity();
 
+        int setLeverageColor();
+        int setLiquidityColor();
+        int setHealthColor();
+
     }
 }

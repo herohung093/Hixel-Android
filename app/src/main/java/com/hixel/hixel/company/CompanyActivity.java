@@ -33,7 +33,6 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         presenter.start();
 
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
 
         toolbarTitle.setText(presenter.getCompanyName());
@@ -51,7 +50,10 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         TextView health = findViewById(R.id.health_score);
 
         liquidity.setText(presenter.getLiquidity());
+        liquidity.setTextColor(presenter.setHealthColor());
         leverage.setText(presenter.getLeverage());
+        leverage.setTextColor(presenter.setLeverageColor());
         health.setText(presenter.getHealth());
+        health.setTextColor(presenter.setHealthColor());
     }
 }

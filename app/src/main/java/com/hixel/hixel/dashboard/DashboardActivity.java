@@ -23,6 +23,7 @@ import com.hixel.hixel.MainGraphDataSet;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.Company;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,

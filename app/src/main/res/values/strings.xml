@@ -7,6 +7,7 @@
   <string name="leverage_score">Leverage Score</string>
   <string name="Liquidity">Liquidity</string>
   <string name="Leverage">Leverage</string>
+  <string name="Search">Search</string>
 
   <string-array name="company_dropdown">
     <item>Health</item>
