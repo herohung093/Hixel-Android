@@ -1,4 +1,4 @@
-package com.hixel.hixel.data;
+package com.hixel.hixel.models;
 
 
 import java.io.Serializable;

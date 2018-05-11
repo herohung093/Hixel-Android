@@ -1,7 +1,7 @@
 package com.hixel.hixel.company;
 
 import android.graphics.Color;
-import com.hixel.hixel.data.Company;
+import com.hixel.hixel.models.Company;
 
 public class CompanyPresenter implements CompanyContract.Presenter {
     private Company company;

@@ -1,7 +1,7 @@
 package com.hixel.hixel;
 
-import com.hixel.hixel.data.Company;
-import com.hixel.hixel.data.Portfolio;
+import com.hixel.hixel.models.Company;
+import com.hixel.hixel.models.Portfolio;
 import java.util.ArrayList;
 import org.junit.Test;
 import static org.junit.Assert.*;

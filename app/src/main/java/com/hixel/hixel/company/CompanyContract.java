@@ -2,7 +2,7 @@ package com.hixel.hixel.company;
 
 import com.hixel.hixel.BasePresenter;
 import com.hixel.hixel.BaseView;
-import com.hixel.hixel.data.Company;
+import com.hixel.hixel.models.Company;
 
 public interface CompanyContract {
 

@@ -1,12 +1,10 @@
 package com.hixel.hixel.dashboard;
 
 import android.graphics.Color;
-import com.hixel.hixel.data.Company;
-import com.hixel.hixel.data.Portfolio;
+import com.hixel.hixel.models.Company;
+import com.hixel.hixel.models.Portfolio;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class DashboardPresenter implements DashboardContract.Presenter {
 

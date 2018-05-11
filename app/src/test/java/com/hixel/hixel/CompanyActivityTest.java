@@ -1,6 +1,6 @@
 package com.hixel.hixel;
 
-import com.hixel.hixel.data.Company;
+import com.hixel.hixel.models.Company;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
