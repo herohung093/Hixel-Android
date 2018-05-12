@@ -43,7 +43,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         spinner.setOnItemSelectedListener(this);
 
         RecyclerView mRecyclerView = binding.recyclerView;
-        mAdapter = new DashboardRecyclerViewAdapter(this, mPresenter);
+        mAdapter = new DashboardAdapter(this, mPresenter);
         mRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
