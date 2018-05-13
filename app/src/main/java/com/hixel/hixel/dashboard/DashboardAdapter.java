@@ -9,8 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.hixel.hixel.R;
 import com.hixel.hixel.company.CompanyActivity;
+
+import java.util.Calendar;
 import java.util.Locale;
 
 public class DashboardAdapter
@@ -34,11 +37,25 @@ public class DashboardAdapter
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.companyName.setText(presenter.getCompanies().get(position).getName());
-        holder.companyTicker.setText(presenter.getCompanies().get(position).getTicker());
+        holder.companyName.setText(presenter.getCompanies()
+                                            .get(position)
+                                            .getIdentifiers()
+                                            .getName());
+
+        holder.companyTicker.setText(presenter.getCompanies()
+                                              .get(position)
+                                              .getIdentifiers()
+                                              .getTicker());
+
+        int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
+
         holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
-                presenter.getCompanies().get(position).getHealth()*100));
-        holder.companyHealth.setTextColor(presenter.setHealthColor(position));
+                                    presenter.getCompanies()
+                                                   .get(position)
+                                                   .getRatio("Health", last_year) * 100));
+
+        //TODO: Replace as part of PTH-140
+        //holder.companyHealth.setTextColor(presenter.setHealthColor(position));
 
         holder.parentLayout.setOnClickListener((View view) -> {
             Intent intent = new Intent(mContext, CompanyActivity.class);

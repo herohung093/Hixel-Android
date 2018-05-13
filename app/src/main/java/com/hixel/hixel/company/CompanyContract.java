@@ -13,13 +13,8 @@ public interface CompanyContract {
     interface Presenter extends BasePresenter {
         String getCompanyName();
         void setCompany(Company company);
-        String getHealth();
-        String getLeverage();
-        String getLiquidity();
+        String getRatio(String name, int year);
 
-        int setLeverageColor();
-        int setLiquidityColor();
-        int setHealthColor();
-
+        int getColorIndicator(String ratio, double value);
     }
 }

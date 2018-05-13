@@ -1,10 +1,9 @@
 package com.hixel.hixel.dashboard;
 
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
 import com.hixel.hixel.R;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 
@@ -33,7 +33,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         // Init presenter
         mPresenter = new DashboardPresenter(this);
         mPresenter.start();
-
 
         Spinner spinner = binding.spinner;
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -57,7 +56,12 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
-        mPresenter.sortCompanies(item);
+        mPresenter.sortCompaniesBy(item);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void portfolioChanged() {
         mAdapter.notifyDataSetChanged();
     }
 

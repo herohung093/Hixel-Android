@@ -1,10 +1,22 @@
 package com.hixel.hixel.dashboard;
 
-import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.hixel.hixel.api.Client;
+import com.hixel.hixel.api.ServerInterface;
 import com.hixel.hixel.models.Company;
 import com.hixel.hixel.models.Portfolio;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DashboardPresenter implements DashboardContract.Presenter {
 
@@ -14,11 +26,21 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     DashboardPresenter(DashboardContract.View dashboardView) {
         this.mDashboardView = dashboardView;
         mDashboardView.setPresenter(this);
+
+        this.portfolio = new Portfolio();
     }
 
     @Override
     public void start() {
-        loadPortfolio();
+        ArrayList<String> companies = new ArrayList<>();
+        companies.add("AAPL");
+        companies.add("TSLA");
+        companies.add("TWTR");
+        companies.add("SNAP");
+        companies.add("FB");
+        companies.add("WFC");
+
+        loadPortfolio(companies);
         populateGraph();
     }
 
@@ -27,20 +49,31 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         //mDashboardView.showMainGraph(portfolio.getCompanies());
     }
 
-    private void loadPortfolio() {
-        ArrayList<Company> companies = new ArrayList<>();
-        companies.add(new Company("Apple", "AAPL", 0.61, 0.75, 1.5));
-        companies.add(new Company("Tesla", "TSLA", 0.82, 1.5, 1.2));
-        companies.add(new Company("Twitter", "TWTR", 0.30, 1.2, 2.2));
-        companies.add(new Company("Snapchat", "SNAP", 0.54, 0.4, 0.3));
-        companies.add(new Company("Facebook", "FB", 0.25, 1.5, 1.5));
-        companies.add(new Company("Berkshire Hathaway", "BRK.A",0.1, 2.0, 2.0));
-        companies.add(new Company("Wells Fargo", "WFC", 0.2, 2.0, 2.0));
-        companies.add(new Company("Walmart", "WMT", 0.6, 2.0, 2.0));
-        companies.add(new Company("Kraft Heinz Co", "KHC", 0.2, 2.0, 2.0));
-        companies.add(new Company("Ford Motor", "F", 0.01, 1.0, 1.0));
+    private void loadPortfolio(ArrayList<String> companies) {
+        ServerInterface client = Client
+                                .getRetrofit()
+                                .create(ServerInterface.class);
 
-        this.portfolio = new Portfolio(companies);
+        Call<ArrayList<Company>> call = client
+                                  .doGetCompanies(StringUtils.join(companies, ','), 1);
+
+        call.enqueue(new Callback<ArrayList<Company>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Company>> call,
+                                   @NonNull Response<ArrayList<Company>> response) {
+
+                portfolio.setCompanies(response.body());
+                populateGraph();
+
+                mDashboardView.portfolioChanged();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
+                Log.d("loadPortfolio",
+                      "Failed to load company data from the server: " + t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -49,50 +82,13 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     }
 
     @Override
-    public int setHealthColor(int position) {
-        int color = Color.parseColor("#FFB75D");
+    public void sortCompaniesBy(String name) {
+        int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
 
-        if (portfolio.getCompanies().get(position).getHealth() < 0.5) {
-            color = Color.parseColor("#C23934");
-        } else if (portfolio.getCompanies().get(position).getHealth() > 0.6) {
-            color = Color.parseColor("#4BCA81");
-        }
-        return color;
-    }
-
-    @Override
-    public void sortCompanies(String item) {
-        switch (item) {
-            case "Health":
-                sortByHealth();
-                break;
-            case "Leverage":
-                sortByLeverage();
-                break;
-            case "Liquidity":
-                sortByLiquidity();
-                break;
-        }
-    }
-
-    @Override
-    public void sortByHealth() {
         Collections.sort(portfolio.getCompanies(),
-                (c1, c2) -> Double.compare(c1.getHealth(), c2.getHealth()));
-        Collections.reverse(portfolio.getCompanies());
-    }
+                (c1, c2) -> Double.compare(c1.getRatio(name, last_year),
+                                           c2.getRatio(name, last_year)));
 
-    @Override
-    public void sortByLeverage() {
-        Collections.sort(portfolio.getCompanies(),
-                (c1, c2) -> Double.compare(c1.getLeverage(), c2.getLeverage()));
-        Collections.reverse(portfolio.getCompanies());
-    }
-
-    @Override
-    public void sortByLiquidity() {
-        Collections.sort(portfolio.getCompanies(),
-                (c1, c2) -> Double.compare(c1.getLiquidity(), c2.getLiquidity()));
         Collections.reverse(portfolio.getCompanies());
     }
 }
