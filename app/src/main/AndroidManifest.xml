@@ -21,6 +21,6 @@
     </activity>
     <activity android:name=".company.CompanyActivity">
     </activity>
-  </application>
 
+  </application>
 </manifest>

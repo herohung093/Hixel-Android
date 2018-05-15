@@ -8,6 +8,7 @@
   <string name="Liquidity">Liquidity</string>
   <string name="Leverage">Leverage</string>
   <string name="Search">Search</string>
+  <string name="search_title">Search</string>
 
   <string-array name="company_dropdown">
     <item>Health</item>
