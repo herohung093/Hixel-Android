@@ -21,11 +21,11 @@ import retrofit2.Response;
 public class DashboardPresenter implements DashboardContract.Presenter {
 
     private Portfolio portfolio;
-    private final DashboardContract.View mDashboardView;
+    private final DashboardContract.View dashboardView;
 
     DashboardPresenter(DashboardContract.View dashboardView) {
-        this.mDashboardView = dashboardView;
-        mDashboardView.setPresenter(this);
+        this.dashboardView = dashboardView;
+        this.dashboardView.setPresenter(this);
 
         this.portfolio = new Portfolio();
     }
@@ -46,7 +46,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
     @Override
     public void populateGraph() {
-        //mDashboardView.showMainGraph(portfolio.getCompanies());
+        //dashboardView.showMainGraph(portfolio.getCompanies());
     }
 
     private void loadPortfolio(ArrayList<String> companies) {
@@ -65,7 +65,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                 portfolio.setCompanies(response.body());
                 populateGraph();
 
-                mDashboardView.portfolioChanged();
+                dashboardView.portfolioChanged();
             }
 
             @Override

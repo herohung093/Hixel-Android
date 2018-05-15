@@ -1,8 +1,13 @@
 package com.hixel.hixel.company;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hixel.hixel.R;
@@ -47,4 +52,5 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
     public void setPresenter(@NonNull CompanyContract.Presenter presenter) {
         this.presenter = presenter;
     }
+
 }
