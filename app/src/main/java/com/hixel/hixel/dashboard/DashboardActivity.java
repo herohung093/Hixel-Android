@@ -3,11 +3,13 @@ package com.hixel.hixel.dashboard;
 import android.app.SearchManager;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,12 +17,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.SearchView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
+import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
         OnItemSelectedListener {
@@ -58,13 +61,19 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        MenuItem search = menu.findItem(R.id.action_search);
 
-        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) search.getActionView();
+        searchView.setQueryHint("enter company...");
 
-        MaterialSearchView searchView = findViewById(R.id.search_view);
-        searchView.setMenuItem(item);
+        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchAutoComplete.setHintTextColor(Color.WHITE);
+        searchAutoComplete.setTextColor(Color.WHITE);
 
-        return true;
+        ImageView searchClose = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        searchClose.setImageResource(R.drawable.ic_clear);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
