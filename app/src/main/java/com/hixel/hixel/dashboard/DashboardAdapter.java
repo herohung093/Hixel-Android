@@ -20,11 +20,11 @@ public class DashboardAdapter
         extends RecyclerView.Adapter<DashboardAdapter.ViewHolder>{
 
     private final DashboardContract.Presenter presenter;
-    private Context mContext;
+    private Context context;
 
     public DashboardAdapter(Context context, DashboardContract.Presenter presenter) {
         this.presenter = presenter;
-        this.mContext = context;
+        this.context = context;
     }
 
     @NonNull
@@ -58,11 +58,11 @@ public class DashboardAdapter
         //holder.companyHealth.setTextColor(presenter.setHealthColor(position));
 
         holder.parentLayout.setOnClickListener((View view) -> {
-            Intent intent = new Intent(mContext, CompanyActivity.class);
+            Intent intent = new Intent(context, CompanyActivity.class);
             intent.putExtra("company",
                     presenter.getCompanies().get(holder.getAdapterPosition()));
 
-            mContext.startActivity(intent);
+            context.startActivity(intent);
         });
 
     }
