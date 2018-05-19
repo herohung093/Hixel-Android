@@ -22,8 +22,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import android.widget.TextView;
+
 import com.hixel.hixel.R;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
+
+import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
         OnItemSelectedListener {
@@ -69,6 +72,43 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchAutoComplete.setHintTextColor(Color.WHITE);
         searchAutoComplete.setTextColor(Color.WHITE);
+        ArrayAdapter<String> newsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
+        searchAutoComplete.setAdapter(newsAdapter);
+
+        searchAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int itemIndex, long id) {
+                String queryString=(String)adapterView.getItemAtPosition(itemIndex);
+                searchAutoComplete.setText("" + queryString);
+
+                newsAdapter.notifyDataSetChanged();
+
+            }
+
+
+
+
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                presenter.loadSearchSuggestion(searchAutoComplete.getText().toString());
+
+                ArrayAdapter<String> newsAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, presenter.getnames());
+                searchAutoComplete.setAdapter(newsAdapter);
+
+                newsAdapter.notifyDataSetChanged();
+
+
+                return false;
+            }
+        });
 
         ImageView searchClose = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         searchClose.setImageResource(R.drawable.ic_clear);
