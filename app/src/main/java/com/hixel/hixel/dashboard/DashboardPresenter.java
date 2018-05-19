@@ -26,7 +26,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     private final DashboardContract.View dashboardView;
     protected SearchSuggestion searchSuggestion;
     protected static ArrayList<String> names;
-    protected static ArrayList<String> ticker;
 
 
     DashboardPresenter(DashboardContract.View dashboardView) {
@@ -37,7 +36,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         this.searchSuggestion = new SearchSuggestion();
 
         names = new ArrayList<>();
-        ticker = new ArrayList<>();
 
     }
 
@@ -54,7 +52,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         loadPortfolio(companies);
         populateGraph();
         names.add("");
-        ticker.add("");
 
     }
 
