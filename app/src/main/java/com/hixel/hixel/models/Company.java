@@ -38,4 +38,5 @@ public class Company implements Serializable {
     public ArrayList<FinancialData> getFinancialDataEntries() {
         return financialDataEntries;
     }
+
 }

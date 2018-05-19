@@ -1,11 +1,14 @@
 package com.hixel.hixel.dashboard;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -13,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.hixel.hixel.R;
+import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
@@ -46,6 +50,27 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        final Intent moveToCompare = new Intent(this,ComparisonActivity.class);
+        BottomNavigationView bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_nav); //bottom menu nad set onClick
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home_button:
+
+
+
+                    case R.id.compare_button:
+                        startActivity(moveToCompare);
+
+
+                    case R.id.settings_button:
+
+                }
+                return true;
+            }
+        });
+
     }
 
     @Override
