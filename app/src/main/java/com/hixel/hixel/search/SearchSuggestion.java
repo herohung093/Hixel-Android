@@ -11,6 +11,7 @@ public class SearchSuggestion {
 
     public void setSearchEntries(ArrayList<SearchEntry> searchEntries) {
         mSearchEntries = searchEntries;
+        //
     }
 
     public ArrayList<String> getNames() {
