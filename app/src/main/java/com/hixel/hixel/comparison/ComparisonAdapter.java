@@ -1,4 +1,4 @@
-package com.hixel.hixel.dashboard;
+package com.hixel.hixel.comparison;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,15 +16,15 @@ import com.hixel.hixel.company.CompanyActivity;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class DashboardAdapter
-        extends RecyclerView.Adapter<DashboardAdapter.ViewHolder>{
+public class ComparisonAdapter
+        extends RecyclerView.Adapter<ComparisonAdapter.ViewHolder>{
 
-    private final DashboardContract.Presenter presenter;
-    private Context context;
+    private final ComparisonContract.Presenter presenter;
+    private Context mContext;
 
-    public DashboardAdapter(Context context, DashboardContract.Presenter presenter) {
+    public ComparisonAdapter(Context context, ComparisonContract.Presenter presenter) {
         this.presenter = presenter;
-        this.context = context;
+        this.mContext = context;
     }
 
     @NonNull
@@ -37,12 +37,12 @@ public class DashboardAdapter
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.companyName.setText(presenter.getCompanies()
+        holder.companyName.setText(presenter.getListCompareCompanies()
                                             .get(position)
                                             .getIdentifiers()
                                             .getName());
 
-        holder.companyTicker.setText(presenter.getCompanies()
+        holder.companyTicker.setText(presenter.getListCompareCompanies()
                                               .get(position)
                                               .getIdentifiers()
                                               .getTicker());
@@ -50,7 +50,7 @@ public class DashboardAdapter
         int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
 
         holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
-                                    presenter.getCompanies()
+                                    presenter.getListCompareCompanies()
                                                    .get(position)
                                                    .getRatio("Health", last_year) * 100));
 
@@ -58,18 +58,18 @@ public class DashboardAdapter
         //holder.companyHealth.setTextColor(presenter.setHealthColor(position));
 
         holder.parentLayout.setOnClickListener((View view) -> {
-            Intent intent = new Intent(context, CompanyActivity.class);
+            Intent intent = new Intent(mContext, CompanyActivity.class);
             intent.putExtra("company",
-                    presenter.getCompanies().get(holder.getAdapterPosition()));
+                    presenter.getListCompareCompanies().get(holder.getAdapterPosition()));
 
-            context.startActivity(intent);
+            mContext.startActivity(intent);
         });
 
     }
 
     @Override
     public int getItemCount() {
-        return presenter.getCompanies().size();
+        return presenter.getListCompareCompanies().size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
