@@ -92,6 +92,8 @@ public class GraphFagment extends Fragment {
         ArrayList<FinancialData> financialDataCompB = mpresenter.getCompanies().get(1).getFinancialDataEntries();
         checkYearNull(financialDataCompA);
         checkYearNull(financialDataCompB);
+        mpresenter.checkUpFinancialEntry(mpresenter.getCompanies().get(0));
+        mpresenter.checkUpFinancialEntry(mpresenter.getCompanies().get(1));
         createListOfYears(financialDataCompA);
         //add company A data for graph
         LinkedHashMap<String, Double> DataCompAYear1 = financialDataCompA.get(4).getRatios();
@@ -175,7 +177,7 @@ public class GraphFagment extends Fragment {
     private void checkYearNull(ArrayList<FinancialData> financial) {
         for (int i = 0; i < financial.size(); i++) {
             if (financial.get(i) == null) {
-                financial.get(i).setDefaultFinancialData(); //set all values equal to -1 for visualising purpose
+                financial.get(i).setDefaultFinancialData(); //set all values equal to -0 for visualising purpose
                 financial.get(i).setYear(financial.get(i - 1).getYear() - 1);
             }
         }

@@ -32,7 +32,7 @@ public class FinancialData implements Serializable {
         ratios.put("Quick Ratio",(double)0);
         ratios.put("Cash Ratio",(double)0);
         ratios.put("Dept-to-Equity Ratio",(double)0);
-        ratios.put("Health",(double)-1);
+        ratios.put("Health",(double)0);
         ratios.put("Long_Term_Debt_Ratio",(double)0);
 
     }

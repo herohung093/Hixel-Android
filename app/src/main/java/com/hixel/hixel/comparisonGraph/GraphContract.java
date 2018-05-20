@@ -12,6 +12,7 @@ public interface GraphContract  {
     }
     interface Presenter extends BasePresenter{
     ArrayList<Company> getCompanies();
+        void checkUpFinancialEntry(Company company);
 
     }
 }

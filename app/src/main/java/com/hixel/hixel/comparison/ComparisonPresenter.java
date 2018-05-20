@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.hixel.hixel.api.Client;
 import com.hixel.hixel.api.ServerInterface;
+import com.hixel.hixel.company.FinancialData;
 import com.hixel.hixel.models.Company;
 import com.hixel.hixel.search.SearchEntry;
 import com.hixel.hixel.search.SearchSuggestion;
@@ -12,6 +13,9 @@ import com.hixel.hixel.search.SearchSuggestion;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,24 +88,33 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
     } else return successFlag[0]=2;
         return successFlag[0];
 }
-/*
-private void checkUpFinancialEntry(Company company){
+
+public void checkUpFinancialEntry(Company company){
     ArrayList<FinancialData> financialData=company.getFinancialDataEntries();
+
+    Set<String> keys = new HashSet<String>();
+    keys.add("Current Ratio");
+    keys.add("Quick Ratio");
+    keys.add("Cash Ratio");
+    keys.add("Debt-to-Equity Ratio");
+    //Ratios.add("Health");
+    keys.add("Long Term Debt-to-Equity Ratio");
 
     for (FinancialData f : company.getFinancialDataEntries()) {
         if(f!=null) {
             LinkedHashMap<String, Double> ratios = f.getRatios();
-            Set<String> keys = ratios.keySet();
+
             for (String k : keys) {
                 if (ratios.get(k) == null) {
                     Log.d(String.valueOf(f.getYear()) + k + ": ", "NULL***");
-                    ratios.replace(k, (double) -1);
+                    ratios.put(k, (double) 0);
+
                 }
             }
         }
 
     }
-}*/
+}
     @Override
     public void removeLastItemFromList() {
         if (listCompareCompanies.size()!=0) {
