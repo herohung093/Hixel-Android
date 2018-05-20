@@ -36,4 +36,8 @@ class SelectedListViewAdapter extends ArrayAdapter<CompanyIdentifiers> {
 
         return rowView;
     }
+    public void removeAt(int position)
+    {
+        mPresenter.getListCompareCompanies().remove(position);
+    }
 }

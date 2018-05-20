@@ -2,11 +2,18 @@ package com.hixel.hixel.comparison;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,6 +30,7 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
     private ComparisonContract.Presenter cpresenter;
     private android.support.v7.widget.SearchView searchView;
     private SearchView.SearchAutoComplete   searchAutoComplete;
+    SwipeController swipeController = new SwipeController();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +38,73 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
         //SearchView searchView= (SearchView) findViewById(R.id.comparisonSearchView);
         recyclerView=(RecyclerView) findViewById(R.id.recycleView);
+        //ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
+        //itemTouchhelper.attachToRecyclerView(recyclerView);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            Drawable background;
+            Drawable xMark;
+            int xMarkMargin;
+            boolean initiated;
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+            private void init() {
+                background = new ColorDrawable(Color.RED);
+                xMark = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_clear_24dp);
+                xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                xMarkMargin = (int) getApplicationContext().getResources().getDimension(R.dimen.search_icon_padding);
+                initiated = true;
+            }
 
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // Row is swiped from recycler view
+                // remove it from adapter
+                cpresenter.getListCompareCompanies().remove(viewHolder.getAdapterPosition());
+                adapter.notifyDataSetChanged();
+                Log.d("selected List size*********", String.valueOf(cpresenter.getListCompareCompanies().size()));
+            }
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                // view the background view
+                View itemView = viewHolder.itemView;
+
+                // not sure why, but this method get's called for viewholder that are already swiped away
+                if (viewHolder.getAdapterPosition() == -1) {
+                    // not interested in those
+                    return;
+                }
+
+                if (!initiated) {
+                    init();
+                }
+
+                // draw red background
+                background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+                background.draw(c);
+
+                // draw x mark
+                int itemHeight = itemView.getBottom() - itemView.getTop();
+                int intrinsicWidth = xMark.getIntrinsicWidth();
+                int intrinsicHeight = xMark.getIntrinsicWidth();
+
+                int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
+                int xMarkRight = itemView.getRight() - xMarkMargin;
+                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
+                int xMarkBottom = xMarkTop + intrinsicHeight;
+                xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
+
+                xMark.draw(c);
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+        };
+
+// attaching the touch helper to recycler view
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
         final Intent moveToCompare= new Intent(this, GraphActivity.class);
 
 
