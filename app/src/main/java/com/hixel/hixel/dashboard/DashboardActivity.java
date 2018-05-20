@@ -18,6 +18,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.comparison.ComparisonActivity;
@@ -90,11 +91,16 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         ArrayAdapter<String> newsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
         searchAutoComplete.setAdapter(newsAdapter);
 
+
+
         searchAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int itemIndex, long id) {
+
+
                 String queryString=(String)adapterView.getItemAtPosition(itemIndex);
                 searchAutoComplete.setText("" + queryString);
+                Toast.makeText(getApplicationContext(),"Here is what the user submitted"+queryString,Toast.LENGTH_LONG).show();
 
                 newsAdapter.notifyDataSetChanged();
 

@@ -17,5 +17,8 @@ public interface ComparisonContract {
         int addToCompare(String ticker);
         void removeLastItemFromList();
 
+        ArrayList<String> getnames();
+        void loadSearchSuggestion(String query);
+
     }
 }

@@ -33,7 +33,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         Ratios.add("Quick Ratio");
         Ratios.add("Cash Ratio");
         Ratios.add("Debt-to-Equity Ratio");
-        Ratios.add("Health");
+        //Ratios.add("Health");
         Ratios.add("Long Term Debt-to-Equity Ratio");
 
         listRatiosAdapter=  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Ratios);

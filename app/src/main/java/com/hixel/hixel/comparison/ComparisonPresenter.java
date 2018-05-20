@@ -6,6 +6,8 @@ import android.util.Log;
 import com.hixel.hixel.api.Client;
 import com.hixel.hixel.api.ServerInterface;
 import com.hixel.hixel.models.Company;
+import com.hixel.hixel.search.SearchEntry;
+import com.hixel.hixel.search.SearchSuggestion;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,10 +20,15 @@ import retrofit2.Response;
 public class ComparisonPresenter implements ComparisonContract.Presenter {
     private ArrayList<Company> listCompareCompanies= new ArrayList<Company>();
     private final ComparisonContract.View mComparisonView;
+    protected SearchSuggestion searchSuggestion;
+
+    protected static ArrayList<String> names;
 
     public ComparisonPresenter(ComparisonContract.View mComparisonView) {
         this.mComparisonView=mComparisonView;
         listCompareCompanies.clear();
+        this.searchSuggestion=new SearchSuggestion();
+        this.names=new ArrayList<String>();
 
     }
 
@@ -31,7 +38,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
 
     @Override
     public void start() {
-
+        names.add("");
     }
 
     public void removeCompareFromList(int position){
@@ -101,4 +108,34 @@ private void checkUpFinancialEntry(Company company){
             listCompareCompanies.remove(listCompareCompanies.size() - 1);
         }
     }
+
+    @Override
+    public void loadSearchSuggestion(String s) {
+        ServerInterface client = Client.getRetrofit().create(ServerInterface.class);
+        Call<ArrayList<SearchEntry>> call = client.doSearchQuery(s);
+        call.enqueue(new Callback<ArrayList<SearchEntry>>() {
+            @Override
+            public void onResponse(Call<ArrayList<SearchEntry>> call, Response<ArrayList<SearchEntry>> response) {
+                searchSuggestion.setSearchEntries(response.body());
+                names = searchSuggestion.getNames();
+                if (names.size() != 0) {
+                    Log.d("Search SUggstion=====", "" + names.get(0));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<SearchEntry>> call, Throwable t) {
+                Log.d("loadPortfolio",
+                        "Failed to load Search suggestions from the server: " + t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public ArrayList<String> getnames() {
+        return names;
+    }
+
+
 }
