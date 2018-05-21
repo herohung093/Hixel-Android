@@ -1,4 +1,4 @@
-package com.hixel.hixel.api;
+package com.hixel.hixel.network;
 
 import com.hixel.hixel.models.Company;
 import com.hixel.hixel.search.SearchEntry;

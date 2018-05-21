@@ -4,7 +4,7 @@ import com.hixel.hixel.BasePresenter;
 import com.hixel.hixel.BaseView;
 import com.hixel.hixel.models.Company;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface DashboardContract {
 
@@ -15,9 +15,9 @@ public interface DashboardContract {
 
     interface Presenter extends BasePresenter {
         void populateGraph();
-        ArrayList<Company> getCompanies();
+        List<Company> getCompanies();
         void sortCompaniesBy(String name);
-        ArrayList<String> getNames();
+        List<String> getNames();
         void loadSearchSuggestion(String query);
 
     }

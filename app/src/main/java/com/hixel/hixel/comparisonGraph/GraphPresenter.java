@@ -2,12 +2,13 @@ package com.hixel.hixel.comparisonGraph;
 
 import android.util.Log;
 
-import com.hixel.hixel.company.FinancialData;
+import com.hixel.hixel.models.FinancialData;
 import com.hixel.hixel.models.Company;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Set;
 
 public class GraphPresenter implements GraphContract.Presenter {
@@ -32,7 +33,7 @@ public class GraphPresenter implements GraphContract.Presenter {
     }
 @Override
     public void checkUpFinancialEntry(Company company){
-        ArrayList<FinancialData> financialData=company.getFinancialDataEntries();
+        List<FinancialData> financialData = company.getFinancialDataEntries();
 
         Set<String> keys = new HashSet<String>();
         keys.add("Current Ratio");

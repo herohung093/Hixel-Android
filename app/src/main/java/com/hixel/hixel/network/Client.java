@@ -1,4 +1,4 @@
-package com.hixel.hixel.api;
+package com.hixel.hixel.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

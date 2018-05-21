@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.hixel.hixel.R;
-import com.hixel.hixel.company.CompanyIdentifiers;
+import com.hixel.hixel.models.CompanyIdentifiers;
 
 import java.util.ArrayList;
 

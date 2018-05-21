@@ -3,13 +3,14 @@ package com.hixel.hixel.dashboard;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.hixel.hixel.api.Client;
-import com.hixel.hixel.api.ServerInterface;
+import com.hixel.hixel.network.Client;
+import com.hixel.hixel.network.ServerInterface;
 import com.hixel.hixel.models.Company;
 import com.hixel.hixel.models.Portfolio;
 import com.hixel.hixel.search.SearchEntry;
 import com.hixel.hixel.search.SearchSuggestion;
 
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
 
     @Override
-    public ArrayList<Company> getCompanies() {
+    public List<Company> getCompanies() {
         return portfolio.getCompanies();
     }
 

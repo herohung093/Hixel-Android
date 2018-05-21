@@ -1,8 +1,5 @@
 package com.hixel.hixel.models;
 
-import com.hixel.hixel.company.CompanyIdentifiers;
-import com.hixel.hixel.company.FinancialData;
-
 import java.io.Serializable;
 import java.util.List;
 

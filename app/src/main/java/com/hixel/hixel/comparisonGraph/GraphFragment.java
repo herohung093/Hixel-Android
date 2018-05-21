@@ -22,7 +22,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hixel.hixel.R;
-import com.hixel.hixel.company.FinancialData;
+import com.hixel.hixel.models.FinancialData;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -88,9 +88,9 @@ public class GraphFragment extends Fragment {
         List<Entry> CompA = new ArrayList<>();
         List<Entry> CompB = new ArrayList<>();
         // Entry CompAYear1= new Entry(0f, (float) mPresenter.getCompanies().get(0).getFinancialDataEntries().get(0).getRatios()
-        ArrayList<FinancialData> financialDataCompA =
+        List<FinancialData> financialDataCompA =
                 mPresenter.getCompanies().get(0).getFinancialDataEntries();
-        ArrayList<FinancialData> financialDataCompB =
+        List<FinancialData> financialDataCompB =
                 mPresenter.getCompanies().get(1).getFinancialDataEntries();
 
         checkYearNull(financialDataCompA);
@@ -177,7 +177,7 @@ public class GraphFragment extends Fragment {
         }
     };
 
-    private void checkYearNull(ArrayList<FinancialData> financial) {
+    private void checkYearNull(List<FinancialData> financial) {
         for (int i = 0; i < financial.size(); i++) {
             if (financial.get(i) == null) {
                 financial.get(i).setDefaultFinancialData(); //set all values equal to -0 for visualising purpose
@@ -186,8 +186,8 @@ public class GraphFragment extends Fragment {
         }
     }
 
-    private void createListOfYears(ArrayList<FinancialData> financialDataCompA) {
-        ArrayList<String> toConvertYears = new ArrayList<String>();
+    private void createListOfYears(List<FinancialData> financialDataCompA) {
+        List<String> toConvertYears = new ArrayList<>();
 
         for (int i= financialDataCompA.size()-1;i>=0;i--) {
             toConvertYears.add(String.valueOf(financialDataCompA.get(i).getYear()));
@@ -227,7 +227,6 @@ public class GraphFragment extends Fragment {
         //yAxis.setValueFormatter(formatter);
         yAxis.setTextSize(12f);
         yAxis.setTextColor(Color.WHITE);
-        ;
     }
 
 
