@@ -5,9 +5,11 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.hixel.hixel.R;
-import com.hixel.hixel.api.Client;
-import com.hixel.hixel.api.ServerInterface;
+import com.hixel.hixel.network.Client;
+import com.hixel.hixel.network.ServerInterface;
 import com.hixel.hixel.models.Company;
+import com.hixel.hixel.network.Client;
+import com.hixel.hixel.network.ServerInterface;
 import com.hixel.hixel.search.SearchEntry;
 
 import java.util.ArrayList;
