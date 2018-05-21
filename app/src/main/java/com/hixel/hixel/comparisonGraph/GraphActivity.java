@@ -19,11 +19,12 @@ import java.util.List;
 public class GraphActivity extends FragmentActivity implements GraphContract.View,
         AdapterView.OnItemSelectedListener, GraphFragment.OnFragmentInteractionListener {
 
-    List<String> Ratios = new ArrayList<>();
+    List<String> ratios = new ArrayList<>();
     ArrayAdapter<String> listRatiosAdapter;
     Intent intentReceiver;
     Spinner listOfGraph;
     private GraphContract.Presenter mPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +36,14 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         mPresenter = new GraphPresenter( this, receivedCompanies);
         mPresenter.start();
 
-        Ratios.add("Current Ratio");
-        Ratios.add("Quick Ratio");
-        Ratios.add("Cash Ratio");
-        Ratios.add("Debt-to-Equity Ratio");
-        //Ratios.add("Health");
-        Ratios.add("Long Term Debt-to-Equity Ratio");
+        ratios.add("Current Ratio");
+        ratios.add("Quick Ratio");
+        ratios.add("Cash Ratio");
+        ratios.add("Debt-to-Equity Ratio");
+        //ratios.add("Health");
+        ratios.add("Long Term Debt-to-Equity Ratio");
 
-        listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Ratios);
+        listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ratios);
         listRatiosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         listOfGraph = findViewById(R.id.spinner);
@@ -65,7 +66,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         GraphFragment FragmentA =
                 (GraphFragment) getFragmentManager().findFragmentById(R.id.graphFragment);
 
-        FragmentA.drawGraph(mPresenter,adapterView.getSelectedItem().toString());
+        FragmentA.drawGraph(mPresenter, adapterView.getSelectedItem().toString());
         Log.d("triggered draw graph","88888888888");
 
     }

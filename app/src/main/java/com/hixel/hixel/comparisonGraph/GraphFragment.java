@@ -62,6 +62,7 @@ public class GraphFragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -71,13 +72,11 @@ public class GraphFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
         lineChart = view.findViewById(R.id.chart1);
@@ -142,7 +141,7 @@ public class GraphFragment extends Fragment {
         setCompB.setColors(ColorTemplate.COLORFUL_COLORS);
         setupDatasetStyle(setCompB);
 
-        List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+        List<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(setCompA);
         dataSets.add(setCompB);
         LineData data = new LineData(dataSets);
@@ -157,8 +156,7 @@ public class GraphFragment extends Fragment {
         yRight.setTextColor(getResources().getColor(R.color.textColorDefault));
         setupAxis(xAxis, yAxis);
 
-        Legend legend
-                = lineChart.getLegend();
+        Legend legend = lineChart.getLegend();
         setupLegend(legend);
 
     }
@@ -189,10 +187,10 @@ public class GraphFragment extends Fragment {
     private void createListOfYears(List<FinancialData> financialDataCompA) {
         List<String> toConvertYears = new ArrayList<>();
 
-        for (int i= financialDataCompA.size()-1;i>=0;i--) {
+        for (int i = financialDataCompA.size() - 1; i >= 0; i--) {
             toConvertYears.add(String.valueOf(financialDataCompA.get(i).getYear()));
-
         }
+
         years = toConvertYears.toArray(new String[toConvertYears.size()]);
     }
 

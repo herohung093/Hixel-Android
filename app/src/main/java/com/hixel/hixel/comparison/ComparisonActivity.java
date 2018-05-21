@@ -15,7 +15,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
@@ -43,8 +42,9 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         //ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
         //itemTouchhelper.attachToRecyclerView(recyclerView);
 
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
-                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback
+                = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
             Drawable background;
             Drawable xMark;
             int xMarkMargin;
@@ -112,40 +112,35 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
         // attaching the touch helper to recycler view
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
-        final Intent moveToCompare= new Intent(this, GraphActivity.class);
 
+        final Intent moveToCompare = new Intent(this, GraphActivity.class);
 
         Button compareButton = findViewById(R.id.compareButton);
-        compareButton.setOnClickListener(new View.OnClickListener(){
 
-            @Override
-            public void onClick(View view) {
-                if(cpresenter.getListCompareCompanies().size() == 2) {
-                    // TODO: Fix the cast to ArrayList.
-                    moveToCompare.putExtra("selectedCompanies", (ArrayList) cpresenter.getListCompareCompanies());
-                    startActivity(moveToCompare);
-                }
-                Toast.makeText(getApplicationContext(),"please select a company",Toast.LENGTH_LONG);
+        compareButton.setOnClickListener((View view) -> {
+            if(cpresenter.getListCompareCompanies().size() == 2) {
+                moveToCompare.putExtra("selectedCompanies", (ArrayList) cpresenter.getListCompareCompanies());
+                startActivity(moveToCompare);
             }
+            Toast.makeText(getApplicationContext(),"please select a company",Toast.LENGTH_LONG);
         });
+
         Button undoButton = findViewById(R.id.undoButton);
-        undoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cpresenter.removeLastItemFromList();
-                selectedListChanged();
-            }
+
+        undoButton.setOnClickListener(view -> {
+            cpresenter.removeLastItemFromList();
+            selectedListChanged();
         });
+
         cpresenter = new ComparisonPresenter(this);
         cpresenter.start();
         adapter= new ComparisonAdapter(this,cpresenter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
+
         //android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) findViewById(R.id.action_search);
         //searchView.setQueryHint("enter company...");
-
-
 
         /*
         searchView.setQueryHint("Enter Company Ticker");
@@ -173,34 +168,38 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         });
 */
 
-         searchView = findViewById(R.id.searchView);
+        searchView = findViewById(R.id.searchView);
         searchView.setQueryHint("enter company...");
-         searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchAutoComplete.setHintTextColor(Color.BLACK);
         searchAutoComplete.setTextColor(Color.BLACK);
+
         ArrayAdapter<String> newsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
         searchAutoComplete.setAdapter(newsAdapter);
-        searchAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String queryString=(String)adapterView.getItemAtPosition(i);
-                searchAutoComplete.setText("" + queryString);
 
-                String ticker=queryString.trim();
-                int spaceIndex=ticker.lastIndexOf(' ');
-                String userInput=ticker.substring(spaceIndex).trim();
-                //Toast.makeText(getApplicationContext(),"Here is what the user submitted "+userInput,Toast.LENGTH_LONG).show();
-                newsAdapter.notifyDataSetChanged();
-                int flag=0;
-                flag=cpresenter.addToCompare(userInput);
+        searchAutoComplete.setOnItemClickListener((adapterView, view, i, l) -> {
+            String queryString=(String)adapterView.getItemAtPosition(i);
+            searchAutoComplete.setText("" + queryString);
+
+            String ticker=queryString.trim();
+            int spaceIndex=ticker.lastIndexOf(' ');
+            String userInput=ticker.substring(spaceIndex).trim();
+            //Toast.makeText(getApplicationContext(),"Here is what the user submitted "+userInput,Toast.LENGTH_LONG).show();
+            newsAdapter.notifyDataSetChanged();
+
+            int flag = 0;
+            flag = cpresenter.addToCompare(userInput);
+            selectedListChanged();
+
+            if (flag == 1) {
+                Toast.makeText(getApplicationContext(),"Ticker not found",Toast.LENGTH_LONG).show();
+            } else if (flag == 2) {
+                Toast.makeText(getApplicationContext(),"Reach limit",Toast.LENGTH_LONG).show();
+            } else {
                 selectedListChanged();
-                if(flag==1){
-                    Toast.makeText(getApplicationContext(),"Ticker not found",Toast.LENGTH_LONG).show();
-                }else if(flag==2){
-                    Toast.makeText(getApplicationContext(),"Reach limit",Toast.LENGTH_LONG).show();
-                } else selectedListChanged();
             }
         });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -212,7 +211,8 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
                 cpresenter.loadSearchSuggestion(searchAutoComplete.getText().toString());
 
-                ArrayAdapter<String> newsAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, cpresenter.getNames());
+                ArrayAdapter<String> newsAdapter =
+                        new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, cpresenter.getNames());
                 searchAutoComplete.setAdapter(newsAdapter);
 
                 newsAdapter.notifyDataSetChanged();

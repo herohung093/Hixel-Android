@@ -70,7 +70,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
                 @Override
                 public void onResponse(@NonNull Call<ArrayList<Company>> call,
                                        @NonNull Response<ArrayList<Company>> response) {
-                    if(response.body().size()!=0 && listCompareCompanies.size()<=2) {
+                    if(response.body().size()!= 0 && listCompareCompanies.size() <= 2) {
                         successFlag[0] = 1;
 
                         listCompareCompanies.add(response.body().get(0));

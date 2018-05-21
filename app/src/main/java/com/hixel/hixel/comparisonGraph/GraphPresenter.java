@@ -18,8 +18,8 @@ public class GraphPresenter implements GraphContract.Presenter {
 
     GraphPresenter(GraphContract.View graphView, List<Company> companies) {
         this.graphView = graphView;
-        this.companies=companies;
-        this.ratios=new ArrayList<String>();
+        this.companies = companies;
+        this.ratios = new ArrayList<>();
     }
 
     @Override
@@ -31,7 +31,8 @@ public class GraphPresenter implements GraphContract.Presenter {
         ratios.add("Health");
         ratios.add("Long_Term_Debt_Ratio");
     }
-@Override
+
+    @Override
     public void checkUpFinancialEntry(Company company){
         List<FinancialData> financialData = company.getFinancialDataEntries();
 
@@ -40,17 +41,18 @@ public class GraphPresenter implements GraphContract.Presenter {
         keys.add("Quick Ratio");
         keys.add("Cash Ratio");
         keys.add("Debt-to-Equity Ratio");
-        //Ratios.add("Health");
+        //ratios.add("Health");
         keys.add("Long Term Debt-to-Equity Ratio");
 
         for (FinancialData f : company.getFinancialDataEntries()) {
-            if(f!=null) {
+            if(f != null) {
+
                 LinkedHashMap<String, Double> ratios = f.getRatios();
 
                 for (String k : keys) {
                     if (ratios.get(k) == null) {
                         Log.d(String.valueOf(f.getYear()) + k + ": ", "NULL***");
-                        ratios.put(k, (double) 0);
+                        ratios.put(k, 0.0);
                         Log.d(String.valueOf(f.getYear()) + k + ": ", ratios.get(k).toString());
                     }
                 }
@@ -58,6 +60,7 @@ public class GraphPresenter implements GraphContract.Presenter {
 
         }
     }
+
     @Override
     public List<Company> getCompanies() {
         return companies;
