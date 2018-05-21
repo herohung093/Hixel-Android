@@ -27,6 +27,7 @@ public class FinancialData implements Serializable {
     public LinkedHashMap<String, Double> getRatios() {
         return ratios;
     }
+
     public void setDefaultFinancialData(){ //will be called when FinancialData is null
         ratios.put("Current Ratio",(double)0);
         ratios.put("Quick Ratio",(double)0);
@@ -36,6 +37,7 @@ public class FinancialData implements Serializable {
         ratios.put("Long_Term_Debt_Ratio",(double)0);
 
     }
-    public void setYear(int year){this.year=year;} //will be called when FinancialData is null
-    }
+    public void setYear(int year) { this.year = year; } //will be called when FinancialData is null
+
+}
 

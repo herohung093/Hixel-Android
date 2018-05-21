@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/graphFragment"
-        android:name="com.hixel.hixel.comparisonGraph.GraphFagment"
+        android:name="com.hixel.hixel.comparisonGraph.GraphFragment"
         android:layout_width="371dp"
         android:layout_height="492dp"
         android:layout_marginBottom="8dp"

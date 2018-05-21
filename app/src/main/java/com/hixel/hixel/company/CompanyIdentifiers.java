@@ -3,7 +3,7 @@ package com.hixel.hixel.company;
 import java.io.Serializable;
 
 public class CompanyIdentifiers implements Serializable {
-    private  String ticker;
+    private String ticker;
     private String name;
     private String cik;
 

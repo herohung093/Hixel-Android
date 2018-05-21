@@ -7,11 +7,13 @@ import com.hixel.hixel.models.Company;
 import java.util.ArrayList;
 
 public interface GraphContract  {
-    public interface View extends BaseView<Presenter>{
+
+    interface View extends BaseView<Presenter>{
         void graphChanged(String ratio);
     }
+
     interface Presenter extends BasePresenter{
-    ArrayList<Company> getCompanies();
+        ArrayList<Company> getCompanies();
         void checkUpFinancialEntry(Company company);
 
     }

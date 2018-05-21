@@ -15,7 +15,7 @@ public class GraphPresenter implements GraphContract.Presenter {
     private final GraphContract.View graphView;
     private ArrayList<String> ratios;
 
-    public GraphPresenter(GraphContract.View graphView, ArrayList<Company> companies) {
+    GraphPresenter(GraphContract.View graphView, ArrayList<Company> companies) {
         this.graphView = graphView;
         this.companies=companies;
         this.ratios=new ArrayList<String>();

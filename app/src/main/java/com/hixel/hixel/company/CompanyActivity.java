@@ -1,23 +1,16 @@
 package com.hixel.hixel.company;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hixel.hixel.R;
-import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.models.Company;
 
 public class CompanyActivity extends AppCompatActivity implements CompanyContract.View {
 
     private CompanyContract.Presenter presenter;
-    private ActivityDashboardBinding binding;
     private String TAG = "COMPANY_VIEW";
 
     @Override

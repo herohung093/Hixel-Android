@@ -4,15 +4,15 @@ import com.hixel.hixel.company.CompanyIdentifiers;
 import com.hixel.hixel.company.FinancialData;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 // Implementing serializable while we can to prevent coupling with the android SDK
 public class Company implements Serializable {
     private CompanyIdentifiers identifiers;
-    private ArrayList<FinancialData> financialDataEntries;
+    private List<FinancialData> financialDataEntries;
 
 
-    public Company(CompanyIdentifiers identifiers, ArrayList<FinancialData> financialDataEntries) {
+    public Company(CompanyIdentifiers identifiers, List<FinancialData> financialDataEntries) {
         this.identifiers = identifiers;
         this.financialDataEntries = financialDataEntries;
     }
@@ -27,15 +27,14 @@ public class Company implements Serializable {
             }
         }
 
-        return (ratio != null) ? ratio
-                               : 0.0;
+        return (ratio != null) ? ratio : 0.0;
     }
 
     public CompanyIdentifiers getIdentifiers() {
         return identifiers;
     }
 
-    public ArrayList<FinancialData> getFinancialDataEntries() {
+    public List<FinancialData> getFinancialDataEntries() {
         return financialDataEntries;
     }
 

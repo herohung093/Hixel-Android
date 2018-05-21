@@ -1,15 +1,16 @@
 package com.hixel.hixel.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Portfolio {
-    private ArrayList<Company> companies;
+    private List<Company> companies;
 
     public Portfolio() {
         this.companies = new ArrayList<>();
     }
 
-    public Portfolio(ArrayList<Company> companies) {
+    public Portfolio(List<Company> companies) {
         this.companies = companies;
     }
 
@@ -17,11 +18,11 @@ public class Portfolio {
         return companies.get(position);
     }
 
-    public ArrayList<Company> getCompanies() {
+    public List<Company> getCompanies() {
         return this.companies;
     }
 
-    public void setCompanies(ArrayList<Company> companies) {
+    public void setCompanies(List<Company> companies) {
         this.companies = companies;
     }
 }

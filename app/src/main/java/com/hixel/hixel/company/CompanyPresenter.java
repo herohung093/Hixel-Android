@@ -24,12 +24,10 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     public String getRatio(String ratio, int year) {
         Double value = company.getRatio(ratio, year);
 
-        return (value == null) ? "N/A"
-                : Double.toString(value);
+        return (value == null) ? "N/A" : Double.toString(value);
     }
 
-    public int getColorIndicator(String ratio, double value)
-    {
+    public int getColorIndicator(String ratio, double value) {
         //Default thresholds.
         double green = 1.5;
         double yellow = 1.0;

@@ -31,24 +31,28 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
     private android.support.v7.widget.SearchView searchView;
     private SearchView.SearchAutoComplete   searchAutoComplete;
     SwipeController swipeController = new SwipeController();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comparison);
 
         //SearchView searchView= (SearchView) findViewById(R.id.comparisonSearchView);
-        recyclerView=(RecyclerView) findViewById(R.id.recycleView);
+        recyclerView = findViewById(R.id.recycleView);
         //ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
         //itemTouchhelper.attachToRecyclerView(recyclerView);
+
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             Drawable background;
             Drawable xMark;
             int xMarkMargin;
             boolean initiated;
+
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
+
             private void init() {
                 background = new ColorDrawable(Color.RED);
                 xMark = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_clear_24dp);
@@ -66,6 +70,7 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
                 adapter.notifyDataSetChanged();
                 Log.d("selected List size*********", String.valueOf(cpresenter.getListCompareCompanies().size()));
             }
+
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 // view the background view
@@ -103,12 +108,12 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
         };
 
-// attaching the touch helper to recycler view
+        // attaching the touch helper to recycler view
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
         final Intent moveToCompare= new Intent(this, GraphActivity.class);
 
 
-        Button compareButton = (Button) findViewById(R.id.compareButton);
+        Button compareButton = findViewById(R.id.compareButton);
         compareButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -121,7 +126,7 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
                 Toast.makeText(getApplicationContext(),"please select a company",Toast.LENGTH_LONG);
             }
         });
-        Button undoButton =(Button) findViewById(R.id.undoButton);
+        Button undoButton = findViewById(R.id.undoButton);
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,7 +171,7 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         });
 */
 
-         searchView = (android.support.v7.widget.SearchView) findViewById(R.id.searchView);
+         searchView = findViewById(R.id.searchView);
         searchView.setQueryHint("enter company...");
          searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchAutoComplete.setHintTextColor(Color.BLACK);
@@ -205,7 +210,7 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
                 cpresenter.loadSearchSuggestion(searchAutoComplete.getText().toString());
 
-                ArrayAdapter<String> newsAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, cpresenter.getnames());
+                ArrayAdapter<String> newsAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, cpresenter.getNames());
                 searchAutoComplete.setAdapter(newsAdapter);
 
                 newsAdapter.notifyDataSetChanged();
@@ -217,7 +222,7 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
  }
     @Override
     public void setPresenter(ComparisonContract.Presenter presenter) {
-        this.cpresenter=presenter;
+        this.cpresenter = presenter;
     }
 
     @Override

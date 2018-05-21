@@ -22,7 +22,7 @@ public class DashboardAdapter
     private final DashboardContract.Presenter presenter;
     private Context context;
 
-    public DashboardAdapter(Context context, DashboardContract.Presenter presenter) {
+    DashboardAdapter(Context context, DashboardContract.Presenter presenter) {
         this.presenter = presenter;
         this.context = context;
     }

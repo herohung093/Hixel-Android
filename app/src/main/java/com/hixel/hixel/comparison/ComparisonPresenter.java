@@ -22,17 +22,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ComparisonPresenter implements ComparisonContract.Presenter {
-    private ArrayList<Company> listCompareCompanies= new ArrayList<Company>();
+    private ArrayList<Company> listCompareCompanies= new ArrayList<>();
     private final ComparisonContract.View mComparisonView;
-    protected SearchSuggestion searchSuggestion;
+    private SearchSuggestion searchSuggestion;
+    private static ArrayList<String> names;
 
-    protected static ArrayList<String> names;
-
-    public ComparisonPresenter(ComparisonContract.View mComparisonView) {
-        this.mComparisonView=mComparisonView;
+    ComparisonPresenter(ComparisonContract.View mComparisonView) {
+        this.mComparisonView = mComparisonView;
         listCompareCompanies.clear();
-        this.searchSuggestion=new SearchSuggestion();
-        this.names=new ArrayList<String>();
+        this.searchSuggestion = new SearchSuggestion();
+        names = new ArrayList<String>();
 
     }
 
@@ -58,8 +57,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
 
     public int addToCompare(String ticker) {
         final int[] successFlag = {0};
-        if (listCompareCompanies.size()<=1)
-        {
+        if (listCompareCompanies.size() <= 1) {
             ServerInterface client = Client
                     .getRetrofit()
                     .create(ServerInterface.class);
@@ -85,14 +83,16 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
                             "Failed to load company data from the server: " + t.getMessage());
                 }
             });
-    } else return successFlag[0]=2;
+        } else {
+            return successFlag[0] = 2;
+        }
         return successFlag[0];
-}
+    }
 
 public void checkUpFinancialEntry(Company company){
     ArrayList<FinancialData> financialData=company.getFinancialDataEntries();
 
-    Set<String> keys = new HashSet<String>();
+    Set<String> keys = new HashSet<>();
     keys.add("Current Ratio");
     keys.add("Quick Ratio");
     keys.add("Cash Ratio");
@@ -117,7 +117,7 @@ public void checkUpFinancialEntry(Company company){
 }
     @Override
     public void removeLastItemFromList() {
-        if (listCompareCompanies.size()!=0) {
+        if (listCompareCompanies.size()!= 0) {
             listCompareCompanies.remove(listCompareCompanies.size() - 1);
         }
     }
@@ -132,7 +132,7 @@ public void checkUpFinancialEntry(Company company){
                 searchSuggestion.setSearchEntries(response.body());
                 names = searchSuggestion.getNames();
                 if (names.size() != 0) {
-                    Log.d("Search SUggstion=====", "" + names.get(0));
+                    Log.d("Search Suggestion=====", "" + names.get(0));
                 }
 
             }
@@ -146,9 +146,8 @@ public void checkUpFinancialEntry(Company company){
     }
 
     @Override
-    public ArrayList<String> getnames() {
+    public ArrayList<String> getNames() {
         return names;
     }
-
 
 }

@@ -24,8 +24,8 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
     private Portfolio portfolio;
     private final DashboardContract.View dashboardView;
-    protected SearchSuggestion searchSuggestion;
-    protected static ArrayList<String> names;
+    private SearchSuggestion searchSuggestion;
+    private static ArrayList<String> names;
 
 
     DashboardPresenter(DashboardContract.View dashboardView) {
@@ -96,7 +96,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                 searchSuggestion.setSearchEntries(response.body());
                 names = searchSuggestion.getNames();
                 if (names.size() != 0) {
-                    Log.d("Search SUggstion=====", "" + names.get(0));
+                    Log.d("Search Suggestion=====", "" + names.get(0));
                 }
 
             }
@@ -110,7 +110,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     }
 
     @Override
-    public ArrayList<String> getnames() {
+    public ArrayList<String> getNames() {
         return names;
 
     }

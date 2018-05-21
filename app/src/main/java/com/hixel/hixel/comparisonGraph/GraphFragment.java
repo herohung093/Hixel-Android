@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class GraphFagment extends Fragment {
+public class GraphFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -43,7 +43,7 @@ public class GraphFagment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public GraphFagment() {
+    public GraphFragment() {
         // Required empty public constructor
     }
 
@@ -56,8 +56,8 @@ public class GraphFagment extends Fragment {
      * @return A new instance of fragment Graph.
      */
     // TODO: Rename and change types and number of parameters
-    public static GraphFagment newInstance(String param1, String param2) {
-        GraphFagment fragment = new GraphFagment();
+    public static GraphFragment newInstance(String param1, String param2) {
+        GraphFragment fragment = new GraphFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -80,20 +80,23 @@ public class GraphFagment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
-        lineChart = (LineChart) view.findViewById(R.id.chart1);
+        lineChart = view.findViewById(R.id.chart1);
         return view;
     }
 
-    public void drawGraph(GraphContract.Presenter mpresenter, String selectedRatio) {
-        List<Entry> CompA = new ArrayList<Entry>();
-        List<Entry> CompB = new ArrayList<Entry>();
-        // Entry CompAYear1= new Entry(0f, (float) mpresenter.getCompanies().get(0).getFinancialDataEntries().get(0).getRatios()
-        ArrayList<FinancialData> financialDataCompA = mpresenter.getCompanies().get(0).getFinancialDataEntries();
-        ArrayList<FinancialData> financialDataCompB = mpresenter.getCompanies().get(1).getFinancialDataEntries();
+    public void drawGraph(GraphContract.Presenter mPresenter, String selectedRatio) {
+        List<Entry> CompA = new ArrayList<>();
+        List<Entry> CompB = new ArrayList<>();
+        // Entry CompAYear1= new Entry(0f, (float) mPresenter.getCompanies().get(0).getFinancialDataEntries().get(0).getRatios()
+        ArrayList<FinancialData> financialDataCompA =
+                mPresenter.getCompanies().get(0).getFinancialDataEntries();
+        ArrayList<FinancialData> financialDataCompB =
+                mPresenter.getCompanies().get(1).getFinancialDataEntries();
+
         checkYearNull(financialDataCompA);
         checkYearNull(financialDataCompB);
-        mpresenter.checkUpFinancialEntry(mpresenter.getCompanies().get(0));
-        mpresenter.checkUpFinancialEntry(mpresenter.getCompanies().get(1));
+        mPresenter.checkUpFinancialEntry(mPresenter.getCompanies().get(0));
+        mPresenter.checkUpFinancialEntry(mPresenter.getCompanies().get(1));
         createListOfYears(financialDataCompA);
         //add company A data for graph
         LinkedHashMap<String, Double> DataCompAYear1 = financialDataCompA.get(4).getRatios();
@@ -128,13 +131,13 @@ public class GraphFagment extends Fragment {
         Entry CompBYear5 = new Entry(4f, Float.valueOf(DataCompBYear5.get(selectedRatio).toString()));
         CompB.add(CompBYear5);
 
-        LineDataSet setCompA = new LineDataSet(CompA, mpresenter.getCompanies().get(0).getIdentifiers().getName());
+        LineDataSet setCompA = new LineDataSet(CompA, mPresenter.getCompanies().get(0).getIdentifiers().getName());
 
         setCompA.setColors(ColorTemplate.LIBERTY_COLORS);
         setupDatasetStyle(setCompA);
         setCompA.enableDashedLine(10f, 10f, 10f);
 
-        LineDataSet setCompB = new LineDataSet(CompB, mpresenter.getCompanies().get(1).getIdentifiers().getName());
+        LineDataSet setCompB = new LineDataSet(CompB, mPresenter.getCompanies().get(1).getIdentifiers().getName());
 
         setCompB.setColors(ColorTemplate.COLORFUL_COLORS);
         setupDatasetStyle(setCompB);

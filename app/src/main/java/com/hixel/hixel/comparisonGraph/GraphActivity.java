@@ -15,20 +15,25 @@ import com.hixel.hixel.models.Company;
 
 import java.util.ArrayList;
 
-public class GraphActivity extends FragmentActivity implements GraphContract.View,AdapterView.OnItemSelectedListener,GraphFagment.OnFragmentInteractionListener {
-    ArrayList<String> Ratios=new ArrayList<String>();
+public class GraphActivity extends FragmentActivity implements GraphContract.View,
+        AdapterView.OnItemSelectedListener, GraphFragment.OnFragmentInteractionListener {
+
+    ArrayList<String> Ratios = new ArrayList<>();
     ArrayAdapter<String> listRatiosAdapter;
     Intent intentReceiver;
     Spinner listOfGraph;
-    private GraphContract.Presenter mpresenter;
+    private GraphContract.Presenter mPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
-        intentReceiver=getIntent();
-        ArrayList<Company> receivedCompanies = (ArrayList< Company>) intentReceiver.getSerializableExtra("selectedCompanies");
-        mpresenter= new GraphPresenter( this, receivedCompanies);
-        mpresenter.start();
+        intentReceiver = getIntent();
+        ArrayList<Company> receivedCompanies =
+                (ArrayList<Company>) intentReceiver.getSerializableExtra("selectedCompanies");
+
+        mPresenter = new GraphPresenter( this, receivedCompanies);
+        mPresenter.start();
+
         Ratios.add("Current Ratio");
         Ratios.add("Quick Ratio");
         Ratios.add("Cash Ratio");
@@ -36,13 +41,12 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         //Ratios.add("Health");
         Ratios.add("Long Term Debt-to-Equity Ratio");
 
-        listRatiosAdapter=  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Ratios);
+        listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Ratios);
         listRatiosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        listOfGraph=(Spinner) findViewById(R.id.spinner);
+
+        listOfGraph = findViewById(R.id.spinner);
         listOfGraph.setOnItemSelectedListener(this);
         listOfGraph.setAdapter(listRatiosAdapter);
-
-
     }
 
     @Override
@@ -52,14 +56,16 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
 
     @Override
     public void setPresenter(GraphContract.Presenter presenter) {
-        mpresenter=presenter;
+        mPresenter = presenter;
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        GraphFagment FragmentA= (GraphFagment) getFragmentManager().findFragmentById(R.id.graphFragment);
-        FragmentA.drawGraph(mpresenter,adapterView.getSelectedItem().toString());
-        Log.d("striggered draw graph","88888888888");
+        GraphFragment FragmentA =
+                (GraphFragment) getFragmentManager().findFragmentById(R.id.graphFragment);
+
+        FragmentA.drawGraph(mPresenter,adapterView.getSelectedItem().toString());
+        Log.d("triggered draw graph","88888888888");
 
     }
 

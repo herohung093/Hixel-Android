@@ -56,18 +56,16 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         final Intent moveToCompare = new Intent(this,ComparisonActivity.class);
-        BottomNavigationView bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_nav); //bottom menu nad set onClick
+
+        BottomNavigationView bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home_button:
 
-
-
                     case R.id.compare_button:
                         startActivity(moveToCompare);
-
 
                     case R.id.settings_button:
 
@@ -85,10 +83,13 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         SearchView searchView = (SearchView) search.getActionView();
         searchView.setQueryHint("enter company...");
 
-        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        SearchView.SearchAutoComplete searchAutoComplete =
+                searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchAutoComplete.setHintTextColor(Color.WHITE);
         searchAutoComplete.setTextColor(Color.WHITE);
-        ArrayAdapter<String> newsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
+
+        ArrayAdapter<String> newsAdapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
         searchAutoComplete.setAdapter(newsAdapter);
 
 
@@ -100,7 +101,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
                 String queryString=(String)adapterView.getItemAtPosition(itemIndex);
                 searchAutoComplete.setText("" + queryString);
-                Toast.makeText(getApplicationContext(),"Here is what the user submitted"+queryString,Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Here is what the user submitted" + queryString,Toast.LENGTH_LONG).show();
 
                 newsAdapter.notifyDataSetChanged();
 
@@ -121,7 +122,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
                 presenter.loadSearchSuggestion(searchAutoComplete.getText().toString());
 
-                ArrayAdapter<String> newsAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, presenter.getnames());
+                ArrayAdapter<String> newsAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, presenter.getNames());
                 searchAutoComplete.setAdapter(newsAdapter);
 
                 newsAdapter.notifyDataSetChanged();

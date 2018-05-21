@@ -7,9 +7,11 @@ import com.hixel.hixel.models.Company;
 import java.util.ArrayList;
 
 public interface ComparisonContract {
+
     interface View extends BaseView<Presenter>{
-    void selectedListChanged();
+        void selectedListChanged();
     }
+
     interface Presenter extends BasePresenter{
         ArrayList<Company> getListCompareCompanies();
         void compare();
@@ -17,7 +19,7 @@ public interface ComparisonContract {
         int addToCompare(String ticker);
         void removeLastItemFromList();
 
-        ArrayList<String> getnames();
+        ArrayList<String> getNames();
         void loadSearchSuggestion(String query);
 
     }

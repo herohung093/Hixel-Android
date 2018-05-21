@@ -17,7 +17,7 @@ public interface DashboardContract {
         void populateGraph();
         ArrayList<Company> getCompanies();
         void sortCompaniesBy(String name);
-        ArrayList<String> getnames();
+        ArrayList<String> getNames();
         void loadSearchSuggestion(String query);
 
     }

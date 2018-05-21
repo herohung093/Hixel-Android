@@ -22,7 +22,7 @@ public class ComparisonAdapter
     private final ComparisonContract.Presenter presenter;
     private Context mContext;
 
-    public ComparisonAdapter(Context context, ComparisonContract.Presenter presenter) {
+    ComparisonAdapter(Context context, ComparisonContract.Presenter presenter) {
         this.presenter = presenter;
         this.mContext = context;
     }
