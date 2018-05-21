@@ -24,6 +24,8 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 
+import java.util.ArrayList;
+
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
         OnItemSelectedListener {
 
@@ -141,6 +143,12 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     public void setPresenter(@NonNull DashboardContract.Presenter presenter) {
         presenter = presenter;
     }
+
+    @Override
+    public void updateRatios(ArrayList<String> ratios1) {
+
+    }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

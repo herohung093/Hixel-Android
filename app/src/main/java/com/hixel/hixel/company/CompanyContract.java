@@ -4,6 +4,8 @@ import com.hixel.hixel.BasePresenter;
 import com.hixel.hixel.BaseView;
 import com.hixel.hixel.models.Company;
 
+import java.util.ArrayList;
+
 public interface CompanyContract {
 
     interface View extends BaseView<Presenter> {
@@ -16,5 +18,7 @@ public interface CompanyContract {
         String getRatio(String name, int year);
 
         int getColorIndicator(String ratio, double value);
+        void doMeta();
+        ArrayList<String> getratios1();
     }
 }
