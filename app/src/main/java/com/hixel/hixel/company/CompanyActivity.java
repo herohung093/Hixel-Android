@@ -95,4 +95,5 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
     }
 
 
+
 }

@@ -101,8 +101,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
 
                 String queryString=(String)adapterView.getItemAtPosition(itemIndex);
-                searchAutoComplete.setText("" + queryString);
-                Toast.makeText(getApplicationContext(),"Here is what the user submitted"+queryString,Toast.LENGTH_LONG).show();
+                searchAutoComplete.setText("" + queryString.trim().substring(0,queryString.lastIndexOf(' ')));
+                //Toast.makeText(getApplicationContext(),"Here is what the user submitted"+queryString,Toast.LENGTH_LONG).show();
 
                 newsAdapter.notifyDataSetChanged();
 
