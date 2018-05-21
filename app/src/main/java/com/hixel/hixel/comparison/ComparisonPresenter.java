@@ -23,20 +23,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ComparisonPresenter implements ComparisonContract.Presenter {
-    private ArrayList<Company> listCompareCompanies= new ArrayList<>();
+    private List<Company> listCompareCompanies = new ArrayList<>();
     private final ComparisonContract.View mComparisonView;
     private SearchSuggestion searchSuggestion;
-    private static ArrayList<String> names;
+    private static List<String> names;
 
     ComparisonPresenter(ComparisonContract.View mComparisonView) {
         this.mComparisonView = mComparisonView;
         listCompareCompanies.clear();
         this.searchSuggestion = new SearchSuggestion();
-        names = new ArrayList<String>();
+        names = new ArrayList<>();
 
     }
 
-    public void setListCompareCompanies(ArrayList<Company> listCompareCompanies) {
+    public void setListCompareCompanies(List<Company> listCompareCompanies) {
         this.listCompareCompanies = listCompareCompanies;
     }
 
@@ -52,7 +52,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
     public void compare(){
 
     }
-    public ArrayList<Company> getListCompareCompanies(){
+    public List<Company> getListCompareCompanies(){
         return listCompareCompanies;
     }
 
@@ -147,7 +147,7 @@ public void checkUpFinancialEntry(Company company){
     }
 
     @Override
-    public ArrayList<String> getNames() {
+    public List<String> getNames() {
         return names;
     }
 

@@ -10,7 +10,7 @@ import android.view.View;
 import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_SWIPE;
 
 public class SwipeController extends Callback {
-    private boolean swipeBack=true;
+    private boolean swipeBack = true;
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {

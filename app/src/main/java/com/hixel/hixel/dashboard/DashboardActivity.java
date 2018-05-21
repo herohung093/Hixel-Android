@@ -57,21 +57,19 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mRecyclerView.setLayoutManager(mLayoutManager);
         final Intent moveToCompare = new Intent(this,ComparisonActivity.class);
 
-        BottomNavigationView bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_nav);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home_button:
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 
-                    case R.id.compare_button:
-                        startActivity(moveToCompare);
+        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
+            switch (item.getItemId()) {
+                case R.id.home_button:
 
-                    case R.id.settings_button:
+                case R.id.compare_button:
+                    startActivity(moveToCompare);
 
-                }
-                return true;
+                case R.id.settings_button:
             }
+
+            return true;
         });
 
     }
@@ -92,25 +90,17 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
                 new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
         searchAutoComplete.setAdapter(newsAdapter);
 
+        searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
 
+            String queryString = (String) adapterView.getItemAtPosition(itemIndex);
+            searchAutoComplete.setText("" + queryString);
+            Toast.makeText(getApplicationContext(),
+                    "Here is what the user submitted" + queryString,Toast.LENGTH_LONG).show();
 
-        searchAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int itemIndex, long id) {
-
-
-                String queryString=(String)adapterView.getItemAtPosition(itemIndex);
-                searchAutoComplete.setText("" + queryString);
-                Toast.makeText(getApplicationContext(), "Here is what the user submitted" + queryString,Toast.LENGTH_LONG).show();
-
-                newsAdapter.notifyDataSetChanged();
-
-            }
-
-
-
+            newsAdapter.notifyDataSetChanged();
 
         });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -122,7 +112,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
                 presenter.loadSearchSuggestion(searchAutoComplete.getText().toString());
 
-                ArrayAdapter<String> newsAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, presenter.getNames());
+                ArrayAdapter<String> newsAdapter =
+                        new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, presenter.getNames());
                 searchAutoComplete.setAdapter(newsAdapter);
 
                 newsAdapter.notifyDataSetChanged();
@@ -160,32 +151,4 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     }
 
-    /*@Override
-    public void showMainGraph(ArrayList<Company> companies) {
-        ArrayList<BarEntry> entries = new ArrayList<>();
-
-        for (int i = 0; i < companies.size(); i++) {
-            entries.add(new BarEntry((float) i, (float) companies.get(i).getHealth()));
-        }
-
-        BarChart chart = binding.chart;
-
-        MainGraphDataSet set = new MainGraphDataSet(entries, "Health");
-        set.setColors(ContextCompat.getColor(this, R.color.good),
-                ContextCompat.getColor(this, R.color.average),
-                ContextCompat.getColor(this, R.color.bad));
-        set.setValueTextColor(R.color.textColorDefault);
-        BarData barData = new BarData(set);
-
-        chart.getAxisLeft().setDrawLabels(false);
-        chart.getAxisRight().setDrawLabels(false);
-        chart.getXAxis().setDrawLabels(false);
-
-        chart.getLegend().setEnabled(false);   // Hide the legend
-
-        chart.setData(barData);
-        chart.animateY(1000);
-        chart.animateX(1000);
-        chart.invalidate(); // refresh
-    }*/
 }

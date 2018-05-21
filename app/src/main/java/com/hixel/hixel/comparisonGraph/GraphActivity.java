@@ -14,11 +14,12 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.models.Company;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GraphActivity extends FragmentActivity implements GraphContract.View,
         AdapterView.OnItemSelectedListener, GraphFragment.OnFragmentInteractionListener {
 
-    ArrayList<String> Ratios = new ArrayList<>();
+    List<String> Ratios = new ArrayList<>();
     ArrayAdapter<String> listRatiosAdapter;
     Intent intentReceiver;
     Spinner listOfGraph;
@@ -28,7 +29,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         intentReceiver = getIntent();
-        ArrayList<Company> receivedCompanies =
+        List<Company> receivedCompanies =
                 (ArrayList<Company>) intentReceiver.getSerializableExtra("selectedCompanies");
 
         mPresenter = new GraphPresenter( this, receivedCompanies);

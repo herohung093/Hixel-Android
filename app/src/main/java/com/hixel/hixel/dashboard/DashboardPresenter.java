@@ -26,23 +26,21 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     private Portfolio portfolio;
     private final DashboardContract.View dashboardView;
     private SearchSuggestion searchSuggestion;
-    private static ArrayList<String> names;
+    private static List<String> names;
 
 
     DashboardPresenter(DashboardContract.View dashboardView) {
         this.dashboardView = dashboardView;
         this.dashboardView.setPresenter(this);
-
         this.portfolio = new Portfolio();
         this.searchSuggestion = new SearchSuggestion();
 
         names = new ArrayList<>();
-
     }
 
     @Override
     public void start() {
-        ArrayList<String> companies = new ArrayList<>();
+        List<String> companies = new ArrayList<>();
         companies.add("AAPL");
         companies.add("TSLA");
         companies.add("TWTR");
@@ -52,6 +50,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
         loadPortfolio(companies);
         populateGraph();
+
         names.add("");
 
     }
@@ -61,7 +60,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         //dashboardView.showMainGraph(portfolio.getCompanies());
     }
 
-    private void loadPortfolio(ArrayList<String> companies) {
+    private void loadPortfolio(List<String> companies) {
         ServerInterface client = Client
                 .getRetrofit()
                 .create(ServerInterface.class);
@@ -76,7 +75,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
                 portfolio.setCompanies(response.body());
                 populateGraph();
-
                 dashboardView.portfolioChanged();
             }
 
@@ -96,6 +94,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
             public void onResponse(Call<ArrayList<SearchEntry>> call, Response<ArrayList<SearchEntry>> response) {
                 searchSuggestion.setSearchEntries(response.body());
                 names = searchSuggestion.getNames();
+
                 if (names.size() != 0) {
                     Log.d("Search Suggestion=====", "" + names.get(0));
                 }
@@ -111,7 +110,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     }
 
     @Override
-    public ArrayList<String> getNames() {
+    public List<String> getNames() {
         return names;
 
     }

@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.comparisonGraph.GraphActivity;
+import java.util.ArrayList;
 
 public class ComparisonActivity extends Activity implements ComparisonContract.View {
 
@@ -42,7 +43,8 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         //ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeController);
         //itemTouchhelper.attachToRecyclerView(recyclerView);
 
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             Drawable background;
             Drawable xMark;
             int xMarkMargin;
@@ -118,9 +120,9 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
             @Override
             public void onClick(View view) {
-                if(cpresenter.getListCompareCompanies().size()==2)
-                {
-                    moveToCompare.putExtra("selectedCompanies",cpresenter.getListCompareCompanies());
+                if(cpresenter.getListCompareCompanies().size() == 2) {
+                    // TODO: Fix the cast to ArrayList.
+                    moveToCompare.putExtra("selectedCompanies", (ArrayList) cpresenter.getListCompareCompanies());
                     startActivity(moveToCompare);
                 }
                 Toast.makeText(getApplicationContext(),"please select a company",Toast.LENGTH_LONG);

@@ -5,6 +5,7 @@ import com.hixel.hixel.BaseView;
 import com.hixel.hixel.models.Company;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface GraphContract  {
 
@@ -13,7 +14,7 @@ public interface GraphContract  {
     }
 
     interface Presenter extends BasePresenter{
-        ArrayList<Company> getCompanies();
+        List<Company> getCompanies();
         void checkUpFinancialEntry(Company company);
 
     }

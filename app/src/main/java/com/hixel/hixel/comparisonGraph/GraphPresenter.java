@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Set;
 
 public class GraphPresenter implements GraphContract.Presenter {
-    private ArrayList<Company> companies;
+    private List<Company> companies;
     private final GraphContract.View graphView;
-    private ArrayList<String> ratios;
+    private List<String> ratios;
 
-    GraphPresenter(GraphContract.View graphView, ArrayList<Company> companies) {
+    GraphPresenter(GraphContract.View graphView, List<Company> companies) {
         this.graphView = graphView;
         this.companies=companies;
         this.ratios=new ArrayList<String>();
@@ -35,7 +35,7 @@ public class GraphPresenter implements GraphContract.Presenter {
     public void checkUpFinancialEntry(Company company){
         List<FinancialData> financialData = company.getFinancialDataEntries();
 
-        Set<String> keys = new HashSet<String>();
+        Set<String> keys = new HashSet<>();
         keys.add("Current Ratio");
         keys.add("Quick Ratio");
         keys.add("Cash Ratio");
@@ -59,7 +59,7 @@ public class GraphPresenter implements GraphContract.Presenter {
         }
     }
     @Override
-    public ArrayList<Company> getCompanies() {
+    public List<Company> getCompanies() {
         return companies;
     }
 }
