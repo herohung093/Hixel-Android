@@ -13,14 +13,14 @@ public class SearchSuggestion {
         mSearchEntries = searchEntries;
     }
 
+
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
 
         for (int i = 0; i < mSearchEntries.size(); i++) {
-
-            names.add(mSearchEntries.get(i).getName() + "    " +
-                    mSearchEntries.get(i).getExchange() + ": " + mSearchEntries.get(i).getTicker());
+            names.add(mSearchEntries.get(i).getName() + "    " + mSearchEntries.get(i).getExchange() + ":" + mSearchEntries.get(i).getTicker());
         }
+
 
         return names;
     }

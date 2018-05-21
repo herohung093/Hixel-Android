@@ -16,4 +16,6 @@ public interface ServerInterface {
 
     @GET("/search")
     Call<ArrayList<SearchEntry>> doSearchQuery(@Query("query") String query);
+    @GET("/meta/ratios")
+    Call<ArrayList<String>> doMetaQuery();
 }

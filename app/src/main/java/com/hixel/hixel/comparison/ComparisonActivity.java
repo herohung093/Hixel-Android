@@ -23,6 +23,8 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.comparisonGraph.GraphActivity;
 import java.util.ArrayList;
 
+import java.util.ArrayList;
+
 public class ComparisonActivity extends Activity implements ComparisonContract.View {
 
     RecyclerView.Adapter adapter;
@@ -225,6 +227,11 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
     @Override
     public void setPresenter(ComparisonContract.Presenter presenter) {
         this.cpresenter = presenter;
+    }
+
+    @Override
+    public void updateRatios(ArrayList<String> ratios1) {
+
     }
 
     @Override

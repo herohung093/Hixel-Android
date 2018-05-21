@@ -62,6 +62,11 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
     }
 
     @Override
+    public void updateRatios(ArrayList<String> ratios1) {
+
+    }
+
+    @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         GraphFragment FragmentA =
                 (GraphFragment) getFragmentManager().findFragmentById(R.id.graphFragment);
