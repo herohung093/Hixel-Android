@@ -6,24 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.hixel.hixel.R;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.hixel.hixel.R;
-import com.hixel.hixel.network.Client;
-import com.hixel.hixel.network.ServerInterface;
-import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.models.Company;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CompanyActivity extends AppCompatActivity implements CompanyContract.View {
 
