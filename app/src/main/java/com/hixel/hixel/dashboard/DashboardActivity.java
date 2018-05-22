@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.SparseIntArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +21,27 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.animation.Easing.EasingOption;
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.hixel.hixel.R;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
         OnItemSelectedListener {
@@ -59,6 +76,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mRecyclerView.setLayoutManager(mLayoutManager);
         final Intent moveToCompare = new Intent(this,ComparisonActivity.class);
 
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
@@ -73,6 +91,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
             return true;
         });
+
+        setupChart();
 
     }
     @Override
@@ -158,5 +178,54 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+    public void setupChart() {
+        RadarChart chart = findViewById(R.id.chart);
+        List<RadarEntry> entries = new ArrayList<>();
+        String[] ratios = {"Current Ratio", "ROE", "D2E", "Quick Ratio", "Cash Ratio"};
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setXOffset(0f);
+        xAxis.setYOffset(0f);
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextSize(8f);
+
+        xAxis.setValueFormatter((value, axis) -> ratios[(int) value]);
+
+        YAxis yAxis = chart.getYAxis();
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(2.0f);
+        yAxis.setTextSize(10f);
+        yAxis.setLabelCount(5, false);
+        yAxis.setDrawLabels(false);
+
+        // Test data
+        entries.add(new RadarEntry(1.8f));
+        entries.add(new RadarEntry(1.2f));
+        entries.add(new RadarEntry(2.0f));
+        entries.add(new RadarEntry(1.5f));
+        entries.add(new RadarEntry(0.7f));
+
+        RadarDataSet dataSet = new RadarDataSet(entries, "");
+        dataSet.setColor(Color.parseColor("#4BCA81"));
+        dataSet.setFillColor(Color.parseColor("#4BCA81"));
+        dataSet.setDrawFilled(true);
+
+        RadarData data = new RadarData(dataSet);
+        data.setDrawValues(false);
+
+        chart.getLegend().setEnabled(false);
+        chart.getDescription().setEnabled(false);
+        chart.setWebColor(Color.WHITE);
+        chart.setWebColorInner(Color.WHITE);
+        chart.setWebLineWidth(2f);
+
+        chart.animateY(1400);
+
+        chart.setData(data);
+        chart.invalidate();
+    }
+
+
 
 }

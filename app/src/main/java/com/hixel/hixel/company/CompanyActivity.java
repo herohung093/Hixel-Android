@@ -28,6 +28,8 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText(presenter.getCompanyName());
+
+
     }
 
     public void updateRatios(ArrayList<String> ratios1) {

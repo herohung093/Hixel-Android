@@ -15,4 +15,11 @@
         <item>Leverage</item>
         <item>Liquidity</item>
     </string-array>
+
+
+    <string name="current_ratio">Current Ratio</string>
+    <string name="roe">ROE</string>
+    <string name="d2e">D2E</string>
+    <string name="quick_ratio">Quick Ratio</string>
+    <string name="cash_ratio">Cash Ratio</string>
 </resources>
