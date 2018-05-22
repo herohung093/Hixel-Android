@@ -1,8 +1,10 @@
 package com.hixel.hixel.dashboard;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.hixel.hixel.company.CompanyActivity;
 import com.hixel.hixel.network.Client;
 import com.hixel.hixel.network.ServerInterface;
 import com.hixel.hixel.models.Company;
@@ -27,6 +29,8 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     private final DashboardContract.View dashboardView;
     private SearchSuggestion searchSuggestion;
     private static List<String> names;
+    private Company company;
+    private String tickerFromSearchSuggestion;
 
 
     DashboardPresenter(DashboardContract.View dashboardView) {
@@ -34,6 +38,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         this.dashboardView.setPresenter(this);
         this.portfolio = new Portfolio();
         this.searchSuggestion = new SearchSuggestion();
+
 
         names = new ArrayList<>();
     }
@@ -104,7 +109,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
             @Override
             public void onFailure(Call<ArrayList<SearchEntry>> call, Throwable t) {
-                Log.d("loadPortfolio",
+                Log.d("loadSearchSuggestion",
                         "Failed to load Search suggestions from the server: " + t.getMessage());
             }
         });
@@ -114,6 +119,10 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     public List<String> getNames() {
         return names;
 
+    }
+    public Company getCompany()
+    {
+        return company;
     }
 
 
@@ -131,5 +140,38 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                         c2.getRatio(name, last_year)));
 
         Collections.reverse(portfolio.getCompanies());
+    }
+    @Override
+    public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
+        this.tickerFromSearchSuggestion = tickerFromSearchSuggestion;
+        loadDataForAParticularCompany(tickerFromSearchSuggestion);
+    }
+    public void loadDataForAParticularCompany(String ticker)
+    {
+        ServerInterface client = Client
+                .getRetrofit()
+                .create(ServerInterface.class);
+
+        Call<ArrayList<Company>> call = client
+                .doGetCompanies(StringUtils.join(ticker, ','), 1);
+
+        call.enqueue(new Callback<ArrayList<Company>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Company>> call,
+                                   @NonNull Response<ArrayList<Company>> response) {
+
+                //setCompany(response.body().get(0));
+                company=response.body().get(0);
+                dashboardView.goToCompanyView();
+                //populateGraph();
+                //dashboardView.portfolioChanged();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
+                Log.d("loadPortfolio",
+                        "Failed to load company data from the server: " + t.getMessage());
+            }
+        });
     }
 }

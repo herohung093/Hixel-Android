@@ -22,7 +22,8 @@
     </activity>
     <activity android:name=".company.CompanyActivity">
     </activity>
-    <activity android:name=".comparison.ComparisonActivity" />
+    <activity android:name=".comparison.ComparisonActivity"
+        android:windowSoftInputMode="adjustNothing"/>
     <!--suppress AndroidDomInspection -->
     <activity android:name=".comparisonGraph.MainActivity" />
     <activity android:name=".comparisonGraph.GraphActivity"></activity>

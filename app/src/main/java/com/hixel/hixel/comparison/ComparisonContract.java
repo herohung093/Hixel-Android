@@ -10,6 +10,7 @@ public interface ComparisonContract {
 
     interface View extends BaseView<Presenter>{
         void selectedListChanged();
+
     }
 
     interface Presenter extends BasePresenter{

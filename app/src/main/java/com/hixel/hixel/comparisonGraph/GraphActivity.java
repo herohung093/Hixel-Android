@@ -36,19 +36,10 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         mPresenter = new GraphPresenter( this, receivedCompanies);
         mPresenter.start();
 
-        ratios.add("Current Ratio");
-        ratios.add("Quick Ratio");
-        ratios.add("Cash Ratio");
-        ratios.add("Debt-to-Equity Ratio");
-        //ratios.add("Health");
-        ratios.add("Long Term Debt-to-Equity Ratio");
+      //  ratios=mPresenter.getRatios();
+//        Log.d("Ratios **",mPresenter.getRatios().get(0));
 
-        listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ratios);
-        listRatiosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        listOfGraph = findViewById(R.id.spinner);
-        listOfGraph.setOnItemSelectedListener(this);
-        listOfGraph.setAdapter(listRatiosAdapter);
     }
 
     @Override
@@ -63,7 +54,13 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
 
     @Override
     public void updateRatios(ArrayList<String> ratios1) {
+        this.ratios=ratios1;
+        listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ratios);
+        listRatiosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        listOfGraph = findViewById(R.id.spinner);
+        listOfGraph.setOnItemSelectedListener(this);
+        listOfGraph.setAdapter(listRatiosAdapter);
     }
 
     @Override
@@ -73,6 +70,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
 
         FragmentA.drawGraph(mPresenter, adapterView.getSelectedItem().toString());
         Log.d("triggered draw graph","88888888888");
+
 
     }
 

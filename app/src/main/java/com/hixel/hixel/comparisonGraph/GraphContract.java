@@ -16,6 +16,8 @@ public interface GraphContract  {
     interface Presenter extends BasePresenter{
         List<Company> getCompanies();
         void checkUpFinancialEntry(Company company);
+        void doMeta();
+        ArrayList<String>getRatios();
 
     }
 }

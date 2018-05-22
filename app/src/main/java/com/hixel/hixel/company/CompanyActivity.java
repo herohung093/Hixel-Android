@@ -10,6 +10,7 @@ import com.hixel.hixel.models.Company;
 
 import java.util.ArrayList;
 
+
 public class CompanyActivity extends AppCompatActivity implements CompanyContract.View {
 
     private CompanyContract.Presenter presenter;
@@ -19,18 +20,36 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_company);
         // doMeta();
         presenter = new CompanyPresenter(this);
-        presenter.setCompany((Company) getIntent().getSerializableExtra("company"));
+        if(getIntent().hasExtra("company")) {
+            presenter.setCompany((Company) getIntent().getSerializableExtra("company"));
+        }
+        else
+        {
+            presenter.setCompany((Company) getIntent().getSerializableExtra("ticker"));
+
+        }
+
+
+        /*
+        Intent intentFromSearch=getIntent();
+        String ticker=intentFromSearch.getStringExtra("ticker");
+        presenter.setTickerFromSearchSuggestion(ticker);
+        */
         presenter.start();
+
 
 
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText(presenter.getCompanyName());
 
+        // from search suggestion
 
     }
+
 
     public void updateRatios(ArrayList<String> ratios1) {
         TextView liquidity = findViewById(R.id.liquidity_text);
@@ -38,7 +57,7 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         TextView health = findViewById(R.id.health_text);
         liquidity.setText(ratios1.get(0));
         leverage.setText(ratios1.get(1).substring(0,10));
-        health.setText(ratios1.get(2).substring(0,12));
+        health.setText(ratios1.get(2).substring(0,10));
 
         TextView liquidityScore = findViewById(R.id.liquidity_score);
         TextView leverageScore = findViewById(R.id.leverage_score);

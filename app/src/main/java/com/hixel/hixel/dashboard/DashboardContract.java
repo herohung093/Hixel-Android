@@ -10,6 +10,8 @@ public interface DashboardContract {
 
     interface View extends BaseView<Presenter> {
         void portfolioChanged();
+        void goToCompanyView();
+
         // void showMainGraph(ArrayList<Company> companies);
     }
 
@@ -19,6 +21,8 @@ public interface DashboardContract {
         void sortCompaniesBy(String name);
         List<String> getNames();
         void loadSearchSuggestion(String query);
+        void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion);
+        Company getCompany();
 
     }
 }

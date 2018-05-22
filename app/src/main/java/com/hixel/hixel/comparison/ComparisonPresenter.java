@@ -3,19 +3,19 @@ package com.hixel.hixel.comparison;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.hixel.hixel.models.Company;
+import com.hixel.hixel.models.FinancialData;
 import com.hixel.hixel.network.Client;
 import com.hixel.hixel.network.ServerInterface;
-import com.hixel.hixel.models.FinancialData;
-import com.hixel.hixel.models.Company;
 import com.hixel.hixel.search.SearchEntry;
 import com.hixel.hixel.search.SearchSuggestion;
 
-import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Set;
 
 import retrofit2.Call;
@@ -34,6 +34,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
         this.searchSuggestion = new SearchSuggestion();
         names = new ArrayList<>();
 
+
     }
 
     public void setListCompareCompanies(List<Company> listCompareCompanies) {
@@ -43,6 +44,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
     @Override
     public void start() {
         names.add("");
+
     }
 
     public void removeCompareFromList(int position){
@@ -70,9 +72,10 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
                 @Override
                 public void onResponse(@NonNull Call<ArrayList<Company>> call,
                                        @NonNull Response<ArrayList<Company>> response) {
-                    if(response.body().size()!= 0 && listCompareCompanies.size() <= 2) {
+                    Log.d("RECEIVED COMPANY**", response.body().toString());
+                    if(response.body().size()!= 0) {
                         successFlag[0] = 1;
-
+                        Log.d("RECEIVED COMPANY", response.body().get(0).getIdentifiers().getTicker());
                         listCompareCompanies.add(response.body().get(0));
 
                     }
