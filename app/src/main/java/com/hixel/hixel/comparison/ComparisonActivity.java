@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.comparisonGraph.GraphActivity;
-import java.util.ArrayList;
 
 import java.util.ArrayList;
 
@@ -141,35 +140,6 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
 
-        //android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) findViewById(R.id.action_search);
-        //searchView.setQueryHint("enter company...");
-
-        /*
-        searchView.setQueryHint("Enter Company Ticker");
-        searchView.setSubmitButtonEnabled(true);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Log.d("Here is what the user submitted",query);
-                Toast.makeText(getApplicationContext(),"Here is what the user submitted"+query,Toast.LENGTH_LONG).show();
-                int flag=0;
-                flag=cpresenter.addToCompare(query);
-                if(flag==1){
-                    Toast.makeText(getApplicationContext(),"Ticker not found",Toast.LENGTH_LONG).show();
-                }else if(flag==2){
-                    Toast.makeText(getApplicationContext(),"Reach limit",Toast.LENGTH_LONG).show();
-                } else selectedListChanged();
-                searchView.clearFocus();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-*/
-
         searchView = findViewById(R.id.searchView);
         searchView.setQueryHint("enter company...");
         searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
@@ -184,13 +154,14 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
             searchAutoComplete.setText("" + queryString);
 
             String ticker=queryString.trim();
-            int spaceIndex=ticker.lastIndexOf(' ');
-            String userInput=ticker.substring(spaceIndex).trim();
-            //Toast.makeText(getApplicationContext(),"Here is what the user submitted "+userInput,Toast.LENGTH_LONG).show();
+            int spaceIndex=ticker.lastIndexOf(':');
+            String userInput=ticker.substring(spaceIndex+1).trim();
+            Log.d("TICKER INPUTED",userInput);
             newsAdapter.notifyDataSetChanged();
 
             int flag = 0;
             flag = cpresenter.addToCompare(userInput);
+            Log.d("COMPANY SIZE ***", String.valueOf(cpresenter.getListCompareCompanies().size()));
             selectedListChanged();
 
             if (flag == 1) {
