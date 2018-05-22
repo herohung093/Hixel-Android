@@ -34,6 +34,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
         this.searchSuggestion = new SearchSuggestion();
         names = new ArrayList<>();
 
+
     }
 
     public void setListCompareCompanies(List<Company> listCompareCompanies) {
@@ -43,6 +44,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
     @Override
     public void start() {
         names.add("");
+
     }
 
     public void removeCompareFromList(int position){
