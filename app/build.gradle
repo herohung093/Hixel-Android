@@ -43,10 +43,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'org.apache.commons:commons-lang3:3.6'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
-<<<<<<< HEAD
     implementation 'com.github.AnyChart:AnyChart-Android:0.1.9'
-=======
-
-    //
->>>>>>> ba5935a287e3c639c05e87f8489f31c19be79027
 }

@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.SparseIntArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,20 +21,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.animation.Easing.EasingOption;
 import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.hixel.hixel.R;
 import com.hixel.hixel.company.CompanyActivity;
 import com.hixel.hixel.comparison.ComparisonActivity;
@@ -56,6 +47,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
         ActivityDashboardBinding binding =
                 DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+
+        // Set up the toolbar
         setSupportActionBar(binding.toolbar.toolbar);
         binding.toolbar.toolbarTitle.setText(R.string.dashboard);
 
@@ -63,6 +56,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         presenter = new DashboardPresenter(this);
         presenter.start();
 
+        // Set up the dropdown options
         Spinner spinner = binding.spinner;
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.company_dropdown, android.R.layout.simple_spinner_item);
@@ -70,24 +64,27 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+        // Set up the list of companies
         RecyclerView mRecyclerView = binding.recyclerView;
         mAdapter = new DashboardAdapter(this, presenter);
         mRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        final Intent moveToCompare = new Intent(this,ComparisonActivity.class);
 
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-
+        // Set up the bottom navigation bar
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) binding.bottomNav;
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
                 case R.id.home_button:
-
+                    // Already on this screen.
+                    break;
                 case R.id.compare_button:
+                    Intent moveToCompare = new Intent(this,ComparisonActivity.class);
                     startActivity(moveToCompare);
-
+                    break;
                 case R.id.settings_button:
+                    break;
             }
 
             return true;
@@ -96,6 +93,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         setupChart();
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
