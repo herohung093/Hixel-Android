@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.hixel.hixel.R;
+import com.hixel.hixel.company.CompanyActivity;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 
@@ -96,6 +97,18 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
             String queryString = (String) adapterView.getItemAtPosition(itemIndex);
             searchAutoComplete.setText("" + queryString.trim().substring(0,queryString.lastIndexOf(' ')));
+            String queryTicker=queryString.substring(queryString.lastIndexOf(' '));
+            int index=queryTicker.indexOf(":");
+
+
+            Toast.makeText(getApplicationContext(),
+                    "Here is what the user submitted" + queryTicker.substring(index+1).trim(),Toast.LENGTH_LONG).show();
+            presenter.setTickerFromSearchSuggestion(queryTicker.substring(index+1).trim());
+            //Intent intent = new Intent(this, CompanyActivity.class);
+            //intent.putExtra("ticker",
+              //      queryTicker);
+            //startActivity(intent);
+
             Toast.makeText(getApplicationContext(),
                     "Here is what the user submitted" + queryString,Toast.LENGTH_LONG).show();
 
@@ -158,5 +171,11 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
+    public void goToCompanyView()
+    {
+        Intent intent = new Intent(this, CompanyActivity.class);
+        intent.putExtra("ticker",
+                presenter.getCompany());
+        startActivity(intent);
+    }
 }

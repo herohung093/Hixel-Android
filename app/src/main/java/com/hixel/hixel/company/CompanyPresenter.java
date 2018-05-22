@@ -1,6 +1,7 @@
 package com.hixel.hixel.company;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -11,6 +12,8 @@ import com.hixel.hixel.models.Company;
 import com.hixel.hixel.network.Client;
 import com.hixel.hixel.network.ServerInterface;
 import com.hixel.hixel.search.SearchEntry;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
@@ -23,6 +26,10 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     private final CompanyContract.View companyView;
     public static ArrayList<String>ratios1;
 
+
+
+    private String tickerFromSearchSuggestion;
+
     CompanyPresenter(CompanyContract.View companyView) {
         this.companyView = companyView;
         companyView.setPresenter(this);
@@ -30,6 +37,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
         ratios1=new ArrayList<>();
        // doMeta();
     }
+
 
     public void start() {
         doMeta();
@@ -77,7 +85,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
                 //searchSuggestion.setSearchEntries(response.body());
                 //names = searchSuggestion.getNames();
                 //if (names.size() != 0) {
-                  //  Log.d("Search SUggstion=====", "" + names.get(0));
+                  //  Log.d("Search Suggestion=====", "" + names.get(0));
                 //}
                 ArrayList<String>stringArrayList=response.body();
                 ratios1=stringArrayList;
@@ -90,7 +98,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
 
             @Override
             public void onFailure(Call<ArrayList<String>> call, Throwable t) {
-                Log.d("loadPortfolio",
+                Log.d("Search Suggestion",
                         "Failed to load Search suggestions from the server: " + t.getMessage());
             }
         });
@@ -112,8 +120,16 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     public String getCompanyName() {
         return company.getIdentifiers().getName();
     }
+
+    public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
+        this.tickerFromSearchSuggestion = tickerFromSearchSuggestion;
+        //loadDataForAParticularCompany(tickerFromSearchSuggestion);
+    }
     public  void update()
     {
 
     }
+
+
+
 }

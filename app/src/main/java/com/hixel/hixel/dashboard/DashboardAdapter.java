@@ -87,4 +87,5 @@ public class DashboardAdapter
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }
+
 }
