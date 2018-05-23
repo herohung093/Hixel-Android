@@ -152,6 +152,9 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
 
     // TODO: Implement this in a way in which the Presenter does NOT rely on a Company object
+    // NOTE: This is not currently being implemented anywhere due to breaking changes
+    // it will be re-implemented later in this sprint.
+    /*
     public void loadDataForAParticularCompany(String ticker) {
 
         ServerInterface client = Client
@@ -174,5 +177,5 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
             }
         });
-    }
+    }*/
 }

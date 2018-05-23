@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,8 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
-
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -31,7 +28,6 @@ import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.hixel.hixel.R;
-import com.hixel.hixel.company.CompanyActivity;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 
@@ -100,7 +96,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
 
             String queryString = (String) adapterView.getItemAtPosition(itemIndex);
-            searchAutoComplete.setText("" + queryString.trim().substring(0,queryString.lastIndexOf(' ')));
+            searchAutoComplete.setText(queryString.trim().substring(0,queryString.lastIndexOf(' ')));
             String queryTicker = queryString.substring(queryString.lastIndexOf(' '));
             int index = queryTicker.indexOf(":");
 
@@ -264,12 +260,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     @Override
     public void showLoadingError() {
         Snackbar.make(binding.getRoot(), "Error loading your portfolio", Snackbar.LENGTH_INDEFINITE)
-                .setAction("RETRY", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        presenter.loadPortfolio();
-                    }
-                })
+                .setAction("RETRY", view -> presenter.loadPortfolio())
                 .show();
     }
 
