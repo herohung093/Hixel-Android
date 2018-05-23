@@ -39,56 +39,40 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         OnItemSelectedListener {
 
     private DashboardContract.Presenter presenter;
-    RecyclerView.Adapter mAdapter;
+    RecyclerView.Adapter dashboardAdapter;
+    ActivityDashboardBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ActivityDashboardBinding binding =
-                DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
-
-        // Set up the toolbar
-        setSupportActionBar(binding.toolbar.toolbar);
-        binding.toolbar.toolbarTitle.setText(R.string.dashboard);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
 
         // Init presenter
         presenter = new DashboardPresenter(this);
         presenter.start();
 
+        // Set up the toolbar
+        setSupportActionBar(binding.toolbar.toolbar);
+        binding.toolbar.toolbarTitle.setText(R.string.dashboard);
+
         // Set up the dropdown options
         Spinner spinner = binding.spinner;
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        ArrayAdapter<CharSequence> dropdownAdapter = ArrayAdapter.createFromResource(
                 this, R.array.company_dropdown, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        dropdownAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dropdownAdapter);
         spinner.setOnItemSelectedListener(this);
 
         // Set up the list of companies
         RecyclerView mRecyclerView = binding.recyclerView;
-        mAdapter = new DashboardAdapter(this, presenter);
-        mRecyclerView.setAdapter(mAdapter);
+        dashboardAdapter = new DashboardAdapter(this, presenter);
+        mRecyclerView.setAdapter(this.dashboardAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-
         // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView) binding.bottomNav;
-        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
-            switch (item.getItemId()) {
-                case R.id.home_button:
-                    // Already on this screen.
-                    break;
-                case R.id.compare_button:
-                    Intent moveToCompare = new Intent(this,ComparisonActivity.class);
-                    startActivity(moveToCompare);
-                    break;
-                case R.id.settings_button:
-                    break;
-            }
-
-            return true;
-        });
+        setupBottomNavigationView(bottomNavigationView);
 
         setupChart();
 
@@ -107,6 +91,9 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         searchAutoComplete.setHintTextColor(Color.WHITE);
         searchAutoComplete.setTextColor(Color.WHITE);
 
+        ImageView searchClose = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        searchClose.setImageResource(R.drawable.ic_clear);
+
         ArrayAdapter<String> newsAdapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
         searchAutoComplete.setAdapter(newsAdapter);
@@ -115,20 +102,10 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
             String queryString = (String) adapterView.getItemAtPosition(itemIndex);
             searchAutoComplete.setText("" + queryString.trim().substring(0,queryString.lastIndexOf(' ')));
-            String queryTicker=queryString.substring(queryString.lastIndexOf(' '));
-            int index=queryTicker.indexOf(":");
+            String queryTicker = queryString.substring(queryString.lastIndexOf(' '));
+            int index = queryTicker.indexOf(":");
 
-
-            Toast.makeText(getApplicationContext(),
-                    "Here is what the user submitted" + queryTicker.substring(index+1).trim(),Toast.LENGTH_LONG).show();
-            presenter.setTickerFromSearchSuggestion(queryTicker.substring(index+1).trim());
-            //Intent intent = new Intent(this, CompanyActivity.class);
-            //intent.putExtra("ticker",
-              //      queryTicker);
-            //startActivity(intent);
-
-            Toast.makeText(getApplicationContext(),
-                    "Here is what the user submitted" + queryString,Toast.LENGTH_LONG).show();
+            presenter.setTickerFromSearchSuggestion(queryTicker.substring(index + 1).trim());
 
             newsAdapter.notifyDataSetChanged();
 
@@ -151,49 +128,50 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
                 newsAdapter.notifyDataSetChanged();
 
-
                 return false;
             }
         });
 
-        ImageView searchClose = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-        searchClose.setImageResource(R.drawable.ic_clear);
-
         return super.onCreateOptionsMenu(menu);
     }
 
+    // TODO: Implement this properly
     @Override
     public void setPresenter(@NonNull DashboardContract.Presenter presenter) {
-        presenter = presenter;
+        //presenter = presenter;
     }
-
-    @Override
-    public void updateRatios(ArrayList<String> ratios1) {
-
-    }
-
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
         presenter.sortCompaniesBy(item);
-        mAdapter.notifyDataSetChanged();
+        dashboardAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void portfolioChanged() {
-        mAdapter.notifyDataSetChanged();
+    public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
+        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
+            switch (item.getItemId()) {
+                case R.id.home_button:
+                    // Already on this screen.
+                    break;
+                case R.id.compare_button:
+                    Intent moveToCompare = new Intent(this, ComparisonActivity.class);
+                    startActivity(moveToCompare);
+                    break;
+                case R.id.settings_button:
+                    // This screen is yet to be implemented
+                    break;
+            }
+
+            return true;
+        });
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
+    // Break this up into a setup and a populate
     public void setupChart() {
         RadarChart chart = findViewById(R.id.chart);
         List<RadarEntry> entries = new ArrayList<>();
-        String[] ratios = {"Current Ratio", "ROE", "D2E", "Quick Ratio", "Cash Ratio"};
+        String[] ratios = { "Current Ratio", "ROE", "D2E", "Quick Ratio", "Cash Ratio" };
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setXOffset(0f);
@@ -237,11 +215,27 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         chart.invalidate();
     }
 
+    @Override
+    public void updateRatios(ArrayList<String> ratios1) {
+
+    }
+
+    @Override
+    public void portfolioChanged() {
+        dashboardAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    // TODO: Implement this without the need for a Company object
+    /*
     public void goToCompanyView() {
         Intent intent = new Intent(this, CompanyActivity.class);
-        intent.putExtra("ticker",
-                presenter.getCompany());
+        intent.putExtra("ticker", presenter.getCompany());
         startActivity(intent);
-    }
+    }*/
 }
 

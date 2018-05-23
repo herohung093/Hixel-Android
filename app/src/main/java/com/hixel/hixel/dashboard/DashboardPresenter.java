@@ -1,10 +1,9 @@
 package com.hixel.hixel.dashboard;
 
-import android.content.Intent;
+// TODO: Get rid of the Android imports
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.hixel.hixel.company.CompanyActivity;
 import com.hixel.hixel.network.Client;
 import com.hixel.hixel.network.ServerInterface;
 import com.hixel.hixel.models.Company;
@@ -12,6 +11,7 @@ import com.hixel.hixel.models.Portfolio;
 import com.hixel.hixel.search.SearchEntry;
 import com.hixel.hixel.search.SearchSuggestion;
 
+import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,13 +25,14 @@ import retrofit2.Response;
 
 public class DashboardPresenter implements DashboardContract.Presenter {
 
-    private Portfolio portfolio;
+    // Associated View
     private final DashboardContract.View dashboardView;
-    private SearchSuggestion searchSuggestion;
-    private static List<String> names;
-    private Company company;
-    private String tickerFromSearchSuggestion;
 
+    // Associated Model(s)
+    private Portfolio portfolio;
+    private SearchSuggestion searchSuggestion;
+    // TODO: Assess if this is needed
+    private static List<String> names;
 
     DashboardPresenter(DashboardContract.View dashboardView) {
         this.dashboardView = dashboardView;
@@ -39,12 +40,24 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         this.portfolio = new Portfolio();
         this.searchSuggestion = new SearchSuggestion();
 
-
         names = new ArrayList<>();
     }
 
     @Override
     public void start() {
+
+        loadPortfolio();
+        populateGraph();
+
+        // TODO: Figure out what this is doing
+        names.add("");
+
+    }
+
+
+    private void loadPortfolio() {
+        // Dummy data before the DB is hooked up. Passing a list of tickers to the
+        // server.
         List<String> companies = new ArrayList<>();
         companies.add("AAPL");
         companies.add("TSLA");
@@ -53,20 +66,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         companies.add("FB");
         companies.add("WFC");
 
-        loadPortfolio(companies);
-        populateGraph();
-
-        names.add("");
-
-    }
-
-    @Override
-    public void populateGraph() {
-        //dashboardView.showMainGraph(portfolio.getCompanies());
-
-    }
-
-    private void loadPortfolio(List<String> companies) {
         ServerInterface client = Client
                 .getRetrofit()
                 .create(ServerInterface.class);
@@ -92,12 +91,18 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         });
     }
 
+
+    @Override
+    public void populateGraph() {
+        //dashboardView.showMainGraph(portfolio.getCompanies());
+    }
+
     public void loadSearchSuggestion(String query) {
         ServerInterface client = Client.getRetrofit().create(ServerInterface.class);
         Call<ArrayList<SearchEntry>> call = client.doSearchQuery(query);
         call.enqueue(new Callback<ArrayList<SearchEntry>>() {
             @Override
-            public void onResponse(Call<ArrayList<SearchEntry>> call, Response<ArrayList<SearchEntry>> response) {
+            public void onResponse(@NonNull  Call<ArrayList<SearchEntry>> call, @NonNull Response<ArrayList<SearchEntry>> response) {
                 searchSuggestion.setSearchEntries(response.body());
                 names = searchSuggestion.getNames();
 
@@ -108,7 +113,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<SearchEntry>> call, Throwable t) {
+            public void onFailure(@NonNull  Call<ArrayList<SearchEntry>> call, @NonNull  Throwable t) {
                 Log.d("loadSearchSuggestion",
                         "Failed to load Search suggestions from the server: " + t.getMessage());
             }
@@ -118,11 +123,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     @Override
     public List<String> getNames() {
         return names;
-
-    }
-    public Company getCompany()
-    {
-        return company;
     }
 
 
@@ -135,19 +135,21 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     public void sortCompaniesBy(String name) {
         int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
 
-        Collections.sort(portfolio.getCompanies(),
-                (c1, c2) -> Double.compare(c1.getRatio(name, last_year),
-                        c2.getRatio(name, last_year)));
+        portfolio.getCompanies().sort(Comparator.comparingDouble(c -> c.getRatio(name, last_year)));
 
         Collections.reverse(portfolio.getCompanies());
     }
+
+    // TODO: Figure out if this is needed
     @Override
     public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
-        this.tickerFromSearchSuggestion = tickerFromSearchSuggestion;
-        loadDataForAParticularCompany(tickerFromSearchSuggestion);
+        // loadDataForAParticularCompany(tickerFromSearchSuggestion);
     }
-    public void loadDataForAParticularCompany(String ticker)
-    {
+
+
+    // TODO: Implement this in a way in which the Presenter does NOT rely on a Company object
+    public void loadDataForAParticularCompany(String ticker) {
+
         ServerInterface client = Client
                 .getRetrofit()
                 .create(ServerInterface.class);
@@ -160,17 +162,12 @@ public class DashboardPresenter implements DashboardContract.Presenter {
             public void onResponse(@NonNull Call<ArrayList<Company>> call,
                                    @NonNull Response<ArrayList<Company>> response) {
 
-                //setCompany(response.body().get(0));
-                company=response.body().get(0);
-                dashboardView.goToCompanyView();
-                //populateGraph();
-                //dashboardView.portfolioChanged();
+                // dashboardView.goToCompanyView();
             }
 
             @Override
             public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
-                Log.d("loadPortfolio",
-                        "Failed to load company data from the server: " + t.getMessage());
+
             }
         });
     }

@@ -73,7 +73,6 @@ public class DashboardAdapter
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        // Adding this for the OnClick
         ConstraintLayout parentLayout;
         TextView companyName;
         TextView companyTicker;
