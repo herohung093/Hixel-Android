@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -41,15 +44,12 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     private DashboardContract.Presenter presenter;
     RecyclerView.Adapter dashboardAdapter;
     ActivityDashboardBinding binding;
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
-
-        // Init presenter
-        presenter = new DashboardPresenter(this);
-        presenter.start();
 
         // Set up the toolbar
         setSupportActionBar(binding.toolbar.toolbar);
@@ -64,18 +64,17 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         spinner.setOnItemSelectedListener(this);
 
         // Set up the list of companies
-        RecyclerView mRecyclerView = binding.recyclerView;
-        dashboardAdapter = new DashboardAdapter(this, presenter);
-        mRecyclerView.setAdapter(this.dashboardAdapter);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView = binding.recyclerView;
 
         // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = (BottomNavigationView) binding.bottomNav;
         setupBottomNavigationView(bottomNavigationView);
 
-        setupChart();
+        // TODO: Have a setup for the main chart here
 
+        // Init presenter
+        presenter = new DashboardPresenter(this);
+        presenter.start();
     }
 
     @Override
@@ -141,11 +140,12 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         //presenter = presenter;
     }
 
+    // TODO: Implement this so the default is nothing selected
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
         presenter.sortCompaniesBy(item);
-        dashboardAdapter.notifyDataSetChanged();
+        // dashboardAdapter.notifyDataSetChanged();
     }
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
@@ -167,7 +167,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         });
     }
 
-    // Break this up into a setup and a populate
+    // TODO: Break this up into a setup and a populate
+    @Override
     public void setupChart() {
         RadarChart chart = findViewById(R.id.chart);
         List<RadarEntry> entries = new ArrayList<>();
@@ -216,6 +217,14 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }
 
     @Override
+    public void setupDashboardAdapter() {
+        dashboardAdapter = new DashboardAdapter(this, presenter);
+        mRecyclerView.setAdapter(this.dashboardAdapter);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    @Override
     public void updateRatios(ArrayList<String> ratios1) {
 
     }
@@ -237,5 +246,32 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         intent.putExtra("ticker", presenter.getCompany());
         startActivity(intent);
     }*/
+
+    @Override
+    public void setLoadingIndicator(final boolean active) {
+
+        final ProgressBar progressBar = binding.progressBar;
+
+        if (active) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+
+
+    }
+
+    @Override
+    public void showLoadingError() {
+        Snackbar.make(binding.getRoot(), "Error loading your portfolio", Snackbar.LENGTH_INDEFINITE)
+                .setAction("RETRY", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        presenter.loadPortfolio();
+                    }
+                })
+                .show();
+    }
+
 }
 

@@ -45,7 +45,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
     @Override
     public void start() {
-
         loadPortfolio();
         populateGraph();
 
@@ -54,10 +53,10 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
     }
 
-
-    private void loadPortfolio() {
-        // Dummy data before the DB is hooked up. Passing a list of tickers to the
-        // server.
+    @Override
+    public void loadPortfolio() {
+        dashboardView.setLoadingIndicator(true);
+        // Dummy data before the DB is hooked up. Passing a list of tickers to the server.
         List<String> companies = new ArrayList<>();
         companies.add("AAPL");
         companies.add("TSLA");
@@ -79,12 +78,16 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                                    @NonNull Response<ArrayList<Company>> response) {
 
                 portfolio.setCompanies(response.body());
-                populateGraph();
-                dashboardView.portfolioChanged();
+
+                // Setup the views with portfolio data then hide the loading indicator
+                dashboardView.setupChart();
+                dashboardView.setupDashboardAdapter();
+                dashboardView.setLoadingIndicator(false);
             }
 
             @Override
             public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
+                dashboardView.showLoadingError();
                 Log.d("loadPortfolio",
                         "Failed to load company data from the server: " + t.getMessage());
             }
@@ -102,7 +105,8 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         Call<ArrayList<SearchEntry>> call = client.doSearchQuery(query);
         call.enqueue(new Callback<ArrayList<SearchEntry>>() {
             @Override
-            public void onResponse(@NonNull  Call<ArrayList<SearchEntry>> call, @NonNull Response<ArrayList<SearchEntry>> response) {
+            public void onResponse(@NonNull  Call<ArrayList<SearchEntry>> call,
+                    @NonNull Response<ArrayList<SearchEntry>> response) {
                 searchSuggestion.setSearchEntries(response.body());
                 names = searchSuggestion.getNames();
 
@@ -113,7 +117,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
             }
 
             @Override
-            public void onFailure(@NonNull  Call<ArrayList<SearchEntry>> call, @NonNull  Throwable t) {
+            public void onFailure(@NonNull  Call<ArrayList<SearchEntry>> call, @NonNull Throwable t) {
                 Log.d("loadSearchSuggestion",
                         "Failed to load Search suggestions from the server: " + t.getMessage());
             }

@@ -16,8 +16,7 @@ import com.hixel.hixel.company.CompanyActivity;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class DashboardAdapter
-        extends RecyclerView.Adapter<DashboardAdapter.ViewHolder>{
+public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
 
     private final DashboardContract.Presenter presenter;
     private Context context;
@@ -54,7 +53,7 @@ public class DashboardAdapter
                                                    .get(position)
                                                    .getRatio("Health", last_year) * 100));
 
-        //TODO: Replace as part of PTH-140
+        // TODO: Replace as part of PTH-140
         //holder.companyHealth.setTextColor(presenter.setHealthColor(position));
 
         holder.parentLayout.setOnClickListener((View view) -> {
@@ -86,5 +85,4 @@ public class DashboardAdapter
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }
-
 }

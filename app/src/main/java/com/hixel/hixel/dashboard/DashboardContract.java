@@ -10,6 +10,10 @@ public interface DashboardContract {
 
     interface View extends BaseView<Presenter> {
         void portfolioChanged();
+        void setupChart();
+        void setupDashboardAdapter();
+        void setLoadingIndicator(final boolean active);
+        void showLoadingError();
     }
 
     interface Presenter extends BasePresenter {
@@ -18,6 +22,7 @@ public interface DashboardContract {
         void sortCompaniesBy(String name);
         void loadSearchSuggestion(String query);
         void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion);
+        void loadPortfolio();
 
         List<Company> getCompanies();
     }
