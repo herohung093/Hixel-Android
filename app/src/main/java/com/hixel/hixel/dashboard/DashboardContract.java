@@ -21,7 +21,6 @@ public interface DashboardContract {
 
     interface Presenter extends BasePresenter {
         void populateGraph();
-        List<String> getNames();
         void sortCompaniesBy(String name);
         void loadSearchResult(String query);
         void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion);

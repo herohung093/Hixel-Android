@@ -40,22 +40,17 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
     // Associated Model(s)
     private Portfolio portfolio;
-    private SearchSuggestion searchSuggestion;
-    // TODO: Assess if this is needed
-    private static List<String> names;
 
     private CompositeDisposable disposable;
-    PublishSubject<String> publishSubject;
+    private PublishSubject<String> publishSubject;
 
     DashboardPresenter(DashboardContract.View dashboardView) {
         this.dashboardView = dashboardView;
         this.dashboardView.setPresenter(this);
         this.portfolio = new Portfolio();
-        this.searchSuggestion = new SearchSuggestion();
 
         disposable = new CompositeDisposable();
         publishSubject = PublishSubject.create();
-        names = new ArrayList<>();
     }
 
     @Override
@@ -73,10 +68,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread()))
                 .subscribeWith(getSearchObserver()));
-
-        // TODO: Figure out what this is doing
-        names.add("");
-
     }
 
     @Override
@@ -125,11 +116,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         //dashboardView.showMainGraph(portfolio.getCompanies());
     }
 
-    @Override
-    public List<String> getNames() {
-        return names;
-    }
-
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {
         return new DisposableObserver<List<SearchEntry>>() {
             @Override
@@ -149,7 +135,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         };
     }
 
-    @SuppressLint("CheckResult")
+    @Override
     public void loadSearchResult(String searchTerm) {
         publishSubject.onNext(searchTerm);
     }
