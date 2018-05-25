@@ -1,19 +1,11 @@
 package com.hixel.hixel.company;
 
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.hixel.hixel.R;
-import com.hixel.hixel.network.Client;
-import com.hixel.hixel.network.ServerInterface;
 import com.hixel.hixel.models.Company;
 import com.hixel.hixel.network.Client;
 import com.hixel.hixel.network.ServerInterface;
-import com.hixel.hixel.search.SearchEntry;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 

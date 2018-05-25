@@ -29,8 +29,8 @@ class SelectedListViewAdapter extends ArrayAdapter<CompanyIdentifiers> {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView= inflater.inflate(R.layout.selected_company_row,parent,false);
-        TextView companyName = (TextView) rowView.findViewById(R.id.companyName);
-        TextView companyTicker= (TextView) rowView.findViewById(R.id.companyTicker);
+        TextView companyName = rowView.findViewById(R.id.companyName);
+        TextView companyTicker= rowView.findViewById(R.id.companyTicker);
         companyName.setText(mPresenter.getListCompareCompanies().get(position).getIdentifiers().getName());
         companyTicker.setText(mPresenter.getListCompareCompanies().get(position).getIdentifiers().getTicker());
 
