@@ -75,7 +75,7 @@
         app:layout_constraintVertical_bias="0.804"/>
 
       <TextView
-        android:id="@+id/company_health"
+        android:id="@+id/indicator_value"
         android:textStyle="bold"
         android:layout_width="60dp"
         android:layout_height="18dp"
@@ -90,11 +90,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/health_title"
+        app:layout_constraintStart_toEndOf="@+id/indicator_title"
         app:layout_constraintTop_toTopOf="parent"/>
 
       <TextView
-        android:id="@+id/health_title"
+        android:id="@+id/indicator_title"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="17dp"
@@ -102,7 +102,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="232dp"
         android:layout_marginLeft="232dp"
-        android:text="@string/health"
+        android:text="@string/roe"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

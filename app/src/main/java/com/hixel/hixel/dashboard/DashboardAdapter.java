@@ -36,10 +36,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.companyName.setText(presenter.getCompanies()
-                                            .get(position)
-                                            .getIdentifiers()
-                                            .getName());
+        String companyName = presenter.getCompanies()
+                .get(position)
+                .getIdentifiers()
+                .getName()
+                .split("\\,| ")[0]
+                .toLowerCase();
+
+        companyName =
+                companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
+
+        holder.companyName.setText(companyName);
 
         holder.companyTicker.setText(presenter.getCompanies()
                                               .get(position)
@@ -48,10 +55,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
 
-        holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
+        holder.companyIndicator.setText(String.format(Locale.ENGLISH, "%.1f%%",
                                     presenter.getCompanies()
                                                    .get(position)
-                                                   .getRatio("Health", last_year) * 100));
+                                                   .getRatio("Return on Equity", last_year) * 100));
 
         // TODO: Replace as part of PTH-140
         //holder.companyHealth.setTextColor(presenter.setHealthColor(position));
@@ -75,13 +82,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         ConstraintLayout parentLayout;
         TextView companyName;
         TextView companyTicker;
-        TextView companyHealth;
+        TextView companyIndicator;
 
         ViewHolder(View itemView) {
             super(itemView);
             companyName = itemView.findViewById(R.id.company_name);
             companyTicker = itemView.findViewById(R.id.company_ticker);
-            companyHealth = itemView.findViewById(R.id.company_health);
+            companyIndicator = itemView.findViewById(R.id.indicator_value);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }

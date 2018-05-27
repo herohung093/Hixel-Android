@@ -83,7 +83,7 @@ public class ComparisonAdapter
             super(itemView);
             companyName = itemView.findViewById(R.id.company_name);
             companyTicker = itemView.findViewById(R.id.company_ticker);
-            companyHealth = itemView.findViewById(R.id.company_health);
+            companyHealth = itemView.findViewById(R.id.indicator_value);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }
