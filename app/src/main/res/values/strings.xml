@@ -10,16 +10,16 @@
     <string name="Search">Search</string>
     <string name="search_title">Search</string>
 
+
     <string-array name="company_dropdown">
         <item>Health</item>
         <item>Leverage</item>
         <item>Liquidity</item>
     </string-array>
 
-
     <string name="current_ratio">Current Ratio</string>
     <string name="roe">ROE</string>
-    <string name="d2e">D2E</string>
+    <string name="d2e">Debt-to-Equity</string>
     <string name="quick_ratio">Quick Ratio</string>
     <string name="cash_ratio">Cash Ratio</string>
 </resources>

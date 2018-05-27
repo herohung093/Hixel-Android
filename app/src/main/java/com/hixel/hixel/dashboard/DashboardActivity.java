@@ -22,11 +22,14 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
@@ -41,6 +44,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     RecyclerView.Adapter dashboardAdapter;
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
+    private RadarChart chart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +70,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         BottomNavigationView bottomNavigationView = (BottomNavigationView) binding.bottomNav;
         setupBottomNavigationView(bottomNavigationView);
 
-        // TODO: Have a setup for the main chart here
+        // UI for the chart
+        setupChart();
 
         // Init presenter
         presenter = new DashboardPresenter(this);
@@ -75,6 +80,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         MenuItem search = menu.findItem(R.id.action_search);
 
@@ -145,6 +151,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
+
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
                 case R.id.home_button:
@@ -163,34 +170,68 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         });
     }
 
-    // TODO: Break this up into a setup and a populate
     @Override
     public void setupChart() {
-        RadarChart chart = findViewById(R.id.chart);
-        List<RadarEntry> entries = new ArrayList<>();
-        String[] ratios = { "Current Ratio", "ROE", "D2E", "Quick Ratio", "Cash Ratio" };
+        chart = binding.chart;
 
+        // Configuring the chart
+        chart.getLegend().setEnabled(false);
+        chart.getDescription().setEnabled(false);
+        chart.setWebColor(Color.WHITE);
+        chart.setWebColorInner(Color.WHITE);
+        chart.setWebLineWidth(1f);
+        chart.animateY(1400);
+        chart.setWebAlpha(100);
+        chart.setTouchEnabled(false);
+
+        // Scale the size of the chart
+        chart.setScaleX(1.2f);
+        chart.setScaleY(1.2f);
+
+        // XAxis is the outer web
         XAxis xAxis = chart.getXAxis();
-        xAxis.setXOffset(0f);
-        xAxis.setYOffset(0f);
         xAxis.setTextColor(Color.WHITE);
-        xAxis.setTextSize(8f);
+        xAxis.setTextSize(9f);
+        xAxis.setXOffset(0);
+        xAxis.setYOffset(0);
 
-        xAxis.setValueFormatter((value, axis) -> ratios[(int) value]);
+        // Seems to be the only way to get Strings to be the XAxis labels
+        // Note: Seems to be that the longest string sets the margins for all other strings
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            private String[] ratioNames = {
+                    "ROE",
+                    "Cash Ratio",
+                    "Debt-to-Equity",
+                    "Current Ratio",
+                    "Quick Ratio",
 
+            };
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return ratioNames[(int) value % ratioNames.length];
+            }
+
+        });
+
+        // YAxis is the inner web
         YAxis yAxis = chart.getYAxis();
         yAxis.setAxisMinimum(0f);
         yAxis.setAxisMaximum(2.0f);
-        yAxis.setTextSize(10f);
-        yAxis.setLabelCount(5, false);
+        yAxis.setLabelCount(5);
         yAxis.setDrawLabels(false);
+    }
 
-        // Test data
-        entries.add(new RadarEntry(1.8f));
-        entries.add(new RadarEntry(1.2f));
-        entries.add(new RadarEntry(2.0f));
+    @Override
+    public void populateChart() {
+        List<RadarEntry> entries = new ArrayList<>();
+
+        // TODO: get data from portfolio
+        entries.add(new RadarEntry(1.25f));
         entries.add(new RadarEntry(1.5f));
-        entries.add(new RadarEntry(0.7f));
+        entries.add(new RadarEntry(2.0f));
+        entries.add(new RadarEntry(0.75f));
+        entries.add(new RadarEntry(1.0f));
 
         RadarDataSet dataSet = new RadarDataSet(entries, "");
         dataSet.setColor(Color.parseColor("#4BCA81"));
@@ -199,14 +240,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
         RadarData data = new RadarData(dataSet);
         data.setDrawValues(false);
-
-        chart.getLegend().setEnabled(false);
-        chart.getDescription().setEnabled(false);
-        chart.setWebColor(Color.WHITE);
-        chart.setWebColorInner(Color.WHITE);
-        chart.setWebLineWidth(2f);
-
-        chart.animateY(1400);
 
         chart.setData(data);
         chart.invalidate();
@@ -253,8 +286,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         } else {
             progressBar.setVisibility(View.INVISIBLE);
         }
-
-
     }
 
     @Override

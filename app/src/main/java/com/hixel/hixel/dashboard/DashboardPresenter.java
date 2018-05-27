@@ -80,7 +80,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                 portfolio.setCompanies(response.body());
 
                 // Setup the views with portfolio data then hide the loading indicator
-                dashboardView.setupChart();
+                dashboardView.populateChart();
                 dashboardView.setupDashboardAdapter();
                 dashboardView.setLoadingIndicator(false);
             }
@@ -144,12 +144,27 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         Collections.reverse(portfolio.getCompanies());
     }
 
+    @Override
+    public double getAverageRatios(String ratioName) {
+        // Note - using code from the dashboard adapter. All of this will need a change at some
+        // point.
+        double ratio = 0;
+        int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
+
+        for (Company c : portfolio.getCompanies()) {
+            ratio += c.getRatio(ratioName, last_year);
+        }
+
+        ratio /= portfolio.getCompanies().size();
+
+        return ratio;
+    }
+
     // TODO: Figure out if this is needed
     @Override
     public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
         // loadDataForAParticularCompany(tickerFromSearchSuggestion);
     }
-
 
     // TODO: Implement this in a way in which the Presenter does NOT rely on a Company object
     // NOTE: This is not currently being implemented anywhere due to breaking changes
