@@ -4,19 +4,14 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.hixel.hixel.models.Company;
-import com.hixel.hixel.models.FinancialData;
 import com.hixel.hixel.network.Client;
 import com.hixel.hixel.network.ServerInterface;
-import com.hixel.hixel.search.SearchEntry;
 import com.hixel.hixel.search.SearchSuggestion;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -93,32 +88,6 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
         return successFlag[0];
     }
 
-public void checkUpFinancialEntry(Company company){
-    List<FinancialData> financialData = company.getFinancialDataEntries();
-
-    Set<String> keys = new HashSet<>();
-    keys.add("Current Ratio");
-    keys.add("Quick Ratio");
-    keys.add("Cash Ratio");
-    keys.add("Debt-to-Equity Ratio");
-    //Ratios.add("Health");
-    keys.add("Long Term Debt-to-Equity Ratio");
-
-    for (FinancialData f : company.getFinancialDataEntries()) {
-        if(f!=null) {
-            LinkedHashMap<String, Double> ratios = f.getRatios();
-
-            for (String k : keys) {
-                if (ratios.get(k) == null) {
-                    Log.d(String.valueOf(f.getYear()) + k + ": ", "NULL***");
-                    ratios.put(k, (double) 0);
-
-                }
-            }
-        }
-
-    }
-}
     @Override
     public void removeLastItemFromList() {
         if (listCompareCompanies.size()!= 0) {
@@ -127,26 +96,8 @@ public void checkUpFinancialEntry(Company company){
     }
 
     @Override
-    public void loadSearchSuggestion(String s) {
-        ServerInterface client = Client.getRetrofit().create(ServerInterface.class);
-        Call<ArrayList<SearchEntry>> call = client.doSearchQuery(s);
-        call.enqueue(new Callback<ArrayList<SearchEntry>>() {
-            @Override
-            public void onResponse(Call<ArrayList<SearchEntry>> call, Response<ArrayList<SearchEntry>> response) {
-                searchSuggestion.setSearchEntries(response.body());
-                names = searchSuggestion.getNames();
-                if (names.size() != 0) {
-                    Log.d("Search Suggestion=====", "" + names.get(0));
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<SearchEntry>> call, Throwable t) {
-                Log.d("loadPortfolio",
-                        "Failed to load Search suggestions from the server: " + t.getMessage());
-            }
-        });
+    public void loadSearchSuggestion(String query) {
+        //searchSuggestion.query(query);
     }
 
     @Override

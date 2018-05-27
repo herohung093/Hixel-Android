@@ -22,4 +22,9 @@ public class SearchEntry {
     public String getExchange() {
         return exchange;
     }
+
+    @Override
+    public String toString() {
+        return name + "    " + exchange + ":" + ticker;
+    }
 }

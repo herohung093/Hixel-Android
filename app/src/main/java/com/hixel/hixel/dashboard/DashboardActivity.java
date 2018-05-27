@@ -20,6 +20,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 810dc546ea2821dfa4b2c71201e305ebec4791ff
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -33,6 +37,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
+import com.hixel.hixel.search.SearchEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +50,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
     private RadarChart chart;
+    SearchView.SearchAutoComplete searchAutoComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +91,9 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         MenuItem search = menu.findItem(R.id.action_search);
 
         SearchView searchView = (SearchView) search.getActionView();
-        searchView.setQueryHint("enter company...");
+        searchView.setQueryHint("Enter company ...");
 
-        SearchView.SearchAutoComplete searchAutoComplete =
+        searchAutoComplete =
                 searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchAutoComplete.setHintTextColor(Color.WHITE);
         searchAutoComplete.setTextColor(Color.WHITE);
@@ -100,16 +106,10 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         searchAutoComplete.setAdapter(newsAdapter);
 
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
+            SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
+            String ticker = entry.getTicker();
 
-            String queryString = (String) adapterView.getItemAtPosition(itemIndex);
-            searchAutoComplete.setText(queryString.trim().substring(0,queryString.lastIndexOf(' ')));
-            String queryTicker = queryString.substring(queryString.lastIndexOf(' '));
-            int index = queryTicker.indexOf(":");
-
-            presenter.setTickerFromSearchSuggestion(queryTicker.substring(index + 1).trim());
-
-            newsAdapter.notifyDataSetChanged();
-
+            presenter.setTickerFromSearchSuggestion(ticker);
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -120,20 +120,21 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
-                presenter.loadSearchSuggestion(searchAutoComplete.getText().toString());
-
-                ArrayAdapter<String> newsAdapter =
-                        new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, presenter.getNames());
-                searchAutoComplete.setAdapter(newsAdapter);
-
-                newsAdapter.notifyDataSetChanged();
-
+                presenter.loadSearchResult(searchAutoComplete.getText().toString());
                 return false;
             }
         });
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void searchResultReceived(List<SearchEntry> result) {
+        ArrayAdapter<SearchEntry> resultsAdapter =
+                new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, result);
+
+        searchAutoComplete.setAdapter(resultsAdapter);
+        resultsAdapter.notifyDataSetChanged();
     }
 
     // TODO: Implement this properly
@@ -281,11 +282,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
         final ProgressBar progressBar = binding.progressBar;
 
-        if (active) {
-            progressBar.setVisibility(View.VISIBLE);
-        } else {
-            progressBar.setVisibility(View.INVISIBLE);
-        }
+        progressBar.setVisibility(active ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override

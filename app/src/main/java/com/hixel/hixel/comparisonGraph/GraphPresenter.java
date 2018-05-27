@@ -45,19 +45,15 @@ public class GraphPresenter implements GraphContract.Presenter {
         keys.add("Long Term Debt-to-Equity Ratio");
 */
         for (FinancialData f : company.getFinancialDataEntries()) {
-            if(f != null) {
+            LinkedHashMap<String, Double> ratios = f.getRatios();
 
-                LinkedHashMap<String, Double> ratios = f.getRatios();
-
-                for (String k : this.ratios) {
-                    if (ratios.get(k) == null) {
-                        Log.d(String.valueOf(f.getYear()) + k + ": ", "NULL***");
-                        ratios.put(k, 0.0);
-                        Log.d(String.valueOf(f.getYear()) + k + ": ", ratios.get(k).toString());
-                    }
+            for (String k : this.ratios) {
+                if (ratios.get(k) == null) {
+                    Log.d(String.valueOf(f.getYear()) + k + ": ", "NULL***");
+                    ratios.put(k, 0.0);
+                    Log.d(String.valueOf(f.getYear()) + k + ": ", ratios.get(k).toString());
                 }
             }
-
         }
     }
 

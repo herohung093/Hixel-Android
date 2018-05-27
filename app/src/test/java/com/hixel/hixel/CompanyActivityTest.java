@@ -3,8 +3,6 @@ package com.hixel.hixel;
 import com.hixel.hixel.models.Company;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class CompanyActivityTest {
 
     @Test
