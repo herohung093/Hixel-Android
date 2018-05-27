@@ -1,7 +1,6 @@
 package com.hixel.hixel.dashboard;
 
 // TODO: Get rid of the Android imports
-import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -9,7 +8,6 @@ import com.hixel.hixel.network.ServerInterface;
 import com.hixel.hixel.models.Company;
 import com.hixel.hixel.models.Portfolio;
 import com.hixel.hixel.search.SearchEntry;
-import com.hixel.hixel.search.SearchSuggestion;
 
 import java.util.Comparator;
 import java.util.List;
