@@ -78,7 +78,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         companies.add("TWTR");
         companies.add("SNAP");
         companies.add("FB");
-        companies.add("WFC");
+        companies.add("AMZN");
 
         ServerInterface client =
                 getRetrofit()
@@ -152,20 +152,11 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         Collections.reverse(portfolio.getCompanies());
     }
 
+
+    // TODO: Check with the group if we want to do visualisation like this.
     @Override
     public double getAverageRatios(String ratioName) {
-        // Note - using code from the dashboard adapter. All of this will need a change at some
-        // point.
-        double ratio = 0;
-        int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
-
-        for (Company c : portfolio.getCompanies()) {
-            ratio += c.getRatio(ratioName, last_year);
-        }
-
-        ratio /= portfolio.getCompanies().size();
-
-        return ratio;
+        return 0;
     }
 
     // TODO: Figure out if this is needed

@@ -11,21 +11,21 @@ import java.util.List;
 public interface DashboardContract {
 
     interface View extends BaseView<Presenter> {
-        void portfolioChanged();
         void setupChart();
         void setupDashboardAdapter();
         void setLoadingIndicator(final boolean active);
         void showLoadingError();
         void populateChart();
+        void portfolioChanged();
         void searchResultReceived(List<SearchEntry> result);
     }
 
     interface Presenter extends BasePresenter {
+        void loadPortfolio();
         void populateGraph();
         void sortCompaniesBy(String name);
         void loadSearchResult(String query);
         void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion);
-        void loadPortfolio();
         List<Company> getCompanies();
         double getAverageRatios(String ratioName);
     }
