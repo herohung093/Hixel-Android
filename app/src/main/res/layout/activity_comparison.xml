@@ -8,57 +8,50 @@
   tools:context=".comparison.ComparisonActivity">
 
 
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:gravity="center"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toTopOf="@+id/bottom_nav_compariton"
+    app:layout_constraintTop_toBottomOf="@+id/recycleView"
+    app:layout_constraintVertical_bias="0.0"
+    tools:layout_editor_absoluteX="0dp">
+    <Button
+      android:id="@+id/compareButton"
+      android:layout_width="242dp"
+      android:layout_height="wrap_content"
+      android:background="@color/buttonBackground"
+      android:text="Compare"
+      android:textColor="@color/textColorDefault"/>
+  </LinearLayout>
   <android.support.v7.widget.SearchView
     android:id="@+id/searchView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/cardview_light_background"
+    android:background="@color/colorPrimary"
     android:icon="@drawable/ic_search"
+    app:closeIcon="@drawable/ic_clear"
     app:layout_constraintBottom_toTopOf="@+id/recycleView"
     app:layout_constraintTop_toTopOf="parent"
+    app:searchIcon="@drawable/ic_search"
     app:showAsAction="collapseActionView"/>
-    <android.support.v7.widget.RecyclerView
-      android:id="@+id/recycleView"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:layout_marginStart="8dp"
-      android:layout_marginEnd="8dp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/searchView">
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/recycleView"
+    android:layout_width="0dp"
+    android:layout_height="170dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/searchView">
 
 
-    </android.support.v7.widget.RecyclerView>
+  </android.support.v7.widget.RecyclerView>
 
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginTop="280dp"
-      android:orientation="horizontal"
-      app:layout_constraintTop_toBottomOf="@+id/recycleView"
-      tools:layout_editor_absoluteX="47dp">
 
-        <Button
-          android:id="@+id/compareButton"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:background="@color/buttonBackground"
-          android:text="Compare"
-          android:textColor="@color/textColorDefault"
-          tools:layout_editor_absoluteX="8dp"
-          tools:layout_editor_absoluteY="267dp"/>
-
-        <Button
-          android:id="@+id/undoButton"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:background="@color/buttonBackground"
-          android:text="UNDO"
-          android:textColor="@color/textColorDefault"/>
-    </LinearLayout>
     <include
       android:id="@+id/bottom_nav_compariton"
       layout="@layout/bottom_navigation">
