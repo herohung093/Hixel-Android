@@ -33,16 +33,25 @@ proguard/
 # Android Studio captures folder
 captures/
 
-# IntelliJ and User-specific configs
+# IntelliJ IDEA
 *.iml
+*.ipr
+/out/
+
+# User specific stuff
+.idea/caches/
+.idea/libraries/
+.idea/shelf/
 .idea/workspace.xml
 .idea/tasks.xml
+.idea/.name
+.idea/compiler.xml
 .idea/gradle.xml
-.idea/assetWizardSettings.xml
 .idea/dictionaries
-.idea/libraries
-.idea/caches
+.idea/assetWizardSettings.xml
 .idea/modules.xml
+.idea/misc.xml
+.idea/vcs.xml
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
@@ -62,24 +71,11 @@ fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
 
-### macOS ###
-# General 
+# OS-specific files
 .DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
+.DS_Store?
 ._*
-
-### Windows ###
-
-
-
-
-
-
-
-
-
-
-
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
