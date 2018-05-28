@@ -22,7 +22,9 @@ import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.comparisonGraph.GraphActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
+import com.hixel.hixel.search.SearchEntry;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ComparisonActivity extends Activity implements ComparisonContract.View {
 
@@ -160,28 +162,17 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         searchAutoComplete.setAdapter(newsAdapter);
 
         searchAutoComplete.setOnItemClickListener((adapterView, view, i, l) -> {
-            String queryString = (String) adapterView.getItemAtPosition(i);
-            searchAutoComplete.setText("" + queryString);
+            SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(i);
+            String ticker = entry.getTicker();
+            searchAutoComplete.setText(entry.getName());
 
-            String ticker = queryString.trim();
-            int spaceIndex = ticker.lastIndexOf(':');
-            String userInput = ticker.substring(spaceIndex + 1).trim();
-            Log.d("TICKER INPUTED", userInput);
+
             newsAdapter.notifyDataSetChanged();
 
-            int flag = 0;
-            flag = cpresenter.addToCompare(userInput);
+            cpresenter.addToCompare(ticker);
             Log.d("COMPANY SIZE ***", String.valueOf(cpresenter.getListCompareCompanies().size()));
             selectedListChanged();
 
-            if (flag == 1) {
-                Toast.makeText(getApplicationContext(), "Ticker not found", Toast.LENGTH_LONG)
-                    .show();
-            } else if (flag == 2) {
-                Toast.makeText(getApplicationContext(), "Reach limit", Toast.LENGTH_LONG).show();
-            } else {
-                selectedListChanged();
-            }
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -193,13 +184,7 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                cpresenter.loadSearchSuggestion(searchAutoComplete.getText().toString());
-
-                ArrayAdapter<String> newsAdapter =
-                    new ArrayAdapter<>(getApplicationContext(),
-                        android.R.layout.simple_dropdown_item_1line, cpresenter.getNames());
-                searchAutoComplete.setAdapter(newsAdapter);
-
+                cpresenter.loadSearchResult(searchAutoComplete.getText().toString());
                 newsAdapter.notifyDataSetChanged();
 
                 return false;
@@ -226,6 +211,20 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
     @Override
     public void selectedListChanged() {
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void searchResultReceived(List<SearchEntry> result) {
+        ArrayAdapter<SearchEntry> resultsAdapter =
+            new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, result);
+
+        searchAutoComplete.setAdapter(resultsAdapter);
+        resultsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void userNotification(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
