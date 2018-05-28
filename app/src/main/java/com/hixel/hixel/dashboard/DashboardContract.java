@@ -13,10 +13,9 @@ public interface DashboardContract {
     interface View extends BaseView<Presenter> {
         void setupChart();
         void setupDashboardAdapter();
-        void setLoadingIndicator(final boolean active);
-        void showLoadingError();
         void populateChart();
-        void portfolioChanged();
+        void showLoadingIndicator(final boolean active);
+        void showLoadingError();
         void searchResultReceived(List<SearchEntry> result);
     }
 
@@ -27,6 +26,5 @@ public interface DashboardContract {
         void loadSearchResult(String query);
         void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion);
         List<Company> getCompanies();
-        double getAverageRatios(String ratioName);
     }
 }
