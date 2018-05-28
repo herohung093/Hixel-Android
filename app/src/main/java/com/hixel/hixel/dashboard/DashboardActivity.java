@@ -254,10 +254,11 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     }
 
+    /* NOTE: Reimplement once needed
     @Override
     public void portfolioChanged() {
         dashboardAdapter.notifyDataSetChanged();
-    }
+    }*/
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
@@ -273,10 +274,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }*/
 
     @Override
-    public void setLoadingIndicator(final boolean active) {
-
+    public void showLoadingIndicator(final boolean active) {
         final ProgressBar progressBar = binding.progressBar;
-
         progressBar.setVisibility(active ? View.VISIBLE : View.INVISIBLE);
     }
 

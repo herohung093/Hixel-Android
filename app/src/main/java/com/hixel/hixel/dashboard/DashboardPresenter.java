@@ -1,6 +1,5 @@
 package com.hixel.hixel.dashboard;
 
-// TODO: Get rid of the Android imports
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -36,7 +35,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     // Associated View
     private final DashboardContract.View dashboardView;
 
-    // Associated Model(s)
+    // Associated Model
     private Portfolio portfolio;
 
     private CompositeDisposable disposable;
@@ -70,7 +69,8 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
     @Override
     public void loadPortfolio() {
-        dashboardView.setLoadingIndicator(true);
+
+        dashboardView.showLoadingIndicator(true);
         // Dummy data before the DB is hooked up. Passing a list of tickers to the server.
         List<String> companies = new ArrayList<>();
         companies.add("AAPL");
@@ -97,7 +97,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                 // Setup the views with portfolio data then hide the loading indicator
                 dashboardView.populateChart();
                 dashboardView.setupDashboardAdapter();
-                dashboardView.setLoadingIndicator(false);
+                dashboardView.showLoadingIndicator(false);
             }
 
             @Override
@@ -153,12 +153,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     }
 
 
-    // TODO: Check with the group if we want to do visualisation like this.
-    @Override
-    public double getAverageRatios(String ratioName) {
-        return 0;
-    }
-
     // TODO: Figure out if this is needed
     @Override
     public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
@@ -168,6 +162,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     // TODO: Implement this in a way in which the Presenter does NOT rely on a Company object
     // NOTE: This is not currently being implemented anywhere due to breaking changes
     // it will be re-implemented later in this sprint.
+    // **** Could we just pass a ticker (String) to the?
     /*
     public void loadDataForAParticularCompany(String ticker) {
 
