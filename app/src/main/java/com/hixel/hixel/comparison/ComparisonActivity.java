@@ -102,7 +102,6 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
             cpresenter.addToCompare(ticker);
             Log.d("COMPANY SIZE ***", String.valueOf(cpresenter.getListCompareCompanies().size()));
-            selectedListChanged();
             newsAdapter.notifyDataSetChanged();
 
         });
@@ -111,8 +110,6 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
             @Override
             public boolean onQueryTextSubmit(String query) {
                 newsAdapter.notifyDataSetChanged();
-                selectedListChanged();
-
                 return false;
             }
 
@@ -121,7 +118,6 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
                 cpresenter.loadSearchResult(searchAutoComplete.getText().toString());
                 newsAdapter.notifyDataSetChanged();
-                selectedListChanged();
                 return false;
             }
         });

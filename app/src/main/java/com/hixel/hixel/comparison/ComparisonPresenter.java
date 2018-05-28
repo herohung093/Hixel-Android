@@ -105,8 +105,16 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
                 public void onResponse(@NonNull Call<ArrayList<Company>> call,
                                        @NonNull Response<ArrayList<Company>> response) {
 
-                    Log.d("RECEIVED COMPANY", response.body().get(0).getIdentifiers().getTicker());
-                    listCompareCompanies.add(response.body().get(0));
+                    if(response.body()==null)
+                    {
+                        mComparisonView.userNotification("Company not found");
+
+                    }else {
+                        Log.d("RECEIVED COMPANY",
+                            response.body().get(0).getIdentifiers().getTicker());
+                        listCompareCompanies.add(response.body().get(0));
+                        mComparisonView.selectedListChanged();
+                    }
                 }
 
                 @Override
