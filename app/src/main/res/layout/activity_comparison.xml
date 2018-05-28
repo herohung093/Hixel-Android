@@ -1,55 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".comparison.ComparisonActivity">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/colorPrimary"
+  tools:context=".comparison.ComparisonActivity">
 
 
-<android.support.v7.widget.SearchView
+  <android.support.v7.widget.SearchView
     android:id="@+id/searchView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/cardview_light_background"
+    android:icon="@drawable/ic_search"
     app:layout_constraintBottom_toTopOf="@+id/recycleView"
     app:layout_constraintTop_toTopOf="parent"
-    />
+    app:showAsAction="collapseActionView"/>
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycleView"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+      android:id="@+id/recycleView"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/searchView">
 
 
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="280dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/recycleView"
-        tools:layout_editor_absoluteX="47dp">
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="280dp"
+      android:orientation="horizontal"
+      app:layout_constraintTop_toBottomOf="@+id/recycleView"
+      tools:layout_editor_absoluteX="47dp">
 
         <Button
-            android:id="@+id/compareButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Compare"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="267dp" />
+          android:id="@+id/compareButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:background="@color/buttonBackground"
+          android:text="Compare"
+          android:textColor="@color/textColorDefault"
+          tools:layout_editor_absoluteX="8dp"
+          tools:layout_editor_absoluteY="267dp"/>
 
         <Button
-            android:id="@+id/undoButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="UNDO" />
+          android:id="@+id/undoButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:background="@color/buttonBackground"
+          android:text="UNDO"
+          android:textColor="@color/textColorDefault"/>
     </LinearLayout>
+    <include
+      android:id="@+id/bottom_nav_compariton"
+      layout="@layout/bottom_navigation">
+    </include>
+
 </android.support.constraint.ConstraintLayout>

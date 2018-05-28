@@ -3,16 +3,17 @@ package com.hixel.hixel.comparisonGraph;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
 import com.hixel.hixel.R;
+import com.hixel.hixel.comparison.ComparisonActivity;
+import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.models.Company;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
     Intent intentReceiver;
     Spinner listOfGraph;
     private GraphContract.Presenter mPresenter;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,9 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
 
       //  ratios=mPresenter.getRatios();
 //        Log.d("Ratios **",mPresenter.getRatios().get(0));
-
+        //setup bottom navigator
+        bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_nav_graph);
+        setupBottomNavigationView(bottomNavigationView);
 
     }
 
@@ -82,5 +86,25 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+    public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
+        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
+            switch (item.getItemId()) {
+                case R.id.home_button:
+                    Intent moveToDashBoard = new Intent(this, DashboardActivity.class);
+                    startActivity(moveToDashBoard);
+
+                    break;
+                case R.id.compare_button:
+                    Intent moveToCompare = new Intent(this, ComparisonActivity.class);
+                    startActivity(moveToCompare);
+                    break;
+                case R.id.settings_button:
+                    // This screen is yet to be implemented
+                    break;
+            }
+
+            return true;
+        });
     }
 }
