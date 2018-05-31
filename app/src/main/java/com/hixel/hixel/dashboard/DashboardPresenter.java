@@ -28,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.hixel.hixel.network.Client.getRetrofit;
+import static com.hixel.hixel.network.Client.getClient;
 
 public class DashboardPresenter implements DashboardContract.Presenter {
 
@@ -59,7 +59,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                 .debounce(50, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .filter(text -> !text.isEmpty())
-                .switchMapSingle((Function<String, Single<ArrayList<SearchEntry>>>) searchTerm -> getRetrofit()
+                .switchMapSingle((Function<String, Single<ArrayList<SearchEntry>>>) searchTerm -> getClient()
                         .create(ServerInterface.class)
                         .doSearchQuery(searchTerm)
                         .subscribeOn(Schedulers.io())
@@ -80,9 +80,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         companies.add("FB");
         companies.add("AMZN");
 
-        ServerInterface client =
-                getRetrofit()
-                .create(ServerInterface.class);
+        ServerInterface client = getClient().create(ServerInterface.class);
 
         Call<ArrayList<Company>> call = client
                 .doGetCompanies(StringUtils.join(companies, ','), 1);

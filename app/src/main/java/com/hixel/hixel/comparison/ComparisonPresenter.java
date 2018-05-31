@@ -1,6 +1,6 @@
 package com.hixel.hixel.comparison;
 
-import static com.hixel.hixel.network.Client.getRetrofit;
+import static com.hixel.hixel.network.Client.getClient;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -52,7 +52,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
             .debounce(50, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .filter(text -> !text.isEmpty())
-            .switchMapSingle((Function<String, Single<ArrayList<SearchEntry>>>) searchTerm -> getRetrofit()
+            .switchMapSingle((Function<String, Single<ArrayList<SearchEntry>>>) searchTerm -> getClient()
                 .create(ServerInterface.class)
                 .doSearchQuery(searchTerm)
                 .subscribeOn(Schedulers.io())
@@ -94,7 +94,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
 
         if (listCompareCompanies.size() <= 1) {
             ServerInterface client = Client
-                    .getRetrofit()
+                    .getClient()
                     .create(ServerInterface.class);
 
             Call<ArrayList<Company>> call = client
