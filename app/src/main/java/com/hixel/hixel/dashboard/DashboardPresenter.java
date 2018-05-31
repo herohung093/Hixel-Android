@@ -32,39 +32,26 @@ import static com.hixel.hixel.network.Client.getClient;
 
 public class DashboardPresenter implements DashboardContract.Presenter {
 
-    // Associated View
-    private final DashboardContract.View dashboardView;
+    private static final String TAG = DashboardPresenter.class.getSimpleName();
 
-    // Associated Model
+    private final DashboardContract.View dashboardView;
     private Portfolio portfolio;
 
-    private CompositeDisposable disposable;
-    private PublishSubject<String> publishSubject;
+    private ServerInterface serverInterface;
+    private CompositeDisposable disposable = new CompositeDisposable();
+    private PublishSubject<String> publishSubject = PublishSubject.create();
+
 
     DashboardPresenter(DashboardContract.View dashboardView) {
         this.dashboardView = dashboardView;
         this.dashboardView.setPresenter(this);
         this.portfolio = new Portfolio();
-
-        disposable = new CompositeDisposable();
-        publishSubject = PublishSubject.create();
     }
 
     @Override
     public void start() {
         loadPortfolio();
         populateGraph();
-
-        disposable.add(publishSubject
-                .debounce(50, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged()
-                .filter(text -> !text.isEmpty())
-                .switchMapSingle((Function<String, Single<ArrayList<SearchEntry>>>) searchTerm -> getClient()
-                        .create(ServerInterface.class)
-                        .doSearchQuery(searchTerm)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread()))
-                .subscribeWith(getSearchObserver()));
     }
 
     @Override
@@ -80,9 +67,10 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         companies.add("FB");
         companies.add("AMZN");
 
-        ServerInterface client = getClient().create(ServerInterface.class);
 
-        Call<ArrayList<Company>> call = client
+        serverInterface = getClient().create(ServerInterface.class);
+
+        Call<ArrayList<Company>> call = serverInterface
                 .doGetCompanies(StringUtils.join(companies, ','), 1);
 
         call.enqueue(new Callback<ArrayList<Company>>() {
@@ -157,32 +145,4 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         // loadDataForAParticularCompany(tickerFromSearchSuggestion);
     }
 
-    // TODO: Implement this in a way in which the Presenter does NOT rely on a Company object
-    // NOTE: This is not currently being implemented anywhere due to breaking changes
-    // it will be re-implemented later in this sprint.
-    // **** Could we just pass a ticker (String) to the?
-    /*
-    public void loadDataForAParticularCompany(String ticker) {
-
-        ServerInterface client =
-                getRetrofit()
-                .create(ServerInterface.class);
-
-        Call<ArrayList<Company>> call = client
-                .doGetCompanies(ticker, 1);
-
-        call.enqueue(new Callback<ArrayList<Company>>() {
-            @Override
-            public void onResponse(@NonNull Call<ArrayList<Company>> call,
-                                   @NonNull Response<ArrayList<Company>> response) {
-
-                // dashboardView.goToCompanyView();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
-                //TODO: Add failure handling...
-            }
-        });
-    }*/
 }

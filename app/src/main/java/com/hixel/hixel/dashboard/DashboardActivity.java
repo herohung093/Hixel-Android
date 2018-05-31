@@ -77,50 +77,9 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         // Init presenter
         presenter = new DashboardPresenter(this);
         presenter.start();
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+        // Search
 
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        MenuItem search = menu.findItem(R.id.action_search);
-
-        SearchView searchView = (SearchView) search.getActionView();
-        searchView.setQueryHint("Enter company ...");
-
-        searchAutoComplete =
-                searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        searchAutoComplete.setHintTextColor(Color.WHITE);
-        searchAutoComplete.setTextColor(Color.WHITE);
-
-        ImageView searchClose = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-        searchClose.setImageResource(R.drawable.ic_clear);
-
-        ArrayAdapter<String> newsAdapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
-        searchAutoComplete.setAdapter(newsAdapter);
-
-        searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
-            SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
-            String ticker = entry.getTicker();
-
-            presenter.setTickerFromSearchSuggestion(ticker);
-        });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                presenter.loadSearchResult(searchAutoComplete.getText().toString());
-                return false;
-            }
-        });
-
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
