@@ -42,8 +42,6 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comparison);
 
-        //setUpItemTouchHelper();
-
         recyclerView = findViewById(R.id.recycleView);
 
         moveToCompare = new Intent(this, GraphActivity.class);
@@ -83,12 +81,17 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
     }
 
-    private void setupSearchView() { searchView = findViewById(R.id.searchView);
+    private void setupSearchView() {
+        searchView = findViewById(R.id.searchView);
         searchView.setQueryHint("Enter company ...");
         searchAutoComplete = searchView
             .findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        searchAutoComplete.setHintTextColor(Color.WHITE);
-        searchAutoComplete.setTextColor(Color.WHITE);
+        searchView.setFocusable(true);
+        searchView.requestFocus();
+        searchView.requestFocusFromTouch();
+        searchView.setIconified(false);
+        searchAutoComplete.setHintTextColor(Color.BLACK);
+        searchAutoComplete.setTextColor(Color.BLACK);
 
         ArrayAdapter<String> newsAdapter = new ArrayAdapter<>(this,
             android.R.layout.simple_dropdown_item_1line);
@@ -102,6 +105,7 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
             cpresenter.addToCompare(ticker);
             Log.d("COMPANY SIZE ***", String.valueOf(cpresenter.getListCompareCompanies().size()));
+            searchAutoComplete.setText("",false);
             newsAdapter.notifyDataSetChanged();
 
         });

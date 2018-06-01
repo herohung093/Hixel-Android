@@ -2,6 +2,7 @@ package com.hixel.hixel.models;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 // Implementing serializable while we can to prevent coupling with the android SDK
 public class Company implements Serializable {
@@ -35,4 +36,21 @@ public class Company implements Serializable {
         return financialDataEntries;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Company company = (Company) o;
+        return Objects.equals(identifiers, company.identifiers);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(identifiers);
+    }
 }

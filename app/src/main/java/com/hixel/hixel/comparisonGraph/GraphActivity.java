@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,8 +37,6 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         mPresenter = new GraphPresenter( this, receivedCompanies);
         mPresenter.start();
 
-      //  ratios=mPresenter.getRatios();
-//        Log.d("Ratios **",mPresenter.getRatios().get(0));
         //setup bottom navigator
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_nav_graph);
         setupBottomNavigationView(bottomNavigationView);
@@ -73,9 +70,6 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
                 (GraphFragment) getFragmentManager().findFragmentById(R.id.graphFragment);
 
         FragmentA.drawGraph(mPresenter, adapterView.getSelectedItem().toString());
-        Log.d("triggered draw graph","88888888888");
-
-
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.hixel.hixel.models;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class CompanyIdentifiers implements Serializable {
     private String ticker;
@@ -26,4 +27,23 @@ public class CompanyIdentifiers implements Serializable {
         return cik;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        CompanyIdentifiers that = (CompanyIdentifiers) o;
+        return Objects.equals(ticker, that.ticker) &&
+            Objects.equals(name, that.name) &&
+            Objects.equals(cik, that.cik);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(ticker, name, cik);
+    }
 }

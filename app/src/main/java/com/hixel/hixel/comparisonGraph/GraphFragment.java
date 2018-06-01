@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -22,8 +21,8 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hixel.hixel.R;
+import com.hixel.hixel.models.Company;
 import com.hixel.hixel.models.FinancialData;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,7 +37,6 @@ public class GraphFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     LineChart lineChart;
-    //final String[] years = new String[] { };
     String[] years;
 
     private OnFragmentInteractionListener mListener;
@@ -47,14 +45,7 @@ public class GraphFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Graph.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static GraphFragment newInstance(String param1, String param2) {
         GraphFragment fragment = new GraphFragment();
@@ -82,73 +73,55 @@ public class GraphFragment extends Fragment {
         lineChart = view.findViewById(R.id.chart1);
         return view;
     }
+    public LineDataSet lineChartDataSetup(GraphContract.Presenter mPresenter, String selectedRatio, Company company){
+        List <Entry> compEntry = new ArrayList<>();
+        List<FinancialData> financialData= company.getFinancialDataEntries();
+        checkYearNull(financialData);
 
-    public void drawGraph(GraphContract.Presenter mPresenter, String selectedRatio) {
-        List<Entry> CompA = new ArrayList<>();
-        List<Entry> CompB = new ArrayList<>();
-        // Entry CompAYear1= new Entry(0f, (float) mPresenter.getCompanies().get(0).getFinancialDataEntries().get(0).getRatios()
-        List<FinancialData> financialDataCompA =
-                mPresenter.getCompanies().get(0).getFinancialDataEntries();
-        List<FinancialData> financialDataCompB =
-                mPresenter.getCompanies().get(1).getFinancialDataEntries();
-
-        checkYearNull(financialDataCompA);
-        checkYearNull(financialDataCompB);
-        mPresenter.checkUpFinancialEntry(mPresenter.getCompanies().get(0));
-        mPresenter.checkUpFinancialEntry(mPresenter.getCompanies().get(1));
-        createListOfYears(financialDataCompA);
-        //add company A data for graph
-        LinkedHashMap<String, Double> DataCompAYear1 = financialDataCompA.get(4).getRatios();
-        Entry CompAYear1 = new Entry(0f, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
-        CompA.add(CompAYear1);
-        LinkedHashMap<String, Double> DataCompAYear2 = financialDataCompA.get(3).getRatios();
-        Entry CompAYear2 = new Entry(1f, Float.valueOf(DataCompAYear2.get(selectedRatio).toString()));
-        CompA.add(CompAYear2);
-        LinkedHashMap<String, Double> DataCompAYear3 = financialDataCompA.get(2).getRatios();
-        Entry CompAYear3 = new Entry(2f, Float.valueOf(DataCompAYear3.get(selectedRatio).toString()));
-        CompA.add(CompAYear3);
-        LinkedHashMap<String, Double> DataCompAYear4 = financialDataCompA.get(1).getRatios();
-        Entry CompAYear4 = new Entry(3f, Float.valueOf(DataCompAYear4.get(selectedRatio).toString()));
-        CompA.add(CompAYear4);
-        LinkedHashMap<String, Double> DataCompAYear5 = financialDataCompA.get(0).getRatios();
-        Entry CompAYear5 = new Entry(4f, Float.valueOf(DataCompAYear5.get(selectedRatio).toString()));
-        CompA.add(CompAYear5);
-        //add company b data for graph
-        LinkedHashMap<String, Double> DataCompBYear1 = financialDataCompB.get(4).getRatios();
-        Entry CompBYear1 = new Entry(0f, Float.valueOf(DataCompBYear1.get(selectedRatio).toString()));
-        CompB.add(CompBYear1);
-        LinkedHashMap<String, Double> DataCompBYear2 = financialDataCompB.get(3).getRatios();
-        Entry CompBYear2 = new Entry(1f, Float.valueOf(DataCompBYear2.get(selectedRatio).toString()));
-        CompB.add(CompBYear2);
-        LinkedHashMap<String, Double> DataCompBYear3 = financialDataCompB.get(2).getRatios();
-        Entry CompBYear3 = new Entry(2f, Float.valueOf(DataCompBYear3.get(selectedRatio).toString()));
-        CompB.add(CompBYear3);
-        LinkedHashMap<String, Double> DataCompBYear4 = financialDataCompB.get(1).getRatios();
-        Entry CompBYear4 = new Entry(3f, Float.valueOf(DataCompBYear4.get(selectedRatio).toString()));
-        CompB.add(CompBYear4);
-        LinkedHashMap<String, Double> DataCompBYear5 = financialDataCompB.get(0).getRatios();
-        Entry CompBYear5 = new Entry(4f, Float.valueOf(DataCompBYear5.get(selectedRatio).toString()));
-        CompB.add(CompBYear5);
-
-        LineDataSet setCompA = new LineDataSet(CompA, mPresenter.getCompanies().get(0).getIdentifiers().getName());
-
-        setCompA.setColors(ColorTemplate.LIBERTY_COLORS);
-        setupDatasetStyle(setCompA);
-        setCompA.enableDashedLine(10f, 10f, 10f);
-
-        LineDataSet setCompB = new LineDataSet(CompB, mPresenter.getCompanies().get(1).getIdentifiers().getName());
-
-        setCompB.setColors(ColorTemplate.COLORFUL_COLORS);
-        setupDatasetStyle(setCompB);
-
+        mPresenter.checkUpFinancialEntry(company);
+        createListOfYears(financialData);
+        int j=4;
+        for (int i=0;i<5;i++){
+            LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
+            j--;
+            Entry compYearData = new Entry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
+            compEntry.add(compYearData);
+        }
+        LineDataSet setComp = new LineDataSet(compEntry,company.getIdentifiers().getName());
+        return setComp;
+    }
+    public void drawGraph(GraphContract.Presenter mPresenter,String selectedRatio){
         List<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(setCompA);
-        dataSets.add(setCompB);
+
+        for(Company c: mPresenter.getCompanies()){
+            LineDataSet setCompA= lineChartDataSetup(mPresenter, selectedRatio, c);
+            if(mPresenter.getCompanies().size()==1){
+                setCompA.setColors(ColorTemplate.LIBERTY_COLORS);
+                setupDatasetStyle(setCompA);
+                setCompA.enableDashedLine(10f, 10f, 10f);
+                dataSets.add(setCompA);
+            }else if(mPresenter.getCompanies().size()==2 && mPresenter.getCompanies().indexOf(c)==0){
+                setCompA.setColors(ColorTemplate.LIBERTY_COLORS);
+                setupDatasetStyle(setCompA);
+                setCompA.enableDashedLine(10f, 10f, 10f);
+                dataSets.add(setCompA);
+            } else {
+                setCompA.setColors(ColorTemplate.COLORFUL_COLORS);
+                setupDatasetStyle(setCompA);
+                dataSets.add(setCompA);
+            }
+
+        }
+
         LineData data = new LineData(dataSets);
+        decorLineChart(lineChart,data);
+    }
+    public void decorLineChart(LineChart lineChart, LineData data){
+
         lineChart.animateXY(1000, 1000);
         lineChart.setData(data);
         lineChart.invalidate();
-        Log.d("GET TO DRAW GRAPH", "88888888888");
+        Log.d("GOT TO DRAW GRAPH", "Successful");
         XAxis xAxis = lineChart.getXAxis();
 
         YAxis yAxis = lineChart.getAxisLeft();
@@ -158,8 +131,8 @@ public class GraphFragment extends Fragment {
 
         Legend legend = lineChart.getLegend();
         setupLegend(legend);
-
     }
+
 
     IAxisValueFormatter formatter = new IAxisValueFormatter() {
 
@@ -221,8 +194,7 @@ public class GraphFragment extends Fragment {
         xAxis.setValueFormatter(formatter);
         xAxis.setTextSize(12f);
         xAxis.setTextColor(Color.WHITE);
-        //yAxis.setGranularity(1f); // minimum axis-step (interval) is 1
-        //yAxis.setValueFormatter(formatter);
+
         yAxis.setTextSize(12f);
         yAxis.setTextColor(Color.WHITE);
     }
@@ -252,16 +224,7 @@ public class GraphFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

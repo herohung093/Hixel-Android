@@ -37,10 +37,13 @@ public class ComparisonAdapter
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.companyName.setText(presenter.getListCompareCompanies()
-                                            .get(position)
-                                            .getIdentifiers()
-                                            .getName());
+        String companyName = presenter.getListCompareCompanies()
+            .get(position)
+            .getIdentifiers()
+            .getName()
+            .split("\\,| ")[0]
+            .toLowerCase();
+        holder.companyName.setText(companyName.substring(0, 1).toUpperCase() + companyName.substring(1));
 
         holder.companyTicker.setText(presenter.getListCompareCompanies()
                                               .get(position)
@@ -52,7 +55,7 @@ public class ComparisonAdapter
         holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
                                     presenter.getListCompareCompanies()
                                                    .get(position)
-                                                   .getRatio("Health", last_year) * 100));
+                                                   .getRatio("Return-on-Equity Ratio", last_year) * 100));
 
         //TODO: Replace as part of PTH-140
         //holder.companyHealth.setTextColor(presenter.setHealthColor(position));

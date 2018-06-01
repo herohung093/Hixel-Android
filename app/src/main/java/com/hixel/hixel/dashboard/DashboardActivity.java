@@ -125,7 +125,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     @Override
     public void searchResultReceived(List<SearchEntry> result) {
-        ArrayAdapter<SearchEntry> resultsAdapter =
+       ArrayAdapter<SearchEntry> resultsAdapter =
                 new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, result);
 
         searchAutoComplete.setAdapter(resultsAdapter);

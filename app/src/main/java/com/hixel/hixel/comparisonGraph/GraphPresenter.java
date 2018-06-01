@@ -34,16 +34,6 @@ public class GraphPresenter implements GraphContract.Presenter {
 
     @Override
     public void checkUpFinancialEntry(Company company){
-        List<FinancialData> financialData = company.getFinancialDataEntries();
-/*
-        Set<String> keys = new HashSet<>();
-        keys.add("Current Ratio");
-        keys.add("Quick Ratio");
-        keys.add("Cash Ratio");
-        keys.add("Debt-to-Equity Ratio");
-        //ratios.add("Health");
-        keys.add("Long Term Debt-to-Equity Ratio");
-*/
         for (FinancialData f : company.getFinancialDataEntries()) {
             LinkedHashMap<String, Double> ratios = f.getRatios();
 
@@ -64,17 +54,10 @@ public class GraphPresenter implements GraphContract.Presenter {
         call.enqueue(new Callback<ArrayList<String>>() {
             @Override
             public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-                //searchSuggestion.setSearchEntries(response.body());
-                //names = searchSuggestion.getNames();
-                //if (names.size() != 0) {
-                //  Log.d("Search SUggstion=====", "" + names.get(0));
-                //}
                 ArrayList<String>stringArrayList=response.body();
                 ratios=stringArrayList;
                 Log.d("ratios------------>",""+stringArrayList.size());
                 graphView.updateRatios(ratios);
-
-
 
             }
 
