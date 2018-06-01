@@ -10,17 +10,17 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
+import android.widget.Toast;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -32,20 +32,23 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
-import com.hixel.hixel.search.SearchEntry;
 
+import com.hixel.hixel.search.SearchEntry;
+import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
         OnItemSelectedListener {
 
+    private static final String TAG = DashboardActivity.class.getSimpleName();
+
     private DashboardContract.Presenter presenter;
     RecyclerView.Adapter dashboardAdapter;
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
     private RadarChart chart;
-    SearchView.SearchAutoComplete searchAutoComplete;
+    AutoCompleteTextView search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,27 +77,51 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         // UI for the chart
         setupChart();
 
+        // Search
+        PublishSubject<String> subject = PublishSubject.create();
+        search = binding.toolbar.search;
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                subject.onNext(s.toString());
+            }
+        });
+
         // Init presenter
         presenter = new DashboardPresenter(this);
         presenter.start();
 
-        // Search
-
+        presenter.search(subject);
     }
 
     @Override
-    public void searchResultReceived(List<SearchEntry> result) {
-        ArrayAdapter<SearchEntry> resultsAdapter =
-                new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, result);
+    public void showSuggestions(List<SearchEntry> searchEntries) {
+        ArrayAdapter<SearchEntry> adapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, searchEntries);
+        search.setAdapter(adapter);
+    }
 
-        searchAutoComplete.setAdapter(resultsAdapter);
-        resultsAdapter.notifyDataSetChanged();
+    // NOTE: Using this as UI debugging tool
+    @Override
+    public void toasty() {
+        Toast.makeText(this, "WOWZA", Toast.LENGTH_LONG).show();
     }
 
     // TODO: Implement this properly
     @Override
     public void setPresenter(@NonNull DashboardContract.Presenter presenter) {
-        //presenter = presenter;
+        // presenter = presenter;
     }
 
     // TODO: Implement this so the default is nothing selected
@@ -213,24 +240,10 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     }
 
-    /* NOTE: Reimplement once needed
-    @Override
-    public void portfolioChanged() {
-        dashboardAdapter.notifyDataSetChanged();
-    }*/
-
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
-    // TODO: Implement this without the need for a Company object
-    /*
-    public void goToCompanyView() {
-        Intent intent = new Intent(this, CompanyActivity.class);
-        intent.putExtra("ticker", presenter.getCompany());
-        startActivity(intent);
-    }*/
 
     @Override
     public void showLoadingIndicator(final boolean active) {
@@ -240,7 +253,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     @Override
     public void showLoadingError() {
-        Snackbar.make(binding.getRoot(), "Error loading your portfolio", Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(binding.getRoot(), "Error loading your portfolio", Snackbar.LENGTH_LONG)
                 .setAction("RETRY", view -> presenter.loadPortfolio())
                 .show();
     }

@@ -48,16 +48,6 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
     public void start() {
         names.add("");
 
-        disposable.add(publishSubject
-            .debounce(50, TimeUnit.MILLISECONDS)
-            .distinctUntilChanged()
-            .filter(text -> !text.isEmpty())
-            .switchMapSingle((Function<String, Single<ArrayList<SearchEntry>>>) searchTerm -> getClient()
-                .create(ServerInterface.class)
-                .doSearchQuery(searchTerm)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()))
-            .subscribeWith(getSearchObserver()));
     }
 
     public void removeCompareFromList(int position){
