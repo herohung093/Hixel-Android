@@ -1,30 +1,27 @@
 package com.hixel.hixel.comparisonGraph;
 
 import android.util.Log;
-
 import com.hixel.hixel.models.Company;
 import com.hixel.hixel.models.FinancialData;
 import com.hixel.hixel.network.Client;
 import com.hixel.hixel.network.ServerInterface;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class GraphPresenter implements GraphContract.Presenter {
-    private List<Company> companies;
+    private ArrayList<Company> companies;
     private final GraphContract.View graphView;
     private ArrayList<String> ratios;
 
 
-    GraphPresenter(GraphContract.View graphView, List<Company> companies) {
+    GraphPresenter(GraphContract.View graphView, ArrayList<Company> companies) {
         this.graphView = graphView;
         this.companies = companies;
         this.ratios = new ArrayList<>();
+        checkUpFinancialEntry();
     }
 
     @Override
@@ -33,20 +30,21 @@ public class GraphPresenter implements GraphContract.Presenter {
     }
 
     @Override
-    public void checkUpFinancialEntry(Company company){
-        for (FinancialData f : company.getFinancialDataEntries()) {
-            LinkedHashMap<String, Double> ratios = f.getRatios();
+    public void checkUpFinancialEntry() {
+        for (Company c : companies) {
+            for (FinancialData f : c.getFinancialDataEntries()) {
+                LinkedHashMap<String, Double> ratios = f.getRatios();
 
-            for (String k : this.ratios) {
-                if (ratios.get(k) == null) {
-                    Log.d(String.valueOf(f.getYear()) + k + ": ", "NULL***");
-                    ratios.put(k, 0.0);
-                    Log.d(String.valueOf(f.getYear()) + k + ": ", ratios.get(k).toString());
+                for (String k : this.ratios) {
+                    if (ratios.get(k) == null) {
+                        Log.d(String.valueOf(f.getYear()) + k + ": ", "NULL***");
+                        ratios.put(k, 0.0);
+                        Log.d(String.valueOf(f.getYear()) + k + ": ", ratios.get(k).toString());
+                    }
                 }
             }
         }
     }
-
     @Override
     public void doMeta() {
         ServerInterface client = Client.getRetrofit().create(ServerInterface.class);
@@ -75,7 +73,7 @@ public class GraphPresenter implements GraphContract.Presenter {
     }
 
     @Override
-    public List<Company> getCompanies() {
+    public ArrayList<Company> getCompanies() {
         return companies;
     }
 }

@@ -31,7 +31,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         intentReceiver = getIntent();
-        List<Company> receivedCompanies =
+        ArrayList<Company> receivedCompanies =
                 (ArrayList<Company>) intentReceiver.getSerializableExtra("selectedCompanies");
 
         mPresenter = new GraphPresenter( this, receivedCompanies);
@@ -69,7 +69,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         GraphFragment FragmentA =
                 (GraphFragment) getFragmentManager().findFragmentById(R.id.graphFragment);
 
-        FragmentA.drawGraph(mPresenter, adapterView.getSelectedItem().toString());
+        FragmentA.drawGraph(mPresenter.getCompanies(), adapterView.getSelectedItem().toString());
     }
 
     @Override

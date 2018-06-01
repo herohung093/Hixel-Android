@@ -73,12 +73,11 @@ public class GraphFragment extends Fragment {
         lineChart = view.findViewById(R.id.chart1);
         return view;
     }
-    public LineDataSet lineChartDataSetup(GraphContract.Presenter mPresenter, String selectedRatio, Company company){
+    public LineDataSet lineChartDataSetup( String selectedRatio, Company company){
         List <Entry> compEntry = new ArrayList<>();
         List<FinancialData> financialData= company.getFinancialDataEntries();
         checkYearNull(financialData);
 
-        mPresenter.checkUpFinancialEntry(company);
         createListOfYears(financialData);
         int j=4;
         for (int i=0;i<5;i++){
@@ -90,17 +89,17 @@ public class GraphFragment extends Fragment {
         LineDataSet setComp = new LineDataSet(compEntry,company.getIdentifiers().getName());
         return setComp;
     }
-    public void drawGraph(GraphContract.Presenter mPresenter,String selectedRatio){
+    public void drawGraph(ArrayList<Company> companies,String selectedRatio){
         List<ILineDataSet> dataSets = new ArrayList<>();
 
-        for(Company c: mPresenter.getCompanies()){
-            LineDataSet setCompA= lineChartDataSetup(mPresenter, selectedRatio, c);
-            if(mPresenter.getCompanies().size()==1){
+        for(Company c: companies){
+            LineDataSet setCompA= lineChartDataSetup( selectedRatio, c);
+            if(companies.size()==1){
                 setCompA.setColors(ColorTemplate.LIBERTY_COLORS);
                 setupDatasetStyle(setCompA);
                 setCompA.enableDashedLine(10f, 10f, 10f);
                 dataSets.add(setCompA);
-            }else if(mPresenter.getCompanies().size()==2 && mPresenter.getCompanies().indexOf(c)==0){
+            }else if(companies.size()==2 && companies.indexOf(c)==0){
                 setCompA.setColors(ColorTemplate.LIBERTY_COLORS);
                 setupDatasetStyle(setCompA);
                 setCompA.enableDashedLine(10f, 10f, 10f);

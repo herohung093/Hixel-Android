@@ -3,9 +3,7 @@ package com.hixel.hixel.comparisonGraph;
 import com.hixel.hixel.BasePresenter;
 import com.hixel.hixel.BaseView;
 import com.hixel.hixel.models.Company;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public interface GraphContract  {
 
@@ -14,8 +12,8 @@ public interface GraphContract  {
     }
 
     interface Presenter extends BasePresenter{
-        List<Company> getCompanies();
-        void checkUpFinancialEntry(Company company);
+        ArrayList<Company> getCompanies();
+        void checkUpFinancialEntry();
         void doMeta();
         ArrayList<String>getRatios();
 
