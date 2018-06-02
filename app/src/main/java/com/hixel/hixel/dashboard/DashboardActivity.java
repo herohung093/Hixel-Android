@@ -20,7 +20,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
-import android.widget.Toast;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -33,6 +32,7 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 
+import com.hixel.hixel.search.SearchAdapter;
 import com.hixel.hixel.search.SearchEntry;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
@@ -40,8 +40,6 @@ import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
         OnItemSelectedListener {
-
-    private static final String TAG = DashboardActivity.class.getSimpleName();
 
     private DashboardContract.Presenter presenter;
     RecyclerView.Adapter dashboardAdapter;
@@ -107,15 +105,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     @Override
     public void showSuggestions(List<SearchEntry> searchEntries) {
-        ArrayAdapter<SearchEntry> adapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, searchEntries);
+        SearchAdapter adapter = new SearchAdapter(this, searchEntries);
         search.setAdapter(adapter);
-    }
-
-    // NOTE: Using this as UI debugging tool
-    @Override
-    public void toasty() {
-        Toast.makeText(this, "WOWZA", Toast.LENGTH_LONG).show();
     }
 
     // TODO: Implement this properly
@@ -186,7 +177,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
                     "Debt-to-Equity",
                     "Current Ratio",
                     "Quick Ratio",
-
             };
 
             @Override
