@@ -9,7 +9,12 @@
     <string name="Leverage">Leverage</string>
     <string name="Search">Search</string>
     <string name="search_title">Search</string>
-
+    <string name="Liabilities"> Liabilities   </string>
+    <string name="net_Income"> Net Income</string>
+    <string name="financial_element">Financial Elements</string>
+    <string name="Assets">Assets</string>
+    <string name="Equity">Equity</string>
+    <string name="financial_ratios">Financial Ratios</string>
 
     <string-array name="company_dropdown">
         <item>Health</item>

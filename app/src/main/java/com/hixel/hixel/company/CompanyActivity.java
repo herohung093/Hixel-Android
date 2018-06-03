@@ -38,11 +38,9 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         setContentView(R.layout.activity_company);
         // doMeta();
         presenter = new CompanyPresenter(this);
-        if(getIntent().hasExtra("company")) {
+        if (getIntent().hasExtra("company")) {
             presenter.setCompany((Company) getIntent().getSerializableExtra("company"));
-        }
-        else
-        {
+        } else {
             presenter.setCompany((Company) getIntent().getSerializableExtra("ticker"));
 
         }
@@ -54,7 +52,6 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         presenter.setTickerFromSearchSuggestion(ticker);
         */
         presenter.start();
-
 
 
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
@@ -71,17 +68,17 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         TextView leverage = findViewById(R.id.leverage_text);
         TextView health = findViewById(R.id.health_text);
         liquidity.setText(ratios1.get(0));
-        leverage.setText(ratios1.get(1).substring(0,10));
-        health.setText(ratios1.get(2).substring(0,10));
+        leverage.setText(ratios1.get(1).substring(0, 10));
+        health.setText(ratios1.get(2).substring(0, 10));
 
         TextView liquidityScore = findViewById(R.id.liquidity_score);
         TextView leverageScore = findViewById(R.id.leverage_score);
         TextView healthScore = findViewById(R.id.health_score);
-        liquidityScore.setText(getValue(ratios1.get(0), 2017));
+        liquidityScore.setText(getValue(ratios1.get(0), 2017)); //  A more Dynamic way will be implemented so that it doesn't relies on substring
         leverageScore.setText(getValue(ratios1.get(1), 2017));
         healthScore.setText(getValue(ratios1.get(2), 2017));
         // For the line chart
-        BarChart barChart=findViewById(R.id.lineChart);
+        BarChart barChart = findViewById(R.id.lineChart);
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
         barChart.setMaxVisibleValueCount(100);
@@ -89,73 +86,72 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         barChart.setDrawGridBackground(true);
 
         // values for the Bar chart
-        ArrayList<BarEntry> barEntries=new ArrayList<>();
-        ArrayList<BigDecimal> values=new ArrayList<>();
-        List<FinancialData>dataEntries=presenter.getCompany().getFinancialDataEntries();
-        FinancialData dataFinanccial=dataEntries.get(0);
-        HashMap<String, BigDecimal> xbrlElements=dataFinanccial.getXbrlElements();
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
+        ArrayList<BigDecimal> values = new ArrayList<>();
+        List<FinancialData> dataEntries = presenter.getCompany().getFinancialDataEntries();
+        FinancialData dataFinanccial = dataEntries.get(0);
+        HashMap<String, BigDecimal> xbrlElements = dataFinanccial.getXbrlElements();
 
-        BigDecimal[] value=new BigDecimal[10];
-        int i=0;
-        for(String key:xbrlElements.keySet())
-        {
-            value[i]=xbrlElements.get(key);
+        BigDecimal[] value = new BigDecimal[10];
+        int i = 0;
+        for (String key : xbrlElements.keySet()) {
+            value[i] = xbrlElements.get(key);
             i++;
-            Log.d("Elements Name",key);
+            Log.d("Elements Name", key);
         }
-        BigDecimal n1=value[4];
-        String valueString=n1.toString();
-        String intValue=valueString.substring(0,6);
-        int n=Integer.parseInt(intValue);
-        int[] nValues=new int[4];
-        nValues[0]=n; // Assets
-        n1=value[5];
-        valueString=n1.toString();
-        intValue=valueString.substring(0,6);
-        n=Integer.parseInt(intValue);
-        nValues[1]=n; //Liabilities
+        BigDecimal n1 = value[4];
+        String valueString = n1.toString();
+        String intValue = valueString.substring(0, 6);
+        int n = Integer.parseInt(intValue);
+        int[] nValues = new int[4];
+        nValues[0] = n; // Assets
+        n1 = value[5];
+        valueString = n1.toString();
+        intValue = valueString.substring(0, 6);
+        n = Integer.parseInt(intValue);
+        nValues[1] = n; //Liabilities
 
-        n1=value[7];
-        valueString=n1.toString();
-        intValue=valueString.substring(0,6);
-        n=Integer.parseInt(intValue);
-        nValues[2]=n; // Equity
+        n1 = value[7];
+        valueString = n1.toString();
+        intValue = valueString.substring(0, 6);
+        n = Integer.parseInt(intValue);
+        nValues[2] = n; // Equity
 
-        n1=value[8];
-        valueString=n1.toString();
-        intValue=valueString.substring(0,6);
-        n=Integer.parseInt(intValue);
-        nValues[3]=n; //Net Income Loss
+        n1 = value[8];
+        valueString = n1.toString();
+        intValue = valueString.substring(0, 6);
+        n = Integer.parseInt(intValue);
+        nValues[3] = n; //Net Income Loss
 
-        barEntries.add(new BarEntry(1,nValues[0]));
-        barEntries.add(new BarEntry(2,nValues[1]));
-        barEntries.add(new BarEntry(3,nValues[2]));
-        barEntries.add(new BarEntry(4,nValues[3]));
+        barEntries.add(new BarEntry(1, nValues[0]));
+        barEntries.add(new BarEntry(2, nValues[1]));
+        barEntries.add(new BarEntry(3, nValues[2]));
+        barEntries.add(new BarEntry(4, nValues[3]));
 
-        BarDataSet barDataSet=new BarDataSet(barEntries,"Data set");
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Data set");
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        BarData data=new BarData(barDataSet);
+        BarData data = new BarData(barDataSet);
         data.setBarWidth(0.9f);
 
         barChart.setData(data);
 
         // create X axis
-        String[] financial={"","","","",""};
-        XAxis xAxis=barChart.getXAxis();
+        String[] financial = {"", "", "", "", ""};
+        XAxis xAxis = barChart.getXAxis();
         xAxis.setValueFormatter(new MyXaxisValueFormatter(financial));
 
         // set up the list view
-        ListView listView =findViewById(R.id.listView);
+        ListView listView = findViewById(R.id.listView);
         // call the method to setup the values
-        ArrayList<String> ratiosList=new ArrayList<>();
-        ratiosList.add(getValue(ratios1.get(0),2017));
-        ratiosList.add(getValue(ratios1.get(1),2017));
-        ratiosList.add(getValue(ratios1.get(2),2017));
-        ratiosList.add(getValue(ratios1.get(3),2017));
-        ratiosList.add(getValue(ratios1.get(4),2017));
+        ArrayList<String> ratiosList = new ArrayList<>();
+        ratiosList.add(getValue(ratios1.get(0), 2017));
+        ratiosList.add(getValue(ratios1.get(1), 2017));
+        ratiosList.add(getValue(ratios1.get(2), 2017));
+        ratiosList.add(getValue(ratios1.get(3), 2017));
+        ratiosList.add(getValue(ratios1.get(4), 2017));
 
 
-        CompanyAdapter adapter=new CompanyAdapter(this, R.layout.adpater_view_layout,ratiosList);
+        CompanyAdapter adapter = new CompanyAdapter(this, R.layout.adpater_view_layout, ratiosList);
         listView.setAdapter(adapter);
 
 
@@ -165,38 +161,34 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         this.presenter = presenter;
     }
 
-    public String getValue(String name,int year)
-    {
-       String value= presenter.getRatio(name,year);
-       if(value.length()>4)
-       {
-           return value.substring(0,5);
-       }
-       else
-       {
-           return value;
-       }
-    }
-public class  MyXaxisValueFormatter implements IAxisValueFormatter
-{
-    String[] mValues;
-    @Override
-    public String getFormattedValue(float value, AxisBase axis) {
-        return mValues[(int)value];
+    public String getValue(String name, int year) {
+        String value = presenter.getRatio(name, year);
+        if (value.length() > 4) {
+            return value.substring(0, 5);
+        } else {
+            return value;
+        }
     }
 
-    public MyXaxisValueFormatter(String[] values) {
-        this.mValues=values;
+    public class MyXaxisValueFormatter implements IAxisValueFormatter {
+        String[] mValues;
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            return mValues[(int) value];
+        }
+
+        public MyXaxisValueFormatter(String[] values) {
+            this.mValues = values;
+        }
     }
-}
-public boolean checkNull(String value)
-{
-    if(value.equals("null"))
-    {
-        return true;
+
+    public boolean checkNull(String value) {
+        if (value.equals("null")) {
+            return true;
+        }
+        return false;
     }
-    return false;
-}
 
 
 }

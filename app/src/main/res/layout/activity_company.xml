@@ -115,10 +115,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="32dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
+                    android:gravity="center"
                     android:text="@string/leverage_score"
+                    android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/textColorDefault"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -133,9 +134,9 @@
                     android:layout_width="56dp"
                     android:layout_height="19dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="32dp"
                     android:layout_marginStart="32dp"
                     android:text="@string/default_text"
+                    android:textAlignment="center"
                     android:textColor="@color/textColorDefault"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -156,7 +157,7 @@
           android:layout_marginLeft="8dp"
           android:layout_marginStart="8dp"
           android:layout_marginTop="150dp"
-          android:text="Financial Elements"
+          android:text="@string/financial_element"
           android:textAppearance="@style/TextAppearance.AppCompat.Medium"
           app:layout_constraintBottom_toTopOf="@+id/cardView"
           app:layout_constraintStart_toStartOf="parent" />
@@ -174,7 +175,7 @@
           android:layout_height="wrap_content"
           android:layout_marginLeft="45dp"
           android:layout_marginTop="600dp"
-          android:text="Assets" />
+          android:text="@string/Assets" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -182,7 +183,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/lineChart"
             android:layout_marginStart="111dp"
-            android:text=" Liabilities   " />
+            android:text="@string/Liabilities" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -190,7 +191,7 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/lineChart"
             android:layout_marginEnd="105dp"
-            android:text=" Net Income" />
+            android:text="@string/net_Income" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -198,7 +199,7 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/lineChart"
             android:layout_marginEnd="55dp"
-            android:text="Equity" />
+            android:text="@string/Equity" />
 
         <ListView
             android:id="@+id/listView"
@@ -224,7 +225,7 @@
             android:layout_above="@+id/listView"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="-670dp"
-            android:text="Financial Ratios"
+            android:text="@string/financial_ratios"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
@@ -232,4 +233,6 @@
     </RelativeLayout>
 
   </ScrollView>
+
+
 </layout>
