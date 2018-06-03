@@ -91,8 +91,6 @@ public class CompanyPresenter implements CompanyContract.Presenter {
 
                 companyView.updateRatios(ratios1);
 
-
-
             }
 
             @Override

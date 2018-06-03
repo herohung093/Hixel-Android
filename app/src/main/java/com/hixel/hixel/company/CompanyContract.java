@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public interface CompanyContract {
 
     interface View extends BaseView<Presenter> {
-
+        void updateRatios(ArrayList<String> ratios1);
     }
 
     interface Presenter extends BasePresenter {

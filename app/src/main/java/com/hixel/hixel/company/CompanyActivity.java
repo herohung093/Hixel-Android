@@ -102,6 +102,7 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
             i++;
             Log.d("Elements Name", key);
         }
+
         BigDecimal n1 = value[4];
         String valueString = n1.toString();
         String intValue = valueString.substring(0, 6);
