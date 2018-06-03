@@ -117,14 +117,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }
 
     @Override
-<<<<<<< HEAD
-    public void searchResultReceived(List<SearchEntry> result) {
-       ArrayAdapter<SearchEntry> resultsAdapter =
-                new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, result);
-=======
     public void showSuggestions(List<SearchEntry> searchEntries) {
         SearchAdapter adapter = new SearchAdapter(this, searchEntries);
->>>>>>> search
 
         searchAutoComplete.setAdapter(adapter);
     }
@@ -245,18 +239,12 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
-<<<<<<< HEAD
     /* NOTE: Reimplement once needed
     @Override
     public void portfolioChanged() {
         dashboardAdapter.notifyDataSetChanged();
     }*/
-=======
-    @Override
-    public void updateRatios(ArrayList<String> ratios1) {
 
-    }
->>>>>>> search
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
