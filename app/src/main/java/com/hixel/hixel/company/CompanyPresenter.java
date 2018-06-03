@@ -1,5 +1,6 @@
 package com.hixel.hixel.company;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -16,16 +17,16 @@ import retrofit2.Response;
 public class CompanyPresenter implements CompanyContract.Presenter {
 
     private Company company;
-    // private final CompanyContract.View companyView;
+    private final CompanyContract.View companyView;
     private static ArrayList<String> ratios1;
-    // private String tickerFromSearchSuggestion;
+    private String tickerFromSearchSuggestion;
 
     CompanyPresenter(CompanyContract.View companyView) {
-        // this.companyView = companyView;
+        this.companyView = companyView;
         companyView.setPresenter(this);
 
         ratios1 = new ArrayList<>();
-       // doMeta();
+        doMeta();
     }
 
 
@@ -35,19 +36,16 @@ public class CompanyPresenter implements CompanyContract.Presenter {
 
     }
 
-    /*
     public void loadFromServer() {
 
-    }*/
+    }
 
-    /*
     public String getRatio(String ratio, int year) {
         Double value = company.getRatio(ratio, year);
 
         return (value == null) ? "N/A" : Double.toString(value);
-    }*/
+    }
 
-    /*
     public int getColorIndicator(String ratio, double value) {
         //Default thresholds.
         double green = 1.5;
@@ -66,7 +64,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
         return Color.parseColor((value > green) ? "#C23934":
                 (value > yellow)? "#FFB75D":
                         "#4BCA81");
-    }*/
+    }
 
     @Override
     public void doMeta() {
@@ -87,7 +85,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
                 assert stringArrayList != null;
                 Log.d("ratios------------>",""+stringArrayList.size());
 
-                //companyView.updateRatios(ratios1);
+                companyView.updateRatios(ratios1);
 
 
 
@@ -102,11 +100,11 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     }
 
 
-    /*
+
     @Override
     public ArrayList<String> getRatios1() {
         return ratios1;
-    }*/
+    }
 
     public void setCompany(Company company) {
         this.company = company;
@@ -116,7 +114,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
         return company.getIdentifiers().getName();
     }
 
-    /*
+
     public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
         this.tickerFromSearchSuggestion = tickerFromSearchSuggestion;
         //loadDataForAParticularCompany(tickerFromSearchSuggestion);
@@ -124,7 +122,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
 
     public  void update() {
 
-    }*/
+    }
 
 
 

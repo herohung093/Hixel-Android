@@ -7,12 +7,13 @@ import android.widget.TextView;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.models.Company;
+import java.util.ArrayList;
 
 public class CompanyActivity extends AppCompatActivity implements CompanyContract.View {
 
     private CompanyContract.Presenter presenter;
-    // private String TAG = "COMPANY_VIEW";
-    // private ArrayList<String> ratios1 = new ArrayList<>();
+    private String TAG = "COMPANY_VIEW";
+    private ArrayList<String> ratios1 = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +47,14 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
     }
 
-    /*
+
     public void updateRatios(ArrayList<String> ratios1) {
         TextView liquidity = findViewById(R.id.liquidity_text);
         TextView leverage = findViewById(R.id.leverage_text);
         TextView health = findViewById(R.id.health_text);
         liquidity.setText(ratios1.get(0));
-        leverage.setText(ratios1.get(1).substring(0,10));
-        health.setText(ratios1.get(2).substring(0,10));
+        leverage.setText(ratios1.get(1).substring(0, 10));
+        health.setText(ratios1.get(2).substring(0, 10));
 
         TextView liquidityScore = findViewById(R.id.liquidity_score);
         TextView leverageScore = findViewById(R.id.leverage_score);
@@ -61,13 +62,13 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         liquidityScore.setText(getValue(ratios1.get(0), 2017));
         leverageScore.setText(getValue(ratios1.get(1), 2017));
         healthScore.setText(getValue(ratios1.get(2), 2017));
-    }*/
+    }
 
     public void setPresenter(@NonNull CompanyContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
-    /*
+
     public String getValue(String name,int year) {
        String value= presenter.getRatio(name,year);
        if(value.length()>4) {
@@ -75,7 +76,7 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
        } else {
            return value;
        }
-    }*/
+    }
 
 
 

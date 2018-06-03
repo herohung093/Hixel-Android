@@ -3,6 +3,7 @@ package com.hixel.hixel.company;
 import com.hixel.hixel.BasePresenter;
 import com.hixel.hixel.BaseView;
 import com.hixel.hixel.models.Company;
+import java.util.ArrayList;
 
 public interface CompanyContract {
 
@@ -15,9 +16,9 @@ public interface CompanyContract {
         void setCompany(Company company);
         void doMeta();
 
-        // String getRatio(String name, int year);
-        // int getColorIndicator(String ratio, double value);
-        // ArrayList<String> getRatios1();
-        // void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion);
+        String getRatio(String name, int year);
+        int getColorIndicator(String ratio, double value);
+        ArrayList<String> getRatios1();
+        void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion);
     }
 }
