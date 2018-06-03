@@ -1,6 +1,6 @@
 package com.hixel.hixel.company;
 
-import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.hixel.hixel.models.Company;
@@ -14,19 +14,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CompanyPresenter implements CompanyContract.Presenter {
+
     private Company company;
-    private final CompanyContract.View companyView;
-    public static ArrayList<String>ratios1;
-
-
-
-    private String tickerFromSearchSuggestion;
+    // private final CompanyContract.View companyView;
+    private static ArrayList<String> ratios1;
+    // private String tickerFromSearchSuggestion;
 
     CompanyPresenter(CompanyContract.View companyView) {
-        this.companyView = companyView;
+        // this.companyView = companyView;
         companyView.setPresenter(this);
 
-        ratios1=new ArrayList<>();
+        ratios1 = new ArrayList<>();
        // doMeta();
     }
 
@@ -37,16 +35,19 @@ public class CompanyPresenter implements CompanyContract.Presenter {
 
     }
 
+    /*
     public void loadFromServer() {
 
-    }
+    }*/
 
+    /*
     public String getRatio(String ratio, int year) {
         Double value = company.getRatio(ratio, year);
 
         return (value == null) ? "N/A" : Double.toString(value);
-    }
+    }*/
 
+    /*
     public int getColorIndicator(String ratio, double value) {
         //Default thresholds.
         double green = 1.5;
@@ -65,7 +66,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
         return Color.parseColor((value > green) ? "#C23934":
                 (value > yellow)? "#FFB75D":
                         "#4BCA81");
-    }
+    }*/
 
     @Override
     public void doMeta() {
@@ -73,7 +74,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
         Call<ArrayList<String>> call = client.doMetaQuery();
         call.enqueue(new Callback<ArrayList<String>>() {
             @Override
-            public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+            public void onResponse(@NonNull  Call<ArrayList<String>> call, @NonNull Response<ArrayList<String>> response) {
                 //searchSuggestion.setSearchEntries(response.body());
                 //names = searchSuggestion.getNames();
                 //if (names.size() != 0) {
@@ -81,15 +82,19 @@ public class CompanyPresenter implements CompanyContract.Presenter {
                 //}
                 ArrayList<String>stringArrayList=response.body();
                 ratios1=stringArrayList;
+
+                // TODO: Fix this log
+                assert stringArrayList != null;
                 Log.d("ratios------------>",""+stringArrayList.size());
-                companyView.updateRatios(ratios1);
+
+                //companyView.updateRatios(ratios1);
 
 
 
             }
 
             @Override
-            public void onFailure(Call<ArrayList<String>> call, Throwable t) {
+            public void onFailure(@NonNull Call<ArrayList<String>> call, @NonNull Throwable t) {
                 Log.d("Search Suggestion",
                         "Failed to load Search suggestions from the server: " + t.getMessage());
             }
@@ -97,13 +102,11 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     }
 
 
-
+    /*
     @Override
-    public ArrayList<String> getratios1() {
+    public ArrayList<String> getRatios1() {
         return ratios1;
-    }
-
-
+    }*/
 
     public void setCompany(Company company) {
         this.company = company;
@@ -113,14 +116,15 @@ public class CompanyPresenter implements CompanyContract.Presenter {
         return company.getIdentifiers().getName();
     }
 
+    /*
     public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
         this.tickerFromSearchSuggestion = tickerFromSearchSuggestion;
         //loadDataForAParticularCompany(tickerFromSearchSuggestion);
     }
-    public  void update()
-    {
 
-    }
+    public  void update() {
+
+    }*/
 
 
 

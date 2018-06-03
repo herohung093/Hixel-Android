@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
+import com.hixel.hixel.company.CompanyActivity;
 import com.hixel.hixel.comparisonGraph.GraphActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.search.SearchEntry;
@@ -30,13 +31,13 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
     RecyclerView.Adapter adapter;
     RecyclerView recyclerView;
-    private ComparisonContract.Presenter cpresenter;
-    private android.support.v7.widget.SearchView searchView;
+    private ComparisonContract.Presenter cPresenter;
     private SearchView.SearchAutoComplete searchAutoComplete;
-    private  Button compareButton;
-
-    private BottomNavigationView bottomNavigationView;
+    private Button compareButton;
     private Intent moveToCompare;
+
+    private static final String TAG = CompanyActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,38 +52,41 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         setupButtons();
 
         // setup presenter
-        cpresenter = new ComparisonPresenter(this);
-        cpresenter.start();
+        cPresenter = new ComparisonPresenter(this);
+        cPresenter.start();
+
         //setup recycle list view
-        adapter = new ComparisonAdapter(this, cpresenter);
+        adapter = new ComparisonAdapter(this, cPresenter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
+
         //setup search view and search suggestion
         setupSearchView();
 
         //setup bottom navigator
-        bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_nav_compariton);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_compariton);
         setupBottomNavigationView(bottomNavigationView);
 
         // setup swiping left or right to delete item
-       setUpItemTouchHelper();
+        setUpItemTouchHelper();
     }
 
     private void setupButtons() {
         compareButton.setOnClickListener((View view) -> {
-            if (cpresenter.getListCompareCompanies().size() == 2) {
+            if (cPresenter.getListCompareCompanies().size() == 2) {
                 moveToCompare.putExtra("selectedCompanies",
-                    (ArrayList) cpresenter.getListCompareCompanies());
+                    (ArrayList) cPresenter.getListCompareCompanies());
                 startActivity(moveToCompare);
             }
-            Toast.makeText(getApplicationContext(), "please select a company", Toast.LENGTH_LONG);
+
+            Toast.makeText(getApplicationContext(), "please select a company", Toast.LENGTH_LONG).show();
         });
 
     }
 
     private void setupSearchView() {
-        searchView = findViewById(R.id.searchView);
+        SearchView searchView = findViewById(R.id.searchView);
         searchView.setQueryHint("Enter company ...");
         searchAutoComplete = searchView
             .findViewById(android.support.v7.appcompat.R.id.search_src_text);
@@ -103,8 +107,8 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
             String ticker = entry.getTicker();
             searchAutoComplete.setText(entry.getName());
 
-            cpresenter.addToCompare(ticker);
-            Log.d("COMPANY SIZE ***", String.valueOf(cpresenter.getListCompareCompanies().size()));
+            cPresenter.addToCompare(ticker);
+            Log.d(TAG, "COMPANY SIZE: " + String.valueOf(cPresenter.getListCompareCompanies().size()));
             searchAutoComplete.setText("",false);
             newsAdapter.notifyDataSetChanged();
 
@@ -120,7 +124,7 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                cpresenter.loadSearchResult(searchAutoComplete.getText().toString());
+                cPresenter.loadSearchResult(searchAutoComplete.getText().toString());
                 newsAdapter.notifyDataSetChanged();
                 return false;
             }
@@ -129,9 +133,9 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
     }
 
     private void setUpItemTouchHelper() {
-        Log.d("In side touch Helper ***"," *****");
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback
-            = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        Log.d(TAG,"In side touch Helper");
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             Drawable background;
             Drawable xMark;
@@ -140,40 +144,45 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
             private void init() {
                 background = new ColorDrawable(Color.RED);
-                xMark = ContextCompat
-                    .getDrawable(getApplicationContext(), R.drawable.ic_clear_24dp);
-                xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                xMark = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_clear_24dp);
+
+                if (xMark != null) {
+                    xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                }
+
                 xMarkMargin = (int) getApplicationContext().getResources()
                     .getDimension(R.dimen.search_icon_padding);
                 initiated = true;
 
             }
+
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                 RecyclerView.ViewHolder target) {
                 return false;
             }
+
             @Override
             public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 return super.getSwipeDirs(recyclerView, viewHolder);
             }
+
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // Row is swiped from recycler view
                 // remove it from adapter
-                cpresenter.getListCompareCompanies().remove(viewHolder.getAdapterPosition());
+                cPresenter.getListCompareCompanies().remove(viewHolder.getAdapterPosition());
                 adapter.notifyDataSetChanged();
-                Log.d("selected List size*********",
-                    String.valueOf(cpresenter.getListCompareCompanies().size()));
+                Log.d(TAG,  "selected List size: " +
+                        String.valueOf(cPresenter.getListCompareCompanies().size()));
             }
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView,
-                RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState,
-                boolean isCurrentlyActive) {
+                RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
                 // view the background view
                 View itemView = viewHolder.itemView;
-
 
                 if (viewHolder.getAdapterPosition() == -1) {
                     // not interested in those
@@ -186,9 +195,9 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
                 // draw red background
 
-                    background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(),
+                background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(),
                         itemView.getRight(), itemView.getBottom());
-                    background.draw(c);
+                background.draw(c);
 
                 // draw x mark
                 int itemHeight = itemView.getBottom() - itemView.getTop();
@@ -208,20 +217,15 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
             }
 
         };
+
         // attaching the touch helper to recycler view
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-
     @Override
     public void setPresenter(ComparisonContract.Presenter presenter) {
-        this.cpresenter = presenter;
-    }
-
-    @Override
-    public void updateRatios(ArrayList<String> ratios1) {
-
+        this.cPresenter = presenter;
     }
 
     @Override

@@ -23,19 +23,18 @@ public class CompanyIdentifiers implements Serializable {
         return name;
     }
 
-    public String getCik() {
-        return cik;
-    }
-
     @Override
     public boolean equals(Object o) {
+
         if (this == o) {
             return true;
         }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         CompanyIdentifiers that = (CompanyIdentifiers) o;
+
         return Objects.equals(ticker, that.ticker) &&
             Objects.equals(name, that.name) &&
             Objects.equals(cik, that.cik);
@@ -43,7 +42,6 @@ public class CompanyIdentifiers implements Serializable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(ticker, name, cik);
     }
 }

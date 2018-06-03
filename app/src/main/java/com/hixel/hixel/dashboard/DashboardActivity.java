@@ -249,11 +249,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
-    @Override
-    public void updateRatios(ArrayList<String> ratios1) {
-
-    }
-
     /* NOTE: Reimplement once needed
     @Override
     public void portfolioChanged() {

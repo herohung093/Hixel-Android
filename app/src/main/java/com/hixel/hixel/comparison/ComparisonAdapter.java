@@ -16,8 +16,7 @@ import com.hixel.hixel.company.CompanyActivity;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ComparisonAdapter
-        extends RecyclerView.Adapter<ComparisonAdapter.ViewHolder>{
+public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.ViewHolder> {
 
     private final ComparisonContract.Presenter presenter;
     private Context mContext;
@@ -43,7 +42,8 @@ public class ComparisonAdapter
             .getName()
             .split("\\,| ")[0]
             .toLowerCase();
-        holder.companyName.setText(companyName.substring(0, 1).toUpperCase() + companyName.substring(1));
+        String formatCompanyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
+        holder.companyName.setText(formatCompanyName);
 
         holder.companyTicker.setText(presenter.getListCompareCompanies()
                                               .get(position)

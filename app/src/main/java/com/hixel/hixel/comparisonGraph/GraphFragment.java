@@ -3,7 +3,6 @@ package com.hixel.hixel.comparisonGraph;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,12 +29,9 @@ import java.util.List;
 public class GraphFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    // private static final String ARG_PARAM1 = "param1";
+    // private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     LineChart lineChart;
     String[] years;
 
@@ -47,6 +43,7 @@ public class GraphFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
+    /*
     public static GraphFragment newInstance(String param1, String param2) {
         GraphFragment fragment = new GraphFragment();
         Bundle args = new Bundle();
@@ -55,15 +52,18 @@ public class GraphFragment extends Fragment {
         fragment.setArguments(args);
 
         return fragment;
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
+        }*/
+
     }
 
     @Override
@@ -86,8 +86,8 @@ public class GraphFragment extends Fragment {
             Entry compYearData = new Entry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
             compEntry.add(compYearData);
         }
-        LineDataSet setComp = new LineDataSet(compEntry,company.getIdentifiers().getName());
-        return setComp;
+
+        return new LineDataSet(compEntry,company.getIdentifiers().getName());
     }
     public void drawGraph(ArrayList<Company> companies,String selectedRatio){
         List<ILineDataSet> dataSets = new ArrayList<>();
@@ -125,7 +125,7 @@ public class GraphFragment extends Fragment {
 
         YAxis yAxis = lineChart.getAxisLeft();
         YAxis yRight = lineChart.getAxisRight();
-        yRight.setTextColor(getResources().getColor(R.color.textColorDefault));
+        yRight.setTextColor(R.color.textColorDefault);
         setupAxis(xAxis, yAxis);
 
         Legend legend = lineChart.getLegend();
@@ -141,10 +141,10 @@ public class GraphFragment extends Fragment {
         }
 
         // we don't draw numbers, so no decimal digits needed
-
+        /*
         public int getDecimalDigits() {
             return 0;
-        }
+        }*/
     };
 
     private void checkYearNull(List<FinancialData> financial) {
@@ -168,6 +168,7 @@ public class GraphFragment extends Fragment {
 
     public void setupDatasetStyle(LineDataSet setCompA) {
         setCompA.setDrawCircleHole(true);
+        // TODO: Check if deprecated method is required.
         setCompA.setCircleSize(7);
         setCompA.setValueTextSize(12);
         setCompA.setValueTextColor(Color.WHITE);
@@ -180,6 +181,7 @@ public class GraphFragment extends Fragment {
         legend.setEnabled(true);
         legend.setFormSize(7f); // set the size of the legend forms/shapes
         legend.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
+        // TODO: Check if deprecated method is required
         legend.setPosition(Legend.LegendPosition.ABOVE_CHART_LEFT);
 
         legend.setTextSize(14f);
@@ -201,11 +203,12 @@ public class GraphFragment extends Fragment {
 
 
     // TODO: Rename method, update argument and hook method into UI event
+    /*
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
+    }*/
 
     @Override
     public void onAttach(Context context) {
@@ -225,8 +228,8 @@ public class GraphFragment extends Fragment {
     }
 
 
-    public interface OnFragmentInteractionListener {
+    interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        // void onFragmentInteraction(Uri uri);
     }
 }

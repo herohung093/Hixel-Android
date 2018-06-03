@@ -8,14 +8,11 @@ import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.models.Company;
 
-import java.util.ArrayList;
-
-
 public class CompanyActivity extends AppCompatActivity implements CompanyContract.View {
 
     private CompanyContract.Presenter presenter;
-    private String TAG = "COMPANY_VIEW";
-    private ArrayList<String> ratios1 = new ArrayList<>();
+    // private String TAG = "COMPANY_VIEW";
+    // private ArrayList<String> ratios1 = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +21,10 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         setContentView(R.layout.activity_company);
         // doMeta();
         presenter = new CompanyPresenter(this);
+
         if(getIntent().hasExtra("company")) {
             presenter.setCompany((Company) getIntent().getSerializableExtra("company"));
-        }
-        else
-        {
+        } else {
             presenter.setCompany((Company) getIntent().getSerializableExtra("ticker"));
 
         }
@@ -50,7 +46,7 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
     }
 
-
+    /*
     public void updateRatios(ArrayList<String> ratios1) {
         TextView liquidity = findViewById(R.id.liquidity_text);
         TextView leverage = findViewById(R.id.leverage_text);
@@ -65,26 +61,21 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         liquidityScore.setText(getValue(ratios1.get(0), 2017));
         leverageScore.setText(getValue(ratios1.get(1), 2017));
         healthScore.setText(getValue(ratios1.get(2), 2017));
-
-
-    }
+    }*/
 
     public void setPresenter(@NonNull CompanyContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
-    public String getValue(String name,int year)
-    {
+    /*
+    public String getValue(String name,int year) {
        String value= presenter.getRatio(name,year);
-       if(value.length()>4)
-       {
+       if(value.length()>4) {
            return value.substring(0,5);
-       }
-       else
-       {
+       } else {
            return value;
        }
-    }
+    }*/
 
 
 

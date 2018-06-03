@@ -16,12 +16,7 @@ public interface ComparisonContract {
 
     interface Presenter extends BasePresenter{
         List<Company> getListCompareCompanies();
-        void compare();
-        void removeCompareFromList(int position);
         void addToCompare(String ticker);
-        void removeLastItemFromList();
         void loadSearchResult(String query);
-        List<String> getNames();
-
     }
 }

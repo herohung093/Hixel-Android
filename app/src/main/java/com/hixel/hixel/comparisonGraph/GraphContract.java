@@ -8,15 +8,12 @@ import java.util.ArrayList;
 public interface GraphContract  {
 
     interface View extends BaseView<Presenter>{
-        void graphChanged(String ratio);
     }
 
     interface Presenter extends BasePresenter{
         ArrayList<Company> getCompanies();
         void checkUpFinancialEntry(ArrayList<String> toBeCheckRatios);
         void doMeta();
-        ArrayList<String>getRatios();
         void setRatios(ArrayList<String> ratios);
-
     }
 }

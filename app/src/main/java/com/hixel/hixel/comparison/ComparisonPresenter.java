@@ -17,6 +17,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
@@ -40,9 +41,10 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
 
     }
 
+    /*
     public void setListCompareCompanies(List<Company> listCompareCompanies) {
         this.listCompareCompanies = listCompareCompanies;
-    }
+    }*/
 
     @Override
     public void start() {
@@ -60,13 +62,15 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
             .subscribeWith(getSearchObserver()));
     }
 
+    /*
     public void removeCompareFromList(int position){
         listCompareCompanies.remove(position);
 
     }
+
     public void compare(){
 
-    }
+    }*/
 
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {
         return new DisposableObserver<List<SearchEntry>>() {
@@ -105,14 +109,13 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
                 public void onResponse(@NonNull Call<ArrayList<Company>> call,
                                        @NonNull Response<ArrayList<Company>> response) {
 
-                    if(response.body()==null)
-                    {
+                    if(response.body()==null) {
                         mComparisonView.userNotification("Company not found");
 
-                    }else {
-                        Log.d("RECEIVED COMPANY",
-                            response.body().get(0).getIdentifiers().getTicker());
-                        listCompareCompanies.add(response.body().get(0));
+                    } else {
+                        Log.d("RECEIVED COMPANY", Objects.requireNonNull(response.body()).get(0).getIdentifiers().getTicker());
+                        listCompareCompanies.add(Objects.requireNonNull(response.body()).get(0));
+
                         mComparisonView.selectedListChanged();
                     }
                 }
@@ -127,22 +130,23 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
 
     }
 
+    /*
     @Override
     public void removeLastItemFromList() {
         if (listCompareCompanies.size()!= 0) {
             listCompareCompanies.remove(listCompareCompanies.size() - 1);
         }
-    }
+    }*/
 
     @Override
     public void loadSearchResult(String query) {
         publishSubject.onNext(query);
     }
 
-
+    /*
     @Override
     public List<String> getNames() {
         return names;
-    }
+    }*/
 
 }

@@ -24,7 +24,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
     Intent intentReceiver;
     Spinner listOfGraph;
     private GraphContract.Presenter mPresenter;
-    private BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +36,25 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
 
         mPresenter = new GraphPresenter( this, receivedCompanies);
         mPresenter.start();
+
         //setup bottom navigator
-        bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_nav_graph);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_graph);
         setupBottomNavigationView(bottomNavigationView);
 
     }
 
+    /*
     @Override
     public void graphChanged(String ratio) {
 
-    }
+    }*/
 
     @Override
     public void setPresenter(GraphContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
+    /*
     @Override
     public void updateRatios(ArrayList<String> ratios1) {
         this.ratios=ratios1;
@@ -60,7 +63,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         listOfGraph = findViewById(R.id.spinner);
         listOfGraph.setOnItemSelectedListener(this);
         listOfGraph.setAdapter(listRatiosAdapter);
-    }
+    }*/
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -74,10 +77,12 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
 
     }
 
+    /*
     @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
+    }*/
+
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
