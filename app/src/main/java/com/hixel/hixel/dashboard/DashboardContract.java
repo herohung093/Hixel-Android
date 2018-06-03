@@ -26,5 +26,11 @@ public interface DashboardContract {
         void loadSearchResult(String query);
         void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion);
         List<Company> getCompanies();
+
     }
+    interface Adapter extends BasePresenter
+    {
+
+    }
+
 }

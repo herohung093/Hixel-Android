@@ -8,9 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,16 +35,17 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
+import com.hixel.hixel.models.Company;
 import com.hixel.hixel.search.SearchEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
-        OnItemSelectedListener {
+        OnItemSelectedListener, RecyclerItemTouchHelperListner {
 
     private DashboardContract.Presenter presenter;
-    RecyclerView.Adapter dashboardAdapter;
+    DashboardAdapter dashboardAdapter;
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
     private RadarChart chart;
@@ -247,6 +251,11 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mRecyclerView.setAdapter(this.dashboardAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback=new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     }
 
     @Override
@@ -286,5 +295,16 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
                 .show();
     }
 
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int postition) {
+        if(viewHolder instanceof DashboardAdapter.ViewHolder)
+        {
+            String name=presenter.getCompanies().get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
+            Company deletedCompany=presenter.getCompanies().get(viewHolder.getAdapterPosition());
+            int deletedIndex=viewHolder.getAdapterPosition();
+            dashboardAdapter.removeItem(deletedIndex);
+
+        }
+    }
 }
 
