@@ -47,6 +47,10 @@ public class CompanyPresenter implements CompanyContract.Presenter {
         return (value == null) ? "N/A" : Double.toString(value);
     }
 
+    public Company getCompany() {
+        return company;
+    }
+
     public int getColorIndicator(String ratio, double value) {
         //Default thresholds.
         double green = 1.5;
