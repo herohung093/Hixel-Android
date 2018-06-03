@@ -28,43 +28,26 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.hixel.hixel.network.Client.getRetrofit;
+import static com.hixel.hixel.network.Client.getClient;
 
 public class DashboardPresenter implements DashboardContract.Presenter {
 
-    // Associated View
+    private static final String TAG = DashboardPresenter.class.getSimpleName();
+
     private final DashboardContract.View dashboardView;
-
-    // Associated Model
     private Portfolio portfolio;
-
-    private CompositeDisposable disposable;
-    private PublishSubject<String> publishSubject;
+    private ServerInterface serverInterface;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     DashboardPresenter(DashboardContract.View dashboardView) {
         this.dashboardView = dashboardView;
         this.dashboardView.setPresenter(this);
         this.portfolio = new Portfolio();
-
-        disposable = new CompositeDisposable();
-        publishSubject = PublishSubject.create();
     }
 
     @Override
     public void start() {
         loadPortfolio();
-        populateGraph();
-
-        disposable.add(publishSubject
-                .debounce(50, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged()
-                .filter(text -> !text.isEmpty())
-                .switchMapSingle((Function<String, Single<ArrayList<SearchEntry>>>) searchTerm -> getRetrofit()
-                        .create(ServerInterface.class)
-                        .doSearchQuery(searchTerm)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread()))
-                .subscribeWith(getSearchObserver()));
     }
 
     @Override
@@ -80,11 +63,9 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         companies.add("FB");
         companies.add("AMZN");
 
-        ServerInterface client =
-                getRetrofit()
-                .create(ServerInterface.class);
+        serverInterface = getClient().create(ServerInterface.class);
 
-        Call<ArrayList<Company>> call = client
+        Call<ArrayList<Company>> call = serverInterface
                 .doGetCompanies(StringUtils.join(companies, ','), 1);
 
         call.enqueue(new Callback<ArrayList<Company>>() {
@@ -94,7 +75,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
                 portfolio.setCompanies(response.body());
 
-                // Setup the views with portfolio data then hide the loading indicator
+                // Setup the views with portfolio data then hide the loading indicator.
                 dashboardView.populateChart();
                 dashboardView.setupDashboardAdapter();
                 dashboardView.showLoadingIndicator(false);
@@ -110,32 +91,32 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     }
 
     @Override
-    public void populateGraph() {
-        //dashboardView.showMainGraph(portfolio.getCompanies());
-    }
+    public void search(PublishSubject<String> publishSubject) {
+        disposable.add(publishSubject.debounce(300, TimeUnit.MILLISECONDS)
+                .filter(s -> !s.isEmpty())
+                .distinctUntilChanged()
+                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) s ->
+                        serverInterface.doSearchQuery(s)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread()))
+                .subscribeWith(new DisposableObserver<List<SearchEntry>>() {
 
-    private DisposableObserver<List<SearchEntry>> getSearchObserver() {
-        return new DisposableObserver<List<SearchEntry>>() {
-            @Override
-            public void onNext(List<SearchEntry> result) {
-                dashboardView.searchResultReceived(result);
-            }
+                    @Override
+                    public void onNext(List<SearchEntry> searchEntries) {
+                        // Do something here??
+                        dashboardView.showSuggestions(searchEntries);
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                Log.e("SearchObserver", e.getMessage());
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " + e.getMessage());
+                    }
 
-            @Override
-            public void onComplete() {
-                //What a gorgeous little stub.
-            }
-        };
-    }
+                    @Override
+                    public void onComplete() {
 
-    @Override
-    public void loadSearchResult(String searchTerm) {
-        publishSubject.onNext(searchTerm);
+                    }
+                }));
     }
 
     @Override
@@ -152,39 +133,4 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         Collections.reverse(portfolio.getCompanies());
     }
 
-
-    // TODO: Figure out if this is needed
-    @Override
-    public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
-        // loadDataForAParticularCompany(tickerFromSearchSuggestion);
-    }
-
-    // TODO: Implement this in a way in which the Presenter does NOT rely on a Company object
-    // NOTE: This is not currently being implemented anywhere due to breaking changes
-    // it will be re-implemented later in this sprint.
-    // **** Could we just pass a ticker (String) to the?
-    /*
-    public void loadDataForAParticularCompany(String ticker) {
-
-        ServerInterface client =
-                getRetrofit()
-                .create(ServerInterface.class);
-
-        Call<ArrayList<Company>> call = client
-                .doGetCompanies(ticker, 1);
-
-        call.enqueue(new Callback<ArrayList<Company>>() {
-            @Override
-            public void onResponse(@NonNull Call<ArrayList<Company>> call,
-                                   @NonNull Response<ArrayList<Company>> response) {
-
-                // dashboardView.goToCompanyView();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
-                //TODO: Add failure handling...
-            }
-        });
-    }*/
 }

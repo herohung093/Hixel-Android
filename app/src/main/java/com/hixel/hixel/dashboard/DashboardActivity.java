@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,8 +33,10 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
-import com.hixel.hixel.search.SearchEntry;
 
+import com.hixel.hixel.search.SearchAdapter;
+import com.hixel.hixel.search.SearchEntry;
+import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +48,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
     private RadarChart chart;
+    SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
 
     @Override
@@ -83,31 +87,20 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        MenuItem search = menu.findItem(R.id.action_search);
+        MenuItem searchView = menu.findItem(R.id.action_search);
+        PublishSubject<String> subject = PublishSubject.create();
+        search = (SearchView) searchView.getActionView();
+        searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
-        SearchView searchView = (SearchView) search.getActionView();
-        searchView.setQueryHint("Enter company ...");
-
-        searchAutoComplete =
-                searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        // Styling the search bar
         searchAutoComplete.setHintTextColor(Color.WHITE);
         searchAutoComplete.setTextColor(Color.WHITE);
-
-        ImageView searchClose = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        ImageView searchClose = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         searchClose.setImageResource(R.drawable.ic_clear);
 
-        ArrayAdapter<String> newsAdapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
-        searchAutoComplete.setAdapter(newsAdapter);
+        presenter.search(subject);
 
-        searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
-            SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
-            String ticker = entry.getTicker();
-
-            presenter.setTickerFromSearchSuggestion(ticker);
-        });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        search.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -115,7 +108,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                presenter.loadSearchResult(searchAutoComplete.getText().toString());
+                subject.onNext(newText);
                 return false;
             }
         });
@@ -124,18 +117,22 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }
 
     @Override
+<<<<<<< HEAD
     public void searchResultReceived(List<SearchEntry> result) {
        ArrayAdapter<SearchEntry> resultsAdapter =
                 new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, result);
+=======
+    public void showSuggestions(List<SearchEntry> searchEntries) {
+        SearchAdapter adapter = new SearchAdapter(this, searchEntries);
+>>>>>>> search
 
-        searchAutoComplete.setAdapter(resultsAdapter);
-        resultsAdapter.notifyDataSetChanged();
+        searchAutoComplete.setAdapter(adapter);
     }
 
     // TODO: Implement this properly
     @Override
     public void setPresenter(@NonNull DashboardContract.Presenter presenter) {
-        //presenter = presenter;
+        // presenter = presenter;
     }
 
     // TODO: Implement this so the default is nothing selected
@@ -200,7 +197,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
                     "Debt-to-Equity",
                     "Current Ratio",
                     "Quick Ratio",
-
             };
 
             @Override
@@ -249,24 +245,23 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
+<<<<<<< HEAD
     /* NOTE: Reimplement once needed
     @Override
     public void portfolioChanged() {
         dashboardAdapter.notifyDataSetChanged();
     }*/
+=======
+    @Override
+    public void updateRatios(ArrayList<String> ratios1) {
+
+    }
+>>>>>>> search
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
-    // TODO: Implement this without the need for a Company object
-    /*
-    public void goToCompanyView() {
-        Intent intent = new Intent(this, CompanyActivity.class);
-        intent.putExtra("ticker", presenter.getCompany());
-        startActivity(intent);
-    }*/
 
     @Override
     public void showLoadingIndicator(final boolean active) {
@@ -276,7 +271,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     @Override
     public void showLoadingError() {
-        Snackbar.make(binding.getRoot(), "Error loading your portfolio", Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(binding.getRoot(), "Error loading your portfolio", Snackbar.LENGTH_LONG)
                 .setAction("RETRY", view -> presenter.loadPortfolio())
                 .show();
     }

@@ -47,7 +47,7 @@ public class GraphPresenter implements GraphContract.Presenter {
     }
     @Override
     public void doMeta() {
-        ServerInterface client = Client.getRetrofit().create(ServerInterface.class);
+        ServerInterface client = Client.getClient().create(ServerInterface.class);
         Call<ArrayList<String>> call = client.doMetaQuery();
         call.enqueue(new Callback<ArrayList<String>>() {
 
