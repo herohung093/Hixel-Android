@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +43,8 @@ import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
         OnItemSelectedListener {
+
+    private static final String TAG = DashboardActivity.class.getSimpleName();
 
     private DashboardContract.Presenter presenter;
     RecyclerView.Adapter dashboardAdapter;
@@ -81,6 +84,9 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         // Init presenter
         presenter = new DashboardPresenter(this);
         presenter.start();
+
+        Log.d(TAG, Float.toString(binding.mainGraph.getElevation()));
+
     }
 
     @Override
