@@ -17,7 +17,8 @@ public class CompanyAdapter extends ArrayAdapter<String> {
     private Context mContext;
     private  int resource;
 
-    private static class viewHolder{
+
+    private static class  viewHolder{
         TextView name;
         TextView value;
     }

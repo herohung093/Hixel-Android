@@ -20,5 +20,6 @@ public interface CompanyContract {
         int getColorIndicator(String ratio, double value);
         ArrayList<String> getRatios1();
         void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion);
+        Company getCompany();
     }
 }
