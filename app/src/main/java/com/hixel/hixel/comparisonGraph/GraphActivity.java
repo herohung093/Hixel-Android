@@ -36,7 +36,6 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
 
         mPresenter = new GraphPresenter( this, receivedCompanies);
         mPresenter.start();
-
         //setup bottom navigator
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_nav_graph);
         setupBottomNavigationView(bottomNavigationView);
@@ -58,7 +57,6 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         this.ratios=ratios1;
         listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ratios);
         listRatiosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         listOfGraph = findViewById(R.id.spinner);
         listOfGraph.setOnItemSelectedListener(this);
         listOfGraph.setAdapter(listRatiosAdapter);
@@ -68,7 +66,6 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         GraphFragment FragmentA =
                 (GraphFragment) getFragmentManager().findFragmentById(R.id.graphFragment);
-
         FragmentA.drawGraph(mPresenter.getCompanies(), adapterView.getSelectedItem().toString());
     }
 

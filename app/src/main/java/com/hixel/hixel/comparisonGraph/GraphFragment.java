@@ -173,6 +173,7 @@ public class GraphFragment extends Fragment {
         setCompA.setValueTextColor(Color.WHITE);
         setCompA.setCircleHoleRadius(3);
         setCompA.setAxisDependency(YAxis.AxisDependency.LEFT);
+
     }
 
     public void setupLegend(Legend legend) {

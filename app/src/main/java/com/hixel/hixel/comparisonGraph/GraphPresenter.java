@@ -2,7 +2,6 @@ package com.hixel.hixel.comparisonGraph;
 
 import android.util.Log;
 import com.hixel.hixel.models.Company;
-import com.hixel.hixel.models.FinancialData;
 import com.hixel.hixel.network.Client;
 import com.hixel.hixel.network.ServerInterface;
 import java.util.ArrayList;
@@ -21,7 +20,8 @@ public class GraphPresenter implements GraphContract.Presenter {
         this.graphView = graphView;
         this.companies = companies;
         this.ratios = new ArrayList<>();
-        checkUpFinancialEntry();
+        doMeta();
+
     }
 
     @Override
@@ -30,16 +30,15 @@ public class GraphPresenter implements GraphContract.Presenter {
     }
 
     @Override
-    public void checkUpFinancialEntry() {
+    public void checkUpFinancialEntry(ArrayList<String> toBeCheckRatios) {
         for (Company c : companies) {
-            for (FinancialData f : c.getFinancialDataEntries()) {
-                LinkedHashMap<String, Double> ratios = f.getRatios();
+            for (int i=0;i<c.getFinancialDataEntries().size();i++) {
+                LinkedHashMap<String, Double> ratiosData = c.getFinancialDataEntries().get(i).getRatios();
 
-                for (String k : this.ratios) {
-                    if (ratios.get(k) == null) {
-                        Log.d(String.valueOf(f.getYear()) + k + ": ", "NULL***");
-                        ratios.put(k, 0.0);
-                        Log.d(String.valueOf(f.getYear()) + k + ": ", ratios.get(k).toString());
+                for (String k : toBeCheckRatios) {
+                    if (ratiosData.get(k) == null) {
+                        Log.d(String.valueOf(c.getFinancialDataEntries().get(i).getYear()) + k + ": ", "NULL***");
+                        c.getFinancialDataEntries().get(i).getRatios().put(k,0.0);
                     }
                 }
             }
@@ -53,7 +52,8 @@ public class GraphPresenter implements GraphContract.Presenter {
             @Override
             public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
                 ArrayList<String>stringArrayList=response.body();
-                ratios=stringArrayList;
+                setRatios(stringArrayList);
+                checkUpFinancialEntry(stringArrayList);
                 Log.d("ratios------------>",""+stringArrayList.size());
                 graphView.updateRatios(ratios);
 
@@ -70,6 +70,11 @@ public class GraphPresenter implements GraphContract.Presenter {
     @Override
     public ArrayList<String> getRatios() {
         return ratios;
+    }
+
+    @Override
+    public void setRatios(ArrayList<String> ratios) {
+        this.ratios=ratios;
     }
 
     @Override
