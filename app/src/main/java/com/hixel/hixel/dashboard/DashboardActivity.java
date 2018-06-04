@@ -7,14 +7,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,21 +39,23 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 
-import com.hixel.hixel.search.SearchAdapter;
+import com.hixel.hixel.models.Company;
 import com.hixel.hixel.search.SearchEntry;
+
+import com.hixel.hixel.search.SearchAdapter;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
-        OnItemSelectedListener {
+        OnItemSelectedListener, RecyclerItemTouchHelperListner {
 
     @SuppressWarnings("unused")
     private static final String TAG = DashboardActivity.class.getSimpleName();
 
     private DashboardContract.Presenter presenter;
-    RecyclerView.Adapter dashboardAdapter;
+    DashboardAdapter dashboardAdapter;
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
     private RadarChart chart;
@@ -249,6 +252,11 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mRecyclerView.setAdapter(this.dashboardAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback=new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
     }
 
     /* NOTE: Reimplement once needed
@@ -276,5 +284,16 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
                 .show();
     }
 
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int postition) {
+        if(viewHolder instanceof DashboardAdapter.ViewHolder)
+        {
+            String name=presenter.getCompanies().get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
+            Company deletedCompany=presenter.getCompanies().get(viewHolder.getAdapterPosition());
+            int deletedIndex=viewHolder.getAdapterPosition();
+            dashboardAdapter.removeItem(deletedIndex);
+
+        }
+    }
 }
 

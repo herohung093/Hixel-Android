@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.company.CompanyActivity;
+import com.hixel.hixel.models.Company;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -20,6 +21,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     private final DashboardContract.Presenter presenter;
     private Context context;
+    private ViewHolder mViewHolder;
 
     DashboardAdapter(Context context, DashboardContract.Presenter presenter) {
         this.presenter = presenter;
@@ -36,6 +38,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        this.mViewHolder=holder;
         String companyName = presenter.getCompanies()
                 .get(position)
                 .getIdentifiers()
@@ -53,6 +56,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                                               .getIdentifiers()
                                               .getTicker());
 
+
         int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
 
         // TODO: Replace with an 'indicator arrow'
@@ -60,6 +64,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                                     presenter.getCompanies()
                                                    .get(position)
                                                    .getRatio("Return on Equity", last_year) * 100));
+
 
         // TODO: Replace as part of PTH-140
         //holder.companyHealth.setTextColor(presenter.setHealthColor(position));
@@ -79,6 +84,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         return presenter.getCompanies().size();
     }
 
+    public void removeItem(int postition)
+    {
+        presenter.getCompanies().remove(postition);
+        notifyItemRemoved(postition);
+
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout parentLayout;
         TextView companyName;
@@ -92,5 +104,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             companyIndicator = itemView.findViewById(R.id.indicator_value);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
+
+    }
+    /*
+    Function to remove item from the recycler view
+     */
+
+    /*
+    Function for restoring the deleted item.
+     */
+    public void restoreItem(Company company,int postition)
+    {
+        presenter.getCompanies().add(postition,company);
+        notifyItemInserted(postition);
     }
 }

@@ -25,5 +25,11 @@ public interface DashboardContract {
         void sortCompaniesBy(String name);
         void search(PublishSubject<String> subject);
         List<Company> getCompanies();
+
     }
+    interface Adapter extends BasePresenter
+    {
+
+    }
+
 }
