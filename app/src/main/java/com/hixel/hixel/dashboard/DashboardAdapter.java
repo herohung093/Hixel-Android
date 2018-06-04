@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         this.mViewHolder=holder;
+        Log.d("POtiiiiiiionnnn",""+position);
         String companyName = presenter.getCompanies()
                 .get(position)
                 .getIdentifiers()
@@ -75,9 +77,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                     presenter.getCompanies().get(holder.getAdapterPosition()));
 
             context.startActivity(intent);
+
+
         });
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -88,6 +93,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     {
         presenter.getCompanies().remove(postition);
         notifyItemRemoved(postition);
+
+    }
+    /*
+    This method will be called from the dashboard activity
+     */
+    public void addItem(Company company)
+    {
+        presenter.getCompanies().add(getItemCount(),company);
+        notifyItemInserted(getItemCount());// re check here
 
     }
 

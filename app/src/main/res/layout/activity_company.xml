@@ -6,8 +6,8 @@
   <ScrollView
       android:id="@+id/scrollView"
       android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="sample.android.databinding.company.CompanyActivity">
+      android:layout_height="match_parent"
+      tools:context="sample.android.databinding.company.CompanyActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,7 +26,6 @@
             android:layout_height="64dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="56dp"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -211,13 +210,6 @@
 
         </ListView>
 
-      <com.github.mikephil.charting.charts.BarChart
-          android:id="@+id/lineChart2"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_marginTop="980dp"
-          android:background="@color/colorPrimary" />
-
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
@@ -229,8 +221,19 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
+        <ImageButton
+            android:id="@+id/addButton"
+            android:layout_width="45dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="350dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/add"
+            android:visibility="gone"
+            android:contentDescription="TODO" />
 
     </RelativeLayout>
+
 
   </ScrollView>
 

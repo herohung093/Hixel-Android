@@ -37,6 +37,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
     // Associated Model
     private Portfolio portfolio;
+    private Company mCompany;
 
     private CompositeDisposable disposable;
     private PublishSubject<String> publishSubject;
@@ -163,7 +164,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     // NOTE: This is not currently being implemented anywhere due to breaking changes
     // it will be re-implemented later in this sprint.
     // **** Could we just pass a ticker (String) to the?
-    /*
+
     public void loadDataForAParticularCompany(String ticker) {
 
         ServerInterface client =
@@ -178,7 +179,8 @@ public class DashboardPresenter implements DashboardContract.Presenter {
             public void onResponse(@NonNull Call<ArrayList<Company>> call,
                                    @NonNull Response<ArrayList<Company>> response) {
 
-                // dashboardView.goToCompanyView();
+                mCompany=  response.body().get(0);
+                dashboardView.goToCompanyView();
             }
 
             @Override
@@ -186,5 +188,9 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                 //TODO: Add failure handling...
             }
         });
-    }*/
+    }
+    public Company getCompany()
+    {
+        return mCompany;
+    }
 }

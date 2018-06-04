@@ -1,5 +1,6 @@
 package com.hixel.hixel.dashboard;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +23,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -33,9 +37,12 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
+import com.hixel.hixel.company.CompanyActivity;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.models.Company;
+import com.hixel.hixel.models.CompanyIdentifiers;
+import com.hixel.hixel.models.FinancialData;
 import com.hixel.hixel.search.SearchEntry;
 
 import java.util.ArrayList;
@@ -49,7 +56,9 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
     private RadarChart chart;
+    private Company mCompanyReturned;
     SearchView.SearchAutoComplete searchAutoComplete;
+    private static final int SECOND_ACTIVITY__REQUEST_CODE=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +90,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         // Init presenter
         presenter = new DashboardPresenter(this);
         presenter.start();
+
+
     }
 
     @Override
@@ -107,8 +118,9 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
             SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
-
+            presenter.loadDataForAParticularCompany(ticker);
             presenter.setTickerFromSearchSuggestion(ticker);
+            // call the load to portfolio method from here
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -245,6 +257,22 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         chart.invalidate();
     }
 
+/* For a very weird reason the app crashes because of this. A fix will be made soon.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1)
+        {
+            if(resultCode==RESULT_OK)
+            {
+
+                this.mCompanyReturned= ((Company)getIntent().getSerializableExtra("result"));
+            }
+        }
+
+    }
+    */
+
     @Override
     public void setupDashboardAdapter() {
         dashboardAdapter = new DashboardAdapter(this, presenter);
@@ -256,6 +284,19 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback=new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
+        CompanyIdentifiers ci=new CompanyIdentifiers("ibm","Inter","90");
+        List<FinancialData>f=new ArrayList<>();
+        Company c=new Company(ci,f);
+        addItem(c);
+
+
+        if (getIntent().hasExtra("result")) {
+            Log.d("INtent----------->","bOOOOOOOM11111111");
+
+            addItem((Company)getIntent().getSerializableExtra("result"));
+        }
+
+
     }
 
     @Override
@@ -275,12 +316,12 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }
 
     // TODO: Implement this without the need for a Company object
-    /*
+
     public void goToCompanyView() {
         Intent intent = new Intent(this, CompanyActivity.class);
         intent.putExtra("ticker", presenter.getCompany());
-        startActivity(intent);
-    }*/
+        startActivityForResult(intent,1);
+    }
 
     @Override
     public void showLoadingIndicator(final boolean active) {
@@ -306,5 +347,12 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
         }
     }
+    public void addItem(Company company)
+    {
+        dashboardAdapter.addItem(company);
+    }
+
+
+
 }
 
