@@ -7,15 +7,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -40,10 +43,12 @@ import com.hixel.hixel.search.SearchEntry;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
         OnItemSelectedListener {
 
+    @SuppressWarnings("unused")
     private static final String TAG = DashboardActivity.class.getSimpleName();
 
     private DashboardContract.Presenter presenter;
@@ -61,7 +66,9 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
         // Set up the toolbar
         setSupportActionBar(binding.toolbar.toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         binding.toolbar.toolbarTitle.setText(R.string.dashboard);
+
 
         // Set up the dropdown options
         Spinner spinner = binding.spinner;
@@ -85,8 +92,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         presenter = new DashboardPresenter(this);
         presenter.start();
 
-        Log.d(TAG, Float.toString(binding.mainGraph.getElevation()));
-
     }
 
     @Override
@@ -95,6 +100,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         MenuItem searchView = menu.findItem(R.id.action_search);
         PublishSubject<String> subject = PublishSubject.create();
+
         search = (SearchView) searchView.getActionView();
         searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 

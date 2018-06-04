@@ -62,9 +62,8 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         // from search suggestion
 
     }
+
     // TODO: The updateRatios()method will be cleaned up and refactored soon.Ignore this method for the time being.
-
-
     public void updateRatios(ArrayList<String> ratios1) {
         TextView liquidity = findViewById(R.id.liquidity_text);
         TextView leverage = findViewById(R.id.leverage_text);
