@@ -54,6 +54,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     public void loadPortfolio() {
 
         dashboardView.showLoadingIndicator(true);
+
         // Dummy data before the DB is hooked up. Passing a list of tickers to the server.
         List<String> companies = new ArrayList<>();
         companies.add("AAPL");
