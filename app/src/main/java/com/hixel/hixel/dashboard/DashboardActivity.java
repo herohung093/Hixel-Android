@@ -1,6 +1,5 @@
 package com.hixel.hixel.dashboard;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -17,7 +16,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,10 +24,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -56,7 +52,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
-        OnItemSelectedListener, RecyclerItemTouchHelperListner {
+        OnItemSelectedListener, RecyclerItemTouchHelperListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = DashboardActivity.class.getSimpleName();
@@ -68,11 +64,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     private RadarChart chart;
     SearchView search;
 
-    private Company mCompanyReturned;
-
     SearchView.SearchAutoComplete searchAutoComplete;
-
-    private static final int SECOND_ACTIVITY__REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +75,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         setSupportActionBar(binding.toolbar.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         binding.toolbar.toolbarTitle.setText(R.string.dashboard);
-
 
         // Set up the dropdown options
         Spinner spinner = binding.spinner;
@@ -165,14 +156,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }
 
     @Override
-    public void searchResultReceived(List<SearchEntry> result) {
-
-    }
-
-    // TODO: Implement this properly
-    @Override
     public void setPresenter(@NonNull DashboardContract.Presenter presenter) {
-        // presenter = presenter;
     }
 
     // TODO: Implement this so the default is nothing selected
@@ -277,22 +261,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         chart.invalidate();
     }
 
-/* For a very weird reason the app crashes because of this. A fix will be made soon.
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1)
-        {
-            if(resultCode==RESULT_OK)
-            {
-
-                this.mCompanyReturned= ((Company)getIntent().getSerializableExtra("result"));
-            }
-        }
-
-    }
-    */
-
     @Override
     public void setupDashboardAdapter() {
         dashboardAdapter = new DashboardAdapter(this, presenter);
@@ -302,36 +270,29 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback=new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
+
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
+                new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
+
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
-        CompanyIdentifiers ci=new CompanyIdentifiers("ibm","Inter","90");
-        List<FinancialData>f=new ArrayList<>();
-        Company c=new Company(ci,f);
+
+        CompanyIdentifiers ci = new CompanyIdentifiers("ibm","Inter","90");
+        List<FinancialData> f = new ArrayList<>();
+        Company c = new Company(ci,f);
+
         addItem(c);
 
-
         if (getIntent().hasExtra("result")) {
-            Log.d("INtent----------->","bOOOOOOOM11111111");
-
             addItem((Company)getIntent().getSerializableExtra("result"));
         }
 
 
     }
 
-    /* NOTE: Reimplement once needed
-    @Override
-    public void portfolioChanged() {
-        dashboardAdapter.notifyDataSetChanged();
-    }*/
-
-
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
-    // TODO: Implement this without the need for a Company object
 
     public void goToCompanyView() {
         Intent intent = new Intent(this, CompanyActivity.class);
@@ -353,22 +314,19 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }
 
     @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int postition) {
-        if(viewHolder instanceof DashboardAdapter.ViewHolder)
-        {
-            String name=presenter.getCompanies().get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
-            Company deletedCompany=presenter.getCompanies().get(viewHolder.getAdapterPosition());
-            int deletedIndex=viewHolder.getAdapterPosition();
-            dashboardAdapter.removeItem(deletedIndex);
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
 
+        if (viewHolder instanceof DashboardAdapter.ViewHolder) {
+
+            int deletedIndex = viewHolder.getAdapterPosition();
+            dashboardAdapter.removeItem(deletedIndex);
         }
     }
+
     public void addItem(Company company)
     {
         dashboardAdapter.addItem(company);
     }
-
-
 
 }
 

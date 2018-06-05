@@ -10,6 +10,7 @@ import com.hixel.hixel.search.SearchEntry;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -35,12 +36,12 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     private static final String TAG = DashboardPresenter.class.getSimpleName();
 
     private final DashboardContract.View dashboardView;
+
     private Portfolio portfolio;
+    private Company company;
+
     private ServerInterface serverInterface;
     private CompositeDisposable disposable = new CompositeDisposable();
-
-    // TODO: not my code.
-    private Company mCompany;
 
     DashboardPresenter(DashboardContract.View dashboardView) {
         this.dashboardView = dashboardView;
@@ -107,7 +108,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
                     @Override
                     public void onNext(List<SearchEntry> searchEntries) {
-                        // Do something here??
                         dashboardView.showSuggestions(searchEntries);
                     }
 
@@ -149,19 +149,16 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
     public void loadDataForAParticularCompany(String ticker) {
 
-        ServerInterface client =
-                getClient()
-                .create(ServerInterface.class);
+        ServerInterface client = getClient().create(ServerInterface.class);
 
-        Call<ArrayList<Company>> call = client
-                .doGetCompanies(ticker, 1);
+        Call<ArrayList<Company>> call = client.doGetCompanies(ticker, 1);
 
         call.enqueue(new Callback<ArrayList<Company>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<Company>> call,
                                    @NonNull Response<ArrayList<Company>> response) {
 
-                mCompany=  response.body().get(0);
+                company =  Objects.requireNonNull(response.body()).get(0);
                 dashboardView.goToCompanyView();
             }
 
@@ -171,8 +168,9 @@ public class DashboardPresenter implements DashboardContract.Presenter {
             }
         });
     }
+
     public Company getCompany()
     {
-        return mCompany;
+        return company;
     }
 }

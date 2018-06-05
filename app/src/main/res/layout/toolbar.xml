@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:text="@string/default_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:gravity="center_horizontal"/>
 
   </android.support.v7.widget.Toolbar>
 </layout>

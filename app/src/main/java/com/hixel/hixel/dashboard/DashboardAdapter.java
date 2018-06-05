@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     private final DashboardContract.Presenter presenter;
     private Context context;
-    private ViewHolder mViewHolder;
 
     DashboardAdapter(Context context, DashboardContract.Presenter presenter) {
         this.presenter = presenter;
@@ -32,6 +30,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
 
         return new ViewHolder(view);
@@ -39,8 +38,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        this.mViewHolder=holder;
-        Log.d("POtiiiiiiionnnn",""+position);
+
+        // TODO: fix regex.
         String companyName = presenter.getCompanies()
                 .get(position)
                 .getIdentifiers()
@@ -48,8 +47,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 .split("\\,| ")[0]
                 .toLowerCase();
 
-        companyName =
-                companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
+        companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
 
         holder.companyName.setText(companyName);
 
@@ -67,18 +65,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                                                    .get(position)
                                                    .getRatio("Return on Equity", last_year) * 100));
 
-
-        // TODO: Replace as part of PTH-140
-        //holder.companyHealth.setTextColor(presenter.setHealthColor(position));
-
         holder.parentLayout.setOnClickListener((View view) -> {
             Intent intent = new Intent(context, CompanyActivity.class);
             intent.putExtra("company",
                     presenter.getCompanies().get(holder.getAdapterPosition()));
 
             context.startActivity(intent);
-
-
         });
 
     }
@@ -89,17 +81,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         return presenter.getCompanies().size();
     }
 
-    public void removeItem(int postition)
-    {
-        presenter.getCompanies().remove(postition);
-        notifyItemRemoved(postition);
-
+    public void removeItem(int position) {
+        presenter.getCompanies().remove(position);
+        notifyItemRemoved(position);
     }
+
     /*
     This method will be called from the dashboard activity
      */
-    public void addItem(Company company)
-    {
+    public void addItem(Company company) {
         presenter.getCompanies().add(getItemCount(),company);
         notifyItemInserted(getItemCount());// re check here
 
@@ -119,17 +109,5 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
 
-    }
-    /*
-    Function to remove item from the recycler view
-     */
-
-    /*
-    Function for restoring the deleted item.
-     */
-    public void restoreItem(Company company,int postition)
-    {
-        presenter.getCompanies().add(postition,company);
-        notifyItemInserted(postition);
     }
 }

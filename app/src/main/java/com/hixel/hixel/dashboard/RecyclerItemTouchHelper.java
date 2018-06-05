@@ -2,12 +2,9 @@ package com.hixel.hixel.dashboard;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -17,13 +14,13 @@ import com.hixel.hixel.R;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
-    private RecyclerItemTouchHelperListner listner;
+    private RecyclerItemTouchHelperListener listener;
 
 
 
-    public RecyclerItemTouchHelper(int dragDirs, int swipeDirs,RecyclerItemTouchHelperListner listner) {
+    RecyclerItemTouchHelper(int dragDirs, int swipeDirs,RecyclerItemTouchHelperListener listener) {
         super(dragDirs, swipeDirs);
-        this.listner=listner;
+        this.listener = listener;
     }
 
     @Override
@@ -33,9 +30,8 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        if(listner!=null)
-        {
-            listner.onSwiped(viewHolder,direction,viewHolder.getAdapterPosition());
+        if(listener != null) {
+            listener.onSwiped(viewHolder,direction,viewHolder.getAdapterPosition());
         }
 
 
@@ -51,11 +47,9 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
 
-        if(viewHolder!=null)
-        {
+        if(viewHolder != null) {
             View foregroundView=((DashboardAdapter.ViewHolder)viewHolder).parentLayout;
             getDefaultUIUtil().onSelected(foregroundView);
-
         }
     }
 
@@ -66,6 +60,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
         View foregroundView=((DashboardAdapter.ViewHolder)viewHolder).parentLayout;
         getDefaultUIUtil().onDraw(c,recyclerView,foregroundView,dX,dY,actionState,isCurrentlyActive);
         Drawable background;
@@ -75,8 +70,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         View itemView = viewHolder.itemView;
 
         background = new ColorDrawable(Color.RED);
-        xMark = ContextCompat
-                .getDrawable(viewHolder.itemView.getContext(), R.drawable.ic_clear_24dp);
+        xMark = ContextCompat.getDrawable(viewHolder.itemView.getContext(), R.drawable.ic_clear_24dp);
         xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         xMarkMargin = (int) viewHolder.itemView.getContext().getResources()
                 .getDimension(R.dimen.search_icon_padding);
@@ -93,17 +87,14 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         int xMarkRight = itemView.getRight() - xMarkMargin;
         int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
         int xMarkBottom = xMarkTop + intrinsicHeight;
+
         xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
-
         xMark.draw(c);
-
-
-
     }
 
     @Override
     public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        View foregroundView=((DashboardAdapter.ViewHolder)viewHolder).parentLayout;
+        View foregroundView = ((DashboardAdapter.ViewHolder)viewHolder).parentLayout;
         getDefaultUIUtil().onDrawOver(c,recyclerView,foregroundView,dX,dY,actionState,isCurrentlyActive);
 
     }
