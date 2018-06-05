@@ -11,4 +11,6 @@
   <color name="average">#FFB75D</color>
   <color name="bad">#C23934</color>
   <color name="buttonBackground">#54698d</color>
+
+  <color name="red">#FA3157</color>
 </resources>

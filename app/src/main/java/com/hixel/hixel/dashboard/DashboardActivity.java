@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -41,8 +41,6 @@ import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 
 import com.hixel.hixel.models.Company;
-import com.hixel.hixel.models.CompanyIdentifiers;
-import com.hixel.hixel.models.FinancialData;
 import com.hixel.hixel.search.SearchEntry;
 
 import com.hixel.hixel.search.SearchAdapter;
@@ -52,12 +50,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
-        OnItemSelectedListener, RecyclerItemTouchHelperListener {
+        RecyclerItemTouchHelper.RecyclerItemTouchHelperListener, OnItemSelectedListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = DashboardActivity.class.getSimpleName();
-
     private DashboardContract.Presenter presenter;
+
     DashboardAdapter dashboardAdapter;
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
@@ -281,30 +279,47 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     @Override
     public void setupDashboardAdapter() {
+
         dashboardAdapter = new DashboardAdapter(this, presenter);
         mRecyclerView.setAdapter(this.dashboardAdapter);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
 
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
                 new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
 
-        CompanyIdentifiers ci = new CompanyIdentifiers("ibm","Inter","90");
-        List<FinancialData> f = new ArrayList<>();
-        Company c = new Company(ci,f);
+    }
 
-        addItem(c);
+    // TODO: Make this MVP.
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
 
-        if (getIntent().hasExtra("result")) {
-            addItem((Company)getIntent().getSerializableExtra("result"));
+        if (viewHolder instanceof DashboardAdapter.ViewHolder) {
+            // Get name of removed item
+            String name = presenter.getCompanies()
+                    .get(viewHolder.getAdapterPosition())
+                    .getIdentifiers()
+                    .getName();
+
+            // Backup item for undo purposes
+            final Company deletedCompany = presenter.getCompanies().get(viewHolder.getAdapterPosition());
+            final int deletedIndex = viewHolder.getAdapterPosition();
+
+            dashboardAdapter.removeItem(viewHolder.getAdapterPosition());
+
+            // Remove Company from RecyclerView
+            Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio", Snackbar.LENGTH_LONG);
+
+            snackbar.setAction("UNDO", view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));
+
+            snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+            snackbar.show();
         }
-
-
     }
 
     @Override
@@ -330,21 +345,5 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
                 .setAction("RETRY", view -> presenter.loadPortfolio())
                 .show();
     }
-
-    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-
-        if (viewHolder instanceof DashboardAdapter.ViewHolder) {
-
-            int deletedIndex = viewHolder.getAdapterPosition();
-            dashboardAdapter.removeItem(deletedIndex);
-        }
-    }
-
-    public void addItem(Company company)
-    {
-        dashboardAdapter.addItem(company);
-    }
-
 }
 

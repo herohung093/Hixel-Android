@@ -30,7 +30,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
 
         return new ViewHolder(view);
@@ -65,7 +64,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                                                    .get(position)
                                                    .getRatio("Return-on-Equity Ratio", last_year) * 100));
 
-        holder.parentLayout.setOnClickListener((View view) -> {
+        holder.foreground.setOnClickListener((View view) -> {
             Intent intent = new Intent(context, CompanyActivity.class);
             intent.putExtra("company",
                     presenter.getCompanies().get(holder.getAdapterPosition()));
@@ -86,17 +85,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         notifyItemRemoved(position);
     }
 
-    /*
-    This method will be called from the dashboard activity
-     */
-    public void addItem(Company company) {
-        presenter.getCompanies().add(getItemCount(),company);
-        notifyItemInserted(getItemCount());// re check here
-
+    public void restoreItem(Company company, int position) {
+        presenter.getCompanies().add(position, company);
+        notifyItemInserted(position);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        ConstraintLayout parentLayout;
+        ConstraintLayout foreground;
+        ConstraintLayout background;
         TextView companyName;
         TextView companyTicker;
         TextView companyIndicator;
@@ -106,7 +102,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             companyName = itemView.findViewById(R.id.company_name);
             companyTicker = itemView.findViewById(R.id.company_ticker);
             companyIndicator = itemView.findViewById(R.id.indicator_value);
-            parentLayout = itemView.findViewById(R.id.parent_layout);
+            foreground = itemView.findViewById(R.id.foreground);
+            background = itemView.findViewById(R.id.background);
         }
 
     }
