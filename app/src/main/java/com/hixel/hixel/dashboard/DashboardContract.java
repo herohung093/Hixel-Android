@@ -1,5 +1,7 @@
 package com.hixel.hixel.dashboard;
 
+import android.content.Intent;
+
 import com.hixel.hixel.BasePresenter;
 import com.hixel.hixel.BaseView;
 
@@ -18,6 +20,8 @@ public interface DashboardContract {
         void showLoadingIndicator(final boolean active);
         void showLoadingError();
         void showSuggestions(List<SearchEntry> searchEntries);
+        void searchResultReceived(List<SearchEntry> result);
+        void goToCompanyView();
     }
 
     interface Presenter extends BasePresenter {
@@ -25,6 +29,10 @@ public interface DashboardContract {
         void sortCompaniesBy(String name);
         void search(PublishSubject<String> subject);
         List<Company> getCompanies();
+        Company getCompany();
+        void loadDataForAParticularCompany(String ticker);
+
+        void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion);
 
     }
     interface Adapter extends BasePresenter

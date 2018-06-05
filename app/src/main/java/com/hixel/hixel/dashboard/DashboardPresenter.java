@@ -39,6 +39,9 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     private ServerInterface serverInterface;
     private CompositeDisposable disposable = new CompositeDisposable();
 
+    // TODO: not my code.
+    private Company mCompany;
+
     DashboardPresenter(DashboardContract.View dashboardView) {
         this.dashboardView = dashboardView;
         this.dashboardView.setPresenter(this);
@@ -134,4 +137,42 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         Collections.reverse(portfolio.getCompanies());
     }
 
+    // TODO: Figure out if this is needed
+    public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
+        // loadDataForAParticularCompany(tickerFromSearchSuggestion);
+    }
+
+    // TODO: Implement this in a way in which the Presenter does NOT rely on a Company object
+    // NOTE: This is not currently being implemented anywhere due to breaking changes
+    // it will be re-implemented later in this sprint.
+    // **** Could we just pass a ticker (String) to the?
+
+    public void loadDataForAParticularCompany(String ticker) {
+
+        ServerInterface client =
+                getClient()
+                .create(ServerInterface.class);
+
+        Call<ArrayList<Company>> call = client
+                .doGetCompanies(ticker, 1);
+
+        call.enqueue(new Callback<ArrayList<Company>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Company>> call,
+                                   @NonNull Response<ArrayList<Company>> response) {
+
+                mCompany=  response.body().get(0);
+                dashboardView.goToCompanyView();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
+                //TODO: Add failure handling...
+            }
+        });
+    }
+    public Company getCompany()
+    {
+        return mCompany;
+    }
 }

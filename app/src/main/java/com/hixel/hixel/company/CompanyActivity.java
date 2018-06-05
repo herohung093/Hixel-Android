@@ -1,9 +1,13 @@
 package com.hixel.hixel.company;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +20,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hixel.hixel.R;
+import com.hixel.hixel.dashboard.DashboardActivity;
+import com.hixel.hixel.dashboard.DashboardAdapter;
 import com.hixel.hixel.models.Company;
 
 import com.hixel.hixel.models.FinancialData;
@@ -37,15 +43,50 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
         setContentView(R.layout.activity_company);
         // doMeta();
+        ImageView imageView=findViewById(R.id.addButton);
+
         presenter = new CompanyPresenter(this);
 
 
         if (getIntent().hasExtra("company")) {
             presenter.setCompany((Company) getIntent().getSerializableExtra("company"));
-        } else {
+            TextView toolbarTitle = findViewById(R.id.toolbar_title);
+            toolbarTitle.setText(presenter.getCompanyName());
+        }
+        else {
             presenter.setCompany((Company) getIntent().getSerializableExtra("ticker"));
+            Log.d("Name--------->",presenter.getCompanyName());
+            TextView toolbarTitle = findViewById(R.id.toolbar_title);
+            toolbarTitle.setText(presenter.getCompanyName());
+            //TODO check if a company is present in the portfolio already. IF yes,then don't show the add button.
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    /* this will be replaced by the one that has been commented below,have to create an interface
+                    so that the adapter can override the onActivityResult(). Adapter can't override this method by default.
+                    */
+
+                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                    intent.putExtra("result", presenter.getCompany());
+                    startActivity(intent);
+
+                    //TODO will be implemented soon..
+
+                    /*
+                    Intent intent=new Intent();
+                    intent.putExtra("result",presenter.getCompany());
+                    setResult(RESULT_OK,intent);
+                    finish();
+                    */
+
+                }
+            });
 
         }
+
+
 
 
         /*
@@ -55,10 +96,10 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         */
         presenter.start();
 
-
+/*
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setText(presenter.getCompanyName());
-
+*/
         // from search suggestion
 
     }
