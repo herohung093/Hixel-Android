@@ -17,9 +17,11 @@
     <string name="financial_ratios">Financial Ratios</string>
 
     <string-array name="company_dropdown">
-        <item>Health</item>
-        <item>Leverage</item>
-        <item>Liquidity</item>
+        <item>Return-on-Equity</item>
+        <item>Current Ratio</item>
+        <item>Debt-to-Equity</item>
+        <item>Return-on-Assets</item>
+        <item>Net Profit Margin</item>
     </string-array>
 
     <string name="current_ratio">Current Ratio</string>
