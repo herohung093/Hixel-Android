@@ -80,6 +80,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         Spinner spinner = binding.spinner;
         ArrayAdapter<CharSequence> dropdownAdapter = ArrayAdapter.createFromResource(
                 this, R.array.company_dropdown, android.R.layout.simple_spinner_item);
+
         dropdownAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dropdownAdapter);
         spinner.setOnItemSelectedListener(this);
@@ -116,7 +117,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         ImageView searchClose = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         searchClose.setImageResource(R.drawable.ic_clear);
 
-
         presenter.search(subject);
 
         ArrayAdapter<String> newsAdapter =
@@ -151,7 +151,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     @Override
     public void showSuggestions(List<SearchEntry> searchEntries) {
         SearchAdapter adapter = new SearchAdapter(this, searchEntries);
-
         searchAutoComplete.setAdapter(adapter);
     }
 
@@ -163,8 +162,27 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
-        presenter.sortCompaniesBy(item);
-        // dashboardAdapter.notifyDataSetChanged();
+
+        switch(item) {
+            case "Sort":
+                break;
+            case "Current Ratio":
+                presenter.sortCompaniesBy(item);
+                dashboardAdapter.notifyDataSetChanged();
+                break;
+            case "Debt-to-Equity":
+                presenter.sortCompaniesBy(item + " Ratio");
+                dashboardAdapter.notifyDataSetChanged();
+                break;
+            case "Return-on-Equity":
+                presenter.sortCompaniesBy(item + " Ratio");
+                dashboardAdapter.notifyDataSetChanged();
+                break;
+            case "Return-on-Assets":
+                presenter.sortCompaniesBy(item + " Ratio");
+                dashboardAdapter.notifyDataSetChanged();
+                break;
+        }
     }
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {

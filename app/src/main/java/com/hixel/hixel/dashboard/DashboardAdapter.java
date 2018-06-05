@@ -63,7 +63,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         holder.companyIndicator.setText(String.format(Locale.ENGLISH, "%.1f%%",
                                     presenter.getCompanies()
                                                    .get(position)
-                                                   .getRatio("Return on Equity", last_year) * 100));
+                                                   .getRatio("Return-on-Equity Ratio", last_year) * 100));
 
         holder.parentLayout.setOnClickListener((View view) -> {
             Intent intent = new Intent(context, CompanyActivity.class);
