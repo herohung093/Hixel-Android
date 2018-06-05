@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -248,12 +249,12 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
     }
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
+
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
                 case R.id.home_button:
                     Intent moveToDashBoard = new Intent(this, DashboardActivity.class);
                     startActivity(moveToDashBoard);
-
                     break;
                 case R.id.compare_button:
                     // right here

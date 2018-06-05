@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,8 +89,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mRecyclerView = binding.recyclerView;
 
         // Set up the bottom navigation bar
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) binding.bottomNav;
-        setupBottomNavigationView(bottomNavigationView);
+        setupBottomNavigationView();
 
         // UI for the chart
         setupChart();
@@ -156,7 +157,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     public void setPresenter(@NonNull DashboardContract.Presenter presenter) {
     }
 
-    // TODO: Implement this so the default is nothing selected
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
@@ -183,8 +183,9 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         }
     }
 
-    public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
-
+    public void setupBottomNavigationView() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) binding.bottomNav;
+        bottomNavigationView.getMenu().getItem(0).setChecked(false);
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
                 case R.id.home_button:
