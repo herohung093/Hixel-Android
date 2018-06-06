@@ -250,7 +250,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         // YAxis is the inner web
         YAxis yAxis = chart.getYAxis();
         yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(2.0f);
+        yAxis.setAxisMaximum(1.0f);
         yAxis.setLabelCount(5);
         yAxis.setDrawLabels(false);
     }
@@ -260,11 +260,11 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         List<RadarEntry> entries = new ArrayList<>();
 
         // TODO: get data from portfolio
-        entries.add(new RadarEntry(1.25f));
-        entries.add(new RadarEntry(1.5f));
-        entries.add(new RadarEntry(2.0f));
-        entries.add(new RadarEntry(0.75f));
-        entries.add(new RadarEntry(1.0f));
+        // Currently generating random number between 0 and 1
+        // this will hopefully look like its attached to the server
+        for (int i = 0; i < 5; i++) {
+            entries.add(new RadarEntry((float) Math.random()));
+        }
 
         RadarDataSet dataSet = new RadarDataSet(entries, "");
         dataSet.setColor(Color.parseColor("#4BCA81"));

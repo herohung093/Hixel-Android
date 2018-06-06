@@ -52,7 +52,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         // NOTE: This is a temporary fix!!!
         // Need to get ticker exchange from server.
-        String tickerFormat = "NASDAQ: " + presenter.getCompanies()
+        String tickerFormat = "NASDAQ:" + presenter.getCompanies()
                                                     .get(position)
                                                     .getIdentifiers()
                                                     .getTicker();
