@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.RadarChart;
@@ -144,6 +145,8 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
         RadarChart chart = findViewById(R.id.chart);
 
+
+
         // Configuring the chart
         chart.getLegend().setEnabled(false);
         chart.getDescription().setEnabled(false);
@@ -210,6 +213,17 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
         chart.setData(data);
         chart.invalidate();
+
+
+        // call the method to setup the values
+        ArrayList<String> ratiosList = new ArrayList<>();
+        ratiosList.add(getValue(ratios1.get(0), 2017));
+        ratiosList.add(getValue(ratios1.get(1), 2017));
+        ratiosList.add(getValue(ratios1.get(2), 2017));
+        ratiosList.add(getValue(ratios1.get(3), 2017));
+        ratiosList.add(getValue(ratios1.get(4), 2017));
+
+
 
     }
 
