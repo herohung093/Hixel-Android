@@ -139,14 +139,10 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
     // TODO: Figure out if this is needed
     public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
-        // loadDataForAParticularCompany(tickerFromSearchSuggestion);
+        //loadDataForAParticularCompany(tickerFromSearchSuggestion);
     }
 
     // TODO: Implement this in a way in which the Presenter does NOT rely on a Company object
-    // NOTE: This is not currently being implemented anywhere due to breaking changes
-    // it will be re-implemented later in this sprint.
-    // **** Could we just pass a ticker (String) to the?
-
     public void loadDataForAParticularCompany(String ticker) {
 
         ServerInterface client = getClient().create(ServerInterface.class);

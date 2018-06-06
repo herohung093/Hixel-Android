@@ -26,7 +26,10 @@
 
     <string name="current_ratio">Current Ratio</string>
     <string name="roe">ROE</string>
-    <string name="d2e">Debt-to-Equity</string>
+    <string name="d2e">D/E</string>
     <string name="quick_ratio">Quick Ratio</string>
     <string name="cash_ratio">Cash Ratio</string>
+
+
+    <string name="snapshot">Snapshot</string>
 </resources>

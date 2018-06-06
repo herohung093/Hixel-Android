@@ -1,202 +1,218 @@
 package com.hixel.hixel.company;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hixel.hixel.R;
-import com.hixel.hixel.dashboard.DashboardActivity;
-import com.hixel.hixel.dashboard.DashboardAdapter;
 import com.hixel.hixel.models.Company;
 
-import com.hixel.hixel.models.FinancialData;
-
-import java.math.BigDecimal;
+import com.hixel.hixel.search.SearchAdapter;
+import com.hixel.hixel.search.SearchEntry;
+import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class CompanyActivity extends AppCompatActivity implements CompanyContract.View {
 
     private CompanyContract.Presenter presenter;
-    private String TAG = "COMPANY_VIEW";
-    private ArrayList<String> ratios1 = new ArrayList<>();
+
+    SearchView search;
+    SearchView.SearchAutoComplete searchAutoComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_company);
-        // doMeta();
-        ImageView imageView=findViewById(R.id.addButton);
+
+        // Set up the toolbar
+        setSupportActionBar(findViewById(R.id.toolbar));
 
         presenter = new CompanyPresenter(this);
-
 
         if (getIntent().hasExtra("company")) {
             presenter.setCompany((Company) getIntent().getSerializableExtra("company"));
             TextView toolbarTitle = findViewById(R.id.toolbar_title);
             toolbarTitle.setText(presenter.getCompanyName());
-        }
-        else {
+        } else {
             presenter.setCompany((Company) getIntent().getSerializableExtra("ticker"));
-            Log.d("Name--------->",presenter.getCompanyName());
+
             TextView toolbarTitle = findViewById(R.id.toolbar_title);
             toolbarTitle.setText(presenter.getCompanyName());
+
             //TODO check if a company is present in the portfolio already. IF yes,then don't show the add button.
+            /*
             imageView.setVisibility(View.VISIBLE);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    /* this will be replaced by the one that has been commented below,have to create an interface
-                    so that the adapter can override the onActivityResult(). Adapter can't override this method by default.
-                    */
+            imageView.setOnClickListener(v -> {
 
-                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                    intent.putExtra("result", presenter.getCompany());
-                    startActivity(intent);
+                /* this will be replaced by the one that has been commented below,have to create an interface
+                so that the adapter can override the onActivityResult(). Adapter can't override this method by default.
+                */
 
-                    //TODO will be implemented soon..
+                //Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                //intent.putExtra("result", presenter.getCompany());
+              //  startActivity(intent);
 
-                    /*
-                    Intent intent=new Intent();
-                    intent.putExtra("result",presenter.getCompany());
-                    setResult(RESULT_OK,intent);
-                    finish();
-                    */
+                /*
+                Intent intent=new Intent();
+                intent.putExtra("result",presenter.getCompany());
+                setResult(RESULT_OK,intent);
+                finish();
+                */
 
-                }
-            });
+            //});
 
         }
 
-
-
-
-        /*
-        Intent intentFromSearch=getIntent();
-        String ticker=intentFromSearch.getStringExtra("ticker");
-        presenter.setTickerFromSearchSuggestion(ticker);
-        */
         presenter.start();
-
-/*
-        TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(presenter.getCompanyName());
-*/
-        // from search suggestion
-
     }
 
-    // TODO: The updateRatios()method will be cleaned up and refactored soon.Ignore this method for the time being.
-    public void updateRatios(ArrayList<String> ratios1) {
-        TextView liquidity = findViewById(R.id.liquidity_text);
-        TextView leverage = findViewById(R.id.leverage_text);
-        TextView health = findViewById(R.id.health_text);
-        liquidity.setText(ratios1.get(0));
-        leverage.setText(ratios1.get(1).substring(0, 10));
-        health.setText(ratios1.get(2).substring(0, 10));
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        MenuItem searchView = menu.findItem(R.id.action_search);
+        PublishSubject<String> subject = PublishSubject.create();
 
+        search = (SearchView) searchView.getActionView();
+        searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+
+        // Styling the search bar
+        searchAutoComplete.setHintTextColor(Color.WHITE);
+        searchAutoComplete.setTextColor(Color.WHITE);
+        ImageView searchClose = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        searchClose.setImageResource(R.drawable.ic_clear);
+
+        presenter.search(subject);
+
+        ArrayAdapter<String> newsAdapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
+        searchAutoComplete.setAdapter(newsAdapter);
+
+        searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
+            SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
+            String ticker = entry.getTicker();
+            presenter.loadDataForAParticularCompany(ticker);
+
+            presenter.setTickerFromSearchSuggestion(ticker);
+            // call the load to portfolio method from here
+        });
+
+        search.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                subject.onNext(newText);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void showSuggestions(List<SearchEntry> searchEntries) {
+        SearchAdapter adapter = new SearchAdapter(this, searchEntries);
+        searchAutoComplete.setAdapter(adapter);
+    }
+
+    public void updateRatios(ArrayList<String> ratios1) {
         TextView liquidityScore = findViewById(R.id.liquidity_score);
         TextView leverageScore = findViewById(R.id.leverage_score);
         TextView healthScore = findViewById(R.id.health_score);
-        liquidityScore.setText(getValue(ratios1.get(0), 2017)); //  A more Dynamic way will be implemented so that it doesn't relies on substring
+        liquidityScore.setText(getValue(ratios1.get(0), 2017));
         leverageScore.setText(getValue(ratios1.get(1), 2017));
         healthScore.setText(getValue(ratios1.get(2), 2017));
 
-        // For the line chart
-        BarChart barChart = findViewById(R.id.lineChart);
-        barChart.setDrawBarShadow(false);
-        barChart.setDrawValueAboveBar(true);
-        barChart.setMaxVisibleValueCount(100);
-        barChart.setPinchZoom(true);
-        barChart.setDrawGridBackground(true);
+        RadarChart chart = findViewById(R.id.chart);
 
-        // values for the Bar chart
-        ArrayList<BarEntry> barEntries = new ArrayList<>();
-        ArrayList<BigDecimal> values = new ArrayList<>();
-        List<FinancialData> dataEntries = presenter.getCompany().getFinancialDataEntries();
-        FinancialData dataFinanccial = dataEntries.get(0);
-        HashMap<String, BigDecimal> xbrlElements = dataFinanccial.getXbrlElements();
+        // Configuring the chart
+        chart.getLegend().setEnabled(false);
+        chart.getDescription().setEnabled(false);
+        chart.setWebColor(Color.WHITE);
+        chart.setWebColorInner(Color.WHITE);
+        chart.setWebLineWidth(1f);
+        chart.animateY(1400);
+        chart.setWebAlpha(100);
+        chart.setTouchEnabled(false);
 
-        BigDecimal[] value = new BigDecimal[10];
-        int i = 0;
-        for (String key : xbrlElements.keySet()) {
-            value[i] = xbrlElements.get(key);
-            i++;
-            Log.d("Elements Name", key);
+        // Scale the size of the chart
+        chart.setScaleX(1.2f);
+        chart.setScaleY(1.2f);
+
+        // XAxis is the outer web
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextSize(9f);
+        xAxis.setXOffset(0);
+        xAxis.setYOffset(0);
+
+        // Seems to be the only way to get Strings to be the XAxis labels
+        // Note: Seems to be that the longest string sets the margins for all other strings
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            private String[] ratioNames = {
+                    "ROE",
+                    "Cash Ratio",
+                    "Debt-to-Equity",
+                    "Current Ratio",
+                    "Quick Ratio",
+            };
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return ratioNames[(int) value % ratioNames.length];
+            }
+
+        });
+
+        // YAxis is the inner web
+        YAxis yAxis = chart.getYAxis();
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(1.0f);
+        yAxis.setLabelCount(5);
+        yAxis.setDrawLabels(false);
+
+
+        List<RadarEntry> entries = new ArrayList<>();
+
+        // TODO: get data from portfolio
+        // Currently generating random number between 0 and 1
+        // this will hopefully look like its attached to the server
+        for (int i = 0; i < 5; i++) {
+            entries.add(new RadarEntry((float) Math.random()));
         }
 
-        BigDecimal n1 = value[4];
-        String valueString = n1.toString();
-        String intValue = valueString.substring(0, 6);
-        int n = Integer.parseInt(intValue);
-        int[] nValues = new int[4];
-        nValues[0] = n; // Assets
-        n1 = value[5];
-        valueString = n1.toString();
-        intValue = valueString.substring(0, 6);
-        n = Integer.parseInt(intValue);
-        nValues[1] = n; //Liabilities
+        RadarDataSet dataSet = new RadarDataSet(entries, "");
+        dataSet.setColor(Color.parseColor("#4BCA81"));
+        dataSet.setFillColor(Color.parseColor("#4BCA81"));
+        dataSet.setDrawFilled(true);
 
-        n1 = value[7];
-        valueString = n1.toString();
-        intValue = valueString.substring(0, 6);
-        n = Integer.parseInt(intValue);
-        nValues[2] = n; // Equity
+        RadarData data = new RadarData(dataSet);
+        data.setDrawValues(false);
 
-        n1 = value[8];
-        valueString = n1.toString();
-        intValue = valueString.substring(0, 6);
-        n = Integer.parseInt(intValue);
-        nValues[3] = n; //Net Income Loss
-
-        barEntries.add(new BarEntry(1, nValues[0]));
-        barEntries.add(new BarEntry(2, nValues[1]));
-        barEntries.add(new BarEntry(3, nValues[2]));
-        barEntries.add(new BarEntry(4, nValues[3]));
-
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Data set");
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        BarData data = new BarData(barDataSet);
-        data.setBarWidth(0.9f);
-
-        barChart.setData(data);
-
-        // create X axis
-        String[] financial = {"", "", "", "", ""};
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new MyXaxisValueFormatter(financial));
-
-        // set up the list view
-        ListView listView = findViewById(R.id.listView);
-        // call the method to setup the values
-        ArrayList<String> ratiosList = new ArrayList<>();
-        ratiosList.add(getValue(ratios1.get(0), 2017));
-        ratiosList.add(getValue(ratios1.get(1), 2017));
-        ratiosList.add(getValue(ratios1.get(2), 2017));
-        ratiosList.add(getValue(ratios1.get(3), 2017));
-        ratiosList.add(getValue(ratios1.get(4), 2017));
-
-
-        CompanyAdapter adapter = new CompanyAdapter(this, R.layout.adpater_view_layout, ratiosList);
-        listView.setAdapter(adapter);
+        chart.setData(data);
+        chart.invalidate();
 
     }
 
@@ -213,25 +229,11 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         }
     }
 
-    public class MyXaxisValueFormatter implements IAxisValueFormatter {
-        String[] mValues;
 
-        @Override
-        public String getFormattedValue(float value, AxisBase axis) {
-            return mValues[(int) value];
-        }
-
-        public MyXaxisValueFormatter(String[] values) {
-            this.mValues = values;
-        }
+    public void goToCompanyView() {
+        Intent intent = new Intent(this, CompanyActivity.class);
+        intent.putExtra("ticker", presenter.getCompany());
+        startActivityForResult(intent,1);
     }
-
-    public boolean checkNull(String value) {
-        if (value.equals("null")) {
-            return true;
-        }
-        return false;
-    }
-
 
 }

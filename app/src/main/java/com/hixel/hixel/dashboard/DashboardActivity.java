@@ -62,8 +62,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
     private RadarChart chart;
-    SearchView search;
 
+    SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
 
     @Override
