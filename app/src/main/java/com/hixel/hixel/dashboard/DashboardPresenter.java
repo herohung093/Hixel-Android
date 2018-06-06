@@ -40,18 +40,32 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     private Portfolio portfolio;
     private Company company;
 
-    private ServerInterface serverInterface;
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private CompositeDisposable disposable;
+    private PublishSubject<String> publishSubject;
 
     DashboardPresenter(DashboardContract.View dashboardView) {
         this.dashboardView = dashboardView;
         this.dashboardView.setPresenter(this);
         this.portfolio = new Portfolio();
+
+        this.disposable = new CompositeDisposable();
+        this.publishSubject = PublishSubject.create();
     }
 
     @Override
     public void start() {
         loadPortfolio();
+
+        disposable.add(publishSubject
+                .debounce(150, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
+                .filter(text -> !text.isEmpty())
+                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm -> getClient()
+                        .create(ServerInterface.class)
+                        .doSearchQuery(searchTerm)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread()))
+                .subscribeWith(getSearchObserver()));
     }
 
     @Override
@@ -68,9 +82,8 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         companies.add("FB");
         companies.add("AMZN");
 
-        serverInterface = getClient().create(ServerInterface.class);
-
-        Call<ArrayList<Company>> call = serverInterface
+        Call<ArrayList<Company>> call = getClient()
+                .create(ServerInterface.class)
                 .doGetCompanies(StringUtils.join(companies, ','), 1);
 
         call.enqueue(new Callback<ArrayList<Company>>() {
@@ -97,31 +110,8 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     }
 
     @Override
-    public void search(PublishSubject<String> publishSubject) {
-        disposable.add(publishSubject.debounce(300, TimeUnit.MILLISECONDS)
-                .filter(s -> !s.isEmpty())
-                .distinctUntilChanged()
-                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) s ->
-                        serverInterface.doSearchQuery(s)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread()))
-                .subscribeWith(new DisposableObserver<List<SearchEntry>>() {
-
-                    @Override
-                    public void onNext(List<SearchEntry> searchEntries) {
-                        dashboardView.showSuggestions(searchEntries);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "onError: " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                }));
+    public void loadSearchResults(String query) {
+        publishSubject.onNext(query);
     }
 
     @Override
@@ -164,6 +154,25 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                 // TODO: Add failure handling...
             }
         });
+    }
+
+    private DisposableObserver<List<SearchEntry>> getSearchObserver() {
+        return new DisposableObserver<List<SearchEntry>>() {
+            @Override
+            public void onNext(List<SearchEntry> result) {
+                dashboardView.showSearchResults(result);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("SearchObserver", e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                //What a gorgeous little stub.
+            }
+        };
     }
 
     public Company getCompany()

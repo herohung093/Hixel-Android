@@ -103,7 +103,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         MenuItem searchView = menu.findItem(R.id.action_search);
-        PublishSubject<String> subject = PublishSubject.create();
 
         search = (SearchView) searchView.getActionView();
         searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
@@ -113,8 +112,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         searchAutoComplete.setTextColor(Color.WHITE);
         ImageView searchClose = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         searchClose.setImageResource(R.drawable.ic_clear);
-
-        presenter.search(subject);
 
         ArrayAdapter<String> newsAdapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
@@ -129,7 +126,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
             // call the load to portfolio method from here
         });
 
-        search.setOnQueryTextListener(new OnQueryTextListener() {
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -137,7 +134,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                subject.onNext(newText);
+                presenter.loadSearchResults(searchAutoComplete.getText().toString());
                 return false;
             }
         });
@@ -146,9 +143,11 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     }
 
     @Override
-    public void showSuggestions(List<SearchEntry> searchEntries) {
+    public void showSearchResults(List<SearchEntry> searchEntries) {
         SearchAdapter adapter = new SearchAdapter(this, searchEntries);
+
         searchAutoComplete.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
