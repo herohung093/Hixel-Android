@@ -1,24 +1,18 @@
 package com.hixel.hixel.comparison;
 
-import static com.hixel.hixel.network.Client.getClient;
-
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.hixel.hixel.models.Company;
 import com.hixel.hixel.network.Client;
 import com.hixel.hixel.network.ServerInterface;
 import com.hixel.hixel.search.SearchEntry;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,6 +25,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
     private static List<String> names;
     private CompositeDisposable disposable;
     private PublishSubject<String> publishSubject;
+
     ComparisonPresenter(ComparisonContract.View mComparisonView) {
         this.mComparisonView = mComparisonView;
         listCompareCompanies.clear();
@@ -48,7 +43,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
 
     @Override
     public void start() {
-        names.add("");
+        names.add(""); //TODO: Figure out why this is even a thing, and remove it probably..?
 
     }
 
@@ -62,24 +57,6 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
 
     }*/
 
-    private DisposableObserver<List<SearchEntry>> getSearchObserver() {
-        return new DisposableObserver<List<SearchEntry>>() {
-            @Override
-            public void onNext(List<SearchEntry> result) {
-                mComparisonView.searchResultReceived(result);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("SearchObserver", e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-                //What a gorgeous little stub.
-            }
-        };
-    }
     public List<Company> getListCompareCompanies(){
         return listCompareCompanies;
     }
@@ -99,11 +76,12 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
                 public void onResponse(@NonNull Call<ArrayList<Company>> call,
                                        @NonNull Response<ArrayList<Company>> response) {
 
-                    if(response.body()==null) {
-                        mComparisonView.userNotification("Company not found");
+                    if (response.body() == null) {
+                        mComparisonView.userNotification("Company not found@");
 
                     } else {
-                        Log.d("RECEIVED COMPANY", Objects.requireNonNull(response.body()).get(0).getIdentifiers().getTicker());
+                        Log.d("addToCompare", Objects.requireNonNull(response.body()).get(0).getIdentifiers().getTicker());
+
                         listCompareCompanies.add(Objects.requireNonNull(response.body()).get(0));
 
                         mComparisonView.selectedListChanged();
@@ -112,11 +90,14 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
 
                 @Override
                 public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
-                    Log.d("ADD COMPANY TO COMPARE",
+                    Log.d("addToCompare",
                             "Failed to load company data from the server: " + t.getMessage());
                 }
             });
-        }else mComparisonView.userNotification("reach limit !");
+        }
+        else {
+            mComparisonView.userNotification("Can only compare 2 companies!");
+        }
 
     }
 

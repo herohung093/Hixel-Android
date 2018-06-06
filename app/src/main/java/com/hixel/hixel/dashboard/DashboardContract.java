@@ -17,14 +17,14 @@ public interface DashboardContract {
         void populateChart();
         void showLoadingIndicator(final boolean active);
         void showLoadingError();
-        void showSuggestions(List<SearchEntry> searchEntries);
+        void showSearchResults(List<SearchEntry> searchEntries);
         void goToCompanyView();
     }
 
     interface Presenter extends BasePresenter {
         void loadPortfolio();
         void sortCompaniesBy(String name);
-        void search(PublishSubject<String> subject);
+        void loadSearchResults(String query);
         List<Company> getCompanies();
         Company getCompany();
         void loadDataForAParticularCompany(String ticker);

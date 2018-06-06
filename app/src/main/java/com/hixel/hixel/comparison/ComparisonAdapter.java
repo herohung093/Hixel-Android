@@ -57,9 +57,6 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
                                                    .get(position)
                                                    .getRatio("Return-on-Equity Ratio", last_year) * 100));
 
-        //TODO: Replace as part of PTH-140
-        //holder.companyHealth.setTextColor(presenter.setHealthColor(position));
-
         holder.parentLayout.setOnClickListener((View view) -> {
             Intent intent = new Intent(mContext, CompanyActivity.class);
             intent.putExtra("company",
