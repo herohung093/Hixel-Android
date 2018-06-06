@@ -69,6 +69,7 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
         fab.setOnClickListener(v -> {
             Intent backIntent = new Intent(CompanyActivity.this, DashboardActivity.class);
+            backIntent.putExtra("COMPANY_ADD", company);
             startActivity(backIntent);
         });
 

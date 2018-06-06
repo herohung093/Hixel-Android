@@ -353,5 +353,12 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
                 .setAction("RETRY", view -> presenter.loadPortfolio())
                 .show();
     }
+
+    @Override
+    public void getAddedCompany() {
+        if (getIntent().hasExtra("COMPANY_ADD")) {
+            presenter.getCompanies().add((Company) getIntent().getSerializableExtra("COMPANY_ADD"));
+        }
+    }
 }
 
