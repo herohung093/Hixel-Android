@@ -59,7 +59,7 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
 
         holder.parentLayout.setOnClickListener((View view) -> {
             Intent intent = new Intent(mContext, CompanyActivity.class);
-            intent.putExtra("company",
+            intent.putExtra("CURRENT_COMPANY",
                     presenter.getListCompareCompanies().get(holder.getAdapterPosition()));
 
             mContext.startActivity(intent);

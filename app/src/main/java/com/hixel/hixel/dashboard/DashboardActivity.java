@@ -115,10 +115,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         ImageView searchClose = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         searchClose.setImageResource(R.drawable.ic_clear);
 
-        ArrayAdapter<String> newsAdapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
-        searchAutoComplete.setAdapter(newsAdapter);
-
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
             SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();

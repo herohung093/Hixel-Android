@@ -72,9 +72,11 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
             startActivity(backIntent);
         });
 
-        for (Company c : companies) {
-            if (c.getIdentifiers().getName().equals(presenter.getCompanyName())) {
-                fab.setVisibility(View.INVISIBLE);
+        if (companies != null) {
+            for (Company c : companies) {
+                if (c.getIdentifiers().getName().equals(presenter.getCompanyName())) {
+                    fab.setVisibility(View.INVISIBLE);
+                }
             }
         }
 

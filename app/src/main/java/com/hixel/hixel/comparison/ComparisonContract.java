@@ -10,13 +10,13 @@ public interface ComparisonContract {
 
     interface View extends BaseView<Presenter>{
         void selectedListChanged();
-        void searchResultReceived(List<SearchEntry> result);
+        void showSearchResults(List<SearchEntry> searchEntries);
         void userNotification(String message);
     }
 
     interface Presenter extends BasePresenter{
         List<Company> getListCompareCompanies();
         void addToCompare(String ticker);
-        void loadSearchResult(String query);
+        void loadSearchResults(String query);
     }
 }

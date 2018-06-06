@@ -7,30 +7,35 @@ import com.hixel.hixel.network.Client;
 import com.hixel.hixel.network.ServerInterface;
 import com.hixel.hixel.search.SearchEntry;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.apache.commons.lang3.StringUtils;
+import java.util.concurrent.TimeUnit;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.hixel.hixel.network.Client.getClient;
+
 public class ComparisonPresenter implements ComparisonContract.Presenter {
     private List<Company> listCompareCompanies = new ArrayList<>();
-    private final ComparisonContract.View mComparisonView;
+    private final ComparisonContract.View comparisonView;
 
-    private static List<String> names;
     private CompositeDisposable disposable;
     private PublishSubject<String> publishSubject;
 
     ComparisonPresenter(ComparisonContract.View mComparisonView) {
-        this.mComparisonView = mComparisonView;
+        this.comparisonView = mComparisonView;
         listCompareCompanies.clear();
 
-        names = new ArrayList<>();
         disposable = new CompositeDisposable();
         publishSubject = PublishSubject.create();
 
@@ -43,8 +48,16 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
 
     @Override
     public void start() {
-        names.add(""); //TODO: Figure out why this is even a thing, and remove it probably..?
-
+        disposable.add(publishSubject
+                .debounce(150, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
+                .filter(text -> !text.isEmpty())
+                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm -> getClient()
+                        .create(ServerInterface.class)
+                        .doSearchQuery(searchTerm)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread()))
+                .subscribeWith(getSearchObserver()));
     }
 
     /*
@@ -69,7 +82,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
                     .create(ServerInterface.class);
 
             Call<ArrayList<Company>> call = client
-                    .doGetCompanies(StringUtils.join(ticker, ','), 5);
+                    .doGetCompanies(ticker, 5);
 
             call.enqueue(new Callback<ArrayList<Company>>() {
                 @Override
@@ -77,14 +90,14 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
                                        @NonNull Response<ArrayList<Company>> response) {
 
                     if (response.body() == null) {
-                        mComparisonView.userNotification("Company not found@");
-
-                    } else {
+                        comparisonView.userNotification("Company not found@");
+                    }
+                    else {
                         Log.d("addToCompare", Objects.requireNonNull(response.body()).get(0).getIdentifiers().getTicker());
 
                         listCompareCompanies.add(Objects.requireNonNull(response.body()).get(0));
 
-                        mComparisonView.selectedListChanged();
+                        comparisonView.selectedListChanged();
                     }
                 }
 
@@ -96,7 +109,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
             });
         }
         else {
-            mComparisonView.userNotification("Can only compare 2 companies!");
+            comparisonView.userNotification("Can only compare 2 companies!");
         }
 
     }
@@ -110,14 +123,27 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
     }*/
 
     @Override
-    public void loadSearchResult(String query) {
+    public void loadSearchResults(String query) {
         publishSubject.onNext(query);
     }
 
-    /*
-    @Override
-    public List<String> getNames() {
-        return names;
-    }*/
+    private DisposableObserver<List<SearchEntry>> getSearchObserver() {
+        return new DisposableObserver<List<SearchEntry>>() {
+            @Override
+            public void onNext(List<SearchEntry> result) {
+                comparisonView.showSearchResults(result);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("SearchObserver", e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                //What a gorgeous little stub.
+            }
+        };
+    }
 
 }
