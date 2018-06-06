@@ -33,22 +33,32 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     private final CompanyContract.View companyView;
     private static ArrayList<String> ratios1;
 
-    private ServerInterface serverInterface;
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private CompositeDisposable disposable;
+    private PublishSubject<String> publishSubject;
 
     CompanyPresenter(CompanyContract.View companyView) {
         this.companyView = companyView;
         companyView.setPresenter(this);
 
         ratios1 = new ArrayList<>();
-        doMeta();
+        this.disposable = new CompositeDisposable();
+        this.publishSubject = PublishSubject.create();
     }
 
 
     public void start() {
-        serverInterface = getClient().create(ServerInterface.class);
         doMeta();
-        ratios1.add("");
+
+        disposable.add(publishSubject
+                .debounce(150, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
+                .filter(text -> !text.isEmpty())
+                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm -> getClient()
+                        .create(ServerInterface.class)
+                        .doSearchQuery(searchTerm)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread()))
+                .subscribeWith(getSearchObserver()));
     }
 
     public String getRatio(String ratio, int year) {
@@ -125,31 +135,8 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     }*/
 
     @Override
-    public void search(PublishSubject<String> publishSubject) {
-        disposable.add(publishSubject.debounce(300, TimeUnit.MILLISECONDS)
-                .filter(s -> !s.isEmpty())
-                .distinctUntilChanged()
-                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) s ->
-                        serverInterface.doSearchQuery(s)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread()))
-                .subscribeWith(new DisposableObserver<List<SearchEntry>>() {
-
-                    @Override
-                    public void onNext(List<SearchEntry> searchEntries) {
-                        companyView.showSuggestions(searchEntries);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                       // Log.e(TAG, "onError: " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                }));
+    public void loadSearchResults(String query) {
+        publishSubject.onNext(query);
     }
 
     // TODO: Figure out if this is needed
@@ -178,6 +165,25 @@ public class CompanyPresenter implements CompanyContract.Presenter {
                 //TODO: Add failure handling...
             }
         });
+    }
+
+    private DisposableObserver<List<SearchEntry>> getSearchObserver() {
+        return new DisposableObserver<List<SearchEntry>>() {
+            @Override
+            public void onNext(List<SearchEntry> result) {
+                companyView.showSearchResults(result);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("SearchObserver", e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                //What a gorgeous little stub.
+            }
+        };
     }
 
 }

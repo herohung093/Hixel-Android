@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public interface GraphContract  {
 
     interface View extends BaseView<Presenter>{
+        void updateRatios(ArrayList<String> ratios);
     }
 
     interface Presenter extends BasePresenter{

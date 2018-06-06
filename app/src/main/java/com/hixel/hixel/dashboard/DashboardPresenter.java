@@ -145,8 +145,14 @@ public class DashboardPresenter implements DashboardContract.Presenter {
             public void onResponse(@NonNull Call<ArrayList<Company>> call,
                                    @NonNull Response<ArrayList<Company>> response) {
 
-                company =  Objects.requireNonNull(response.body()).get(0);
-                dashboardView.goToCompanyView();
+                try {
+                    company = Objects.requireNonNull(response.body()).get(0);
+                    dashboardView.goToCompanyView();
+                }
+                catch (Exception e) { //TODO: Provide user-facing message when this occurs.
+                    Log.e("loadDataForAParticularCompany",
+                          String.format("Failed to retrieve data for ticker: %s", ticker));
+                }
             }
 
             @Override

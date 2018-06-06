@@ -1,9 +1,11 @@
 package com.hixel.hixel.company;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -26,6 +28,7 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
+import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.models.Company;
 
@@ -46,6 +49,7 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company);
+        setupBottomNavigationView();
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -100,11 +104,6 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         ImageView searchClose = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         searchClose.setImageResource(R.drawable.ic_clear);
 
-        presenter.search(subject);
-
-        ArrayAdapter<String> newsAdapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
-        searchAutoComplete.setAdapter(newsAdapter);
 
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
             SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
@@ -115,7 +114,7 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
             // call the load to portfolio method from here
         });
 
-        search.setOnQueryTextListener(new OnQueryTextListener() {
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -123,18 +122,21 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                subject.onNext(newText);
+                presenter.loadSearchResults(searchAutoComplete.getText().toString());
                 return false;
             }
         });
+
 
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public void showSuggestions(List<SearchEntry> searchEntries) {
+    public void showSearchResults(List<SearchEntry> searchEntries) {
         SearchAdapter adapter = new SearchAdapter(this, searchEntries);
+
         searchAutoComplete.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public void updateRatios(ArrayList<String> ratios1) {
@@ -146,8 +148,6 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         healthScore.setText(getValue(ratios1.get(2), 2017));
 
         RadarChart chart = findViewById(R.id.chart);
-
-
 
         // Configuring the chart
         chart.getLegend().setEnabled(false);
@@ -216,7 +216,6 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         chart.setData(data);
         chart.invalidate();
 
-
         // call the method to setup the values
         ArrayList<String> ratiosList = new ArrayList<>();
         ratiosList.add(getValue(ratios1.get(0), 2017));
@@ -224,9 +223,6 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         ratiosList.add(getValue(ratios1.get(2), 2017));
         ratiosList.add(getValue(ratios1.get(3), 2017));
         ratiosList.add(getValue(ratios1.get(4), 2017));
-
-
-
     }
 
     public void setPresenter(@NonNull CompanyContract.Presenter presenter) {
@@ -245,8 +241,31 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
     public void goToCompanyView() {
         Intent intent = new Intent(this, CompanyActivity.class);
-        intent.putExtra("ticker", presenter.getCompany());
+        intent.putExtra("CURRENT_COMPANY", presenter.getCompany());
         startActivityForResult(intent,1);
     }
+
+    public void setupBottomNavigationView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
+            switch (item.getItemId()) {
+                case R.id.home_button:
+                    Intent moveToDashBoard = new Intent(this, DashboardActivity.class);
+                    startActivity(moveToDashBoard);
+                    break;
+                case R.id.compare_button:
+                    Intent moveToCompare = new Intent(this, ComparisonActivity.class);
+                    startActivity(moveToCompare);
+                    break;
+                case R.id.settings_button:
+                    // This screen is yet to be implemented
+                    break;
+            }
+
+            return true;
+        });
+    }
+
 
 }

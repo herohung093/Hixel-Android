@@ -35,7 +35,6 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
     RecyclerView recyclerView;
     private ComparisonContract.Presenter presenter;
     private Button compareButton;
-    private Intent moveToCompare;
 
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
@@ -48,9 +47,6 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         setContentView(R.layout.activity_comparison);
 
         recyclerView = findViewById(R.id.recycleView);
-
-        moveToCompare = new Intent(this, GraphActivity.class);
-
         compareButton = findViewById(R.id.compareButton);
 
         setupButtons();
@@ -78,20 +74,24 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
     private void setupButtons() {
         compareButton.setOnClickListener((View view) -> {
-            if (presenter.getListCompareCompanies().size() == 2) {
-                moveToCompare.putExtra("selectedCompanies",
-                    (ArrayList) presenter.getListCompareCompanies());
-                startActivity(moveToCompare);
+            Intent moveToGraph = new Intent(this, GraphActivity.class);
+
+            if (presenter.getListCompareCompanies().size() < 2) {
+                Toast.makeText(getApplicationContext(), "Select 2 companies first!", Toast.LENGTH_LONG).show();
+                return;
             }
 
-            Toast.makeText(getApplicationContext(), "No companies selected!", Toast.LENGTH_LONG).show();
+            moveToGraph.putExtra("COMPARISON_COMPANIES",
+                (ArrayList) presenter.getListCompareCompanies());
+
+            startActivity(moveToGraph);
         });
 
     }
 
     private void setupSearchView() {
         search = findViewById(R.id.searchView);
-        search.setQueryHint("Add companies to compare!");
+        search.setQueryHint("Add companies...");
         searchAutoComplete = search
             .findViewById(android.support.v7.appcompat.R.id.search_src_text);
         search.setFocusable(true);
@@ -102,8 +102,8 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         // Styling the search bar
-        searchAutoComplete.setHintTextColor(Color.BLACK);
-        searchAutoComplete.setTextColor(Color.BLACK);
+        searchAutoComplete.setHintTextColor(Color.GRAY);
+        searchAutoComplete.setTextColor(Color.GRAY);
         ImageView searchClose = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         searchClose.setImageResource(R.drawable.ic_clear);
 
@@ -247,6 +247,8 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
     }
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
+        bottomNavigationView.getMenu().getItem(0).setChecked(false);
+        bottomNavigationView.getMenu().getItem(1).setChecked(true);
 
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {

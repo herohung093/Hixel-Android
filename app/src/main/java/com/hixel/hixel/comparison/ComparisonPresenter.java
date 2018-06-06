@@ -90,14 +90,22 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
                                        @NonNull Response<ArrayList<Company>> response) {
 
                     if (response.body() == null) {
-                        comparisonView.userNotification("Company not found@");
+                        comparisonView.userNotification("Company not found!");
                     }
                     else {
-                        Log.d("addToCompare", Objects.requireNonNull(response.body()).get(0).getIdentifiers().getTicker());
+                        try {
+                            Log.d("addToCompare", Objects.requireNonNull(response.body()).get(0).getIdentifiers().getTicker());
 
-                        listCompareCompanies.add(Objects.requireNonNull(response.body()).get(0));
+                            listCompareCompanies.add(Objects.requireNonNull(response.body()).get(0));
 
-                        comparisonView.selectedListChanged();
+                            comparisonView.selectedListChanged();
+                        }
+                        catch (Exception e) {
+                            Log.e("loadDataForAParticularCompany",
+                                  String.format("Failed to retrieve data for ticker: %s", ticker));
+
+                            comparisonView.userNotification("Company not found!");
+                        }
                     }
                 }
 

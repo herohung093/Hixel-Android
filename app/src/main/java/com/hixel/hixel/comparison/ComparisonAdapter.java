@@ -39,11 +39,9 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
         String companyName = presenter.getListCompareCompanies()
             .get(position)
             .getIdentifiers()
-            .getName()
-            .split("\\,| ")[0]
-            .toLowerCase();
-        String formatCompanyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
-        holder.companyName.setText(formatCompanyName);
+            .getName();
+
+        holder.companyName.setText(companyName);
 
         holder.companyTicker.setText(presenter.getListCompareCompanies()
                                               .get(position)

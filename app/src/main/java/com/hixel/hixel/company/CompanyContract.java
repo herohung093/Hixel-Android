@@ -12,8 +12,7 @@ public interface CompanyContract {
 
     interface View extends BaseView<Presenter> {
         void updateRatios(ArrayList<String> ratios1);
-
-        void showSuggestions(List<SearchEntry> searchEntries);
+        void showSearchResults(List<SearchEntry> searchEntries);
         void goToCompanyView();
     }
 
@@ -28,7 +27,7 @@ public interface CompanyContract {
         void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion);
         Company getCompany();
 
-        void search(PublishSubject<String> subject);
+        void loadSearchResults(String query);
         void loadDataForAParticularCompany(String ticker);
     }
 }

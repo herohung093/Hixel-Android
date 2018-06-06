@@ -63,7 +63,7 @@ public class GraphPresenter implements GraphContract.Presenter {
                 assert stringArrayList != null;
                 Log.d("ratios------------>","" + stringArrayList.size());
 
-                // graphView.updateRatios(ratios);
+                graphView.updateRatios(ratios);
 
             }
 

@@ -179,6 +179,7 @@ public class GraphFragment extends Fragment {
 
     public void setupLegend(Legend legend) {
         legend.setEnabled(true);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setFormSize(7f); // set the size of the legend forms/shapes
         legend.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
         // TODO: Check if deprecated method is required

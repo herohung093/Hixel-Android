@@ -32,7 +32,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         setContentView(R.layout.activity_graph);
         intentReceiver = getIntent();
         ArrayList<Company> receivedCompanies =
-                (ArrayList<Company>) intentReceiver.getSerializableExtra("selectedCompanies");
+                (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
 
         mPresenter = new GraphPresenter( this, receivedCompanies);
         mPresenter.start();
@@ -54,7 +54,6 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         mPresenter = presenter;
     }
 
-    /*
     @Override
     public void updateRatios(ArrayList<String> ratios1) {
         this.ratios=ratios1;
@@ -63,7 +62,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         listOfGraph = findViewById(R.id.spinner);
         listOfGraph.setOnItemSelectedListener(this);
         listOfGraph.setAdapter(listRatiosAdapter);
-    }*/
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
