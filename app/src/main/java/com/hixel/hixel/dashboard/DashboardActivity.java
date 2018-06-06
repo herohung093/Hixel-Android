@@ -330,7 +330,14 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     public void goToCompanyView() {
         Intent intent = new Intent(this, CompanyActivity.class);
-        intent.putExtra("ticker", presenter.getCompany());
+        Bundle extras = new Bundle();
+
+        ArrayList<Company> companies = new ArrayList<>(presenter.getCompanies());
+
+        extras.putSerializable("CURRENT_COMPANY", presenter.getCompany());
+        extras.putSerializable("PORTFOLIO", companies);
+
+        intent.putExtras(extras);
         startActivityForResult(intent,1);
     }
 

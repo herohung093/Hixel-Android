@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +25,7 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
+import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.models.Company;
 
 import com.hixel.hixel.search.SearchAdapter;
@@ -42,44 +46,36 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company);
 
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+
+        Company company = (Company) extras.getSerializable("CURRENT_COMPANY");
+
+        ArrayList<Company> companies = (ArrayList<Company>) extras.getSerializable("PORTFOLIO");
+
+        Log.d("COMPANY_ACTIVITY", "" + company.getIdentifiers().getName());
+
         // Set up the toolbar
         setSupportActionBar(findViewById(R.id.toolbar));
 
         presenter = new CompanyPresenter(this);
 
-        if (getIntent().hasExtra("company")) {
-            presenter.setCompany((Company) getIntent().getSerializableExtra("company"));
-            TextView toolbarTitle = findViewById(R.id.toolbar_title);
-            toolbarTitle.setText(presenter.getCompanyName());
-        } else {
-            presenter.setCompany((Company) getIntent().getSerializableExtra("ticker"));
+        presenter.setCompany((Company) extras.getSerializable("CURRENT_COMPANY"));
 
-            TextView toolbarTitle = findViewById(R.id.toolbar_title);
-            toolbarTitle.setText(presenter.getCompanyName());
+        TextView toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(presenter.getCompanyName());
 
-            //TODO check if a company is present in the portfolio already. IF yes,then don't show the add button.
-            /*
-            imageView.setVisibility(View.VISIBLE);
+        FloatingActionButton fab = findViewById(R.id.fab);
 
-            imageView.setOnClickListener(v -> {
+        fab.setOnClickListener(v -> {
+            Intent backIntent = new Intent(CompanyActivity.this, DashboardActivity.class);
+            startActivity(backIntent);
+        });
 
-                /* this will be replaced by the one that has been commented below,have to create an interface
-                so that the adapter can override the onActivityResult(). Adapter can't override this method by default.
-                */
-
-                //Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                //intent.putExtra("result", presenter.getCompany());
-              //  startActivity(intent);
-
-                /*
-                Intent intent=new Intent();
-                intent.putExtra("result",presenter.getCompany());
-                setResult(RESULT_OK,intent);
-                finish();
-                */
-
-            //});
-
+        for (Company c : companies) {
+            if (c.getIdentifiers().getName().equals(presenter.getCompanyName())) {
+                fab.setVisibility(View.INVISIBLE);
+            }
         }
 
         presenter.start();

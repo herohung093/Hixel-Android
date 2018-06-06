@@ -88,7 +88,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
         call.enqueue(new Callback<ArrayList<String>>() {
             @Override
             public void onResponse(@NonNull  Call<ArrayList<String>> call, @NonNull Response<ArrayList<String>> response) {
-                ArrayList<String>stringArrayList=response.body();
+                ArrayList<String>stringArrayList = response.body();
                 ratios1=stringArrayList;
 
                 assert stringArrayList != null;

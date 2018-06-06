@@ -160,7 +160,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
 
             @Override
             public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
-                //TODO: Add failure handling...
+                // TODO: Add failure handling...
             }
         });
     }

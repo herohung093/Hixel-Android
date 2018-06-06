@@ -2,6 +2,7 @@ package com.hixel.hixel.dashboard;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.company.CompanyActivity;
 import com.hixel.hixel.models.Company;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -70,8 +72,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         holder.foreground.setOnClickListener((View view) -> {
             Intent intent = new Intent(context, CompanyActivity.class);
-            intent.putExtra("company",
-                    presenter.getCompanies().get(holder.getAdapterPosition()));
+
+            Bundle extras = new Bundle();
+
+            ArrayList<Company> companies = new ArrayList<>(presenter.getCompanies());
+
+            extras.putSerializable("CURRENT_COMPANY", presenter.getCompanies().get(position));
+            extras.putSerializable("PORTFOLIO", companies);
+
+            intent.putExtras(extras);
 
             context.startActivity(intent);
         });

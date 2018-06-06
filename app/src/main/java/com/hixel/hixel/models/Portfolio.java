@@ -1,9 +1,10 @@
 package com.hixel.hixel.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Portfolio {
+public class Portfolio implements Serializable {
     private List<Company> companies;
 
     public Portfolio() {
