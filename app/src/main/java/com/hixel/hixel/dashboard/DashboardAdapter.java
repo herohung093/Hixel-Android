@@ -40,7 +40,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         this.mViewHolder=holder;
-        Log.d("POtiiiiiiionnnn",""+position);
+
         String companyName = presenter.getCompanies()
                 .get(position)
                 .getIdentifiers()
@@ -89,12 +89,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         return presenter.getCompanies().size();
     }
 
-    public void removeItem(int postition)
-    {
-        presenter.getCompanies().remove(postition);
-        notifyItemRemoved(postition);
 
-    }
     /*
     This method will be called from the dashboard activity
      */
@@ -123,6 +118,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     /*
     Function to remove item from the recycler view
      */
+    public void removeItem(int postition)
+    {
+        presenter.getCompanies().remove(postition);
+        notifyItemRemoved(postition);
+
+    }
 
     /*
     Function for restoring the deleted item.

@@ -15,12 +15,15 @@
     app:contentInsetEnd="0dp">
 
       <TextView
-        android:id="@+id/toolbar_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/default_text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textColor="@android:color/white"/>
+          android:id="@+id/toolbar_title"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="0dp"
+          android:gravity="center"
+          android:text="@string/default_text"
+          android:textAlignment="center"
+          android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+          android:textColor="@android:color/white" />
 
   </android.support.v7.widget.Toolbar>
 </layout>

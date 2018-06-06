@@ -67,8 +67,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     RecyclerView mRecyclerView;
     private RadarChart chart;
     SearchView search;
-
     private Company mCompanyReturned;
+
 
     SearchView.SearchAutoComplete searchAutoComplete;
 
@@ -106,6 +106,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         // Init presenter
         presenter = new DashboardPresenter(this);
         presenter.start();
+        Log.d("Hey--------","holllllaa fam");
 
     }
 
@@ -277,7 +278,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         chart.invalidate();
     }
 
-/* For a very weird reason the app crashes because of this. A fix will be made soon.
+// For a very weird reason the app crashes because of this. A fix will be made soon.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -285,13 +286,17 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         {
             if(resultCode==RESULT_OK)
             {
+                this.mCompanyReturned= ((Company)data.getSerializableExtra("result"));
+                addItem(mCompanyReturned);
 
-                this.mCompanyReturned= ((Company)getIntent().getSerializableExtra("result"));
             }
         }
-
+        if(mCompanyReturned!=null)
+        {
+            Log.d("holllllaaaa fammmmm","bOoooom");
+        }
     }
-    */
+
 
     @Override
     public void setupDashboardAdapter() {
@@ -301,24 +306,28 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback=new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
-        CompanyIdentifiers ci=new CompanyIdentifiers("ibm","Inter","90");
-        List<FinancialData>f=new ArrayList<>();
-        Company c=new Company(ci,f);
-        addItem(c);
 
 
+
+        /*
         if (getIntent().hasExtra("result")) {
             Log.d("INtent----------->","bOOOOOOOM11111111");
 
             addItem((Company)getIntent().getSerializableExtra("result"));
         }
-
-
+*/
+        if (mCompanyReturned != null) {
+            addItem(mCompanyReturned);
+            for (int i = 0; i < presenter.getCompanies().size(); i++) {
+                if (presenter.getCompanies().get(i) == null) {
+                    Log.d("This company is null", "" + i);
+                }
+            }
+        }
     }
-
     /* NOTE: Reimplement once needed
     @Override
     public void portfolioChanged() {
