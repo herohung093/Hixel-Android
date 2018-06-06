@@ -23,12 +23,12 @@ public class CompanyAdapter extends ArrayAdapter<String> {
         TextView value;
     }
 
-    public CompanyAdapter(Context context, int resource, ArrayList<String>objects)
-    {
+    public CompanyAdapter(Context context, int resource, ArrayList<String>objects) {
         super(context,resource,objects);
         mContext=context;
         this.resource=resource;
     }
+
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -44,9 +44,6 @@ public class CompanyAdapter extends ArrayAdapter<String> {
         tvName.setText(Name);
         tvBirthday.setText("");
         tvSex.setText(value);
-
-
-
 
 
         return convertView;

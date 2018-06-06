@@ -19,6 +19,8 @@ public interface DashboardContract {
         void showLoadingError();
         void showSearchResults(List<SearchEntry> searchEntries);
         void goToCompanyView();
+
+        void getAddedCompany();
     }
 
     interface Presenter extends BasePresenter {

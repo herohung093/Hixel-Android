@@ -92,6 +92,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                                    @NonNull Response<ArrayList<Company>> response) {
 
                 portfolio.setCompanies(response.body());
+                dashboardView.getAddedCompany();
 
                 // Setup the views with portfolio data then hide the loading indicator.
                 dashboardView.populateChart();
