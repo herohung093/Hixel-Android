@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -87,7 +88,7 @@ public class GraphFragment extends Fragment {
             compEntry.add(compYearData);
         }
 
-        return new LineDataSet(compEntry,company.getIdentifiers().getName());
+        return new LineDataSet(compEntry,company.getIdentifiers().getTicker());
     }
     public void drawGraph(ArrayList<Company> companies,String selectedRatio){
         List<ILineDataSet> dataSets = new ArrayList<>();
@@ -111,7 +112,8 @@ public class GraphFragment extends Fragment {
             }
 
         }
-
+        Description description=lineChart.getDescription();
+        description.setEnabled(false);
         LineData data = new LineData(dataSets);
         decorLineChart(lineChart,data);
     }

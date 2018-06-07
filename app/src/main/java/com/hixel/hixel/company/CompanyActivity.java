@@ -1,7 +1,6 @@
 package com.hixel.hixel.company;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,16 +8,12 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -31,7 +26,6 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.models.Company;
-
 import com.hixel.hixel.search.SearchAdapter;
 import com.hixel.hixel.search.SearchEntry;
 import io.reactivex.subjects.PublishSubject;
@@ -73,9 +67,10 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(v -> {
-            Intent backIntent = new Intent(CompanyActivity.this, DashboardActivity.class);
+            Intent backIntent = getIntent();
             backIntent.putExtra("COMPANY_ADD", company);
-            startActivity(backIntent);
+            setResult(RESULT_OK,backIntent);
+            finish();
         });
 
         if (companies != null) {

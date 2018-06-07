@@ -13,20 +13,16 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
-
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -39,12 +35,9 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.company.CompanyActivity;
 import com.hixel.hixel.comparison.ComparisonActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
-
 import com.hixel.hixel.models.Company;
-import com.hixel.hixel.search.SearchEntry;
-
 import com.hixel.hixel.search.SearchAdapter;
-import io.reactivex.subjects.PublishSubject;
+import com.hixel.hixel.search.SearchEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -60,6 +53,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
     private RadarChart chart;
+    private Company mCompanyReturned;
 
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
@@ -353,5 +347,24 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
             presenter.getCompanies().add((Company) getIntent().getSerializableExtra("COMPANY_ADD"));
         }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1)
+        {
+            if(resultCode==RESULT_OK)
+            {
+                this.mCompanyReturned= ((Company)data.getSerializableExtra("COMPANY_ADD"));
+                addItem(mCompanyReturned);
+
+            }
+        }
+
+    }
+    public void addItem(Company company)
+    {
+        dashboardAdapter.addItem(company);
+    }
+
 }
 

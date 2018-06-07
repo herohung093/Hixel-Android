@@ -36,11 +36,15 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+
         String companyName = presenter.getListCompareCompanies()
             .get(position)
             .getIdentifiers()
-            .getName();
+            .getName()
+            .split("\\,| ")[0]
+            .toLowerCase();
 
+        companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyName.setText(companyName);
 
         holder.companyTicker.setText(presenter.getListCompareCompanies()

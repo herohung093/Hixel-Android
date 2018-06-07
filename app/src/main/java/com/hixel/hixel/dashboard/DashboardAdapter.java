@@ -120,4 +120,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         }
 
     }
+    public void addItem(Company company)
+    {
+        presenter.getCompanies().add(getItemCount(),company);
+        notifyItemInserted(getItemCount());// re check here
+
+    }
 }
