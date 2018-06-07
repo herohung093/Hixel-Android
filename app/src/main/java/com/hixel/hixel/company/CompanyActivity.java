@@ -223,6 +223,37 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         ratiosList.add(getValue(ratios1.get(2), 2017));
         ratiosList.add(getValue(ratios1.get(3), 2017));
         ratiosList.add(getValue(ratios1.get(4), 2017));
+
+        TextView tv4 = findViewById(R.id.textView4);
+        TextView tv5 = findViewById(R.id.textView5);
+        TextView tv6 = findViewById(R.id.textView6);
+
+        tv4.setText(R.string.current_ratio);
+        tv5.setText(R.string.debt_to_equity);
+        tv6.setText(R.string.return_on_equity);
+
+        TextView tv7 = findViewById(R.id.textView7);
+        TextView tv8 = findViewById(R.id.textView8);
+        TextView tv9 = findViewById(R.id.textView9);
+
+        tv7.setText(ratiosList.get(0)); // current ratio
+        tv8.setText(ratiosList.get(1)); // d/e
+        tv9.setText(ratiosList.get(2)); // roe
+
+
+        TextView tv10 = findViewById(R.id.textView10);
+        TextView tv11 = findViewById(R.id.textView11);
+
+        tv10.setText(R.string.return_on_assets);
+        tv11.setText(R.string.profit_margin);
+
+        TextView tv12 = findViewById(R.id.textView12);
+        TextView tv13 = findViewById(R.id.textView13);
+
+        tv12.setText(ratiosList.get(3)); // roa
+        tv13.setText(ratiosList.get(4)); // pm
+
+
     }
 
     public void setPresenter(@NonNull CompanyContract.Presenter presenter) {

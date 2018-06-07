@@ -31,5 +31,11 @@
     <string name="cash_ratio">Cash Ratio</string>
 
 
+    <string name="debt_to_equity">Debt-to-Equity</string>
+    <string name="return_on_equity">Return-on-Equity</string>
+    <string name="return_on_assets">Return-on-Assets</string>
+    <string name="profit_margin">Profit Margin</string>
+
+
     <string name="snapshot">Snapshot</string>
 </resources>
