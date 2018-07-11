@@ -32,9 +32,6 @@ import retrofit2.Response;
 import static com.hixel.hixel.service.network.Client.getClient;
 
 public class DashboardPresenter implements DashboardContract.Presenter {
-
-    private static final String TAG = DashboardPresenter.class.getSimpleName();
-
     private final DashboardContract.View dashboardView;
 
     private Portfolio portfolio;
@@ -128,12 +125,6 @@ public class DashboardPresenter implements DashboardContract.Presenter {
         Collections.reverse(portfolio.getCompanies());
     }
 
-    // TODO: Figure out if this is needed
-    public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
-        //loadDataForAParticularCompany(tickerFromSearchSuggestion);
-    }
-
-    // TODO: Implement this in a way in which the Presenter does NOT rely on a Company object
     public void loadDataForAParticularCompany(String ticker) {
 
         ServerInterface client = getClient().create(ServerInterface.class);
@@ -149,7 +140,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
                     company = Objects.requireNonNull(response.body()).get(0);
                     dashboardView.goToCompanyView();
                 }
-                catch (Exception e) { //TODO: Provide user-facing message when this occurs.
+                catch (Exception e) { // TODO: Provide user-facing message when this occurs.
                     Log.e("loadDataForAParticularCompany",
                           String.format("Failed to retrieve data for ticker: %s", ticker));
                 }
@@ -185,5 +176,4 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     {
         return company;
     }
-
 }
