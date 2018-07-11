@@ -1,10 +1,9 @@
-package com.hixel.hixel.comparisonGraph;
+package com.hixel.hixel.view.ui;
 
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,8 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hixel.hixel.R;
-import com.hixel.hixel.models.Company;
-import com.hixel.hixel.models.FinancialData;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.models.FinancialData;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,28 +41,10 @@ public class GraphFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     // TODO: Rename and change types and number of parameters
-    /*
-    public static GraphFragment newInstance(String param1, String param2) {
-        GraphFragment fragment = new GraphFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-
-        return fragment;
-    }*/
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*
-        if (getArguments() != null) {
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            String mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
 
     }
 
@@ -95,12 +76,12 @@ public class GraphFragment extends Fragment {
 
         for(Company c: companies){
             LineDataSet setCompA= lineChartDataSetup( selectedRatio, c);
-            if(companies.size()==1){
+            if (companies.size()==1) {
                 setCompA.setColors(ColorTemplate.LIBERTY_COLORS);
                 setupDatasetStyle(setCompA);
                 setCompA.enableDashedLine(10f, 10f, 10f);
                 dataSets.add(setCompA);
-            }else if(companies.size()==2 && companies.indexOf(c)==0){
+            } else if(companies.size()==2 && companies.indexOf(c)==0) {
                 setCompA.setColors(ColorTemplate.LIBERTY_COLORS);
                 setupDatasetStyle(setCompA);
                 setCompA.enableDashedLine(10f, 10f, 10f);
@@ -122,7 +103,6 @@ public class GraphFragment extends Fragment {
         lineChart.animateXY(1000, 1000);
         lineChart.setData(data);
         lineChart.invalidate();
-        Log.d("GOT TO DRAW GRAPH", "Successful");
         XAxis xAxis = lineChart.getXAxis();
 
         YAxis yAxis = lineChart.getAxisLeft();
@@ -142,11 +122,6 @@ public class GraphFragment extends Fragment {
             return years[(int) value];
         }
 
-        // we don't draw numbers, so no decimal digits needed
-        /*
-        public int getDecimalDigits() {
-            return 0;
-        }*/
     };
 
     private void checkYearNull(List<FinancialData> financial) {
@@ -204,15 +179,6 @@ public class GraphFragment extends Fragment {
         yAxis.setTextColor(Color.WHITE);
     }
 
-
-    // TODO: Rename method, update argument and hook method into UI event
-    /*
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }*/
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -229,7 +195,6 @@ public class GraphFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

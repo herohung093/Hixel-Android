@@ -3,10 +3,10 @@ package com.hixel.hixel.dashboard;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.hixel.hixel.network.ServerInterface;
-import com.hixel.hixel.models.Company;
-import com.hixel.hixel.models.Portfolio;
-import com.hixel.hixel.search.SearchEntry;
+import com.hixel.hixel.service.network.ServerInterface;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.models.Portfolio;
+import com.hixel.hixel.service.models.SearchEntry;
 
 import java.util.Comparator;
 import java.util.List;
@@ -29,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.hixel.hixel.network.Client.getClient;
+import static com.hixel.hixel.service.network.Client.getClient;
 
 public class DashboardPresenter implements DashboardContract.Presenter {
 
@@ -43,7 +43,7 @@ public class DashboardPresenter implements DashboardContract.Presenter {
     private CompositeDisposable disposable;
     private PublishSubject<String> publishSubject;
 
-    DashboardPresenter(DashboardContract.View dashboardView) {
+    public DashboardPresenter(DashboardContract.View dashboardView) {
         this.dashboardView = dashboardView;
         this.dashboardView.setPresenter(this);
         this.portfolio = new Portfolio();

@@ -1,4 +1,4 @@
-package com.hixel.hixel.comparison;
+package com.hixel.hixel.view.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,17 +11,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hixel.hixel.R;
-import com.hixel.hixel.company.CompanyActivity;
+import com.hixel.hixel.view.ui.CompanyActivity;
 
+import com.hixel.hixel.comparison.ComparisonContract.Presenter;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.ViewHolder> {
 
-    private final ComparisonContract.Presenter presenter;
+    private final Presenter presenter;
     private Context mContext;
 
-    ComparisonAdapter(Context context, ComparisonContract.Presenter presenter) {
+    public ComparisonAdapter(Context context, Presenter presenter) {
         this.presenter = presenter;
         this.mContext = context;
     }

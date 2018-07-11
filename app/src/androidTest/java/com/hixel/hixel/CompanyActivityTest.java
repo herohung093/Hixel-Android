@@ -5,7 +5,7 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.hixel.hixel.company.CompanyActivity;
+import com.hixel.hixel.view.ui.CompanyActivity;
 
 import org.junit.Rule;
 import org.junit.runner.RunWith;

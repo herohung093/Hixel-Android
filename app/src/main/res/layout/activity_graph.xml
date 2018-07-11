@@ -5,7 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@color/colorPrimary"
-  tools:context=".comparisonGraph.GraphActivity">
+  tools:context=".view.ui.GraphActivity">
 
 
     <LinearLayout
@@ -36,7 +36,7 @@
       android:layout_marginBottom="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
-      android:name="com.hixel.hixel.comparisonGraph.GraphFragment"
+      android:name="com.hixel.hixel.view.ui.GraphFragment"
       app:layout_constraintBottom_toTopOf="@+id/navigator"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"

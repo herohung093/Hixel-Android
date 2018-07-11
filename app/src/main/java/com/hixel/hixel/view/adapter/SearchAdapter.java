@@ -1,4 +1,4 @@
-package com.hixel.hixel.search;
+package com.hixel.hixel.view.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.hixel.hixel.R;
+import com.hixel.hixel.service.models.SearchEntry;
 import java.util.List;
 
 public class SearchAdapter extends ArrayAdapter<SearchEntry> {

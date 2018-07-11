@@ -2,9 +2,8 @@ package com.hixel.hixel.company;
 
 import com.hixel.hixel.BasePresenter;
 import com.hixel.hixel.BaseView;
-import com.hixel.hixel.models.Company;
-import com.hixel.hixel.search.SearchEntry;
-import io.reactivex.subjects.PublishSubject;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.models.SearchEntry;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -2,10 +2,10 @@ package com.hixel.hixel.comparison;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-import com.hixel.hixel.models.Company;
-import com.hixel.hixel.network.Client;
-import com.hixel.hixel.network.ServerInterface;
-import com.hixel.hixel.search.SearchEntry;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.network.Client;
+import com.hixel.hixel.service.network.ServerInterface;
+import com.hixel.hixel.service.models.SearchEntry;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -23,7 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.hixel.hixel.network.Client.getClient;
+import static com.hixel.hixel.service.network.Client.getClient;
 
 public class ComparisonPresenter implements ComparisonContract.Presenter {
     private List<Company> listCompareCompanies = new ArrayList<>();
@@ -32,7 +32,7 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
     private CompositeDisposable disposable;
     private PublishSubject<String> publishSubject;
 
-    ComparisonPresenter(ComparisonContract.View mComparisonView) {
+    public ComparisonPresenter(ComparisonContract.View mComparisonView) {
         this.comparisonView = mComparisonView;
         listCompareCompanies.clear();
 
@@ -41,10 +41,6 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
 
     }
 
-    /*
-    public void setListCompareCompanies(List<Company> listCompareCompanies) {
-        this.listCompareCompanies = listCompareCompanies;
-    }*/
 
     @Override
     public void start() {
@@ -59,16 +55,6 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
                         .observeOn(AndroidSchedulers.mainThread()))
                 .subscribeWith(getSearchObserver()));
     }
-
-    /*
-    public void removeCompareFromList(int position){
-        listCompareCompanies.remove(position);
-
-    }
-
-    public void compare(){
-
-    }*/
 
     public List<Company> getListCompareCompanies(){
         return listCompareCompanies;
@@ -121,14 +107,6 @@ public class ComparisonPresenter implements ComparisonContract.Presenter {
         }
 
     }
-
-    /*
-    @Override
-    public void removeLastItemFromList() {
-        if (listCompareCompanies.size()!= 0) {
-            listCompareCompanies.remove(listCompareCompanies.size() - 1);
-        }
-    }*/
 
     @Override
     public void loadSearchResults(String query) {

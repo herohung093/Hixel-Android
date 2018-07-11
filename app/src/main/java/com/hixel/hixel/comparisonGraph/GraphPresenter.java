@@ -2,9 +2,9 @@ package com.hixel.hixel.comparisonGraph;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-import com.hixel.hixel.models.Company;
-import com.hixel.hixel.network.Client;
-import com.hixel.hixel.network.ServerInterface;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.network.Client;
+import com.hixel.hixel.service.network.ServerInterface;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import retrofit2.Call;
@@ -17,7 +17,7 @@ public class GraphPresenter implements GraphContract.Presenter {
     private ArrayList<String> ratios;
 
 
-    GraphPresenter(GraphContract.View graphView, ArrayList<Company> companies) {
+    public GraphPresenter(GraphContract.View graphView, ArrayList<Company> companies) {
         this.graphView = graphView;
         this.companies = companies;
         this.ratios = new ArrayList<>();
@@ -59,26 +59,16 @@ public class GraphPresenter implements GraphContract.Presenter {
                 setRatios(stringArrayList);
                 checkUpFinancialEntry(stringArrayList);
 
-                // TODO: Fix this log statement
                 assert stringArrayList != null;
-                Log.d("ratios------------>","" + stringArrayList.size());
-
                 graphView.updateRatios(ratios);
 
             }
 
             @Override
             public void onFailure(@NonNull Call<ArrayList<String>> call, @NonNull Throwable t) {
-                Log.d("loadPortfolio",
-                        "Failed to load Search suggestions from the server: " + t.getMessage());
             }
         });
     }
-
-    /*
-    public ArrayList<String> getRatios() {
-        return ratios;
-    }*/
 
     @Override
     public void setRatios(ArrayList<String> ratios) {

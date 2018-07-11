@@ -1,4 +1,4 @@
-package com.hixel.hixel.dashboard;
+package com.hixel.hixel.view.ui;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -32,18 +32,21 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
-import com.hixel.hixel.company.CompanyActivity;
-import com.hixel.hixel.comparison.ComparisonActivity;
+import com.hixel.hixel.dashboard.DashboardContract;
+import com.hixel.hixel.dashboard.DashboardPresenter;
+import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
+import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
-import com.hixel.hixel.models.Company;
-import com.hixel.hixel.search.SearchAdapter;
-import com.hixel.hixel.search.SearchEntry;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.view.adapter.DashboardAdapter;
+import com.hixel.hixel.view.adapter.SearchAdapter;
+import com.hixel.hixel.service.models.SearchEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
-        RecyclerItemTouchHelper.RecyclerItemTouchHelperListener, OnItemSelectedListener {
+        RecyclerItemTouchHelperListener, OnItemSelectedListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = DashboardActivity.class.getSimpleName();

@@ -1,13 +1,10 @@
-package com.hixel.hixel.network;
+package com.hixel.hixel.service.network;
 
-import static com.hixel.hixel.network.Const.BASE_URL;
+import static com.hixel.hixel.service.network.Const.BASE_URL;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import retrofit2.Retrofit;

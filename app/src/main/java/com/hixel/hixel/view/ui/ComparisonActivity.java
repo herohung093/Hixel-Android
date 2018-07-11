@@ -1,4 +1,4 @@
-package com.hixel.hixel.comparison;
+package com.hixel.hixel.view.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,16 +16,15 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
-import com.hixel.hixel.company.CompanyActivity;
-import com.hixel.hixel.comparisonGraph.GraphActivity;
-import com.hixel.hixel.dashboard.DashboardActivity;
-import com.hixel.hixel.search.SearchAdapter;
-import com.hixel.hixel.search.SearchEntry;
+import com.hixel.hixel.comparison.ComparisonContract;
+import com.hixel.hixel.comparison.ComparisonPresenter;
+import com.hixel.hixel.view.adapter.ComparisonAdapter;
+import com.hixel.hixel.view.adapter.SearchAdapter;
+import com.hixel.hixel.service.models.SearchEntry;
 import java.util.ArrayList;
 import java.util.List;
 

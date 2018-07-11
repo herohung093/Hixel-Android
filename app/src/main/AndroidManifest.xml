@@ -12,7 +12,7 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name=".dashboard.DashboardActivity"
+    <activity android:name=".view.ui.DashboardActivity"
               android:windowSoftInputMode="adjustNothing">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -20,13 +20,13 @@
       </intent-filter>
 
     </activity>
-    <activity android:name=".company.CompanyActivity">
+    <activity android:name=".view.ui.CompanyActivity">
     </activity>
-      <activity android:name=".comparison.ComparisonActivity"
+      <activity android:name=".view.ui.ComparisonActivity"
         android:windowSoftInputMode="adjustNothing"/>
     <!--suppress AndroidDomInspection -->
     <activity android:name=".comparisonGraph.MainActivity" />
-    <activity android:name=".comparisonGraph.GraphActivity"></activity>
+    <activity android:name=".view.ui.GraphActivity"></activity>
 
     <meta-data
       android:name="preloaded_fonts"

@@ -1,7 +1,6 @@
-package com.hixel.hixel.comparisonGraph;
+package com.hixel.hixel.view.ui;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
@@ -10,14 +9,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import com.hixel.hixel.R;
-import com.hixel.hixel.comparison.ComparisonActivity;
-import com.hixel.hixel.dashboard.DashboardActivity;
-import com.hixel.hixel.models.Company;
+import com.hixel.hixel.comparisonGraph.GraphContract;
+import com.hixel.hixel.view.ui.GraphFragment.OnFragmentInteractionListener;
+import com.hixel.hixel.comparisonGraph.GraphPresenter;
+import com.hixel.hixel.service.models.Company;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GraphActivity extends FragmentActivity implements GraphContract.View,
-        AdapterView.OnItemSelectedListener, GraphFragment.OnFragmentInteractionListener {
+        AdapterView.OnItemSelectedListener, OnFragmentInteractionListener {
 
     List<String> ratios = new ArrayList<>();
     ArrayAdapter<String> listRatiosAdapter;
@@ -42,12 +42,6 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         setupBottomNavigationView(bottomNavigationView);
 
     }
-
-    /*
-    @Override
-    public void graphChanged(String ratio) {
-
-    }*/
 
     @Override
     public void setPresenter(GraphContract.Presenter presenter) {
@@ -75,12 +69,6 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
-    /*
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }*/
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {

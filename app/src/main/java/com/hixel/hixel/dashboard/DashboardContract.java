@@ -3,10 +3,9 @@ package com.hixel.hixel.dashboard;
 import com.hixel.hixel.BasePresenter;
 import com.hixel.hixel.BaseView;
 
-import com.hixel.hixel.models.Company;
-import com.hixel.hixel.search.SearchEntry;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.models.SearchEntry;
 
-import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 
 public interface DashboardContract {

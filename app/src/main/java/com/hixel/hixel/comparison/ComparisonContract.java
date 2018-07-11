@@ -2,8 +2,8 @@ package com.hixel.hixel.comparison;
 
 import com.hixel.hixel.BasePresenter;
 import com.hixel.hixel.BaseView;
-import com.hixel.hixel.models.Company;
-import com.hixel.hixel.search.SearchEntry;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.models.SearchEntry;
 import java.util.List;
 
 public interface ComparisonContract {

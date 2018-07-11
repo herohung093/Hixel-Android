@@ -1,6 +1,6 @@
 package com.hixel.hixel;
 
-import com.hixel.hixel.models.Company;
+import com.hixel.hixel.service.models.Company;
 import org.junit.Test;
 
 public class CompanyActivityTest {

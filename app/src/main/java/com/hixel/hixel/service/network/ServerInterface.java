@@ -1,7 +1,7 @@
-package com.hixel.hixel.network;
+package com.hixel.hixel.service.network;
 
-import com.hixel.hixel.models.Company;
-import com.hixel.hixel.search.SearchEntry;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.models.SearchEntry;
 
 import java.util.ArrayList;
 

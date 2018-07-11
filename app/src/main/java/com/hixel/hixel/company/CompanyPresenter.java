@@ -1,16 +1,16 @@
 package com.hixel.hixel.company;
 
-import static com.hixel.hixel.network.Client.getClient;
+import static com.hixel.hixel.service.network.Client.getClient;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.hixel.hixel.models.Company;
-import com.hixel.hixel.network.Client;
-import com.hixel.hixel.network.ServerInterface;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.network.Client;
+import com.hixel.hixel.service.network.ServerInterface;
 
-import com.hixel.hixel.search.SearchEntry;
+import com.hixel.hixel.service.models.SearchEntry;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -36,7 +36,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     private CompositeDisposable disposable;
     private PublishSubject<String> publishSubject;
 
-    CompanyPresenter(CompanyContract.View companyView) {
+    public CompanyPresenter(CompanyContract.View companyView) {
         this.companyView = companyView;
         companyView.setPresenter(this);
 
@@ -99,7 +99,7 @@ public class CompanyPresenter implements CompanyContract.Presenter {
             @Override
             public void onResponse(@NonNull  Call<ArrayList<String>> call, @NonNull Response<ArrayList<String>> response) {
                 ArrayList<String>stringArrayList = response.body();
-                ratios1=stringArrayList;
+                ratios1 = stringArrayList;
 
                 assert stringArrayList != null;
 
@@ -127,12 +127,6 @@ public class CompanyPresenter implements CompanyContract.Presenter {
     public String getCompanyName() {
         return company.getIdentifiers().getName();
     }
-
-    /*
-    public void setTickerFromSearchSuggestion(String tickerFromSearchSuggestion) {
-        this.tickerFromSearchSuggestion = tickerFromSearchSuggestion;
-        //loadDataForAParticularCompany(tickerFromSearchSuggestion);
-    }*/
 
     @Override
     public void loadSearchResults(String query) {

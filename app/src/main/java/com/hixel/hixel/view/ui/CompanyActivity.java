@@ -1,4 +1,4 @@
-package com.hixel.hixel.company;
+package com.hixel.hixel.view.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,12 +23,11 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
-import com.hixel.hixel.comparison.ComparisonActivity;
-import com.hixel.hixel.dashboard.DashboardActivity;
-import com.hixel.hixel.models.Company;
-import com.hixel.hixel.search.SearchAdapter;
-import com.hixel.hixel.search.SearchEntry;
-import io.reactivex.subjects.PublishSubject;
+import com.hixel.hixel.company.CompanyContract;
+import com.hixel.hixel.company.CompanyPresenter;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.view.adapter.SearchAdapter;
+import com.hixel.hixel.service.models.SearchEntry;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +87,6 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         MenuItem searchView = menu.findItem(R.id.action_search);
-        PublishSubject<String> subject = PublishSubject.create();
 
         search = (SearchView) searchView.getActionView();
         searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
