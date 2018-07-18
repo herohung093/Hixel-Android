@@ -1,12 +1,12 @@
 package com.hixel.hixel.view.ui;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -66,10 +66,10 @@ public class DashboardActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
-
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+
+        dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
 
         // Set up the toolbar
         setSupportActionBar(binding.toolbar.toolbar);
@@ -87,6 +87,7 @@ public class DashboardActivity extends AppCompatActivity
 
         // Set up the list of companies
         mRecyclerView = binding.recyclerView;
+        setupDashboardAdapter();
 
         // Set up the bottom navigation bar
         setupBottomNavigationView();
@@ -263,7 +264,7 @@ public class DashboardActivity extends AppCompatActivity
 
     public void setupDashboardAdapter() {
 
-        // dashboardAdapter = new DashboardAdapter(this, presenter);
+        dashboardAdapter = new DashboardAdapter(this, new ArrayList<>());
         mRecyclerView.setAdapter(this.dashboardAdapter);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -275,6 +276,9 @@ public class DashboardActivity extends AppCompatActivity
                 new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
+
+        dashboardViewModel.getPortfolio().observe(DashboardActivity.this,
+                companies -> dashboardAdapter.addItems(companies));
 
     }
 

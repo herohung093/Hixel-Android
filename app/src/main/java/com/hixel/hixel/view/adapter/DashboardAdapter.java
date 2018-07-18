@@ -15,16 +15,18 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.view.ui.CompanyActivity;
 import com.hixel.hixel.service.models.Company;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
 
     private Context context;
+    private List<Company> companies;
 
-    public DashboardAdapter(Context context) {
+    public DashboardAdapter(Context context, List<Company> companies) {
         this.context = context;
+        this.companies = companies;
     }
 
     @NonNull
@@ -39,44 +41,39 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
         // TODO: fix regex.
-        /*String companyName = presenter.getCompanies()
-                .get(position)
+        String companyName = companies.get(position)
                 .getIdentifiers()
                 .getName()
                 .split("\\,| ")[0]
-                .toLowerCase();*/
+                .toLowerCase();
 
-        //companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
+        companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
 
-        //holder.companyName.setText(companyName);
+        holder.companyName.setText(companyName);
 
         // NOTE: This is a temporary fix!!!
         // Need to get ticker exchange from server.
-        /*String tickerFormat = "NASDAQ:" + presenter.getCompanies()
-                                                    .get(position)
+        String tickerFormat = "NASDAQ:" + companies.get(position)
                                                     .getIdentifiers()
-                                                    .getTicker();*/
+                                                    .getTicker();
 
-        //holder.companyTicker.setText(tickerFormat);
+        holder.companyTicker.setText(tickerFormat);
 
 
         int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
 
         // TODO: Replace with an 'indicator arrow'
-        /*holder.companyIndicator.setText(String.format(Locale.ENGLISH, "%.1f%%",
-                                    presenter.getCompanies()
-                                                   .get(position)
-                                                   .getRatio("Return-on-Equity Ratio", last_year) * 100));*/
+        holder.companyIndicator.setText(String.format(Locale.ENGLISH, "%.1f%%",
+                                    companies.get(position)
+                                                   .getRatio("Return-on-Equity Ratio", last_year) * 100));
 
         holder.foreground.setOnClickListener((View view) -> {
             Intent intent = new Intent(context, CompanyActivity.class);
 
             Bundle extras = new Bundle();
 
-            //ArrayList<Company> companies = new ArrayList<>(presenter.getCompanies());
-
-            //extras.putSerializable("CURRENT_COMPANY", presenter.getCompanies().get(position));
-            //extras.putSerializable("PORTFOLIO", companies);
+            extras.putSerializable("CURRENT_COMPANY", companies.get(position));
+            // extras.putSerializable("PORTFOLIO", companies);
 
             intent.putExtras(extras);
 
@@ -88,18 +85,22 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public int getItemCount() {
-        //return presenter.getCompanies().size();
-        return 5;
+        return companies.size();
     }
 
     public void removeItem(int position) {
-        //presenter.getCompanies().remove(position);
+        companies.remove(position);
         notifyItemRemoved(position);
     }
 
     public void restoreItem(Company company, int position) {
-        //presenter.getCompanies().add(position, company);
+        companies.add(position, company);
         notifyItemInserted(position);
+    }
+
+    public void addItems(List<Company> companies) {
+        this.companies = companies;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -121,8 +122,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     }
 
     public void addItem(Company company) {
-        //presenter.getCompanies().add(getItemCount(),company);
-        notifyItemInserted(getItemCount());// re check here
+        companies.add(getItemCount(),company);
+        notifyItemInserted(getItemCount()); // re check here
 
     }
 }
