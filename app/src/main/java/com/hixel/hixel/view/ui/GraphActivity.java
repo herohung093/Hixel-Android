@@ -9,21 +9,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import com.hixel.hixel.R;
-import com.hixel.hixel.comparisonGraph.GraphContract;
 import com.hixel.hixel.view.ui.GraphFragment.OnFragmentInteractionListener;
-import com.hixel.hixel.comparisonGraph.GraphPresenter;
 import com.hixel.hixel.service.models.Company;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GraphActivity extends FragmentActivity implements GraphContract.View,
+public class GraphActivity extends FragmentActivity implements
         AdapterView.OnItemSelectedListener, OnFragmentInteractionListener {
 
     List<String> ratios = new ArrayList<>();
     ArrayAdapter<String> listRatiosAdapter;
     Intent intentReceiver;
     Spinner listOfGraph;
-    private GraphContract.Presenter mPresenter;
 
 
     @Override
@@ -34,8 +31,6 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
         ArrayList<Company> receivedCompanies =
                 (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
 
-        mPresenter = new GraphPresenter( this, receivedCompanies);
-        mPresenter.start();
 
         //setup bottom navigator
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_graph);
@@ -43,12 +38,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
 
     }
 
-    @Override
-    public void setPresenter(GraphContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
 
-    @Override
     public void updateRatios(ArrayList<String> ratios1) {
         this.ratios=ratios1;
         listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ratios);
@@ -62,7 +52,7 @@ public class GraphActivity extends FragmentActivity implements GraphContract.Vie
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         GraphFragment FragmentA =
                 (GraphFragment) getFragmentManager().findFragmentById(R.id.graphFragment);
-        FragmentA.drawGraph(mPresenter.getCompanies(), adapterView.getSelectedItem().toString());
+        // FragmentA.drawGraph(mPresenter.getCompanies(), adapterView.getSelectedItem().toString());
     }
 
     @Override
