@@ -13,17 +13,13 @@ import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.view.ui.CompanyActivity;
 
-import com.hixel.hixel.comparison.ComparisonContract.Presenter;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.ViewHolder> {
 
-    private final Presenter presenter;
     private Context mContext;
 
-    public ComparisonAdapter(Context context, Presenter presenter) {
-        this.presenter = presenter;
+    public ComparisonAdapter(Context context) {
         this.mContext = context;
     }
 
@@ -38,32 +34,32 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-        String companyName = presenter.getListCompareCompanies()
+        /*String companyName = presenter.getListCompareCompanies()
             .get(position)
             .getIdentifiers()
             .getName()
             .split("\\,| ")[0]
-            .toLowerCase();
+            .toLowerCase();*/
 
-        companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
-        holder.companyName.setText(companyName);
+        //companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
+        //holder.companyName.setText(companyName);
 
-        holder.companyTicker.setText(presenter.getListCompareCompanies()
+        /*holder.companyTicker.setText(presenter.getListCompareCompanies()
                                               .get(position)
                                               .getIdentifiers()
-                                              .getTicker());
+                                              .getTicker());*/
 
         int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
 
-        holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
+        /*holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
                                     presenter.getListCompareCompanies()
                                                    .get(position)
-                                                   .getRatio("Return-on-Equity Ratio", last_year) * 100));
+                                                   .getRatio("Return-on-Equity Ratio", last_year) * 100));*/
 
         holder.parentLayout.setOnClickListener((View view) -> {
             Intent intent = new Intent(mContext, CompanyActivity.class);
-            intent.putExtra("CURRENT_COMPANY",
-                    presenter.getListCompareCompanies().get(holder.getAdapterPosition()));
+            /*intent.putExtra("CURRENT_COMPANY",
+                    presenter.getListCompareCompanies().get(holder.getAdapterPosition()));*/
 
             mContext.startActivity(intent);
         });
@@ -72,7 +68,8 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return presenter.getListCompareCompanies().size();
+        // return presenter.getListCompareCompanies().size();
+        return 5;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -20,19 +20,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
-import com.hixel.hixel.comparison.ComparisonContract;
-import com.hixel.hixel.comparison.ComparisonPresenter;
 import com.hixel.hixel.view.adapter.ComparisonAdapter;
 import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.service.models.SearchEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComparisonActivity extends Activity implements ComparisonContract.View {
+public class ComparisonActivity extends Activity {
 
     RecyclerView.Adapter adapter;
     RecyclerView recyclerView;
-    private ComparisonContract.Presenter presenter;
     private Button compareButton;
 
     SearchView search;
@@ -50,12 +47,9 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
         setupButtons();
 
-        // setup presenter
-        presenter = new ComparisonPresenter(this);
-        presenter.start();
 
         //setup recycle list view
-        adapter = new ComparisonAdapter(this, presenter);
+        adapter = new ComparisonAdapter(this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
@@ -75,13 +69,13 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         compareButton.setOnClickListener((View view) -> {
             Intent moveToGraph = new Intent(this, GraphActivity.class);
 
-            if (presenter.getListCompareCompanies().size() < 2) {
+            /*if (presenter.getListCompareCompanies().size() < 2) {
                 Toast.makeText(getApplicationContext(), "Select 2 companies first!", Toast.LENGTH_LONG).show();
                 return;
             }
 
             moveToGraph.putExtra("COMPARISON_COMPANIES",
-                (ArrayList) presenter.getListCompareCompanies());
+                (ArrayList) presenter.getListCompareCompanies());*/
 
             startActivity(moveToGraph);
         });
@@ -111,8 +105,8 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
             String ticker = entry.getTicker();
             searchAutoComplete.setText(entry.getName());
 
-            presenter.addToCompare(ticker);
-            Log.d(TAG, "COMPANY SIZE: " + String.valueOf(presenter.getListCompareCompanies().size()));
+            //presenter.addToCompare(ticker);
+            //Log.d(TAG, "COMPANY SIZE: " + String.valueOf(presenter.getListCompareCompanies().size()));
             searchAutoComplete.setText("",false);
             searchAutoComplete.dismissDropDown();
 
@@ -126,7 +120,7 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                presenter.loadSearchResults(searchAutoComplete.getText().toString());
+                // presenter.loadSearchResults(searchAutoComplete.getText().toString());
                 return false;
             }
         });
@@ -170,10 +164,10 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // Row is swiped from recycler view
                 // remove it from adapter
-                presenter.getListCompareCompanies().remove(viewHolder.getAdapterPosition());
+                //presenter.getListCompareCompanies().remove(viewHolder.getAdapterPosition());
                 adapter.notifyDataSetChanged();
-                Log.d(TAG,  "selected List size: " +
-                        String.valueOf(presenter.getListCompareCompanies().size()));
+               // Log.d(TAG,  "selected List size: " +
+                //        String.valueOf(presenter.getListCompareCompanies().size()));
             }
 
             @Override
@@ -222,17 +216,10 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    @Override
-    public void setPresenter(ComparisonContract.Presenter presenter) {
-        this.presenter = presenter;
-    }
-
-    @Override
     public void selectedListChanged() {
         adapter.notifyDataSetChanged();
     }
 
-    @Override
     public void showSearchResults(List<SearchEntry> searchEntries) {
         SearchAdapter adapter = new SearchAdapter(this, searchEntries);
 
@@ -240,7 +227,6 @@ public class ComparisonActivity extends Activity implements ComparisonContract.V
         adapter.notifyDataSetChanged();
     }
 
-    @Override
     public void userNotification(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
