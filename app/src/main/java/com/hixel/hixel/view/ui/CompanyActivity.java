@@ -1,9 +1,9 @@
 package com.hixel.hixel.view.ui;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +11,6 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.github.mikephil.charting.charts.RadarChart;
@@ -23,23 +22,25 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
-import com.hixel.hixel.company.CompanyContract;
-import com.hixel.hixel.company.CompanyPresenter;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.service.models.SearchEntry;
+import com.hixel.hixel.viewmodel.CompanyViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompanyActivity extends AppCompatActivity implements CompanyContract.View {
+public class CompanyActivity extends AppCompatActivity {
 
-    private CompanyContract.Presenter presenter;
+    CompanyViewModel companyViewModel;
 
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        companyViewModel = ViewModelProviders.of(this).get(CompanyViewModel.class);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company);
         setupBottomNavigationView();
@@ -56,12 +57,12 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         // Set up the toolbar
         setSupportActionBar(findViewById(R.id.toolbar));
 
-        presenter = new CompanyPresenter(this);
+        // presenter = new CompanyPresenter(this);
 
-        presenter.setCompany((Company) extras.getSerializable("CURRENT_COMPANY"));
+        // presenter.setCompany((Company) extras.getSerializable("CURRENT_COMPANY"));
 
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(presenter.getCompanyName());
+        // toolbarTitle.setText(presenter.getCompanyName());
 
         FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -74,13 +75,11 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
         if (companies != null) {
             for (Company c : companies) {
-                if (c.getIdentifiers().getName().equals(presenter.getCompanyName())) {
-                    fab.setVisibility(View.INVISIBLE);
-                }
+                //if (c.getIdentifiers().getName().equals(presenter.getCompanyName())) {
+                //    fab.setVisibility(View.INVISIBLE);
+                // }
             }
         }
-
-        presenter.start();
     }
 
     @Override
@@ -101,9 +100,9 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
             SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
-            presenter.loadDataForAParticularCompany(ticker);
+            // presenter.loadDataForAParticularCompany(ticker);
 
-            presenter.setTickerFromSearchSuggestion(ticker);
+            // presenter.setTickerFromSearchSuggestion(ticker);
             // call the load to portfolio method from here
         });
 
@@ -115,7 +114,7 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                presenter.loadSearchResults(searchAutoComplete.getText().toString());
+                // presenter.loadSearchResults(searchAutoComplete.getText().toString());
                 return false;
             }
         });
@@ -124,7 +123,6 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
     public void showSearchResults(List<SearchEntry> searchEntries) {
         SearchAdapter adapter = new SearchAdapter(this, searchEntries);
 
@@ -249,23 +247,21 @@ public class CompanyActivity extends AppCompatActivity implements CompanyContrac
 
     }
 
-    public void setPresenter(@NonNull CompanyContract.Presenter presenter) {
-        this.presenter = presenter;
-    }
-
     public String getValue(String name, int year) {
-        String value = presenter.getRatio(name, year);
+        /* String value = presenter.getRatio(name, year);
         if (value.length() > 4) {
             return value.substring(0, 5);
         } else {
             return value;
-        }
+        }*/
+
+        return null;
     }
 
 
     public void goToCompanyView() {
         Intent intent = new Intent(this, CompanyActivity.class);
-        intent.putExtra("CURRENT_COMPANY", presenter.getCompany());
+        // intent.putExtra("CURRENT_COMPANY", presenter.getCompany());
         startActivityForResult(intent,1);
     }
 
