@@ -1,5 +1,7 @@
 package com.hixel.hixel.view.ui;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -32,8 +34,6 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
-import com.hixel.hixel.dashboard.DashboardContract;
-import com.hixel.hixel.dashboard.DashboardPresenter;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
@@ -41,16 +41,19 @@ import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.view.adapter.DashboardAdapter;
 import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.service.models.SearchEntry;
+import com.hixel.hixel.viewmodel.DashboardViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DashboardActivity extends AppCompatActivity implements DashboardContract.View,
-        RecyclerItemTouchHelperListener, OnItemSelectedListener {
+public class DashboardActivity extends AppCompatActivity
+        implements RecyclerItemTouchHelperListener, OnItemSelectedListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = DashboardActivity.class.getSimpleName();
-    private DashboardContract.Presenter presenter;
+
+    DashboardViewModel dashboardViewModel;
+
 
     DashboardAdapter dashboardAdapter;
     ActivityDashboardBinding binding;
@@ -63,6 +66,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
+
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
 
@@ -88,11 +93,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
         // UI for the chart
         setupChart();
-
-        // Init presenter
-        presenter = new DashboardPresenter(this);
-        presenter.start();
-
     }
 
     @Override
@@ -113,9 +113,9 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
             SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
-            presenter.loadDataForAParticularCompany(ticker);
+            // presenter.loadDataForAParticularCompany(ticker);
 
-            presenter.setTickerFromSearchSuggestion(ticker);
+            // presenter.setTickerFromSearchSuggestion(ticker);
             // call the load to portfolio method from here
         });
 
@@ -127,7 +127,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                presenter.loadSearchResults(searchAutoComplete.getText().toString());
+                // presenter.loadSearchResults(searchAutoComplete.getText().toString());
                 return false;
             }
         });
@@ -135,16 +135,11 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
     public void showSearchResults(List<SearchEntry> searchEntries) {
         SearchAdapter adapter = new SearchAdapter(this, searchEntries);
 
         searchAutoComplete.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void setPresenter(@NonNull DashboardContract.Presenter presenter) {
     }
 
     @Override
@@ -155,19 +150,19 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
             case "Sort":
                 break;
             case "Current Ratio":
-                presenter.sortCompaniesBy(item);
+                // presenter.sortCompaniesBy(item);
                 dashboardAdapter.notifyDataSetChanged();
                 break;
             case "Debt-to-Equity":
-                presenter.sortCompaniesBy(item + " Ratio");
+                // presenter.sortCompaniesBy(item + " Ratio");
                 dashboardAdapter.notifyDataSetChanged();
                 break;
             case "Return-on-Equity":
-                presenter.sortCompaniesBy(item + " Ratio");
+                // presenter.sortCompaniesBy(item + " Ratio");
                 dashboardAdapter.notifyDataSetChanged();
                 break;
             case "Return-on-Assets":
-                presenter.sortCompaniesBy(item + " Ratio");
+                // presenter.sortCompaniesBy(item + " Ratio");
                 dashboardAdapter.notifyDataSetChanged();
                 break;
         }
@@ -194,7 +189,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         });
     }
 
-    @Override
     public void setupChart() {
         chart = binding.chart;
 
@@ -245,7 +239,6 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         yAxis.setDrawLabels(false);
     }
 
-    @Override
     public void populateChart() {
         List<RadarEntry> entries = new ArrayList<>();
 
@@ -268,10 +261,9 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         chart.invalidate();
     }
 
-    @Override
     public void setupDashboardAdapter() {
 
-        dashboardAdapter = new DashboardAdapter(this, presenter);
+        // dashboardAdapter = new DashboardAdapter(this, presenter);
         mRecyclerView.setAdapter(this.dashboardAdapter);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -286,30 +278,29 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
 
     }
 
-    // TODO: Make this MVP.
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
 
         if (viewHolder instanceof DashboardAdapter.ViewHolder) {
             // Get name of removed item
-            String name = presenter.getCompanies()
+            /*String name = presenter.getCompanies()
                     .get(viewHolder.getAdapterPosition())
                     .getIdentifiers()
-                    .getName();
+                    .getName();*/
 
             // Backup item for undo purposes
-            final Company deletedCompany = presenter.getCompanies().get(viewHolder.getAdapterPosition());
+            // final Company deletedCompany = presenter.getCompanies().get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
             dashboardAdapter.removeItem(viewHolder.getAdapterPosition());
 
             // Remove Company from RecyclerView
-            Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio", Snackbar.LENGTH_LONG);
+            // Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio", Snackbar.LENGTH_LONG);
 
-            snackbar.setAction("UNDO", view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));
+            // snackbar.setAction("UNDO", view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));
 
-            snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
-            snackbar.show();
+            // snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+            // snackbar.show();
         }
     }
 
@@ -322,32 +313,29 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         Intent intent = new Intent(this, CompanyActivity.class);
         Bundle extras = new Bundle();
 
-        ArrayList<Company> companies = new ArrayList<>(presenter.getCompanies());
+        // ArrayList<Company> companies = new ArrayList<>(presenter.getCompanies());
 
-        extras.putSerializable("CURRENT_COMPANY", presenter.getCompany());
-        extras.putSerializable("PORTFOLIO", companies);
+        // extras.putSerializable("CURRENT_COMPANY", presenter.getCompany());
+        // extras.putSerializable("PORTFOLIO", companies);
 
         intent.putExtras(extras);
         startActivityForResult(intent,1);
     }
 
-    @Override
     public void showLoadingIndicator(final boolean active) {
         final ProgressBar progressBar = binding.progressBar;
         progressBar.setVisibility(active ? View.VISIBLE : View.INVISIBLE);
     }
 
-    @Override
     public void showLoadingError() {
-        Snackbar.make(binding.getRoot(), "Error loading your portfolio", Snackbar.LENGTH_LONG)
-                .setAction("RETRY", view -> presenter.loadPortfolio())
-                .show();
+        // Snackbar.make(binding.getRoot(), "Error loading your portfolio", Snackbar.LENGTH_LONG)
+        //         .setAction("RETRY", view -> presenter.loadPortfolio())
+        //         .show();
     }
 
-    @Override
     public void getAddedCompany() {
         if (getIntent().hasExtra("COMPANY_ADD")) {
-            presenter.getCompanies().add((Company) getIntent().getSerializableExtra("COMPANY_ADD"));
+         //   presenter.getCompanies().add((Company) getIntent().getSerializableExtra("COMPANY_ADD"));
         }
     }
     @Override
@@ -364,8 +352,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardCon
         }
 
     }
-    public void addItem(Company company)
-    {
+
+    public void addItem(Company company) {
         dashboardAdapter.addItem(company);
     }
 

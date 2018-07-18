@@ -7,7 +7,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.network.Client;
 import com.hixel.hixel.service.network.ServerInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -35,9 +37,9 @@ public class DashboardViewModel extends ViewModel {
         // Dummy data before DB is hooked up.
         String[] companies = {"AAPL", "TSLA", "TWTR", "SNAP", "FB", "AMZN"};
 
-        Call<ArrayList<Company>> call = getClient()
+        Call<ArrayList<Company>> call = Client.getClient()
                 .create(ServerInterface.class)
-                .doGetCompanies(StringUtils.join(companies, ','));
+                .doGetCompanies(StringUtils.join(companies, ','), 1);
 
         call.enqueue(new Callback<ArrayList<Company>>() {
             @Override
