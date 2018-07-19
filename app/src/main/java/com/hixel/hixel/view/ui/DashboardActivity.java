@@ -287,24 +287,26 @@ public class DashboardActivity extends AppCompatActivity
 
         if (viewHolder instanceof DashboardAdapter.ViewHolder) {
             // Get name of removed item
-            /*String name = presenter.getCompanies()
+            String name = dashboardViewModel.getPortfolio().getValue()
                     .get(viewHolder.getAdapterPosition())
                     .getIdentifiers()
-                    .getName();*/
+                    .getName();
 
             // Backup item for undo purposes
-            // final Company deletedCompany = presenter.getCompanies().get(viewHolder.getAdapterPosition());
+            final Company deletedCompany = dashboardViewModel.getPortfolio()
+                    .getValue()
+                    .get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
             dashboardAdapter.removeItem(viewHolder.getAdapterPosition());
 
             // Remove Company from RecyclerView
-            // Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio", Snackbar.LENGTH_LONG);
 
-            // snackbar.setAction("UNDO", view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));
+            snackbar.setAction("UNDO", view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));
 
-            // snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
-            // snackbar.show();
+            snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+            snackbar.show();
         }
     }
 
