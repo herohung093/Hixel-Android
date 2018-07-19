@@ -15,6 +15,7 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.view.ui.CompanyActivity;
 import com.hixel.hixel.service.models.Company;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -32,7 +33,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.row, parent, false);
 
         return new ViewHolder(view);
     }
@@ -40,9 +42,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
+        Company company = companies.get(position);
+
         // TODO: fix regex.
-        String companyName = companies.get(position)
-                .getIdentifiers()
+        String companyName = company.getIdentifiers()
                 .getName()
                 .split("\\,| ")[0]
                 .toLowerCase();
@@ -51,37 +54,29 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         holder.companyName.setText(companyName);
 
-        // NOTE: This is a temporary fix!!!
-        // Need to get ticker exchange from server.
-        String tickerFormat = "NASDAQ:" + companies.get(position)
-                                                    .getIdentifiers()
-                                                    .getTicker();
+        // TODO: Get data from server
+        String tickerFormat = "NASDAQ:" + company.getIdentifiers().getTicker();
 
         holder.companyTicker.setText(tickerFormat);
-
 
         int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
 
         // TODO: Replace with an 'indicator arrow'
         holder.companyIndicator.setText(String.format(Locale.ENGLISH, "%.1f%%",
-                                    companies.get(position)
-                                                   .getRatio("Return-on-Equity Ratio", last_year) * 100));
+                                    company.getRatio("Return-on-Equity Ratio", last_year) * 100));
 
         holder.foreground.setOnClickListener((View view) -> {
             Intent intent = new Intent(context, CompanyActivity.class);
-
             Bundle extras = new Bundle();
 
-            extras.putSerializable("CURRENT_COMPANY", companies.get(position));
-            // extras.putSerializable("PORTFOLIO", companies);
+            extras.putSerializable("CURRENT_COMPANY", company);
+            extras.putSerializable("PORTFOLIO", (ArrayList) companies);
 
             intent.putExtras(extras);
 
             context.startActivity(intent);
         });
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -118,12 +113,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             foreground = itemView.findViewById(R.id.foreground);
             background = itemView.findViewById(R.id.background);
         }
-
     }
 
     public void addItem(Company company) {
         companies.add(getItemCount(),company);
-        notifyItemInserted(getItemCount()); // re check here
-
+        notifyItemInserted(getItemCount());
     }
 }

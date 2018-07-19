@@ -2,8 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/parent_layout">
 
@@ -63,7 +62,6 @@
                 android:id="@+id/company_name"
                 android:textStyle="bold"
                 android:layout_width="129dp"
-
                 android:layout_height="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"

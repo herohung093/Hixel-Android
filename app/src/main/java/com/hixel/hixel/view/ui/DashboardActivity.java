@@ -54,7 +54,6 @@ public class DashboardActivity extends AppCompatActivity
 
     DashboardViewModel dashboardViewModel;
 
-
     DashboardAdapter dashboardAdapter;
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
@@ -94,6 +93,7 @@ public class DashboardActivity extends AppCompatActivity
 
         // UI for the chart
         setupChart();
+        populateChart();
     }
 
     @Override
@@ -309,9 +309,7 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     public void goToCompanyView() {
         Intent intent = new Intent(this, CompanyActivity.class);
@@ -345,21 +343,16 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1)
-        {
-            if(resultCode==RESULT_OK)
-            {
-                this.mCompanyReturned= ((Company)data.getSerializableExtra("COMPANY_ADD"));
+        if(requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                this.mCompanyReturned = ((Company)data.getSerializableExtra("COMPANY_ADD"));
                 addItem(mCompanyReturned);
 
             }
         }
-
     }
 
     public void addItem(Company company) {
         dashboardAdapter.addItem(company);
     }
-
 }
-
