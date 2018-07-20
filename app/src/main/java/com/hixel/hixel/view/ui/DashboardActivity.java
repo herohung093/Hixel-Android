@@ -69,6 +69,7 @@ public class DashboardActivity extends AppCompatActivity
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
 
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
+        dashboardViewModel.setupSearch();
 
         // Set up the toolbar
         setSupportActionBar(binding.toolbar.toolbar);
@@ -114,7 +115,7 @@ public class DashboardActivity extends AppCompatActivity
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
             SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
-            // presenter.loadDataForAParticularCompany(ticker);
+            // dashboardViewModel.loadCompanyFromSearch(ticker);
 
             // presenter.setTickerFromSearchSuggestion(ticker);
             // call the load to portfolio method from here
@@ -128,7 +129,8 @@ public class DashboardActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // presenter.loadSearchResults(searchAutoComplete.getText().toString());
+                dashboardViewModel.loadSearchResults(searchAutoComplete.getText().toString());
+                showSearchResults();
                 return false;
             }
         });
@@ -136,8 +138,9 @@ public class DashboardActivity extends AppCompatActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void showSearchResults(List<SearchEntry> searchEntries) {
-        SearchAdapter adapter = new SearchAdapter(this, searchEntries);
+    public void showSearchResults() {
+
+        SearchAdapter adapter = new SearchAdapter(this, dashboardViewModel.getSearchResults());
 
         searchAutoComplete.setAdapter(adapter);
         adapter.notifyDataSetChanged();

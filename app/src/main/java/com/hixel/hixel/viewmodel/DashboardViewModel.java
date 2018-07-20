@@ -1,5 +1,7 @@
 package com.hixel.hixel.viewmodel;
 
+import static com.hixel.hixel.service.network.Client.getClient;
+
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
@@ -7,11 +9,20 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.service.network.Client;
 import com.hixel.hixel.service.network.ServerInterface;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,6 +33,9 @@ public class DashboardViewModel extends ViewModel {
     private final String TAG = getClass().getSimpleName();
 
     private MutableLiveData<List<Company>> portfolioCompanies;
+    private CompositeDisposable disposable;
+    private PublishSubject<String> publishSubject;
+    private List<SearchEntry> searchResults = new ArrayList<>();
 
     public LiveData<List<Company>> getPortfolio() {
         if (portfolioCompanies == null) {
@@ -32,12 +46,33 @@ public class DashboardViewModel extends ViewModel {
         return portfolioCompanies;
     }
 
+    public void setupSearch() {
+        disposable = new CompositeDisposable();
+        publishSubject = PublishSubject.create();
+
+        disposable.add(publishSubject
+                .debounce(150, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
+                .filter(text -> !text.isEmpty())
+                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm -> getClient()
+                        .create(ServerInterface.class)
+                        .doSearchQuery(searchTerm)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread()))
+                .subscribeWith(getSearchObserver()));
+    }
+
+    public void loadSearchResults(String query) {
+        publishSubject.onNext(query);
+    }
+
+
 
     private void loadPortfolio() {
         // Dummy data before DB is hooked up.
         String[] companies = {"AAPL", "TSLA", "TWTR", "SNAP", "FB", "AMZN"};
 
-        Call<ArrayList<Company>> call = Client.getClient()
+        Call<ArrayList<Company>> call = getClient()
                 .create(ServerInterface.class)
                 .doGetCompanies(StringUtils.join(companies, ','), 1);
 
@@ -53,5 +88,28 @@ public class DashboardViewModel extends ViewModel {
                 Log.d(TAG, "Failed to load company data from server\n" + t.getMessage());
             }
         });
+    }
+
+    private DisposableObserver<List<SearchEntry>> getSearchObserver() {
+        return new DisposableObserver<List<SearchEntry>>() {
+            @Override
+            public void onNext(List<SearchEntry> searchEntries) {
+                searchResults = searchEntries;
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    public List<SearchEntry> getSearchResults() {
+        return searchResults;
     }
 }
