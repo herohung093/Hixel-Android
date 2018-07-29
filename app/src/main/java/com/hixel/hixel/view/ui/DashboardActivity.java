@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -282,7 +280,6 @@ public class DashboardActivity extends AppCompatActivity
 
         dashboardViewModel.getPortfolio().observe(DashboardActivity.this,
                 companies -> dashboardAdapter.addItems(companies));
-
     }
 
     @Override
@@ -342,7 +339,7 @@ public class DashboardActivity extends AppCompatActivity
 
     public void getAddedCompany() {
         if (getIntent().hasExtra("COMPANY_ADD")) {
-         //   presenter.getCompanies().add((Company) getIntent().getSerializableExtra("COMPANY_ADD"));
+         // presenter.getCompanies().add((Company) getIntent().getSerializableExtra("COMPANY_ADD"));
         }
     }
     @Override
@@ -352,7 +349,6 @@ public class DashboardActivity extends AppCompatActivity
             if(resultCode == RESULT_OK) {
                 this.mCompanyReturned = ((Company)data.getSerializableExtra("COMPANY_ADD"));
                 addItem(mCompanyReturned);
-
             }
         }
     }

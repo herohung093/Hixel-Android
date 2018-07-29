@@ -33,8 +33,8 @@ public class DashboardViewModel extends ViewModel {
     private final String TAG = getClass().getSimpleName();
 
     private MutableLiveData<List<Company>> portfolioCompanies;
-    private CompositeDisposable disposable;
-    private PublishSubject<String> publishSubject;
+    private CompositeDisposable disposable = new CompositeDisposable();
+    private PublishSubject<String> publishSubject = PublishSubject.create();
     private List<SearchEntry> searchResults = new ArrayList<>();
 
     public LiveData<List<Company>> getPortfolio() {
@@ -47,9 +47,6 @@ public class DashboardViewModel extends ViewModel {
     }
 
     public void setupSearch() {
-        disposable = new CompositeDisposable();
-        publishSubject = PublishSubject.create();
-
         disposable.add(publishSubject
                 .debounce(150, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
@@ -65,8 +62,6 @@ public class DashboardViewModel extends ViewModel {
     public void loadSearchResults(String query) {
         publishSubject.onNext(query);
     }
-
-
 
     private void loadPortfolio() {
         // Dummy data before DB is hooked up.
