@@ -1,58 +1,80 @@
 package com.hixel.hixel.view.ui;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import com.hixel.hixel.R;
-import com.hixel.hixel.view.ui.GraphFragment.OnFragmentInteractionListener;
+import com.hixel.hixel.databinding.ActivityGraphBinding;
 import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.view.ui.GraphFragment.OnFragmentInteractionListener;
+import com.hixel.hixel.viewmodel.GraphViewModel;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+
 
 public class GraphActivity extends FragmentActivity implements
         AdapterView.OnItemSelectedListener, OnFragmentInteractionListener {
+    private final String TAG = getClass().getSimpleName();
 
-    List<String> ratios = new ArrayList<>();
+    ArrayList<String> ratios =new ArrayList<String>();
     ArrayAdapter<String> listRatiosAdapter;
     Intent intentReceiver;
     Spinner listOfGraph;
-
-
+    ArrayList<Company> receivedCompanies;
+    GraphViewModel graphViewModel;
+    ActivityGraphBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_graph);
         intentReceiver = getIntent();
-        ArrayList<Company> receivedCompanies =
-                (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
+        //TODO: get ratios by doMeta();
+        ratios.add("Current Ratio");
+        ratios.add("Debt-to-Equity Ratio");
+        ratios.add("Return-on-Equity Ratio");
+        ratios.add("Return-on-Assets Ratio");
+        ratios.add("Profit-Margin Ratio");
 
-
+        receivedCompanies =
+            (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
         //setup bottom navigator
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_graph);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)binding.bottomNavGraph;
         setupBottomNavigationView(bottomNavigationView);
+        Log.d(TAG,"COMPANIES SIZE" + receivedCompanies.size());
+        graphViewModel= ViewModelProviders.of(this).get(GraphViewModel.class);
+        graphViewModel.loadCompanies(receivedCompanies);
+
+        Log.d(TAG,"temporary list: "+ ratios.toString());
+        setupListOfRatios();
+        checkUpFinancialEntry(ratios);
 
     }
 
 
-    public void updateRatios(ArrayList<String> ratios1) {
-        this.ratios=ratios1;
+    public void setupListOfRatios() {
+
         listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ratios);
+        Log.d(TAG, "Ratios Size "+String.valueOf(ratios.size()));
         listRatiosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        listOfGraph = findViewById(R.id.spinner);
+        listOfGraph = binding.spinner;
         listOfGraph.setOnItemSelectedListener(this);
         listOfGraph.setAdapter(listRatiosAdapter);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
         GraphFragment FragmentA =
                 (GraphFragment) getFragmentManager().findFragmentById(R.id.graphFragment);
-        // FragmentA.drawGraph(mPresenter.getCompanies(), adapterView.getSelectedItem().toString());
+         FragmentA.drawGraph(receivedCompanies, adapterView.getSelectedItem().toString());
     }
 
     @Override
@@ -79,5 +101,20 @@ public class GraphActivity extends FragmentActivity implements
 
             return true;
         });
+    }
+
+    public void checkUpFinancialEntry(ArrayList<String> toBeCheckRatios) {
+        for (Company c : receivedCompanies) {
+            for (int i=0;i<c.getFinancialDataEntries().size();i++) {
+                LinkedHashMap<String, Double> ratiosData = c.getFinancialDataEntries().get(i).getRatios();
+
+                for (String k : toBeCheckRatios) {
+                    if (ratiosData.get(k) == null) {
+                        Log.d(String.valueOf(c.getFinancialDataEntries().get(i).getYear()) + k + ": ", "NULL***");
+                        c.getFinancialDataEntries().get(i).getRatios().put(k,0.0);
+                    }
+                }
+            }
+        }
     }
 }

@@ -280,6 +280,7 @@ public class DashboardActivity extends AppCompatActivity
 
         dashboardViewModel.getPortfolio().observe(DashboardActivity.this,
                 companies -> dashboardAdapter.addItems(companies));
+
     }
 
     @Override
