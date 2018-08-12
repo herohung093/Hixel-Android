@@ -20,11 +20,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.databinding.ActivityComparisonBinding;
@@ -34,14 +33,13 @@ import com.hixel.hixel.view.adapter.ComparisonAdapter;
 import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.viewmodel.ComparisonViewModel;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ComparisonActivity extends AppCompatActivity {
 
     ComparisonAdapter adapter;
     RecyclerView recyclerView;
     private Button compareButton;
-
+    TextView textView;
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
     ComparisonViewModel comparisonViewModel;
@@ -52,19 +50,16 @@ public class ComparisonActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_comparison);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_comparison);
         comparisonViewModel = ViewModelProviders.of(this).get(ComparisonViewModel.class);
         observeViewModel(comparisonViewModel);
         comparisonViewModel.setupSearch();
 
-        setSupportActionBar(binding.toolbar.toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-        binding.toolbar.toolbarTitle.setText(R.string.comparison);
+
 
         recyclerView = binding.recycleView;
         compareButton = binding.compareButton;
-
+        textView=binding.textView;
         setupButtons();
         //setup recycle list view
         setupListViewAdapter();
@@ -77,14 +72,7 @@ public class ComparisonActivity extends AppCompatActivity {
         setupBottomNavigationView(bottomNavigationView);
 
     }
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        MenuItem searchView = menu.findItem(R.id.action_search);
-
-
-        return super.onCreateOptionsMenu(menu);
-    }
     public void showSearchResults() {
 
         SearchAdapter adapter = new SearchAdapter(this, comparisonViewModel.getSearchResults());
