@@ -12,7 +12,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Client {
-    private static String TAG = Client.class.getSimpleName();
+
     private static Retrofit retrofit = null;
     private static OkHttpClient okHttpClient;
 
@@ -61,10 +61,5 @@ public class Client {
         });
 
         okHttpClient = httpClient.build();
-    }
-
-    public static void resetClient() {
-        retrofit = null;
-        okHttpClient = null;
     }
 }
