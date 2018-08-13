@@ -9,18 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.hixel.hixel.R;
+import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.view.ui.CompanyActivity;
-
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.ViewHolder> {
 
     private Context mContext;
+    private List<Company> companies;
 
-    public ComparisonAdapter(Context context) {
-        this.mContext = context;
+    public ComparisonAdapter(Context mContext, List<Company> companies) {
+        this.mContext = mContext;
+        this.companies = companies;
     }
 
     @NonNull
@@ -34,32 +37,32 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-        /*String companyName = presenter.getListCompareCompanies()
+        String companyName = companies
             .get(position)
             .getIdentifiers()
             .getName()
             .split("\\,| ")[0]
-            .toLowerCase();*/
+            .toLowerCase();
 
-        //companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
-        //holder.companyName.setText(companyName);
+        companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
+        holder.companyName.setText(companyName);
 
-        /*holder.companyTicker.setText(presenter.getListCompareCompanies()
+        holder.companyTicker.setText("NASDAQ:"+companies
                                               .get(position)
                                               .getIdentifiers()
-                                              .getTicker());*/
+                                              .getTicker());
 
         int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
 
-        /*holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
-                                    presenter.getListCompareCompanies()
+        holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
+                                    companies
                                                    .get(position)
-                                                   .getRatio("Return-on-Equity Ratio", last_year) * 100));*/
+                                                   .getRatio("Return-on-Equity Ratio", last_year) * 100));
 
-        holder.parentLayout.setOnClickListener((View view) -> {
+        holder.foreground.setOnClickListener((View view) -> {
             Intent intent = new Intent(mContext, CompanyActivity.class);
-            /*intent.putExtra("CURRENT_COMPANY",
-                    presenter.getListCompareCompanies().get(holder.getAdapterPosition()));*/
+            intent.putExtra("CURRENT_COMPANY",
+                    companies.get(holder.getAdapterPosition()));
 
             mContext.startActivity(intent);
         });
@@ -68,13 +71,33 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
 
     @Override
     public int getItemCount() {
-        // return presenter.getListCompareCompanies().size();
-        return 5;
+        if(companies!=null)
+         return companies.size();
+        else return 0;
+
     }
 
+    public void removeItem(int position) {
+        companies.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(Company company, int position) {
+        companies.add(position, company);
+        notifyItemInserted(position);
+    }
+
+    public void addItem(Company company) {
+        this.companies.add(company);
+        notifyDataSetChanged();
+    }
+    public void setCompanies(List<Company> companies){
+        this.companies=companies;
+        notifyDataSetChanged();
+    }
     class ViewHolder extends RecyclerView.ViewHolder {
-        // Adding this for the OnClick
-        ConstraintLayout parentLayout;
+        public ConstraintLayout foreground;
+        public ConstraintLayout background;
         TextView companyName;
         TextView companyTicker;
         TextView companyHealth;
@@ -84,7 +107,8 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
             companyName = itemView.findViewById(R.id.company_name);
             companyTicker = itemView.findViewById(R.id.company_ticker);
             companyHealth = itemView.findViewById(R.id.indicator_value);
-            parentLayout = itemView.findViewById(R.id.parent_layout);
+            foreground = itemView.findViewById(R.id.foreground);
+            background = itemView.findViewById(R.id.background);
         }
     }
 }

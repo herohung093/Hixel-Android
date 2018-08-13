@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Hixel</string>
     <string name="dashboard">Dashboard</string>
+    <string name="comparison">Comparison</string>
     <string name="default_text">Default</string>
     <string name="health">Health</string>
     <string name="liquidity_score">Liquidity Score</string>
