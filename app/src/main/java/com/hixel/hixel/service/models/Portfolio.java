@@ -3,7 +3,7 @@ package com.hixel.hixel.service.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
+// Portfolio class is not being used. Can we remove it?
 public class Portfolio implements Serializable {
     private List<Company> companies;
 

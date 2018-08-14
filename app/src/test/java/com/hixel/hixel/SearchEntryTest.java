@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 public class SearchEntryTest {
 
+    // Simple test to assure the class returns things we want it to.
     @Test
     public void testSearchClassCreation() {
         SearchEntry searchEntry = new SearchEntry("ABC", "Apple", "NASDAQ");
@@ -16,5 +17,7 @@ public class SearchEntryTest {
         assertEquals("Name value is incorrect", "Apple", searchEntry.getName());
         assertEquals("Exchange value is incorrect", "NASDAQ", searchEntry.getExchange());
     }
+
+
 
 }

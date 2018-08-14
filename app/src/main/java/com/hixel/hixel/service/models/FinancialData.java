@@ -24,10 +24,6 @@ public class FinancialData implements Serializable {
         return xbrlElements;
     }
 
-    public void setRatios(LinkedHashMap<String, Double> ratios) {
-        this.ratios = ratios;
-    }
-
     public LinkedHashMap<String, Double> getRatios() {
         return ratios;
     }
