@@ -53,6 +53,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:3.10.0"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:3.0.1"
     implementation "com.squareup.okhttp3:logging-interceptor:3.4.1"
+    implementation "com.squareup.okhttp3:mockwebserver:3.8.0"
 
     // UI
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
