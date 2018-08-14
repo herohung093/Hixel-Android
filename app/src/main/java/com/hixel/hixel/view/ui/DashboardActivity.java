@@ -44,8 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DashboardActivity extends AppCompatActivity
-        implements RecyclerItemTouchHelperListener, OnItemSelectedListener {
+public class DashboardActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = DashboardActivity.class.getSimpleName();
@@ -73,15 +72,6 @@ public class DashboardActivity extends AppCompatActivity
         setSupportActionBar(binding.toolbar.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         binding.toolbar.toolbarTitle.setText(R.string.dashboard);
-
-        // Set up the dropdown options
-        Spinner spinner = binding.spinner;
-        ArrayAdapter<CharSequence> dropdownAdapter = ArrayAdapter.createFromResource(
-                this, R.array.company_dropdown, android.R.layout.simple_spinner_item);
-
-        dropdownAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(dropdownAdapter);
-        spinner.setOnItemSelectedListener(this);
 
         // Set up the list of companies
         mRecyclerView = binding.recyclerView;
@@ -142,32 +132,6 @@ public class DashboardActivity extends AppCompatActivity
 
         searchAutoComplete.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String item = parent.getItemAtPosition(position).toString();
-
-        switch(item) {
-            case "Sort":
-                break;
-            case "Current Ratio":
-                // presenter.sortCompaniesBy(item);
-                dashboardAdapter.notifyDataSetChanged();
-                break;
-            case "Debt-to-Equity":
-                // presenter.sortCompaniesBy(item + " Ratio");
-                dashboardAdapter.notifyDataSetChanged();
-                break;
-            case "Return-on-Equity":
-                // presenter.sortCompaniesBy(item + " Ratio");
-                dashboardAdapter.notifyDataSetChanged();
-                break;
-            case "Return-on-Assets":
-                // presenter.sortCompaniesBy(item + " Ratio");
-                dashboardAdapter.notifyDataSetChanged();
-                break;
-        }
     }
 
     public void setupBottomNavigationView() {
@@ -310,9 +274,6 @@ public class DashboardActivity extends AppCompatActivity
             snackbar.show();
         }
     }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {}
 
     public void goToCompanyView() {
         Intent intent = new Intent(this, CompanyActivity.class);
