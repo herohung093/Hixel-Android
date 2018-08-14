@@ -17,9 +17,7 @@ import com.hixel.hixel.view.ui.CompanyActivity;
 import com.hixel.hixel.service.models.Company;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
 
@@ -46,26 +44,24 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         Company company = companies.get(position);
         double currentRatio = company.getRatio("Current Ratio", 2017);
 
-        // TODO: fix regex.
         String companyName = company.getIdentifiers()
                 .getName()
-                .split("\\,| ")[0]
+                .split("[\\s, ]")[0]
                 .toLowerCase();
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
-
         holder.companyName.setText(companyName);
 
         String tickerFormat = "NASDAQ:" + company.getIdentifiers().getTicker();
-
         holder.companyTicker.setText(tickerFormat);
 
-        holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_downward);
-
+        // Set the indicator based upon the current ratio
         if (currentRatio < 1.0) {
-            holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
-        } else if (currentRatio < 0.0) {
+            holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_downward);
+        } else if (currentRatio >= 1.0 && currentRatio <= 1.2) {
             holder.companyIndicator.setBackgroundResource(R.drawable.ic_remove_black_24dp);
+        } else {
+            holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
         }
 
 
@@ -107,7 +103,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         public ConstraintLayout background;
         public TextView companyTicker;
         public TextView companyName;
-        public ImageView companyIndicator;
+        ImageView companyIndicator;
 
         ViewHolder(View itemView) {
             super(itemView);
