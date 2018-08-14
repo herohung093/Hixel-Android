@@ -44,6 +44,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
         Company company = companies.get(position);
+        double currentRatio = company.getRatio("Current Ratio", 2017);
 
         // TODO: fix regex.
         String companyName = company.getIdentifiers()
@@ -60,6 +61,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         holder.companyTicker.setText(tickerFormat);
 
         holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_downward);
+
+        if (currentRatio < 1.0) {
+            holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
+        } else if (currentRatio < 0.0) {
+            holder.companyIndicator.setBackgroundResource(R.drawable.ic_remove_black_24dp);
+        }
 
 
         holder.foreground.setOnClickListener((View view) -> {
