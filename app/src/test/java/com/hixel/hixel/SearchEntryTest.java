@@ -18,6 +18,4 @@ public class SearchEntryTest {
         assertEquals("Exchange value is incorrect", "NASDAQ", searchEntry.getExchange());
     }
 
-
-
 }

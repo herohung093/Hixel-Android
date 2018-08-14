@@ -106,7 +106,7 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
             super(itemView);
             companyName = itemView.findViewById(R.id.company_name);
             companyTicker = itemView.findViewById(R.id.company_ticker);
-            companyHealth = itemView.findViewById(R.id.indicator_value);
+            // companyHealth = itemView.findViewById(R.id.indicator_value);
             foreground = itemView.findViewById(R.id.foreground);
             background = itemView.findViewById(R.id.background);
         }

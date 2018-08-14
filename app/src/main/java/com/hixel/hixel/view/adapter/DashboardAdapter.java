@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hixel.hixel.R;
@@ -54,16 +55,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         holder.companyName.setText(companyName);
 
-        // TODO: Get data from server
         String tickerFormat = "NASDAQ:" + company.getIdentifiers().getTicker();
 
         holder.companyTicker.setText(tickerFormat);
 
-        int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
+        holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_downward);
 
-        // TODO: Replace with an 'indicator arrow'
-        holder.companyIndicator.setText(String.format(Locale.ENGLISH, "%.1f%%",
-                                    company.getRatio("Return-on-Equity Ratio", last_year) * 100));
 
         holder.foreground.setOnClickListener((View view) -> {
             Intent intent = new Intent(context, CompanyActivity.class);
@@ -101,15 +98,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ConstraintLayout foreground;
         public ConstraintLayout background;
-        public TextView companyName;
         public TextView companyTicker;
-        public TextView companyIndicator;
+        public TextView companyName;
+        public ImageView companyIndicator;
 
         ViewHolder(View itemView) {
             super(itemView);
             companyName = itemView.findViewById(R.id.company_name);
             companyTicker = itemView.findViewById(R.id.company_ticker);
-            companyIndicator = itemView.findViewById(R.id.indicator_value);
+            companyIndicator = itemView.findViewById(R.id.company_indicator);
             foreground = itemView.findViewById(R.id.foreground);
             background = itemView.findViewById(R.id.background);
         }
