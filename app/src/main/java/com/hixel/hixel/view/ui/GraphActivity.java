@@ -1,9 +1,11 @@
 package com.hixel.hixel.view.ui;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -36,12 +38,6 @@ public class GraphActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_graph);
         intentReceiver = getIntent();
-        //TODO: get ratios by doMeta();
-        ratios.add("Current Ratio");
-        ratios.add("Debt-to-Equity Ratio");
-        ratios.add("Return-on-Equity Ratio");
-        ratios.add("Return-on-Assets Ratio");
-        ratios.add("Profit-Margin Ratio");
 
         receivedCompanies =
             (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
@@ -50,19 +46,15 @@ public class GraphActivity extends FragmentActivity implements
         setupBottomNavigationView(bottomNavigationView);
         Log.d(TAG,"COMPANIES SIZE" + receivedCompanies.size());
         graphViewModel= ViewModelProviders.of(this).get(GraphViewModel.class);
-        graphViewModel.loadCompanies(receivedCompanies);
-
-        Log.d(TAG,"temporary list: "+ ratios.toString());
-        setupListOfRatios();
-        checkUpFinancialEntry(ratios);
+        //Observe changes in list of ratios
+        observeViewModel(graphViewModel);
 
     }
 
 
-    public void setupListOfRatios() {
+    public void setupListOfRatios(ArrayList<String> sprinnerList) {
 
-        listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ratios);
-        Log.d(TAG, "Ratios Size "+String.valueOf(ratios.size()));
+        listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, sprinnerList);
         listRatiosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         listOfGraph = binding.spinner;
         listOfGraph.setOnItemSelectedListener(this);
@@ -116,5 +108,17 @@ public class GraphActivity extends FragmentActivity implements
                 }
             }
         }
+    }
+    private void observeViewModel(GraphViewModel graphViewModel){
+        graphViewModel.getRatios().observe(this, new Observer<ArrayList<String>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<String> strings) {
+                if (strings!=null) {
+                    ratios = strings;
+                    setupListOfRatios(strings);
+                    checkUpFinancialEntry(strings);
+                }
+            }
+        });
     }
 }
