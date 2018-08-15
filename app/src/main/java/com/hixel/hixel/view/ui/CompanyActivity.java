@@ -1,9 +1,11 @@
 package com.hixel.hixel.view.ui;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.github.mikephil.charting.charts.RadarChart;
@@ -23,48 +26,47 @@ import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
-import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.service.models.SearchEntry;
+import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.viewmodel.CompanyViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyActivity extends AppCompatActivity {
 
+    String TAG = getClass().getSimpleName();
     CompanyViewModel companyViewModel;
-
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
-
+    FloatingActionButton fab;
+    ArrayList<String> ratios =new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         companyViewModel = ViewModelProviders.of(this).get(CompanyViewModel.class);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company);
         setupBottomNavigationView();
+        companyViewModel.setupSearch();
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
         Company company = (Company) extras.getSerializable("CURRENT_COMPANY");
-
+        Log.d(TAG,"received company: "+company.getIdentifiers().getName());
+        companyViewModel.setCompany(company);
+        observeViewModel(companyViewModel);
         ArrayList<Company> companies = (ArrayList<Company>) extras.getSerializable("PORTFOLIO");
 
-        Log.d("COMPANY_ACTIVITY", "" + company.getIdentifiers().getName());
+        Log.d("COMPANY_ACTIVITY", "" + companyViewModel.getCompany().getValue().getIdentifiers().getName());
 
         // Set up the toolbar
         setSupportActionBar(findViewById(R.id.toolbar));
 
-        // presenter = new CompanyPresenter(this);
-
-        // presenter.setCompany((Company) extras.getSerializable("CURRENT_COMPANY"));
-
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        // toolbarTitle.setText(presenter.getCompanyName());
+        toolbarTitle.setText(companyViewModel.getCompany().getValue().getIdentifiers().getName());
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(v -> {
             Intent backIntent = getIntent();
@@ -75,9 +77,9 @@ public class CompanyActivity extends AppCompatActivity {
 
         if (companies != null) {
             for (Company c : companies) {
-                //if (c.getIdentifiers().getName().equals(presenter.getCompanyName())) {
-                //    fab.setVisibility(View.INVISIBLE);
-                // }
+                if (c.getIdentifiers().getName().equals(companyViewModel.getCompany().getValue().getIdentifiers().getName())) {
+                    fab.setVisibility(View.INVISIBLE);
+                 }
             }
         }
     }
@@ -100,9 +102,10 @@ public class CompanyActivity extends AppCompatActivity {
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
             SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
-            // presenter.loadDataForAParticularCompany(ticker);
+            companyViewModel.loadDataForAParticularCompany(ticker);
+            goToCompanyView();
 
-            // presenter.setTickerFromSearchSuggestion(ticker);
+
             // call the load to portfolio method from here
         });
 
@@ -114,7 +117,8 @@ public class CompanyActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // presenter.loadSearchResults(searchAutoComplete.getText().toString());
+                companyViewModel.loadSearchResults(searchAutoComplete.getText().toString());
+                showSearchResults();
                 return false;
             }
         });
@@ -123,8 +127,8 @@ public class CompanyActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void showSearchResults(List<SearchEntry> searchEntries) {
-        SearchAdapter adapter = new SearchAdapter(this, searchEntries);
+    public void showSearchResults() {
+        SearchAdapter adapter = new SearchAdapter(this, companyViewModel.getSearchResults());
 
         searchAutoComplete.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -248,20 +252,19 @@ public class CompanyActivity extends AppCompatActivity {
     }
 
     public String getValue(String name, int year) {
-        /* String value = presenter.getRatio(name, year);
+         String value = String
+             .valueOf(companyViewModel.getCompany().getValue().getRatio(name, year));
         if (value.length() > 4) {
             return value.substring(0, 5);
         } else {
             return value;
-        }*/
-
-        return null;
+        }
     }
 
 
     public void goToCompanyView() {
         Intent intent = new Intent(this, CompanyActivity.class);
-        // intent.putExtra("CURRENT_COMPANY", presenter.getCompany());
+        intent.putExtra("CURRENT_COMPANY", companyViewModel.getCompany().getValue());
         startActivityForResult(intent,1);
     }
 
@@ -286,6 +289,16 @@ public class CompanyActivity extends AppCompatActivity {
             return true;
         });
     }
-
+    private void observeViewModel(CompanyViewModel graphViewModel){
+        companyViewModel.getRatios().observe(this, new Observer<ArrayList<String>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<String> strings) {
+                if (strings!=null) {
+                    updateRatios(strings);
+                    ratios=strings;
+                }
+            }
+        });
+    }
 
 }
