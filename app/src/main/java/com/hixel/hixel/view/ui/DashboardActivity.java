@@ -17,12 +17,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -55,7 +51,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
     private RadarChart chart;
-    private Company mCompanyReturned;
 
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
@@ -236,6 +231,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setNestedScrollingEnabled(false);
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
                 new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
@@ -309,7 +305,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                this.mCompanyReturned = ((Company)data.getSerializableExtra("COMPANY_ADD"));
+                Company mCompanyReturned = ((Company) data.getSerializableExtra("COMPANY_ADD"));
                 addItem(mCompanyReturned);
             }
         }
