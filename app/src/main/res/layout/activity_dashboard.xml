@@ -31,9 +31,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <android.support.v7.widget.CardView
           android:id="@+id/main_graph"
-          android:layout_width="400dp"
+          android:layout_width="370dp"
           android:layout_height="200dp"
           android:layout_margin="0dp"
           android:layout_gravity="center"
