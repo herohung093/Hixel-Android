@@ -1,10 +1,9 @@
-package com.hixel.hixel.service;
+package com.hixel.hixel;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import com.hixel.hixel.SingleLiveEvent;
 
 public class SnackbarMessage extends SingleLiveEvent<Integer> {
 
