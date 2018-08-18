@@ -8,9 +8,10 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.hixel.hixel.R;
+import com.hixel.hixel.service.SnackbarMessage;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.SearchEntry;
-import com.hixel.hixel.service.network.Client;
 import com.hixel.hixel.service.network.ServerInterface;
 
 import io.reactivex.Single;
@@ -36,6 +37,10 @@ public class DashboardViewModel extends ViewModel {
     private CompositeDisposable disposable = new CompositeDisposable();
     private PublishSubject<String> publishSubject = PublishSubject.create();
     private List<SearchEntry> searchResults = new ArrayList<>();
+
+    private final SnackbarMessage mSnackbarText = new SnackbarMessage();
+
+    public Company company;
 
     public LiveData<List<Company>> getPortfolio() {
         if (portfolioCompanies == null) {
@@ -80,10 +85,11 @@ public class DashboardViewModel extends ViewModel {
 
             @Override
             public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
-                Log.d(TAG, "Failed to load company data from server\n" + t.getMessage());
+                mSnackbarText.setValue(R.string.load_error_message);
             }
         });
     }
+
 
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {
         return new DisposableObserver<List<SearchEntry>>() {
@@ -106,5 +112,9 @@ public class DashboardViewModel extends ViewModel {
 
     public List<SearchEntry> getSearchResults() {
         return searchResults;
+    }
+
+    public SnackbarMessage getSnackbarMessage() {
+        return mSnackbarText;
     }
 }

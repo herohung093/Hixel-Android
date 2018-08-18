@@ -9,7 +9,6 @@ public class Company implements Serializable {
     private CompanyIdentifiers identifiers;
     private List<FinancialData> financialDataEntries;
 
-
     public Company(CompanyIdentifiers identifiers, List<FinancialData> financialDataEntries) {
         this.identifiers = identifiers;
         this.financialDataEntries = financialDataEntries;

@@ -40,7 +40,7 @@ public class CompanyViewModel extends AndroidViewModel {
 
     public CompanyViewModel(@NonNull Application application) {
         super(application);
-        ratios=doMeta();
+        ratios = doMeta();
     }
 
     // TODO: Figure out what we are returning here.
