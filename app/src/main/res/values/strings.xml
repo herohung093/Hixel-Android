@@ -39,4 +39,8 @@
 
 
     <string name="snapshot">Snapshot</string>
+
+
+    <!-- Snackbar messages -->
+    <string name="load_error_message">There was an error loading your portfolio</string>
 </resources>
