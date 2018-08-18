@@ -184,9 +184,9 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         MainBarDataSet dataSet = new MainBarDataSet(entries, "");
 
         int[] colours = {
-                Color.parseColor("#52c41a"),    // good
-                Color.parseColor("#fa8c16"),    // average
-                Color.parseColor("#f5222d")     // bad
+                R.color.good,    // good
+                R.color.warning,    // average
+                R.color.danger     // bad
         };
 
         dataSet.setColors(colours);
@@ -199,9 +199,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
-        xAxis.setXOffset(20.0f);
-        xAxis.setYOffset(5.0f);
-
         xAxis.setDrawGridLines(false);
 
         xAxis.setDrawAxisLine(false);
@@ -211,19 +208,19 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         xAxis.setGranularity(1f);
         xAxis.setLabelCount(5);
 
-
         xAxis.setValueFormatter((value, axis) -> labels.get((int) value));
 
         YAxis yAxisLeft = chart.getAxisLeft();
         yAxisLeft.setTextColor(Color.GRAY);
-        yAxisLeft.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
-        yAxisLeft.setDrawGridLines(false);
+        yAxisLeft.setPosition(YAxisLabelPosition.INSIDE_CHART);
+        yAxisLeft.setDrawGridLines(true);
         yAxisLeft.setTextSize(12);
         yAxisLeft.setAxisMaximum(5.0f);
         yAxisLeft.setAxisMinimum(0.0f);
         yAxisLeft.setGranularity(1f); // set interval
-        yAxisLeft.setDrawLabels(false);
+        yAxisLeft.setDrawLabels(true);
         yAxisLeft.setDrawAxisLine(false);
+
         YAxis yAxisRight = chart.getAxisRight();
         yAxisRight.setEnabled(false);
 
