@@ -24,10 +24,9 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hixel.hixel.R;
+import com.hixel.hixel.service.models.MainBarChartRenderer;
 import com.hixel.hixel.service.models.MainBarDataSet;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
@@ -51,6 +50,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     DashboardAdapter dashboardAdapter;
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
+
     private BarChart chart;
 
     SearchView search;
@@ -154,6 +154,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     public void setupChart() {
         chart = binding.chart;
 
+        chart.setRenderer(new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
+
         // Configuring the chart
         chart.getLegend().setEnabled(false);
         chart.getDescription().setEnabled(false);
@@ -177,8 +179,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         MainBarDataSet dataSet = new MainBarDataSet(entries, "");
 
-        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-
         BarData data = new BarData(dataSet);
 
         XAxis xAxis = chart.getXAxis();
@@ -189,7 +189,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         xAxis.setTextSize(12);
         xAxis.setGranularity(1f);
         xAxis.setLabelCount(5);
-
 
         xAxis.setValueFormatter((value, axis) -> labels.get((int) value));
 
