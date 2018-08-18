@@ -106,11 +106,11 @@ public class MainBarChartRenderer extends BarChartRenderer{
             }
 
             c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                    buffer.buffer[j + 3]), 8, 8, mRenderPaint);
+                    buffer.buffer[j + 3]), 16, 16, mRenderPaint);
 
             if (drawBorder) {
                 c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3]), 8, 8, mBarBorderPaint);
+                        buffer.buffer[j + 3]), 16, 16, mBarBorderPaint);
             }
         }
     }
