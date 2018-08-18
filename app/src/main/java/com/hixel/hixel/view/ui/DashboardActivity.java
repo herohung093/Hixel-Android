@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
@@ -180,9 +181,9 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         MainBarDataSet dataSet = new MainBarDataSet(entries, "");
 
         int[] colours = {
-                Color.parseColor("#4BCA81"),    // good
-                Color.parseColor("#FFB75D"),    // average
-                Color.parseColor("#C23934")     // bad
+                Color.parseColor("#52c41a"),    // good
+                Color.parseColor("#fa8c16"),    // average
+                Color.parseColor("#f5222d")     // bad
         };
 
         dataSet.setColors(colours);
