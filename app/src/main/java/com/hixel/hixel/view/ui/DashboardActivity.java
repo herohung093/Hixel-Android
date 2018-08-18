@@ -193,11 +193,14 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         BarData data = new BarData(dataSet);
 
+        data.setBarWidth(0.5f);
+        data.setDrawValues(false);
+
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
         xAxis.setXOffset(20.0f);
-
+        xAxis.setYOffset(5.0f);
 
         xAxis.setDrawGridLines(false);
 
