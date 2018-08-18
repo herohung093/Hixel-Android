@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
@@ -29,6 +28,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hixel.hixel.R;
+import com.hixel.hixel.service.models.MainBarDataSet;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
@@ -164,7 +164,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         List<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0, 2));
         entries.add(new BarEntry(1 ,4));
-        entries.add(new BarEntry(2, 2));
+        entries.add(new BarEntry(2, 3));
         entries.add(new BarEntry(3, 1));
         entries.add(new BarEntry(4, 5));
 
@@ -175,7 +175,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         labels.add("Health");
         labels.add("Risk");
 
-        BarDataSet dataSet = new BarDataSet(entries, "");
+        MainBarDataSet dataSet = new MainBarDataSet(entries, "");
+
         dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
         BarData data = new BarData(dataSet);
