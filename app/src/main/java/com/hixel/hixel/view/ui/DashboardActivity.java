@@ -20,17 +20,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hixel.hixel.R;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
@@ -160,22 +157,52 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         // Configuring the chart
         chart.getLegend().setEnabled(false);
         chart.getDescription().setEnabled(false);
-
     }
 
     public void populateChart() {
-        List<BarEntry> entries = new ArrayList<>();
-
         // TODO: get data from portfolio
-        for (int i = 0; i < 5; i++) {
-            entries.add(new BarEntry(i, i+1));
-        }
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0, 2));
+        entries.add(new BarEntry(1 ,4));
+        entries.add(new BarEntry(2, 2));
+        entries.add(new BarEntry(3, 1));
+        entries.add(new BarEntry(4, 5));
+
+        ArrayList<String> labels = new ArrayList<>();
+        labels.add("Return");
+        labels.add("Performance");
+        labels.add("Strength");
+        labels.add("Health");
+        labels.add("Risk");
 
         BarDataSet dataSet = new BarDataSet(entries, "");
-        dataSet.setColor(Color.parseColor("#4BCA81"));
+        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
         BarData data = new BarData(dataSet);
-        data.setDrawValues(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextSize(12);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(5);
+
+
+        xAxis.setValueFormatter((value, axis) -> labels.get((int) value));
+
+        YAxis yAxisLeft = chart.getAxisLeft();
+        yAxisLeft.setTextColor(Color.WHITE);
+        yAxisLeft.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
+        yAxisLeft.setDrawGridLines(false);
+        yAxisLeft.setTextSize(12);
+        yAxisLeft.setAxisMaximum(5.0f);
+        yAxisLeft.setAxisMinimum(0.0f);
+        yAxisLeft.setGranularity(1f); // set interval
+
+        YAxis yAxisRight = chart.getAxisRight();
+        yAxisRight.setEnabled(false);
 
         chart.setData(data);
         chart.invalidate();
