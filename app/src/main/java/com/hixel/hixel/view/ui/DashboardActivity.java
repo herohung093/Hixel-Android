@@ -179,6 +179,14 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         MainBarDataSet dataSet = new MainBarDataSet(entries, "");
 
+        int[] colours = {
+                Color.parseColor("#4BCA81"),    // good
+                Color.parseColor("#FFB75D"),    // average
+                Color.parseColor("#C23934")     // bad
+        };
+
+        dataSet.setColors(colours);
+
         BarData data = new BarData(dataSet);
 
         XAxis xAxis = chart.getXAxis();
