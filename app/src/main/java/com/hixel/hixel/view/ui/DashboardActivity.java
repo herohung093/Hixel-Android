@@ -19,10 +19,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
@@ -50,7 +54,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     DashboardAdapter dashboardAdapter;
     ActivityDashboardBinding binding;
     RecyclerView mRecyclerView;
-    private RadarChart chart;
+    private BarChart chart;
 
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
@@ -156,66 +160,21 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         // Configuring the chart
         chart.getLegend().setEnabled(false);
         chart.getDescription().setEnabled(false);
-        chart.setWebColor(Color.WHITE);
-        chart.setWebColorInner(Color.WHITE);
-        chart.setWebLineWidth(1f);
-        chart.animateY(1400);
-        chart.setWebAlpha(100);
-        chart.setTouchEnabled(false);
 
-        // Scale the size of the chart
-        chart.setScaleX(1.2f);
-        chart.setScaleY(1.2f);
-
-        // XAxis is the outer web
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setTextColor(Color.WHITE);
-        xAxis.setTextSize(9f);
-        xAxis.setXOffset(0);
-        xAxis.setYOffset(0);
-
-        // Seems to be the only way to get Strings to be the XAxis labels
-        // Note: Seems to be that the longest string sets the margins for all other strings
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            private String[] ratioNames = {
-                    "ROE",
-                    "Cash Ratio",
-                    "Debt-to-Equity",
-                    "Current Ratio",
-                    "Quick Ratio",
-            };
-
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return ratioNames[(int) value % ratioNames.length];
-            }
-
-        });
-
-        // YAxis is the inner web
-        YAxis yAxis = chart.getYAxis();
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(1.0f);
-        yAxis.setLabelCount(5);
-        yAxis.setDrawLabels(false);
     }
 
     public void populateChart() {
-        List<RadarEntry> entries = new ArrayList<>();
+        List<BarEntry> entries = new ArrayList<>();
 
         // TODO: get data from portfolio
-        // Currently generating random number between 0 and 1
-        // this will hopefully look like its attached to the server
         for (int i = 0; i < 5; i++) {
-            entries.add(new RadarEntry((float) Math.random()));
+            entries.add(new BarEntry(i, i+1));
         }
 
-        RadarDataSet dataSet = new RadarDataSet(entries, "");
+        BarDataSet dataSet = new BarDataSet(entries, "");
         dataSet.setColor(Color.parseColor("#4BCA81"));
-        dataSet.setFillColor(Color.parseColor("#4BCA81"));
-        dataSet.setDrawFilled(true);
 
-        RadarData data = new RadarData(dataSet);
+        BarData data = new BarData(dataSet);
         data.setDrawValues(false);
 
         chart.setData(data);
