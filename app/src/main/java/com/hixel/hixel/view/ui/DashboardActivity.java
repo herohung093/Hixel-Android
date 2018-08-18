@@ -1,5 +1,7 @@
 package com.hixel.hixel.view.ui;
 
+
+
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
