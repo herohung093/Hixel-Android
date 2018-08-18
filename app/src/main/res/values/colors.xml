@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <color name="colorPrimaryDark">#061C3F</color>
+  <color name="textColorDefault">#ffffff</color>
   <color name="secondaryTextColor">#475770</color>
+  <color name="navbar">#fffafa</color>
 
+  <color name="average">#FFB75D</color>
+  <color name="bad">#C23934</color>
   <color name="buttonBackground">#54698d</color>
+
+
+  <color name="lightCard">#f5f4f2</color>
 
   <color name="red">#FA3157</color>
 
@@ -14,7 +22,7 @@
   <color name="colorSecondary">#F4F5F7</color>
   <color name="white">#FFFFFF</color>
 
-  <!-- traffic light colours -->
+  <!-- warning colours -->
   <color name="danger">#FF5630</color>
   <color name="warning">#FFAB00</color>
   <color name="good">#36B37E</color>

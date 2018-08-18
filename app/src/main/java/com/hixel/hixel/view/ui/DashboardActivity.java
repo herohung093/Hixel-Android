@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
@@ -16,7 +18,9 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -24,13 +28,11 @@ import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.R;
-import com.hixel.hixel.SnackbarMessage.SnackbarObserver;
-import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.service.models.MainBarChartRenderer;
 import com.hixel.hixel.service.models.MainBarDataSet;
-import com.hixel.hixel.util.SnackbarUtils;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
+import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.view.adapter.DashboardAdapter;
 import com.hixel.hixel.view.adapter.SearchAdapter;
@@ -56,12 +58,10 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
-        binding.setLifecycleOwner(this);
 
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         dashboardViewModel.setupSearch();
@@ -78,8 +78,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         // Set up the bottom navigation bar
         setupBottomNavigationView();
 
-        setupSnackbar();
-
+        // UI for the chart
         setupChart();
         populateChart();
     }
@@ -102,9 +101,10 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
             SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
+            // dashboardViewModel.loadCompanyFromSearch(ticker);
 
-            loadCompany(ticker);
-
+            // presenter.setTickerFromSearchSuggestion(ticker);
+            // call the load to portfolio method from here
         });
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -127,6 +127,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     public void showSearchResults() {
 
         SearchAdapter adapter = new SearchAdapter(this, dashboardViewModel.getSearchResults());
+
         searchAutoComplete.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -154,6 +155,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     public void setupChart() {
         chart = binding.chart;
+
         chart.setRenderer(new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
 
         // Configuring the chart
@@ -182,9 +184,9 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         MainBarDataSet dataSet = new MainBarDataSet(entries, "");
 
         int[] colours = {
-                Color.parseColor("#36b37e"),    // good
-                Color.parseColor("#ffab00"),    // average
-                Color.parseColor("#ff5630")    // bad
+                R.color.good,    // good
+                R.color.warning,    // average
+                R.color.danger     // bad
         };
 
         dataSet.setColors(colours);
@@ -275,13 +277,35 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         }
     }
 
-    public void loadCompany(String ticker) {
-        Intent intent = new Intent();
+    public void goToCompanyView() {
+        Intent intent = new Intent(this, CompanyActivity.class);
+        Bundle extras = new Bundle();
 
-        intent.putExtra("ticker", ticker);
+        // ArrayList<Company> companies = new ArrayList<>(presenter.getCompanies());
+
+        // extras.putSerializable("CURRENT_COMPANY", presenter.getCompany());
+        // extras.putSerializable("PORTFOLIO", companies);
+
+        intent.putExtras(extras);
         startActivityForResult(intent,1);
     }
 
+    public void showLoadingIndicator(final boolean active) {
+        final ProgressBar progressBar = binding.progressBar;
+        progressBar.setVisibility(active ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public void showLoadingError() {
+        // Snackbar.make(binding.getRoot(), "Error loading your portfolio", Snackbar.LENGTH_LONG)
+        //         .setAction("RETRY", view -> presenter.loadPortfolio())
+        //         .show();
+    }
+
+    public void getAddedCompany() {
+        if (getIntent().hasExtra("COMPANY_ADD")) {
+         // presenter.getCompanies().add((Company) getIntent().getSerializableExtra("COMPANY_ADD"));
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -295,10 +319,5 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     public void addItem(Company company) {
         dashboardAdapter.addItem(company);
-    }
-
-    private void setupSnackbar() {
-        dashboardViewModel.getSnackbarMessage().observe(this,
-                (SnackbarObserver) snackbarMessageResourceId -> SnackbarUtils.showSnackbar(getCurrentFocus(), getString(snackbarMessageResourceId)));
     }
 }
