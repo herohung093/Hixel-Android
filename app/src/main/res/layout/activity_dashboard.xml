@@ -4,11 +4,20 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
 
+  <data>
+
+    <import type="android.view.View" />
+
+    <variable
+      name="viewModel"
+      type="com.hixel.hixel.viewmodel.DashboardViewModel"/>
+  </data>
+
 
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sample.android.databinding.dashboard.DashboardActivity">
+    tools:context=".view.ui.DashboardActivity">
 
     <include
       android:id="@+id/toolbar"
@@ -83,12 +92,18 @@
       android:id="@+id/progressBar"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="144dp"
+      android:layout_marginTop="8dp"
       android:layout_marginBottom="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
       android:layout_centerHorizontal="true"
-      android:visibility="invisible" />
+      app:layout_constraintBottom_toBottomOf="@+id/bottom_nav"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+
+      android:visibility="@{viewModel.progressVisible ? View.VISIBLE : View.GONE}" />
+
 
     <include
       android:id="@+id/bottom_nav"

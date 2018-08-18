@@ -1,11 +1,12 @@
 package com.hixel.hixel.view.ui;
 
+
+
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -17,7 +18,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import com.github.mikephil.charting.charts.BarChart;
@@ -27,14 +27,13 @@ import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.R;
-import com.hixel.hixel.service.SnackbarMessage;
-import com.hixel.hixel.service.SnackbarMessage.SnackbarObserver;
+import com.hixel.hixel.SnackbarMessage.SnackbarObserver;
+import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.service.models.MainBarChartRenderer;
 import com.hixel.hixel.service.models.MainBarDataSet;
 import com.hixel.hixel.util.SnackbarUtils;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
-import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.view.adapter.DashboardAdapter;
 import com.hixel.hixel.view.adapter.SearchAdapter;
@@ -60,10 +59,12 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+        binding.setLifecycleOwner(this);
 
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         dashboardViewModel.setupSearch();
@@ -82,7 +83,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         setupSnackbar();
 
-        // UI for the chart
         setupChart();
         populateChart();
     }
@@ -279,16 +279,11 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         }
     }
 
-    public void loadCompany(String ticker) { ;
+    public void loadCompany(String ticker) {
         Intent intent = new Intent();
 
         intent.putExtra("ticker", ticker);
         startActivityForResult(intent,1);
-    }
-
-    public void showLoadingIndicator(final boolean active) {
-        final ProgressBar progressBar = binding.progressBar;
-        progressBar.setVisibility(active ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
@@ -310,5 +305,4 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         dashboardViewModel.getSnackbarMessage().observe(this,
                 (SnackbarObserver) snackbarMessageResourceId -> SnackbarUtils.showSnackbar(getCurrentFocus(), getString(snackbarMessageResourceId)));
     }
-
 }

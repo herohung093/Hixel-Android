@@ -5,11 +5,11 @@ import static com.hixel.hixel.service.network.Client.getClient;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.hixel.hixel.R;
-import com.hixel.hixel.service.SnackbarMessage;
+import com.hixel.hixel.SnackbarMessage;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.service.network.ServerInterface;
@@ -31,6 +31,7 @@ import retrofit2.Response;
 
 public class DashboardViewModel extends ViewModel {
 
+    @SuppressWarnings("unused")
     private final String TAG = getClass().getSimpleName();
 
     private MutableLiveData<List<Company>> portfolioCompanies;
@@ -40,9 +41,11 @@ public class DashboardViewModel extends ViewModel {
 
     private final SnackbarMessage mSnackbarText = new SnackbarMessage();
 
-    public Company company;
+    public final ObservableBoolean progressVisible = new ObservableBoolean();
+
 
     public LiveData<List<Company>> getPortfolio() {
+
         if (portfolioCompanies == null) {
             portfolioCompanies = new MutableLiveData<>();
             loadPortfolio();
@@ -69,6 +72,9 @@ public class DashboardViewModel extends ViewModel {
     }
 
     private void loadPortfolio() {
+
+        progressVisible.set(true);
+
         // Dummy data before DB is hooked up.
         String[] companies = {"AAPL", "TSLA", "TWTR", "SNAP", "FB", "AMZN"};
 
@@ -88,6 +94,8 @@ public class DashboardViewModel extends ViewModel {
                 mSnackbarText.setValue(R.string.load_error_message);
             }
         });
+
+        progressVisible.set(false);
     }
 
 
@@ -117,4 +125,5 @@ public class DashboardViewModel extends ViewModel {
     public SnackbarMessage getSnackbarMessage() {
         return mSnackbarText;
     }
+
 }
