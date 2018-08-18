@@ -26,7 +26,7 @@
         android:windowSoftInputMode="adjustNothing"/>
     <!--suppress AndroidDomInspection -->
     <activity android:name=".comparisonGraph.MainActivity" />
-    <activity android:name=".view.ui.GraphActivity"></activity>
+    <activity android:name=".view.ui.GraphActivity"/>
 
     <meta-data
       android:name="preloaded_fonts"
