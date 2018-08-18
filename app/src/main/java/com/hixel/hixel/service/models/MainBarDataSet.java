@@ -1,6 +1,4 @@
 package com.hixel.hixel.service.models;
-
-import android.util.Log;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import java.util.List;

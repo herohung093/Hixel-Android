@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -160,6 +161,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         // Configuring the chart
         chart.getLegend().setEnabled(false);
         chart.getDescription().setEnabled(false);
+        chart.setDrawValueAboveBar(false);
+        chart.setDrawBarShadow(false);
     }
 
     public void populateChart() {
@@ -192,24 +195,32 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        xAxis.setXOffset(20.0f);
+
+
         xAxis.setDrawGridLines(false);
 
-        xAxis.setTextColor(Color.WHITE);
+        xAxis.setDrawAxisLine(false);
+
+        xAxis.setTextColor(Color.GRAY);
         xAxis.setTextSize(12);
         xAxis.setGranularity(1f);
         xAxis.setLabelCount(5);
 
+
         xAxis.setValueFormatter((value, axis) -> labels.get((int) value));
 
         YAxis yAxisLeft = chart.getAxisLeft();
-        yAxisLeft.setTextColor(Color.WHITE);
+        yAxisLeft.setTextColor(Color.GRAY);
         yAxisLeft.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
         yAxisLeft.setDrawGridLines(false);
         yAxisLeft.setTextSize(12);
         yAxisLeft.setAxisMaximum(5.0f);
         yAxisLeft.setAxisMinimum(0.0f);
         yAxisLeft.setGranularity(1f); // set interval
-
+        yAxisLeft.setDrawLabels(false);
+        yAxisLeft.setDrawAxisLine(false);
         YAxis yAxisRight = chart.getAxisRight();
         yAxisRight.setEnabled(false);
 
