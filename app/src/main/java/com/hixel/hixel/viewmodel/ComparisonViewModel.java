@@ -92,9 +92,6 @@ public class ComparisonViewModel extends ViewModel {
                     }
                     else {
                         try {
-
-
-
                                 if(companies.getValue().size()==1 && tempCompanies.size()==0){
                                     tempCompanies.add(companies.getValue().get(0));
                             }

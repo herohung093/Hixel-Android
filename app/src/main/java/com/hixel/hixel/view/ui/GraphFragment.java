@@ -18,23 +18,20 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.FinancialData;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 public class GraphFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    // private static final String ARG_PARAM1 = "param1";
-    // private static final String ARG_PARAM2 = "param2";
 
     LineChart lineChart;
     String[] years;
-
+    ArrayList<Integer> compAColors = new ArrayList<>();
+    ArrayList<Integer> compBColors = new ArrayList<>();
     private OnFragmentInteractionListener mListener;
 
     public GraphFragment() {
@@ -58,6 +55,7 @@ public class GraphFragment extends Fragment {
     public LineDataSet lineChartDataSetup( String selectedRatio, Company company){
         List <Entry> compEntry = new ArrayList<>();
         List<FinancialData> financialData= company.getFinancialDataEntries();
+        ArrayList<Float> rawData= new ArrayList<>();
         checkYearNull(financialData);
 
         createListOfYears(financialData);
@@ -66,10 +64,45 @@ public class GraphFragment extends Fragment {
             LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
             j--;
             Entry compYearData = new Entry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
+            rawData.add(Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
             compEntry.add(compYearData);
         }
 
         return new LineDataSet(compEntry,company.getIdentifiers().getTicker());
+    }
+    public void colorIndicator(Company company, String selectedRatio){
+        ArrayList<Float> rawData= new ArrayList<>();
+        ArrayList<Float> sortedData= new ArrayList<>();
+        List<FinancialData> financialData= company.getFinancialDataEntries();
+        checkYearNull(financialData);
+        int j=4;
+        for (int i=0;i<5;i++){
+            LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
+            j--;
+            rawData.add(Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
+            compAColors.add(0);
+        }
+        sortedData.addAll(rawData);
+        Collections.sort(sortedData);
+        for(int i=0;i<rawData.size();i++){
+
+            if(rawData.get(i)==sortedData.get(0)){
+                compAColors.add(0,getResources().getColor(R.color.bad));
+            }
+            if (rawData.get(i)==sortedData.get(1)){
+                compAColors.add(1,getResources().getColor(R.color.underAverage));
+            }
+            if( rawData.get(i)==sortedData.get(2)){
+                compAColors.add(2,getResources().getColor(R.color.average));
+            }
+            if (rawData.get(i)==sortedData.get(3)){
+                compAColors.add(3,getResources().getColor(R.color.aboveAverage));
+            }
+            if(rawData.get(i)==sortedData.get(4)){
+                compAColors.add(4,getResources().getColor(R.color.good));
+            }
+        }
+
     }
     public void drawGraph(ArrayList<Company> companies,String selectedRatio){
         List<ILineDataSet> dataSets = new ArrayList<>();
@@ -77,18 +110,21 @@ public class GraphFragment extends Fragment {
         for(Company c: companies){
             LineDataSet setCompA= lineChartDataSetup( selectedRatio, c);
             if (companies.size()==1) {
-                setCompA.setColors(ColorTemplate.LIBERTY_COLORS);
-                setupDatasetStyle(setCompA);
+                colorIndicator(c,selectedRatio);
+                setCompA.setColors(compAColors);
+                setupDatasetStyle(setCompA,companies.get(0).getFinancialDataEntries());
                 setCompA.enableDashedLine(10f, 10f, 10f);
                 dataSets.add(setCompA);
             } else if(companies.size()==2 && companies.indexOf(c)==0) {
-                setCompA.setColors(ColorTemplate.LIBERTY_COLORS);
-                setupDatasetStyle(setCompA);
+                colorIndicator(c,selectedRatio);
+                setCompA.setColors(compAColors);
+                setupDatasetStyle(setCompA,companies.get(0).getFinancialDataEntries());
                 setCompA.enableDashedLine(10f, 10f, 10f);
                 dataSets.add(setCompA);
             } else {
-                setCompA.setColors(ColorTemplate.COLORFUL_COLORS);
-                setupDatasetStyle(setCompA);
+                colorIndicator(c,selectedRatio);
+                setCompA.setColors(compAColors);
+                setupDatasetStyle(setCompA,companies.get(1).getFinancialDataEntries());
                 dataSets.add(setCompA);
             }
 
@@ -98,6 +134,7 @@ public class GraphFragment extends Fragment {
         LineData data = new LineData(dataSets);
         decorLineChart(lineChart,data);
     }
+
     public void decorLineChart(LineChart lineChart, LineData data){
 
         lineChart.animateXY(1000, 1000);
@@ -143,12 +180,12 @@ public class GraphFragment extends Fragment {
         years = toConvertYears.toArray(new String[toConvertYears.size()]);
     }
 
-    public void setupDatasetStyle(LineDataSet setCompA) {
+    public void setupDatasetStyle(LineDataSet setCompA, List<FinancialData> financialData) {
         setCompA.setDrawCircleHole(true);
-        // TODO: Check if deprecated method is required.
-        setCompA.setCircleSize(7);
+        // TODO: implement color indicator here
         setCompA.setValueTextSize(12);
         setCompA.setValueTextColor(Color.WHITE);
+
         setCompA.setCircleHoleRadius(3);
         setCompA.setAxisDependency(YAxis.AxisDependency.LEFT);
 
