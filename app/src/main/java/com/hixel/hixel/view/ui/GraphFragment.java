@@ -144,7 +144,7 @@ public class GraphFragment extends Fragment {
 
         YAxis yAxis = lineChart.getAxisLeft();
         YAxis yRight = lineChart.getAxisRight();
-        yRight.setTextColor(R.color.white);
+        yRight.setTextColor(R.color.textColorDefault);
         setupAxis(xAxis, yAxis);
 
         Legend legend = lineChart.getLegend();
