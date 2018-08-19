@@ -14,7 +14,6 @@ import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.view.ui.CompanyActivity;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.ViewHolder> {
 
@@ -54,10 +53,10 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
 
         int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
 
-        holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
+        /*holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
                                     companies
                                                    .get(position)
-                                                   .getRatio("Return-on-Equity Ratio", last_year) * 100));
+                                                   .getRatio("Current Ratio", last_year) * 100));*/
 
         holder.foreground.setOnClickListener((View view) -> {
             Intent intent = new Intent(mContext, CompanyActivity.class);

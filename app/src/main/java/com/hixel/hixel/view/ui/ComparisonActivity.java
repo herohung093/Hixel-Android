@@ -265,11 +265,8 @@ public class ComparisonActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
         // setup swiping left or right to delete item
         setUpItemTouchHelper();
-
-
     }
 
     private void observeViewModel(ComparisonViewModel viewModel){
