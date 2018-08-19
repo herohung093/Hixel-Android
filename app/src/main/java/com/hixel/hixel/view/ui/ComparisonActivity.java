@@ -163,8 +163,8 @@ public class ComparisonActivity extends AppCompatActivity {
                     xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
                 }
 
-                xMarkMargin = (int) getApplicationContext().getResources()
-                    .getDimension(R.dimen.search_icon_padding);
+                //xMarkMargin = (int) getApplicationContext().getResources()
+                 //   .getDimension(R.dimen.search_icon_padding);
                 initiated = true;
 
             }

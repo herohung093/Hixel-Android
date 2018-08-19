@@ -1,7 +1,5 @@
 package com.hixel.hixel.view.ui;
 
-
-
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -19,7 +17,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -157,7 +154,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     public void setupChart() {
         chart = binding.chart;
-
         chart.setRenderer(new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
 
         // Configuring the chart
