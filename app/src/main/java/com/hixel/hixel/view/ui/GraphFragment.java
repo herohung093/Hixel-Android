@@ -30,8 +30,8 @@ public class GraphFragment extends Fragment {
 
     LineChart lineChart;
     String[] years;
-    ArrayList<Integer> compAColors = new ArrayList<>();
-    ArrayList<Integer> compBColors = new ArrayList<>();
+    ArrayList<Integer> compAColors= new ArrayList<Integer>();
+    ArrayList<Integer> compBColors= new ArrayList<Integer>();
     private OnFragmentInteractionListener mListener;
 
     public GraphFragment() {
@@ -70,7 +70,7 @@ public class GraphFragment extends Fragment {
 
         return new LineDataSet(compEntry,company.getIdentifiers().getTicker());
     }
-    public void colorIndicator(Company company, String selectedRatio){
+    public void colorIndicator(Company company, String selectedRatio, ArrayList<Integer> colors){
         ArrayList<Float> rawData= new ArrayList<>();
         ArrayList<Float> sortedData= new ArrayList<>();
         List<FinancialData> financialData= company.getFinancialDataEntries();
@@ -80,27 +80,20 @@ public class GraphFragment extends Fragment {
             LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
             j--;
             rawData.add(Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
-            compAColors.add(0);
+            colors.add(0);
         }
         sortedData.addAll(rawData);
         Collections.sort(sortedData);
-        for(int i=0;i<rawData.size();i++){
-
-            if(rawData.get(i)==sortedData.get(0)){
-                compAColors.add(0,getResources().getColor(R.color.bad));
-            }
-            if (rawData.get(i)==sortedData.get(1)){
-                compAColors.add(1,getResources().getColor(R.color.underAverage));
-            }
-            if( rawData.get(i)==sortedData.get(2)){
-                compAColors.add(2,getResources().getColor(R.color.average));
-            }
-            if (rawData.get(i)==sortedData.get(3)){
-                compAColors.add(3,getResources().getColor(R.color.aboveAverage));
-            }
-            if(rawData.get(i)==sortedData.get(4)){
-                compAColors.add(4,getResources().getColor(R.color.good));
-            }
+        for(int i=1;i<rawData.size();i++){
+            if(rawData.get(i)==sortedData.get(0))
+                colors.add(i-1,getResources().getColor(R.color.bad));
+            else
+            if(rawData.get(i)>rawData.get(i-1)){
+                colors.add(i-1,getResources().getColor(R.color.good));
+            }else
+            if (rawData.get(i)<rawData.get(i-1)){
+                colors.add(i-1,getResources().getColor(R.color.warning));
+            }else colors.add(i-1,getResources().getColor(R.color.average));
         }
 
     }
@@ -110,20 +103,20 @@ public class GraphFragment extends Fragment {
         for(Company c: companies){
             LineDataSet setCompA= lineChartDataSetup( selectedRatio, c);
             if (companies.size()==1) {
-                colorIndicator(c,selectedRatio);
+                colorIndicator(c,selectedRatio,compAColors);
                 setCompA.setColors(compAColors);
                 setupDatasetStyle(setCompA,companies.get(0).getFinancialDataEntries());
                 setCompA.enableDashedLine(10f, 10f, 10f);
                 dataSets.add(setCompA);
             } else if(companies.size()==2 && companies.indexOf(c)==0) {
-                colorIndicator(c,selectedRatio);
+                colorIndicator(c,selectedRatio,compAColors);
                 setCompA.setColors(compAColors);
                 setupDatasetStyle(setCompA,companies.get(0).getFinancialDataEntries());
                 setCompA.enableDashedLine(10f, 10f, 10f);
                 dataSets.add(setCompA);
             } else {
-                colorIndicator(c,selectedRatio);
-                setCompA.setColors(compAColors);
+                colorIndicator(c,selectedRatio,compBColors);
+                setCompA.setColors(compBColors);
                 setupDatasetStyle(setCompA,companies.get(1).getFinancialDataEntries());
                 dataSets.add(setCompA);
             }
@@ -182,7 +175,6 @@ public class GraphFragment extends Fragment {
 
     public void setupDatasetStyle(LineDataSet setCompA, List<FinancialData> financialData) {
         setCompA.setDrawCircleHole(true);
-        // TODO: implement color indicator here
         setCompA.setValueTextSize(12);
         setCompA.setValueTextColor(Color.WHITE);
 
