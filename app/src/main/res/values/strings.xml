@@ -5,34 +5,8 @@
     <string name="dashboard">Dashboard</string>
     <string name="comparison">Comparison</string>
 
-
-    <string name="health">Health</string>
-    <string name="liquidity_score">Liquidity Score</string>
-    <string name="leverage_score">Leverage Score</string>
-    <string name="Liquidity">Liquidity</string>
-    <string name="Leverage">Leverage</string>
-    <string name="Search">Search</string>
+    <!-- Common -->
     <string name="search_title">Search</string>
-    <string name="Liabilities"> Liabilities   </string>
-    <string name="net_Income"> Net Income</string>
-    <string name="financial_element">Financial Elements</string>
-    <string name="Assets">Assets</string>
-    <string name="Equity">Equity</string>
-    <string name="financial_ratios">Financial Ratios</string>
-
-    <string name="current_ratio">Current Ratio</string>
-    <string name="roe">ROE</string>
-    <string name="d2e">D/E</string>
-    <string name="quick_ratio">Quick Ratio</string>
-    <string name="cash_ratio">Cash Ratio</string>
-
-    <string name="debt_to_equity">Debt-to-Equity</string>
-    <string name="return_on_equity">Return-on-Equity</string>
-    <string name="return_on_assets">Return-on-Assets</string>
-    <string name="profit_margin">Profit Margin</string>
-
-
-    <string name="snapshot">Snapshot</string>
 
     <!-- Dashboard -->
     <string name="overview">Overview</string>
@@ -41,7 +15,6 @@
     <!-- Company -->
 
     <!-- Comparison -->
-
 
     <!-- Snackbar messages -->
     <string name="load_error_message">There was an error loading your portfolio</string>
