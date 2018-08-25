@@ -1,6 +1,7 @@
 package com.hixel.hixel.view.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.os.HandlerThread;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,7 +74,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         // Set up the toolbar
         binding.toolbar.toolbar.setTitle(R.string.dashboard);
-        binding.toolbar.toolbar.setTitleTextColor(Color.BLACK);
+        binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
 
         setSupportActionBar(binding.toolbar.toolbar);
 
@@ -98,8 +100,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         // Styling the search bar
-        searchAutoComplete.setHintTextColor(Color.BLACK);
-        searchAutoComplete.setTextColor(Color.BLACK);
+        searchAutoComplete.setHintTextColor(ContextCompat.getColor(this, R.color.text_main_light));
+        searchAutoComplete.setTextColor(ContextCompat.getColor(this, R.color.text_main_light));
         ImageView searchClose = search
                 .findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         searchClose.setImageResource(R.drawable.ic_clear);
@@ -190,16 +192,16 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         MainBarDataSet dataSet = new MainBarDataSet(entries, "");
 
         int[] colours = {
-                Color.parseColor("#84D634"),    // good
-                Color.parseColor("#FDD831"),    // average
-                Color.parseColor("#F43D58")     // bad
+                Color.parseColor("#57D9A3"),    // good
+                Color.parseColor("#FF991F"),    // average
+                Color.parseColor("#FF5630")     // bad
         };
 
         dataSet.setColors(colours);
 
         BarData data = new BarData(dataSet);
 
-        data.setBarWidth(.7f);
+        data.setBarWidth(.4f);
         data.setDrawValues(false);
 
         XAxis xAxis = chart.getXAxis();
@@ -209,7 +211,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         xAxis.setDrawAxisLine(false);
 
-        xAxis.setTextColor(Color.DKGRAY);
+        xAxis.setTextColor(ContextCompat.getColor(this, R.color.text_secondary_dark));
+        xAxis.setTypeface(ResourcesCompat.getFont(this, R.font.roboto_condensed_regular));
         xAxis.setTextSize(12);
         xAxis.setGranularity(1f);
         xAxis.setLabelCount(5);
@@ -217,14 +220,15 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         xAxis.setValueFormatter((value, axis) -> labels.get((int) value));
 
         YAxis yAxisLeft = chart.getAxisLeft();
-        yAxisLeft.setTextColor(Color.GRAY);
-        yAxisLeft.setPosition(YAxisLabelPosition.INSIDE_CHART);
+        yAxisLeft.setTextColor(ContextCompat.getColor(this, R.color.text_secondary_dark));
+        yAxisLeft.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
+
         yAxisLeft.setDrawGridLines(true);
         yAxisLeft.setTextSize(12);
         yAxisLeft.setAxisMaximum(5.0f);
         yAxisLeft.setAxisMinimum(0.0f);
         yAxisLeft.setGranularity(1f); // set interval
-        yAxisLeft.setDrawLabels(false);
+        yAxisLeft.setDrawLabels(true);
         yAxisLeft.setDrawAxisLine(false);
 
         YAxis yAxisRight = chart.getAxisRight();

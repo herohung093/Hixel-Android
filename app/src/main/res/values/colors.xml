@@ -5,41 +5,44 @@
   <color name="secondaryTextColor">#475770</color>
   <color name="navbar">#fffafa</color>
 
-  <color name="average">#FFB75D</color>
-  <color name="bad">#C23934</color>
   <color name="buttonBackground">#54698d</color>
 
 
   <color name="lightCard">#f5f4f2</color>
 
-  <color name="red">#FA3157</color>
-
-
-
   <!-- Primary colours -->
   <color name="colorPrimary">#172B4D</color>
   <color name="colorSecondary">#F4F5F7</color>
 
-
-  <color name="white">#FFFFFF</color>
-  <color name="black">#000000</color>
+  <color name="black">#172B4D</color>
   <color name="off_white">#EDF0F2</color>
 
-  <!-- warning colours -->
-  <color name="danger">#FF5630</color>
-  <color name="warning">#FFAB00</color>
-  <color name="good">#36B37E</color>
-
-  <!-- Blues -->
-  <color name="darkBlue">#5977FB</color>
-  <color name="lightBlue">#3A99FA</color>
-  <color name="new_blue">#4285F3</color>
-
-  <!-- indicator colours -->
-  <color name="green">#84D634</color>
-  <color name="yellow">#FDD831</color>
-  <color name="red2">#F43D58</color>
 
   <!-- Colours to phase out -->
   <color name="colorAccent">#0052CC</color>
+
+  <!-- Grey text -->
+  <color name="greyText">#505F79</color>
+
+
+  <!-- Brand New Colour Scheme -->
+  <!-- Backgrounds -->
+  <color name="primary_background">#0052CC</color>
+  <color name="secondary_background">#FFFFFF</color>
+
+  <!-- Text colour -->
+  <color name="text_main_dark">#172B4D</color>
+  <color name="text_main_light">#FFFFFF</color>
+  <color name="text_secondary_dark">#505F79</color>
+
+  <!-- Indicator -->
+  <color name="good">#36B37E</color>
+  <color name="average">#FFE380</color>
+  <color name="bad">#FF8F73</color>
+
+  <!-- State, message, etc. colours -->
+  <color name="remove">#DE350B</color>
+  <color name="warning">#FF8B00</color>
+  <color name="confirm">#006644</color>
+
 </resources>

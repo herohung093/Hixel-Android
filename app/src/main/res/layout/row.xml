@@ -30,7 +30,7 @@
           android:id="@+id/background"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:background="@color/red">
+          android:background="@color/remove">
 
             <ImageView
               android:id="@+id/delete_icon"
@@ -55,7 +55,7 @@
           android:id="@+id/foreground"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:background="@color/white">
+          android:background="@color/secondary_background">
 
             <TextView
               android:id="@+id/company_name"
@@ -85,7 +85,7 @@
               android:layout_marginEnd="8dp"
               android:text="@string/default_text"
               android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-              android:textColor="@color/black"
+              android:textColor="@color/greyText"
               app:layout_constraintBottom_toBottomOf="parent"
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintHorizontal_bias="0.0"
@@ -93,6 +93,17 @@
               app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintVertical_bias="0.804"/>
 
+            <View
+              android:id="@+id/indicator"
+              android:layout_width="61dp"
+              android:layout_height="wrap_content"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintHorizontal_bias="1.0"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintVertical_bias="0.0"
+              android:background="@color/good"/>
 
             <ImageView
               android:id="@+id/company_indicator"

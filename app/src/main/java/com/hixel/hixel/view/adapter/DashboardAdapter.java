@@ -2,9 +2,11 @@ package com.hixel.hixel.view.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.view.ui.CompanyActivity;
 import com.hixel.hixel.service.models.Company;
 
+import com.hixel.hixel.view.ui.DashboardActivity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,10 +60,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         // Set the indicator based upon the current ratio
         if (currentRatio < 1.0) {
+            holder.indicator.setBackgroundColor(Color.parseColor("#36B37E"));
             holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_downward);
         } else if (currentRatio >= 1.0 && currentRatio <= 1.2) {
+            holder.indicator.setBackgroundColor(Color.parseColor("#FFE380"));
             holder.companyIndicator.setBackgroundResource(R.drawable.ic_remove_black_24dp);
         } else {
+            holder.indicator.setBackgroundColor(Color.parseColor("#FF8F73"));
             holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
         }
 
@@ -104,6 +110,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         public TextView companyTicker;
         public TextView companyName;
         ImageView companyIndicator;
+        View indicator;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -112,6 +119,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             companyIndicator = itemView.findViewById(R.id.company_indicator);
             foreground = itemView.findViewById(R.id.foreground);
             background = itemView.findViewById(R.id.background);
+            indicator = itemView.findViewById(R.id.indicator);
         }
     }
 

@@ -8,7 +8,7 @@
     android:layout_height="?attr/actionBarSize"
     android:layout_margin="0dp"
     android:padding="0dp"
-    android:background="@color/white"
+    android:background="@color/primary_background"
     android:elevation="4dp"
     android:minHeight="?attr/actionBarSize"
     app:collapseIcon="@drawable/ic_close"

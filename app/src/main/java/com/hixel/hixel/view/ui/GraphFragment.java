@@ -92,7 +92,7 @@ public class GraphFragment extends Fragment {
                 colors.add(i-1,getResources().getColor(R.color.good));
             }else
             if (rawData.get(i)<rawData.get(i-1)){
-                colors.add(i-1,getResources().getColor(R.color.warning));
+                colors.add(i-1,getResources().getColor(R.color.bad));
             }else colors.add(i-1,getResources().getColor(R.color.average));
         }
 
