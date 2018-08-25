@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/parent_layout">
@@ -67,7 +66,7 @@
               android:fontFamily="@font/montserrat"
               android:text="@string/default_text"
               android:textAppearance="@android:style/TextAppearance.Material.Headline"
-              android:textColor="@color/black"
+              android:textColor="@color/text_main_dark"
               app:layout_constraintBottom_toTopOf="@+id/company_ticker"
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintHorizontal_bias="0.028"
@@ -85,7 +84,7 @@
               android:layout_marginEnd="8dp"
               android:text="@string/default_text"
               android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-              android:textColor="@color/greyText"
+              android:textColor="@color/text_secondary_dark"
               app:layout_constraintBottom_toBottomOf="parent"
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintHorizontal_bias="0.0"

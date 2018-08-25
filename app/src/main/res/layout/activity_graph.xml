@@ -6,7 +6,7 @@
     <android.support.constraint.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="@color/colorPrimary"
+      android:background="@color/secondary_background"
       tools:context="sample.android.databinding.graph.GraphActivity">
 
 
@@ -15,7 +15,7 @@
       android:id="@+id/spinner_Container"
       android:layout_width="match_parent"
       android:layout_height="40dp"
-      android:background="@color/cardview_light_background"
+      android:background="@color/secondary_background"
       android:orientation="vertical"
       app:layout_constraintTop_toTopOf="parent">
         <Spinner

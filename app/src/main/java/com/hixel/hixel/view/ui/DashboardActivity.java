@@ -284,7 +284,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             snackbar.setAction("UNDO",
                     view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));
 
-            snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+            snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.warning));
             snackbar.show();
         }
     }

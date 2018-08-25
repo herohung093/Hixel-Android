@@ -32,7 +32,7 @@
       <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:background="@color/secondary_background">
 
         <TextView
           android:id="@+id/liquidity_text"
@@ -154,7 +154,7 @@
           android:id="@+id/chart"
           android:layout_width="0dp"
           android:layout_height="0dp"
-          android:background="@color/colorPrimary"
+          android:background="@color/secondary_background"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintHorizontal_bias="1.0"
@@ -186,7 +186,7 @@
       android:layout_marginBottom="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
-      android:backgroundTint="@color/colorAccent"
+      android:backgroundTint="@color/primary_background"
       android:src="@android:drawable/ic_input_add"
       android:tint="@color/text_main_light"
       app:layout_constraintBottom_toBottomOf="parent"

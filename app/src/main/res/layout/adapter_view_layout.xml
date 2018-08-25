@@ -11,11 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_weight="66.6"
-        android:background="@color/cardview_light_background"
+        android:background="@color/secondary_background"
         android:gravity="center"
         android:text="TextView1"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/text_main_light" />
 
     <LinearLayout
         android:orientation="vertical"

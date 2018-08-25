@@ -17,7 +17,7 @@
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/off_white"
+    android:background="@color/grey_background"
     tools:context=".view.ui.DashboardActivity">
 
     <include
@@ -86,7 +86,7 @@
               android:layout_marginEnd="296dp"
               android:fontFamily="@font/montserrat"
               android:text="@string/overview"
-              android:textColor="@color/greyText"
+              android:textColor="@color/text_secondary_dark"
               android:textSize="14sp"
               app:layout_constraintBottom_toBottomOf="parent"
               app:layout_constraintEnd_toEndOf="parent"

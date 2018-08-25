@@ -1,34 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimaryDark">#FFFAFA</color>
-  <color name="textColorDefault">#ffffff</color>
-  <color name="secondaryTextColor">#475770</color>
-  <color name="navbar">#fffafa</color>
-
-  <color name="buttonBackground">#54698d</color>
-
-
-  <color name="lightCard">#f5f4f2</color>
-
-  <!-- Primary colours -->
-  <color name="colorPrimary">#172B4D</color>
-  <color name="colorSecondary">#F4F5F7</color>
-
-  <color name="black">#172B4D</color>
-  <color name="off_white">#EDF0F2</color>
-
-
-  <!-- Colours to phase out -->
-  <color name="colorAccent">#0052CC</color>
-
-  <!-- Grey text -->
-  <color name="greyText">#505F79</color>
-
-
-  <!-- Brand New Colour Scheme -->
   <!-- Backgrounds -->
   <color name="primary_background">#0052CC</color>
   <color name="secondary_background">#FFFFFF</color>
+  <color name="grey_background">#FAFBFC</color>
 
   <!-- Text colour -->
   <color name="text_main_dark">#172B4D</color>
