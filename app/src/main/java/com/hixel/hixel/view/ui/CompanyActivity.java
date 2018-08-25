@@ -8,15 +8,10 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
-import com.hixel.hixel.service.models.SearchEntry;
-import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.viewmodel.CompanyViewModel;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -26,10 +21,7 @@ import com.hixel.hixel.databinding.ActivityCompanyBinding;
 public class CompanyActivity extends AppCompatActivity {
 
     CompanyViewModel companyViewModel;
-    SearchView search;
-    SearchView.SearchAutoComplete searchAutoComplete;
     FloatingActionButton fab;
-
     ActivityCompanyBinding binding;
 
     @Override
@@ -37,10 +29,7 @@ public class CompanyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_company);
 
-
         companyViewModel = ViewModelProviders.of(this).get(CompanyViewModel.class);
-
-        setContentView(R.layout.activity_company);
 
         setupBottomNavigationView();
         companyViewModel.setupSearch();
@@ -55,10 +44,15 @@ public class CompanyActivity extends AppCompatActivity {
 
 
         // Setup the toolbar
-        binding.toolbar.toolbar.setTitle(companyViewModel.getCompany().getValue().getIdentifiers().getName());
+        String title = companyViewModel.getCompany().getValue().getIdentifiers().getName();
+        binding.toolbar.toolbar.setTitle(title);
         binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
 
+        binding.toolbar.toolbar.setNavigationIcon(R.drawable.ic_close);
+
         setSupportActionBar(binding.toolbar.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
         // Setup FAB
@@ -80,60 +74,16 @@ public class CompanyActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        MenuItem searchView = menu.findItem(R.id.action_search);
-
-        search = (SearchView) searchView.getActionView();
-        searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-
-        // Styling the search bar
-        searchAutoComplete.setHintTextColor(Color.WHITE);
-        searchAutoComplete.setTextColor(Color.WHITE);
-        ImageView searchClose = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-        searchClose.setImageResource(R.drawable.ic_clear);
-
-
-        searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
-            SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
-            String ticker = entry.getTicker();
-            companyViewModel.loadDataForAParticularCompany(ticker);
-            goToCompanyView();
-
-
-            // call the load to portfolio method from here
-        });
-
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                companyViewModel.loadSearchResults(searchAutoComplete.getText().toString());
-                showSearchResults();
-                return false;
-            }
-        });
-
+        // getMenuInflater().inflate(R.menu.toolbar_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    public void showSearchResults() {
-        SearchAdapter adapter = new SearchAdapter(this, companyViewModel.getSearchResults());
-
-        searchAutoComplete.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
-
-    public void goToCompanyView() {
-        Intent intent = new Intent(this, CompanyActivity.class);
-        intent.putExtra("CURRENT_COMPANY", companyViewModel.getCompany().getValue());
-        startActivityForResult(intent,1);
     }
 
     public void setupBottomNavigationView() {
