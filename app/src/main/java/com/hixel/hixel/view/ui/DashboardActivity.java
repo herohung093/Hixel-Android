@@ -184,9 +184,9 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         MainBarDataSet dataSet = new MainBarDataSet(entries, "");
 
         int[] colours = {
-                Color.parseColor("#36B37E"),    // good
-                Color.parseColor("#FFAB00"),    // average
-                Color.parseColor("#FF5630")     // bad
+                Color.parseColor("#e53935"),    // good
+                Color.parseColor("#43a047"),    // average
+                Color.parseColor("#fb8c00")     // bad
         };
 
         dataSet.setColors(colours);

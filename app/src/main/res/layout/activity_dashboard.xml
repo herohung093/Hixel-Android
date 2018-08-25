@@ -48,14 +48,14 @@
           android:layout_height="200dp"
           android:layout_margin="0dp"
           android:layout_gravity="center"
-          android:background="@color/colorSecondary"
+          android:background="@color/white"
           app:cardCornerRadius="4dp"
           app:cardElevation="4dp">
 
           <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorSecondary">
+            android:background="@color/white">
 
             <com.github.mikephil.charting.charts.BarChart
               android:id="@+id/chart"
@@ -65,7 +65,7 @@
               android:layout_marginBottom="8dp"
               android:layout_marginStart="8dp"
               android:layout_marginEnd="8dp"
-              android:background="@color/colorSecondary"
+              android:background="@color/white"
               app:layout_constraintBottom_toBottomOf="parent"
               app:layout_constraintDimensionRatio=""
               app:layout_constraintEnd_toEndOf="parent"
