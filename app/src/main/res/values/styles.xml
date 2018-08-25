@@ -9,6 +9,6 @@
   </style>
 
   <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
-    <item name="android:fontFamily">sans-serif-smallcaps/</item>
+    <item name="android:fontFamily">@font/montserrat</item>
   </style>
 </resources>

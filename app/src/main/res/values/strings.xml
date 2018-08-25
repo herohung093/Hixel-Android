@@ -3,6 +3,8 @@
     <string name="dashboard">Dashboard</string>
     <string name="comparison">Comparison</string>
     <string name="default_text">Default</string>
+
+
     <string name="health">Health</string>
     <string name="liquidity_score">Liquidity Score</string>
     <string name="leverage_score">Leverage Score</string>
@@ -23,7 +25,6 @@
     <string name="quick_ratio">Quick Ratio</string>
     <string name="cash_ratio">Cash Ratio</string>
 
-
     <string name="debt_to_equity">Debt-to-Equity</string>
     <string name="return_on_equity">Return-on-Equity</string>
     <string name="return_on_assets">Return-on-Assets</string>
@@ -31,6 +32,9 @@
 
 
     <string name="snapshot">Snapshot</string>
+
+    <string name="overview">overview</string>
+    <string name="portfolio">Portfolio</string>
 
 
     <!-- Snackbar messages -->
