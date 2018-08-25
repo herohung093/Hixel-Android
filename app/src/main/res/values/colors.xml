@@ -26,4 +26,9 @@
   <color name="danger">#FF5630</color>
   <color name="warning">#FFAB00</color>
   <color name="good">#36B37E</color>
+
+
+  <!-- Proposed palette -->
+  <color name="darkBlue">#5977FB</color>
+  <color name="lightBlue">#3A99FA</color>
 </resources>
