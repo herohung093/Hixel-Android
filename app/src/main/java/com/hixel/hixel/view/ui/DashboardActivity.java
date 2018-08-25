@@ -27,6 +27,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.MainBarChartRenderer;
 import com.hixel.hixel.service.models.MainBarDataSet;
+import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
@@ -97,12 +98,10 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         searchClose.setImageResource(R.drawable.ic_clear);
 
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
-            // SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(itemIndex);
-            // String ticker = entry.getTicker();
-            // dashboardViewModel.loadCompanyFromSearch(ticker);
+            SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(itemIndex);
+            String ticker = entry.getTicker();
 
-            // presenter.setTickerFromSearchSuggestion(ticker);
-            // call the load to portfolio method from here
+            dashboardViewModel.loadSearchResults(ticker);
         });
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
