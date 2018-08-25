@@ -45,6 +45,41 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+          android:id="@+id/overview_text2"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:layout_marginBottom="4dp"
+          android:layout_marginStart="18dp"
+          android:fontFamily="@font/montserrat"
+          android:text="@string/overview"
+          android:textColor="@color/text_secondary_dark"
+          android:textSize="14sp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_bias="0.0"/>
+        <View
+          android:id="@+id/divider7"
+          android:layout_width="370dp"
+          android:layout_height="1dp"
+          android:layout_marginTop="0dp"
+          android:layout_marginBottom="8dp"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp"
+          android:layout_marginLeft="16dp"
+          android:layout_marginRight="16dp"
+          android:background="?android:attr/listDivider"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_bias="0.345"/>
         <android.support.v7.widget.CardView
           android:id="@+id/main_graph"
           android:layout_width="370dp"
@@ -63,7 +98,8 @@
             <com.github.mikephil.charting.charts.BarChart
               android:id="@+id/chart"
               android:layout_width="match_parent"
-              android:layout_height="176dp"
+              android:layout_height="192dp"
+              android:layout_marginTop="8dp"
               android:layout_marginBottom="8dp"
               android:layout_marginStart="8dp"
               android:layout_marginEnd="8dp"
@@ -74,41 +110,8 @@
               app:layout_constraintHorizontal_bias="0.0"
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintTop_toTopOf="parent"
-              app:layout_constraintVertical_bias="1.0"/>
-            <TextView
-              android:id="@+id/overview_text"
-              android:textStyle="bold"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="8dp"
-              android:layout_marginBottom="8dp"
-              android:layout_marginStart="16dp"
-              android:layout_marginEnd="296dp"
-              android:fontFamily="@font/montserrat"
-              android:text="@string/overview"
-              android:textColor="@color/text_secondary_dark"
-              android:textSize="14sp"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintHorizontal_bias="0.0"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              app:layout_constraintVertical_bias="0.0"/>
-            <View
-              android:id="@+id/divider7"
-              android:layout_width="0dp"
-              android:layout_height="1dp"
-              android:layout_marginTop="8dp"
-              android:layout_marginBottom="172dp"
-              android:layout_marginStart="16dp"
-              android:layout_marginEnd="16dp"
-              android:background="?android:attr/listDivider"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintHorizontal_bias="0.0"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              app:layout_constraintVertical_bias="0.345"/>
+              >
+            </com.github.mikephil.charting.charts.BarChart>
 
           </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
@@ -118,16 +121,18 @@
           android:textStyle="bold"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="8dp"
+          android:layout_marginTop="12dp"
+          android:layout_marginStart="18dp"
           android:padding="4dp"
-          android:fontFamily="@font/roboto_medium"
-          android:text="@string/portfolio"/>
+          android:fontFamily="@font/montserrat"
+          android:text="@string/portfolio"
+          android:textColor="@color/text_secondary_dark"/>
         <View
           android:id="@+id/divider8"
-          android:layout_width="match_parent"
+          android:layout_width="370dp"
           android:layout_height="1dp"
-          android:background="?android:attr/listDivider"
-          />
+          android:layout_gravity="center_horizontal"
+          android:background="?android:attr/listDivider"/>
         <android.support.v7.widget.RecyclerView
           android:id="@+id/recycler_view"
           android:layout_width="match_parent"

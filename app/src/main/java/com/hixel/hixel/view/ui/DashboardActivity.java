@@ -1,15 +1,10 @@
 package com.hixel.hixel.view.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -22,11 +17,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toolbar;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -42,7 +33,6 @@ import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.view.adapter.DashboardAdapter;
 import com.hixel.hixel.view.adapter.SearchAdapter;
-import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.viewmodel.DashboardViewModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,8 +97,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         searchClose.setImageResource(R.drawable.ic_clear);
 
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
-            SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(itemIndex);
-            String ticker = entry.getTicker();
+            // SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(itemIndex);
+            // String ticker = entry.getTicker();
             // dashboardViewModel.loadCompanyFromSearch(ticker);
 
             // presenter.setTickerFromSearchSuggestion(ticker);
@@ -264,7 +254,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         if (viewHolder instanceof DashboardAdapter.ViewHolder) {
             // Get name of removed item
-            String name = dashboardViewModel.getPortfolio().getValue()
+            String name = Objects.requireNonNull(dashboardViewModel.getPortfolio().getValue())
                     .get(viewHolder.getAdapterPosition())
                     .getIdentifiers()
                     .getName();
