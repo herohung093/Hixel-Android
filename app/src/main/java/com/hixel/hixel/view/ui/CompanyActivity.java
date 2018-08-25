@@ -1,72 +1,68 @@
 package com.hixel.hixel.view.ui;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
-import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.viewmodel.CompanyViewModel;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
+import com.hixel.hixel.databinding.ActivityCompanyBinding;
+
 
 public class CompanyActivity extends AppCompatActivity {
 
-    String TAG = getClass().getSimpleName();
     CompanyViewModel companyViewModel;
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
     FloatingActionButton fab;
-    ArrayList<String> ratios =new ArrayList<String>();
+
+    ActivityCompanyBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_company);
+
 
         companyViewModel = ViewModelProviders.of(this).get(CompanyViewModel.class);
-        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_company);
+
         setupBottomNavigationView();
         companyViewModel.setupSearch();
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-        Company company = (Company) extras.getSerializable("CURRENT_COMPANY");
-        Log.d(TAG,"received company: "+company.getIdentifiers().getName());
+        Company company = (Company) Objects.requireNonNull(extras).getSerializable("CURRENT_COMPANY");
         companyViewModel.setCompany(company);
-        observeViewModel(companyViewModel);
+
         ArrayList<Company> companies = (ArrayList<Company>) extras.getSerializable("PORTFOLIO");
 
-        Log.d("COMPANY_ACTIVITY", "" + companyViewModel.getCompany().getValue().getIdentifiers().getName());
 
-        // Set up the toolbar
-        setSupportActionBar(findViewById(R.id.toolbar));
+        // Setup the toolbar
+        binding.toolbar.toolbar.setTitle(companyViewModel.getCompany().getValue().getIdentifiers().getName());
+        binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
 
-        getSupportActionBar().setTitle(companyViewModel.getCompany().getValue().getIdentifiers().getName());
+        setSupportActionBar(binding.toolbar.toolbar);
 
+
+        // Setup FAB
         fab = findViewById(R.id.fab);
-
         fab.setOnClickListener(v -> {
             Intent backIntent = getIntent();
             backIntent.putExtra("COMPANY_ADD", company);
@@ -133,133 +129,6 @@ public class CompanyActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public void updateRatios(ArrayList<String> ratios1) {
-        TextView liquidityScore = findViewById(R.id.liquidity_score);
-        TextView leverageScore = findViewById(R.id.leverage_score);
-        TextView healthScore = findViewById(R.id.health_score);
-        liquidityScore.setText(getValue(ratios1.get(0), 2017));
-        leverageScore.setText(getValue(ratios1.get(1), 2017));
-        healthScore.setText(getValue(ratios1.get(2), 2017));
-
-        RadarChart chart = findViewById(R.id.chart);
-
-        // Configuring the chart
-        chart.getLegend().setEnabled(false);
-        chart.getDescription().setEnabled(false);
-        chart.setWebColor(Color.WHITE);
-        chart.setWebColorInner(Color.WHITE);
-        chart.setWebLineWidth(1f);
-        chart.animateY(1400);
-        chart.setWebAlpha(100);
-        chart.setTouchEnabled(false);
-
-        // Scale the size of the chart
-        chart.setScaleX(1.2f);
-        chart.setScaleY(1.2f);
-
-        // XAxis is the outer web
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setTextColor(Color.WHITE);
-        xAxis.setTextSize(9f);
-        xAxis.setXOffset(0);
-        xAxis.setYOffset(0);
-
-        // Seems to be the only way to get Strings to be the XAxis labels
-        // Note: Seems to be that the longest string sets the margins for all other strings
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            private String[] ratioNames = {
-                    "ROE",
-                    "Cash Ratio",
-                    "Debt-to-Equity",
-                    "Current Ratio",
-                    "Quick Ratio",
-            };
-
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return ratioNames[(int) value % ratioNames.length];
-            }
-
-        });
-
-        // YAxis is the inner web
-        YAxis yAxis = chart.getYAxis();
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(1.0f);
-        yAxis.setLabelCount(5);
-        yAxis.setDrawLabels(false);
-
-
-        List<RadarEntry> entries = new ArrayList<>();
-
-        // TODO: get data from portfolio
-        // Currently generating random number between 0 and 1
-        // this will hopefully look like its attached to the server
-        for (int i = 0; i < 5; i++) {
-            entries.add(new RadarEntry((float) Math.random()));
-        }
-
-        RadarDataSet dataSet = new RadarDataSet(entries, "");
-        dataSet.setColor(Color.parseColor("#4BCA81"));
-        dataSet.setFillColor(Color.parseColor("#4BCA81"));
-        dataSet.setDrawFilled(true);
-
-        RadarData data = new RadarData(dataSet);
-        data.setDrawValues(false);
-
-        chart.setData(data);
-        chart.invalidate();
-
-        // call the method to setup the values
-        ArrayList<String> ratiosList = new ArrayList<>();
-        ratiosList.add(getValue(ratios1.get(0), 2017));
-        ratiosList.add(getValue(ratios1.get(1), 2017));
-        ratiosList.add(getValue(ratios1.get(2), 2017));
-        ratiosList.add(getValue(ratios1.get(3), 2017));
-        ratiosList.add(getValue(ratios1.get(4), 2017));
-
-        TextView tv4 = findViewById(R.id.textView4);
-        TextView tv5 = findViewById(R.id.textView5);
-        TextView tv6 = findViewById(R.id.textView6);
-
-        tv4.setText(R.string.current_ratio);
-        tv5.setText(R.string.debt_to_equity);
-        tv6.setText(R.string.return_on_equity);
-
-        TextView tv7 = findViewById(R.id.textView7);
-        TextView tv8 = findViewById(R.id.textView8);
-        TextView tv9 = findViewById(R.id.textView9);
-
-        tv7.setText(ratiosList.get(0)); // current ratio
-        tv8.setText(ratiosList.get(1)); // d/e
-        tv9.setText(ratiosList.get(2)); // roe
-
-
-        TextView tv10 = findViewById(R.id.textView10);
-        TextView tv11 = findViewById(R.id.textView11);
-
-        tv10.setText(R.string.return_on_assets);
-        tv11.setText(R.string.profit_margin);
-
-        TextView tv12 = findViewById(R.id.textView12);
-        TextView tv13 = findViewById(R.id.textView13);
-
-        tv12.setText(ratiosList.get(3)); // roa
-        tv13.setText(ratiosList.get(4)); // pm
-
-
-    }
-
-    public String getValue(String name, int year) {
-         String value = String
-             .valueOf(companyViewModel.getCompany().getValue().getRatio(name, year));
-        if (value.length() > 4) {
-            return value.substring(0, 5);
-        } else {
-            return value;
-        }
-    }
-
 
     public void goToCompanyView() {
         Intent intent = new Intent(this, CompanyActivity.class);
@@ -288,16 +157,6 @@ public class CompanyActivity extends AppCompatActivity {
             return true;
         });
     }
-    private void observeViewModel(CompanyViewModel graphViewModel){
-        companyViewModel.getRatios().observe(this, new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<String> strings) {
-                if (strings!=null) {
-                    updateRatios(strings);
-                    ratios=strings;
-                }
-            }
-        });
-    }
+
 
 }

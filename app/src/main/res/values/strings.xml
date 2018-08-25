@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Hixel</string>
+
+    <!-- Toolbar Titles-->
     <string name="dashboard">Dashboard</string>
     <string name="comparison">Comparison</string>
-    <string name="default_text">Default</string>
 
 
     <string name="health">Health</string>
@@ -33,10 +34,18 @@
 
     <string name="snapshot">Snapshot</string>
 
+    <!-- Dashboard -->
     <string name="overview">Overview</string>
     <string name="portfolio">Portfolio</string>
+
+    <!-- Company -->
+
+    <!-- Comparison -->
 
 
     <!-- Snackbar messages -->
     <string name="load_error_message">There was an error loading your portfolio</string>
+
+    <!-- Defaults -->
+    <string name="default_text">Default</string>
 </resources>

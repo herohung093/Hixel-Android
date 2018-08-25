@@ -62,17 +62,17 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         dashboardViewModel.setupSearch();
 
-        // Set up the toolbar
+        // Setup the toolbar
         binding.toolbar.toolbar.setTitle(R.string.dashboard);
         binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
 
         setSupportActionBar(binding.toolbar.toolbar);
 
-        // Set up the list of companies
+        // Setup the list of companies
         mRecyclerView = binding.recyclerView;
         setupDashboardAdapter();
 
-        // Set up the bottom navigation bar
+        // Setup the bottom navigation bar
         setupBottomNavigationView();
 
         // UI for the chart
