@@ -162,8 +162,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     public void setupChart() {
         chart = binding.chart;
 
-        chart.setRenderer(
-                new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
+        chart.setRenderer(new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
 
         // Configuring the chart
         chart.getLegend().setEnabled(false);
@@ -191,16 +190,16 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         MainBarDataSet dataSet = new MainBarDataSet(entries, "");
 
         int[] colours = {
-                Color.parseColor("#e53935"),    // good
-                Color.parseColor("#43a047"),    // average
-                Color.parseColor("#fb8c00")     // bad
+                Color.parseColor("#84D634"),    // good
+                Color.parseColor("#FDD831"),    // average
+                Color.parseColor("#F43D58")     // bad
         };
 
         dataSet.setColors(colours);
 
         BarData data = new BarData(dataSet);
 
-        data.setBarWidth(0.5f);
+        data.setBarWidth(.7f);
         data.setDrawValues(false);
 
         XAxis xAxis = chart.getXAxis();
@@ -210,7 +209,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         xAxis.setDrawAxisLine(false);
 
-        xAxis.setTextColor(Color.GRAY);
+        xAxis.setTextColor(Color.DKGRAY);
         xAxis.setTextSize(12);
         xAxis.setGranularity(1f);
         xAxis.setLabelCount(5);
@@ -225,7 +224,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         yAxisLeft.setAxisMaximum(5.0f);
         yAxisLeft.setAxisMinimum(0.0f);
         yAxisLeft.setGranularity(1f); // set interval
-        yAxisLeft.setDrawLabels(true);
+        yAxisLeft.setDrawLabels(false);
         yAxisLeft.setDrawAxisLine(false);
 
         YAxis yAxisRight = chart.getAxisRight();
@@ -283,36 +282,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
             snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
             snackbar.show();
-        }
-    }
-
-    public void goToCompanyView() {
-        Intent intent = new Intent(this, CompanyActivity.class);
-        Bundle extras = new Bundle();
-
-        // ArrayList<Company> companies = new ArrayList<>(presenter.getCompanies());
-
-        // extras.putSerializable("CURRENT_COMPANY", presenter.getCompany());
-        // extras.putSerializable("PORTFOLIO", companies);
-
-        intent.putExtras(extras);
-        startActivityForResult(intent, 1);
-    }
-
-    public void showLoadingIndicator(final boolean active) {
-        final ProgressBar progressBar = binding.progressBar;
-        progressBar.setVisibility(active ? View.VISIBLE : View.INVISIBLE);
-    }
-
-    public void showLoadingError() {
-        // Snackbar.make(binding.getRoot(), "Error loading your portfolio", Snackbar.LENGTH_LONG)
-        //         .setAction("RETRY", view -> presenter.loadPortfolio())
-        //         .show();
-    }
-
-    public void getAddedCompany() {
-        if (getIntent().hasExtra("COMPANY_ADD")) {
-            // presenter.getCompanies().add((Company) getIntent().getSerializableExtra("COMPANY_ADD"));
         }
     }
 

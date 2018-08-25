@@ -18,18 +18,28 @@
 
   <!-- Primary colours -->
   <color name="colorPrimary">#172B4D</color>
-  <color name="colorAccent">#0052CC</color>
   <color name="colorSecondary">#F4F5F7</color>
+
+
   <color name="white">#FFFFFF</color>
   <color name="black">#000000</color>
+  <color name="off_white">#EDF0F2</color>
 
   <!-- warning colours -->
   <color name="danger">#FF5630</color>
   <color name="warning">#FFAB00</color>
   <color name="good">#36B37E</color>
 
-
-  <!-- Proposed palette -->
+  <!-- Blues -->
   <color name="darkBlue">#5977FB</color>
   <color name="lightBlue">#3A99FA</color>
+  <color name="new_blue">#4285F3</color>
+
+  <!-- indicator colours -->
+  <color name="green">#84D634</color>
+  <color name="yellow">#FDD831</color>
+  <color name="red2">#F43D58</color>
+
+  <!-- Colours to phase out -->
+  <color name="colorAccent">#0052CC</color>
 </resources>
