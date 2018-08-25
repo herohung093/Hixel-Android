@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toolbar;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -67,9 +71,10 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         dashboardViewModel.setupSearch();
 
         // Set up the toolbar
+        binding.toolbar.toolbar.setTitle(R.string.dashboard);
+        binding.toolbar.toolbar.setTitleTextColor(Color.BLACK);
+
         setSupportActionBar(binding.toolbar.toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-        binding.toolbar.toolbarTitle.setText(R.string.dashboard);
 
         // Set up the list of companies
         mRecyclerView = binding.recyclerView;
@@ -93,13 +98,14 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         // Styling the search bar
-        searchAutoComplete.setHintTextColor(Color.WHITE);
-        searchAutoComplete.setTextColor(Color.WHITE);
-        ImageView searchClose = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        searchAutoComplete.setHintTextColor(Color.BLACK);
+        searchAutoComplete.setTextColor(Color.BLACK);
+        ImageView searchClose = search
+                .findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         searchClose.setImageResource(R.drawable.ic_clear);
 
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
-            SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(itemIndex);
+            SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
             // dashboardViewModel.loadCompanyFromSearch(ticker);
 
@@ -156,7 +162,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     public void setupChart() {
         chart = binding.chart;
 
-        chart.setRenderer(new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
+        chart.setRenderer(
+                new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
 
         // Configuring the chart
         chart.getLegend().setEnabled(false);
@@ -169,7 +176,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         // TODO: get data from portfolio
         List<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0, 2));
-        entries.add(new BarEntry(1 ,4));
+        entries.add(new BarEntry(1, 4));
         entries.add(new BarEntry(2, 3));
         entries.add(new BarEntry(3, 1));
         entries.add(new BarEntry(4, 5));
@@ -240,7 +247,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         mRecyclerView.setNestedScrollingEnabled(false);
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
-                new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT,this);
+                new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
 
@@ -268,9 +275,11 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             dashboardAdapter.removeItem(viewHolder.getAdapterPosition());
 
             // Remove Company from RecyclerView
-            Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio",
+                    Snackbar.LENGTH_LONG);
 
-            snackbar.setAction("UNDO", view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));
+            snackbar.setAction("UNDO",
+                    view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));
 
             snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorAccent));
             snackbar.show();
@@ -287,7 +296,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         // extras.putSerializable("PORTFOLIO", companies);
 
         intent.putExtras(extras);
-        startActivityForResult(intent,1);
+        startActivityForResult(intent, 1);
     }
 
     public void showLoadingIndicator(final boolean active) {
@@ -303,14 +312,15 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     public void getAddedCompany() {
         if (getIntent().hasExtra("COMPANY_ADD")) {
-         // presenter.getCompanies().add((Company) getIntent().getSerializableExtra("COMPANY_ADD"));
+            // presenter.getCompanies().add((Company) getIntent().getSerializableExtra("COMPANY_ADD"));
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1) {
-            if(resultCode == RESULT_OK) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 Company mCompanyReturned = ((Company) data.getSerializableExtra("COMPANY_ADD"));
                 addItem(mCompanyReturned);
             }

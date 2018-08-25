@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimaryDark">#061C3F</color>
+  <color name="colorPrimaryDark">#FFFAFA</color>
   <color name="textColorDefault">#ffffff</color>
   <color name="secondaryTextColor">#475770</color>
   <color name="navbar">#fffafa</color>
@@ -21,6 +21,7 @@
   <color name="colorAccent">#0052CC</color>
   <color name="colorSecondary">#F4F5F7</color>
   <color name="white">#FFFFFF</color>
+  <color name="black">#000000</color>
 
   <!-- warning colours -->
   <color name="danger">#FF5630</color>

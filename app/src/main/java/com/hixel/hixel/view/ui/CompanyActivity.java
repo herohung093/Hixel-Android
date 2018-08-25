@@ -63,8 +63,7 @@ public class CompanyActivity extends AppCompatActivity {
         // Set up the toolbar
         setSupportActionBar(findViewById(R.id.toolbar));
 
-        TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(companyViewModel.getCompany().getValue().getIdentifiers().getName());
+        getSupportActionBar().setTitle(companyViewModel.getCompany().getValue().getIdentifiers().getName());
 
         fab = findViewById(R.id.fab);
 

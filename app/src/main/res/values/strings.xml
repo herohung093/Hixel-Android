@@ -17,14 +17,6 @@
     <string name="Equity">Equity</string>
     <string name="financial_ratios">Financial Ratios</string>
 
-    <string-array name="company_dropdown">
-        <item>Sort Companies</item>
-        <item>Return-on-Equity</item>
-        <item>Current Ratio</item>
-        <item>Debt-to-Equity</item>
-        <item>Return-on-Assets</item>
-    </string-array>
-
     <string name="current_ratio">Current Ratio</string>
     <string name="roe">ROE</string>
     <string name="d2e">D/E</string>
