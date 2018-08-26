@@ -25,7 +25,7 @@ import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.R;
-import com.hixel.hixel.service.models.MainBarChartRenderer;
+import com.hixel.hixel.service.models.charts.MainBarChartRenderer;
 import com.hixel.hixel.service.models.MainBarDataSet;
 import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;

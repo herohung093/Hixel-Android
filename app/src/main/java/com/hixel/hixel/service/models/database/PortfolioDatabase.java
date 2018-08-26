@@ -1,9 +1,10 @@
-package com.hixel.hixel.service.models;
+package com.hixel.hixel.service.models.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import com.hixel.hixel.service.models.Portfolio;
 
 @Database(entities = { Portfolio.class }, version = 1)
 public abstract class PortfolioDatabase extends RoomDatabase {
