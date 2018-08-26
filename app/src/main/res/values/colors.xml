@@ -24,4 +24,6 @@
   <color name="warning">#FF8B00</color>
   <color name="confirm">#006644</color>
 
+  <color name="shaded">#C1C7D0</color>
+
 </resources>

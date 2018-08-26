@@ -13,6 +13,13 @@
     <string name="portfolio">Portfolio</string>
 
     <!-- Company -->
+    <string name="indicators">Indicators</string>
+
+    <string name="returns">Returns</string>
+    <string name="performance">Performance</string>
+    <string name="strength">Strength</string>
+    <string name="health">Health</string>
+    <string name="risk">Risk</string>
 
     <!-- Comparison -->
 
