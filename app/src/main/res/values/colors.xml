@@ -5,15 +5,19 @@
   <color name="secondary_background">#FFFFFF</color>
   <color name="grey_background">#FAFBFC</color>
 
+  <!-- Buttons and Accents -->
+  <color name="highlight">#1CC5EC</color>
+  <color name="accent">#00A7FE</color>
+
   <!-- Text colour -->
   <color name="text_main_dark">#172B4D</color>
   <color name="text_main_light">#FFFFFF</color>
   <color name="text_secondary_dark">#505F79</color>
 
   <!-- Indicator -->
-  <color name="good">#36B37E</color>
-  <color name="average">#FFE380</color>
-  <color name="bad">#FF8F73</color>
+  <color name="good">#1DCEB1</color>
+  <color name="average">#FFDD7C</color>
+  <color name="bad">#FF5D84</color>
 
   <!-- State, message, etc. colours -->
   <color name="remove">#DE350B</color>
