@@ -25,5 +25,7 @@
   <color name="confirm">#006644</color>
 
   <color name="shaded">#C1C7D0</color>
-
+  <color name="textColorDefault">#FFFFFFFF</color>
+  <color name="colorPrimary">#172B4D</color>
+  <color name="buttonBackground">#54698d</color>
 </resources>

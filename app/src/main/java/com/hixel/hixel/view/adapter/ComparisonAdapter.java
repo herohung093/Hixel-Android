@@ -46,7 +46,7 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyName.setText(companyName);
 
-        holder.companyTicker.setText("NASDAQ:"+companies
+        holder.companyTicker.setText("NASDAQ: "+companies
                                               .get(position)
                                               .getIdentifiers()
                                               .getTicker());
