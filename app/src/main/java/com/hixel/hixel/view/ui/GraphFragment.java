@@ -55,7 +55,6 @@ public class GraphFragment extends Fragment {
     public LineDataSet lineChartDataSetup( String selectedRatio, Company company){
         List <Entry> compEntry = new ArrayList<>();
         List<FinancialData> financialData= company.getFinancialDataEntries();
-        ArrayList<Float> rawData= new ArrayList<>();
         checkYearNull(financialData);
 
         createListOfYears(financialData);
@@ -64,7 +63,6 @@ public class GraphFragment extends Fragment {
             LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
             j--;
             Entry compYearData = new Entry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
-            rawData.add(Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
             compEntry.add(compYearData);
         }
 
@@ -102,13 +100,7 @@ public class GraphFragment extends Fragment {
 
         for(Company c: companies){
             LineDataSet setCompA= lineChartDataSetup( selectedRatio, c);
-            if (companies.size()==1) {
-                colorIndicator(c,selectedRatio,compAColors);
-                setCompA.setColors(compAColors);
-                setupDatasetStyle(setCompA,companies.get(0).getFinancialDataEntries());
-                setCompA.enableDashedLine(10f, 10f, 10f);
-                dataSets.add(setCompA);
-            } else if(companies.size()==2 && companies.indexOf(c)==0) {
+                if( companies.indexOf(c)==0) {
                 colorIndicator(c,selectedRatio,compAColors);
                 setCompA.setColors(compAColors);
                 setupDatasetStyle(setCompA,companies.get(0).getFinancialDataEntries());
@@ -137,7 +129,7 @@ public class GraphFragment extends Fragment {
 
         YAxis yAxis = lineChart.getAxisLeft();
         YAxis yRight = lineChart.getAxisRight();
-        yRight.setTextColor(R.color.text_main_light);
+        yRight.setTextColor(Color.GRAY);
         setupAxis(xAxis, yAxis);
 
         Legend legend = lineChart.getLegend();
@@ -176,7 +168,7 @@ public class GraphFragment extends Fragment {
     public void setupDatasetStyle(LineDataSet setCompA, List<FinancialData> financialData) {
         setCompA.setDrawCircleHole(true);
         setCompA.setValueTextSize(12);
-        setCompA.setValueTextColor(Color.WHITE);
+        setCompA.setValueTextColor(Color.GRAY);
 
         setCompA.setCircleHoleRadius(3);
         setCompA.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -188,11 +180,10 @@ public class GraphFragment extends Fragment {
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setFormSize(7f); // set the size of the legend forms/shapes
         legend.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
-        // TODO: Check if deprecated method is required
         legend.setPosition(Legend.LegendPosition.ABOVE_CHART_LEFT);
 
         legend.setTextSize(14f);
-        legend.setTextColor(Color.WHITE);
+        legend.setTextColor(Color.GRAY);
         legend.setXEntrySpace(55); // set the space between the legend entries on the x-axis
         legend.setYEntrySpace(5f); // set the space between the legend entries on the y-axis
         // set custom labels and colors
@@ -202,10 +193,10 @@ public class GraphFragment extends Fragment {
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
         xAxis.setValueFormatter(formatter);
         xAxis.setTextSize(12f);
-        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextColor(Color.BLACK);
 
         yAxis.setTextSize(12f);
-        yAxis.setTextColor(Color.WHITE);
+        yAxis.setTextColor(Color.BLACK);
     }
 
     @Override
