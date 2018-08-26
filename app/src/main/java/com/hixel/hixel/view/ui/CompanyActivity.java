@@ -32,7 +32,6 @@ public class CompanyActivity extends AppCompatActivity {
         companyViewModel = ViewModelProviders.of(this).get(CompanyViewModel.class);
 
         setupBottomNavigationView();
-        companyViewModel.setupSearch();
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();

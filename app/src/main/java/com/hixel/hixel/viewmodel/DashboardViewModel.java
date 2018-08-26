@@ -45,7 +45,6 @@ public class DashboardViewModel extends ViewModel {
 
 
     public LiveData<List<Company>> getPortfolio() {
-
         if (portfolioCompanies == null) {
             portfolioCompanies = new MutableLiveData<>();
             loadPortfolio();
@@ -54,28 +53,10 @@ public class DashboardViewModel extends ViewModel {
         return portfolioCompanies;
     }
 
-    public void setupSearch() {
-        disposable.add(publishSubject
-                .debounce(150, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged()
-                .filter(text -> !text.isEmpty())
-                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm -> getClient()
-                        .create(ServerInterface.class)
-                        .doSearchQuery(searchTerm)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread()))
-                .subscribeWith(getSearchObserver()));
-    }
-
-    public void loadSearchResults(String query) {
-        publishSubject.onNext(query);
-    }
-
     private void loadPortfolio() {
-
         progressVisible.set(true);
 
-        // Dummy data before DB is hooked up.
+        // TODO: Create a repository for this data to ease communication.
         String[] companies = {"AAPL", "TSLA", "TWTR", "SNAP", "FB", "AMZN"};
 
         Call<ArrayList<Company>> call = getClient()
@@ -98,6 +79,23 @@ public class DashboardViewModel extends ViewModel {
         progressVisible.set(false);
     }
 
+    // TODO: Some delay is occurring with search. Possibly switchMapSingle?
+    public void setupSearch() {
+        disposable.add(publishSubject
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
+                .filter(text -> !text.isEmpty())
+                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm -> getClient()
+                        .create(ServerInterface.class)
+                        .doSearchQuery(searchTerm)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread()))
+                .subscribeWith(getSearchObserver()));
+    }
+
+    public void loadSearchResults(String query) {
+        publishSubject.onNext(query);
+    }
 
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {
         return new DisposableObserver<List<SearchEntry>>() {
