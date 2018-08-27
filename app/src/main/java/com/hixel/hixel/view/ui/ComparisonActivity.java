@@ -6,13 +6,9 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +26,7 @@ import com.hixel.hixel.databinding.ActivityComparisonBinding;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.view.adapter.ComparisonAdapter;
+import com.hixel.hixel.view.adapter.ComparisonAdapter.ViewHolder;
 import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.viewmodel.ComparisonViewModel;
 import java.util.ArrayList;
@@ -148,36 +145,21 @@ public class ComparisonActivity extends AppCompatActivity {
 
     private void setUpItemTouchHelper() {
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
-                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-            Drawable background;
-            Drawable xMark;
-            int xMarkMargin;
-            boolean initiated;
-
-            private void init() {
-                background = new ColorDrawable(Color.RED);
-                xMark = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_clear_24dp);
-
-                if (xMark != null) {
-                    xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-                }
-
-                //xMarkMargin = (int) getApplicationContext().getResources()
-                 //   .getDimension(R.dimen.search_icon_padding);
-                initiated = true;
-
-            }
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                 RecyclerView.ViewHolder target) {
-                return false;
+                return true;
             }
 
             @Override
-            public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                return super.getSwipeDirs(recyclerView, viewHolder);
+            public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+                if(viewHolder != null) {
+                    final View foreground = ((ComparisonAdapter.ViewHolder) viewHolder).foreground;
+                    getDefaultUIUtil().onSelected(foreground);
+                    }
             }
 
             @Override
@@ -190,45 +172,24 @@ public class ComparisonActivity extends AppCompatActivity {
                 Log.d(TAG,  "selected List size: " +
                         String.valueOf(comparisonViewModel.getCompanies().getValue().size()));
             }
+            @Override
+             public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                final View foreground = ((ViewHolder) viewHolder).foreground;
+                getDefaultUIUtil().clearView(foreground);
+
+                    }
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView,
                 RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                final View foreground = ((ViewHolder) viewHolder).foreground;
+                getDefaultUIUtil().onDraw(c, recyclerView, foreground, dX, dY, actionState, isCurrentlyActive);
 
-                // view the background view
-                View itemView = viewHolder.itemView;
-
-                if (viewHolder.getAdapterPosition() == -1) {
-                    // not interested in those
-                    return;
-                }
-
-                if (!initiated) {
-                    init();
-                }
-
-                // draw red background
-
-                background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(),
-                        itemView.getRight(), itemView.getBottom());
-                background.draw(c);
-
-                // draw x mark
-                int itemHeight = itemView.getBottom() - itemView.getTop();
-                int intrinsicWidth = xMark.getIntrinsicWidth();
-                int intrinsicHeight = xMark.getIntrinsicWidth();
-
-                int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
-                int xMarkRight = itemView.getRight() - xMarkMargin;
-                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
-                int xMarkBottom = xMarkTop + intrinsicHeight;
-                xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
-
-                xMark.draw(c);
-
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState,
-                    isCurrentlyActive);
             }
+            @Override
+            public int convertToAbsoluteDirection(int flags, int layoutDirection) {
+                return super.convertToAbsoluteDirection(flags, layoutDirection);
+                }
 
         };
 
