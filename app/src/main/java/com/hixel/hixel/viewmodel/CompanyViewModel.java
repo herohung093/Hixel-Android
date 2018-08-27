@@ -25,4 +25,5 @@ public class CompanyViewModel extends AndroidViewModel {
 
     // TODO: Logic for adding a company to the portfolio
 
+
 }

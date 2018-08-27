@@ -4,12 +4,16 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ProgressBar;
+import az.plainpie.PieView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.viewmodel.CompanyViewModel;
@@ -70,6 +74,9 @@ public class CompanyActivity extends AppCompatActivity {
                  }
             }
         }
+
+        companyChartSetup();
+        setupProgressPercentage();
     }
 
     @Override
@@ -107,5 +114,34 @@ public class CompanyActivity extends AppCompatActivity {
         });
     }
 
+    private void companyChartSetup() {
+        PieView pieView = findViewById(R.id.company_pie);
+
+        pieView.setMainBackgroundColor(ContextCompat.getColor(this, R.color.shaded));
+        pieView.setTextColor(ContextCompat.getColor(this, R.color.text_main_light));
+        pieView.setPieInnerPadding(20);
+
+        companyViewModel.getCompany().observe(this, company -> {
+            pieView.setPercentage((float) (company.getRatio("Current Ratio", 2017) + 50));
+            pieView.setPercentageBackgroundColor(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 50)));
+        });
+    }
+
+    private void setupProgressPercentage() {
+        companyViewModel.getCompany().observe(this, company -> {
+            binding.healthProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 15));
+            binding.healthProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 15)));
+        });
+    }
+
+    private int getColorIndicator(int value) {
+        if (value < 50) {
+            return ContextCompat.getColor(this, R.color.bad);
+        } else if (value > 60) {
+            return ContextCompat.getColor(this, R.color.good);
+        }
+
+        return ContextCompat.getColor(this, R.color.average);
+    }
 
 }

@@ -6,7 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import com.hixel.hixel.service.models.Portfolio;
 
-@Database(entities = { Portfolio.class }, version = 1)
+@Database(entities = { Portfolio.class }, version = 1, exportSchema = false)
 public abstract class PortfolioDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "portfolioDatabase.db";
