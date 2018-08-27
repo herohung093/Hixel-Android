@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
 import az.plainpie.PieView;
+import az.plainpie.animation.PieAngleAnimation;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.viewmodel.CompanyViewModel;
@@ -119,12 +120,18 @@ public class CompanyActivity extends AppCompatActivity {
 
         pieView.setMainBackgroundColor(ContextCompat.getColor(this, R.color.shaded));
         pieView.setTextColor(ContextCompat.getColor(this, R.color.text_main_light));
+        pieView.setMainBackgroundColor(ContextCompat.getColor(this, R.color.secondary_background));
         pieView.setPieInnerPadding(20);
 
         companyViewModel.getCompany().observe(this, company -> {
             pieView.setPercentage((float) (company.getRatio("Current Ratio", 2017) + 50));
             pieView.setPercentageBackgroundColor(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 50)));
         });
+
+        PieAngleAnimation animation = new PieAngleAnimation(pieView);
+        animation.setDuration(1500);
+
+        pieView.startAnimation(animation);
     }
 
     private void setupProgressPercentage() {
