@@ -75,6 +75,7 @@ public class GraphActivity extends FragmentActivity implements
     }
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
+        bottomNavigationView.setSelectedItemId(R.id.compare_button);
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
                 case R.id.home_button:
