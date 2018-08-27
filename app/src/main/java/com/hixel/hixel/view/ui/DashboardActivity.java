@@ -163,20 +163,15 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     }
 
     public void populateChart() {
-        // TODO: get data from portfolio
+
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, 2));
-        entries.add(new BarEntry(1, 4));
-        entries.add(new BarEntry(2, 3));
-        entries.add(new BarEntry(3, 1));
-        entries.add(new BarEntry(4, 5));
 
         ArrayList<String> labels = new ArrayList<>();
-        labels.add("Return");
-        labels.add("Performance");
-        labels.add("Strength");
         labels.add("Health");
+        labels.add("Performance");
+        labels.add("Return");
         labels.add("Risk");
+        labels.add("Strength");
 
         MainBarDataSet dataSet = new MainBarDataSet(entries, "");
 

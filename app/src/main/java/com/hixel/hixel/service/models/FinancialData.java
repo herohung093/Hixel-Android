@@ -1,15 +1,18 @@
 package com.hixel.hixel.service.models;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class FinancialData implements Serializable {
     private int year;
     private LinkedHashMap<String, Double> ratios;
+    private HashMap<String, Integer> indicators = new HashMap<>();
 
     public FinancialData(int year, LinkedHashMap<String, Double> ratios) {
         this.year = year;
         this.ratios = ratios;
+        createIndicators();
     }
 
     public int getYear() {
@@ -18,6 +21,44 @@ public class FinancialData implements Serializable {
 
     public LinkedHashMap<String, Double> getRatios() {
         return ratios;
+    }
+
+    public void createIndicators() {
+        indicators.put("health", setScore(1, ratios.get("Current Ratio")));
+        indicators.put("performance", setScore(1, ratios.get("Quick Ratio")));
+        indicators.put("risk", setScore(1, ratios.get("Cash Ratio")));
+        indicators.put("strength", setScore(1, ratios.get("Debt-to-Equity Ratio")));
+        indicators.put("return", setScore(1, ratios.get("Long_Term_Debt_Ratio")));
+    }
+
+    // Flag = 1 for positively skewed ratio
+    // TODO: Make this not suck.
+    public Integer setScore(int flag, Double value) {
+        if (flag == 1) {
+            if (value < 0.5) {
+                return 1;
+            } else if (value < 0.8) {
+                return 2;
+            } else if (value < 1.0) {
+                return 3;
+            } else if (value < 1.3) {
+                return 4;
+            } else {
+                return 5;
+            }
+        } else {
+            if (value < 0.5) {
+                return 5;
+            } else if (value < 0.8) {
+                return 4;
+            } else if (value < 1.0) {
+                return 3;
+            } else if (value < 1.3) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }
     }
 
     // will be called when FinancialData is null

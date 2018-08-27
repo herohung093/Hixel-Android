@@ -79,7 +79,6 @@ public class DashboardViewModel extends ViewModel {
         progressVisible.set(false);
     }
 
-    // TODO: Some delay is occurring with search. Possibly switchMapSingle?
     public void setupSearch() {
         disposable.add(publishSubject
                 .debounce(300, TimeUnit.MILLISECONDS)
@@ -123,5 +122,4 @@ public class DashboardViewModel extends ViewModel {
     public SnackbarMessage getSnackbarMessage() {
         return mSnackbarText;
     }
-
 }
