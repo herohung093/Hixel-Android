@@ -14,7 +14,7 @@
 
     <!-- Company -->
     <string name="indicators">Indicators</string>
-    <string name="company_score">Company Score</string>
+    <string name="company_score">Score</string>
 
     <string name="returns">Returns</string>
     <string name="performance">Performance</string>

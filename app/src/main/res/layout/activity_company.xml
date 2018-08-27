@@ -9,22 +9,6 @@
     android:layout_height="match_parent"
     tools:context=".view.ui.CompanyActivity">
 
-    <include
-      android:id="@+id/toolbar"
-      layout="@layout/toolbar"
-      app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
-
-
-    <include
-      android:id="@id/bottom_nav"
-      layout="@layout/bottom_navigation"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
 
     <android.support.design.widget.FloatingActionButton
       android:id="@+id/fab"
@@ -44,41 +28,80 @@
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.849"/>
 
+    <include
+      android:id="@id/bottom_nav"
+      layout="@layout/bottom_navigation"
+      android:layout_height="200dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
+    <include
+      android:id="@+id/toolbar"
+      layout="@layout/toolbar"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
     <LinearLayout
       android:id="@+id/linearLayout"
       android:layout_width="0dp"
-      android:layout_height="496dp"
+      android:layout_height="443dp"
       android:layout_margin="0dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="164dp"
       android:orientation="vertical"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
-      <TextView
-        android:id="@+id/company_score_text"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/montserrat"
-        android:text="@string/company_score"
-        android:textColor="@color/text_secondary_dark"/>
+      app:layout_constraintTop_toBottomOf="@+id/toolbar"
+      app:layout_constraintVertical_bias="0.0">
       <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="178dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_gravity="center_horizontal">
-
-        <az.plainpie.PieView
-          android:id="@+id/company_pie"
-          android:layout_width="150dp"
-          android:layout_height="150dp"
-          android:layout_gravity="center"
-          app:inner_text_visibility="true"
-          app:percentage="65"
-          app:percentage_size="50"/>
+        <android.support.constraint.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+          <az.plainpie.PieView
+            android:id="@+id/company_pie"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_gravity="top|center"
+            app:inner_text_visibility="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:percentage="65"
+            app:percentage_size="50"/>
+          <TextView
+            android:id="@+id/company_score_text"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="bottom|center_horizontal"
+            android:text="@string/company_score"
+            android:textColor="@color/text_secondary_dark"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/company_pie"
+            app:layout_constraintVertical_bias="1.0"/>
+        </android.support.constraint.ConstraintLayout>
 
       </android.support.v7.widget.CardView>
       <TextView
@@ -86,7 +109,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/montserrat"
@@ -97,7 +120,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/montserrat"
@@ -120,7 +143,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/montserrat"
@@ -143,7 +166,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/montserrat"
@@ -165,7 +188,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/montserrat"
@@ -186,7 +209,7 @@
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/montserrat"
