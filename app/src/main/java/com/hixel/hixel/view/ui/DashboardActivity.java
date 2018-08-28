@@ -208,10 +208,11 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     public void populateChart() {
 
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(3, 1));
-        entries.add(new BarEntry(2, 2));
-        entries.add(new BarEntry(4, 3));
-        entries.add(new BarEntry(2, 4));
+        entries.add(new BarEntry(0, 3));
+        entries.add(new BarEntry(1, 4));
+        entries.add(new BarEntry(2, 1));
+        entries.add(new BarEntry(3, 2));
+        entries.add(new BarEntry(4, 5));
 
         ArrayList<String> labels = new ArrayList<>();
         labels.add("Health");

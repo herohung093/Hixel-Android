@@ -124,8 +124,8 @@ public class CompanyActivity extends AppCompatActivity {
         pieView.setPieInnerPadding(20);
 
         companyViewModel.getCompany().observe(this, company -> {
-            pieView.setPercentage((float) (company.getRatio("Current Ratio", 2017) + 50));
-            pieView.setPercentageBackgroundColor(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 50)));
+            pieView.setPercentage((float) (company.getRatio("Current Ratio", 2017) + 80));
+            pieView.setPercentageBackgroundColor(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 80)));
         });
 
         PieAngleAnimation animation = new PieAngleAnimation(pieView);
@@ -138,6 +138,18 @@ public class CompanyActivity extends AppCompatActivity {
         companyViewModel.getCompany().observe(this, company -> {
             binding.healthProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 15));
             binding.healthProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 15)));
+
+            binding.performanceProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 25));
+            binding.performanceProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 25)));
+
+            binding.riskProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 5018531));
+            binding.riskProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 50)));
+
+            binding.strengthProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 75));
+            binding.strengthProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 75)));
+
+            binding.returnProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 85));
+            binding.returnProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 85)));
         });
     }
 
