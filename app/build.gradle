@@ -83,6 +83,10 @@ dependencies {
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
 
     // Room
-    implementation 'android.arch.persistence.room:runtime:1.0.0'
-    annotationProcessor 'android.arch.persistence.room:compiler:1.0.0'
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+
+
+    // Temporary graphing libraries
+    implementation 'com.github.zurche:plain-pie:v0.2.4'
 }

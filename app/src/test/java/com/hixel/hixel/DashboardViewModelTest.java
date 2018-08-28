@@ -43,7 +43,7 @@ public class DashboardViewModelTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Mock
-    private Observer<List<Company>> observer;
+    private Observer<ArrayList<Company>> observer;
 
     private DashboardViewModel dashboardViewModel;
 

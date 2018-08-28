@@ -11,7 +11,7 @@ public class FinancialDataTest {
 
     @Test
     public void testSetDefaultFinancialData() {
-        FinancialData financialData = new FinancialData(0, new HashMap<>(), new LinkedHashMap<>());
+        FinancialData financialData = new FinancialData(0, new LinkedHashMap<>());
 
         financialData.setDefaultFinancialData();
 
@@ -28,7 +28,7 @@ public class FinancialDataTest {
 
     @Test
     public void testSetYear() {
-        FinancialData financialData = new FinancialData(0, new HashMap<>(), new LinkedHashMap<>());
+        FinancialData financialData = new FinancialData(0, new LinkedHashMap<>());
 
         financialData.setYear(7);
 

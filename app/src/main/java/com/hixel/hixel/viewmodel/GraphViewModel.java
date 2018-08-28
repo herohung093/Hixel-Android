@@ -8,7 +8,7 @@ import android.util.Log;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.network.Client;
 import com.hixel.hixel.service.network.ServerInterface;
-import io.reactivex.annotations.NonNull;
+import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,27 +20,25 @@ public class GraphViewModel extends AndroidViewModel {
     private MutableLiveData<ArrayList<Company>> companies;
     private LiveData<ArrayList<String>> ratios;
 
-    public GraphViewModel(@android.support.annotation.NonNull Application application) {
+    public GraphViewModel(@NonNull Application application) {
         super(application);
         loadRatios();
     }
 
-    public void loadRatios(){
-        ratios=doMeta();
+    private void loadRatios(){
+        ratios = doMeta();
     }
-    public LiveData<ArrayList<String>> doMeta() {
+
+    private LiveData<ArrayList<String>> doMeta() {
         final MutableLiveData<ArrayList<String>> tempRatios = new MutableLiveData<>();
         ServerInterface client = Client.getClient().create(ServerInterface.class);
         Call<ArrayList<String>> call = client.doMetaQuery();
+
         call.enqueue(new Callback<ArrayList<String>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<String>> call,
-                @NonNull Response<ArrayList<String>> response) {
-
+                                   @NonNull Response<ArrayList<String>> response) {
                 tempRatios.setValue(response.body());
-                // TODO: Fix this log statement
-                assert tempRatios.getValue() != null;
-                Log.d("ratios------------>","" + tempRatios.getValue().size());
             }
             @Override
             public void onFailure(@NonNull Call<ArrayList<String>> call, @NonNull Throwable t) {
@@ -48,6 +46,8 @@ public class GraphViewModel extends AndroidViewModel {
                     "Failed to load Search suggestions from the server: " + t.getMessage());
             }
         });
+
+        //TODO: You can't just return the result right after starting an asynchronous API call...
         return tempRatios;
     }
 
