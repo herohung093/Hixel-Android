@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
 import com.hixel.hixel.R;
@@ -14,6 +15,8 @@ import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.service.network.ServerInterface;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -34,17 +37,15 @@ public class DashboardViewModel extends ViewModel {
     @SuppressWarnings("unused")
     private final String TAG = getClass().getSimpleName();
 
-    private MutableLiveData<List<Company>> portfolioCompanies;
+    private MutableLiveData<ArrayList<Company>> portfolioCompanies;
     private CompositeDisposable disposable = new CompositeDisposable();
     private PublishSubject<String> publishSubject = PublishSubject.create();
-    private List<SearchEntry> searchResults = new ArrayList<>();
 
     private final SnackbarMessage mSnackbarText = new SnackbarMessage();
 
     public final ObservableBoolean progressVisible = new ObservableBoolean();
 
-
-    public LiveData<List<Company>> getPortfolio() {
+    public LiveData<ArrayList<Company>> getPortfolio() {
         if (portfolioCompanies == null) {
             portfolioCompanies = new MutableLiveData<>();
             loadPortfolio();
@@ -79,7 +80,8 @@ public class DashboardViewModel extends ViewModel {
         progressVisible.set(false);
     }
 
-    public void setupSearch() {
+
+    public void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
         disposable.add(publishSubject
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
@@ -89,34 +91,11 @@ public class DashboardViewModel extends ViewModel {
                         .doSearchQuery(searchTerm)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread()))
-                .subscribeWith(getSearchObserver()));
+                .subscribeWith(observer));
     }
 
     public void loadSearchResults(String query) {
         publishSubject.onNext(query);
-    }
-
-    private DisposableObserver<List<SearchEntry>> getSearchObserver() {
-        return new DisposableObserver<List<SearchEntry>>() {
-            @Override
-            public void onNext(List<SearchEntry> searchEntries) {
-                searchResults = searchEntries;
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-    }
-
-    public List<SearchEntry> getSearchResults() {
-        return searchResults;
     }
 
     public SnackbarMessage getSnackbarMessage() {

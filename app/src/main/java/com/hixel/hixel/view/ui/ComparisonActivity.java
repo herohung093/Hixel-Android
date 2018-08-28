@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +34,9 @@ import com.hixel.hixel.view.adapter.ComparisonAdapter.ViewHolder;
 import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.viewmodel.ComparisonViewModel;
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.observers.DisposableObserver;
 
 public class ComparisonActivity extends AppCompatActivity {
 
@@ -50,38 +57,24 @@ public class ComparisonActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_comparison);
         comparisonViewModel = ViewModelProviders.of(this).get(ComparisonViewModel.class);
         observeViewModel(comparisonViewModel);
-        comparisonViewModel.setupSearch();
-
-
 
         recyclerView = binding.recycleView;
         compareButton = binding.compareButton;
-        textView=binding.textView;
+        textView = binding.textView;
+
         setupButtons();
-        //setup recycle list view
-        setupListViewAdapter();
-
-        //setup search view and search suggestion
-        setupSearchView();
-
-        //setup bottom navigator
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) binding.bottomNavCompariton;
-        setupBottomNavigationView(bottomNavigationView);
-
+        setupListViewAdapter(); //setup recycle list view
+        setupSearchView(); //setup search view and search suggestion
+        setupBottomNavigationView((BottomNavigationView)binding.bottomNavCompariton);
     }
 
-    public void showSearchResults() {
-
-        SearchAdapter adapter = new SearchAdapter(this, comparisonViewModel.getSearchResults());
-
-        searchAutoComplete.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
     private void setupButtons() {
         compareButton.setOnClickListener((View view) -> {
             Intent moveToGraph = new Intent(this, GraphActivity.class);
 
-            if (comparisonViewModel.getCompanies().getValue().size() < 2) {
+            ArrayList<Company> companies = comparisonViewModel.getCompanies().getValue();
+
+            if (companies == null || companies.size() < 2) {
                 Toast.makeText(getApplicationContext(), "Select 2 companies first!", Toast.LENGTH_LONG).show();
                 return;
             }
@@ -118,13 +111,17 @@ public class ComparisonActivity extends AppCompatActivity {
             SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(i);
             String ticker = entry.getTicker();
             searchAutoComplete.setText(entry.getName());
-            if(comparisonViewModel.getCompanies().getValue().size()<2)
+
+            ArrayList<Company> companies = comparisonViewModel.getCompanies().getValue();
+            int size = (companies == null) ? 0 : companies.size();
+
+            if (size < 2) {
                 comparisonViewModel.addToCompare(ticker);
-            else Toast.makeText(this,"Can only compare 2 companies!",Toast.LENGTH_LONG).show();
-            /*searchAutoComplete.setText("",false);
-            searchAutoComplete.dismissDropDown();*/
-
-
+            }
+            else {
+                Toast.makeText(this, "Can only compare 2 companies!", Toast.LENGTH_LONG)
+                     .show();
+            }
         });
 
         this.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -137,7 +134,6 @@ public class ComparisonActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 comparisonViewModel.loadSearchResults(searchAutoComplete.getText().toString());
-                showSearchResults();
                 return false;
             }
         });
@@ -147,6 +143,21 @@ public class ComparisonActivity extends AppCompatActivity {
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
                 new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
+            Drawable background;
+            Drawable xMark;
+            int xMarkMargin;
+            boolean initiated;
+
+            private void init() {
+                background = new ColorDrawable(Color.RED);
+                xMark = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_clear_24dp);
+
+                if (xMark != null) {
+                    xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                }
+
+                initiated = true;
+            }
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
@@ -166,11 +177,7 @@ public class ComparisonActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // Row is swiped from recycler view
                 // remove it from adapter
-
                 adapter.removeItem(viewHolder.getAdapterPosition());
-
-                Log.d(TAG,  "selected List size: " +
-                        String.valueOf(comparisonViewModel.getCompanies().getValue().size()));
             }
             @Override
              public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
@@ -209,7 +216,7 @@ public class ComparisonActivity extends AppCompatActivity {
                     startActivity(moveToDashBoard);
                     break;
                 case R.id.compare_button:
-                    // right here
+                    // Already here
                     break;
                 case R.id.settings_button:
                     // This screen is yet to be implemented
@@ -237,5 +244,33 @@ public class ComparisonActivity extends AppCompatActivity {
                 adapter.setCompanies(companies);
             }
         });
+
+        viewModel.setupSearch(getSearchObserver());
+    }
+
+    public void showSearchResults(List<SearchEntry> searchResults) {
+        SearchAdapter adapter = new SearchAdapter(this, searchResults);
+
+        searchAutoComplete.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    private DisposableObserver<List<SearchEntry>> getSearchObserver() {
+        return new DisposableObserver<List<SearchEntry>>() {
+            @Override
+            public void onNext(List<SearchEntry> searchResults) {
+                showSearchResults(searchResults);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 }

@@ -3,6 +3,7 @@ package com.hixel.hixel.view.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,6 +11,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
+import com.hixel.hixel.service.models.ApplicationUser;
+import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.service.network.ServerInterface;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.hixel.hixel.service.network.Client.getClient;
 
 public class SignupActivity extends AppCompatActivity {
     TextInputLayout emailText,passwordText,firstNameText,lasNameText;
@@ -33,10 +47,9 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         loginText.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View view) {
-                Intent moveToLogin= new Intent(getApplicationContext(),LoginActivity.class);
+                Intent moveToLogin= new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(moveToLogin);
             }
         });
@@ -44,37 +57,59 @@ public class SignupActivity extends AppCompatActivity {
 
     private void signup() {
         if (!validate()) {
-            onSignupFailed();
+            onSignupFailed("Invalid input");
             return;
-    }
-    signupButton.setEnabled(false);
+        }
+
+        signupButton.setEnabled(false);
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String firstName=firstNameText.getEditText().getText().toString().trim();
-        String lastName=lasNameText.getEditText().getText().toString().trim();
-        String email= emailText.getEditText().getText().toString().trim();
-        String password= passwordText.getEditText().toString().trim();
-        //TODO: do something here
-        Intent moveToDashboard = new Intent(this,DashboardActivity.class);
-        startActivity(moveToDashboard);
-        new android.os.Handler().postDelayed(
-            new Runnable() {
-                public void run() {
-                    // On complete call either onSignupSuccess or onSignupFailed 
-                    // depending on success
-                    onSignupSuccess();
-                    // onSignupFailed();
-                    progressDialog.dismiss();
+        String firstName = firstNameText.getEditText().getText().toString().trim();
+        String lastName = lasNameText.getEditText().getText().toString().trim();
+        String email = emailText.getEditText().getText().toString().trim();
+        String password = passwordText.getEditText().getText().toString().trim();
+
+        Call<Void> call = getClient()
+                .create(ServerInterface.class)
+                .signup(new ApplicationUser(firstName, lastName, email, password));
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call,
+                                   @NonNull Response<Void> response) {
+                switch (response.code()) {
+                    case 200:
+                        onSignupSuccess();
+                        progressDialog.dismiss();
+                        break;
+
+                    case 409:
+                        onSignupFailed("Email is already in use");
+                        break;
+
+                    case 500:
+                        onSignupFailed("Invalid input");
+                        break;
+
+                    default:
+                        onSignupFailed("Unknown error: Code " + response.code());
+                        break;
                 }
-            }, 3000);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                onSignupFailed("Couldn't connect to server!");
+                progressDialog.dismiss();
+            }
+        });
     }
 
-
-    public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+    public void onSignupFailed(String reason) {
+        Toast.makeText(getBaseContext(), "Signup failed: " + reason, Toast.LENGTH_LONG).show();
 
         signupButton.setEnabled(true);
     }
@@ -85,38 +120,42 @@ public class SignupActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String firstName=firstNameText.getEditText().getText().toString();
-        String lastName=lasNameText.getEditText().getText().toString();
-        String email= emailText.getEditText().getText().toString();
-        String password= passwordText.getEditText().toString();
+        String firstName = firstNameText.getEditText().getText().toString();
+        String lastName = lasNameText.getEditText().getText().toString();
+        String email = emailText.getEditText().getText().toString();
+        String password = passwordText.getEditText().toString();
 
-        if (firstName.isEmpty() || firstName.length() < 3) {
-            firstNameText.setError("at least 3 characters");
+        if (firstName.isEmpty()) {
+            firstNameText.setError("Name can't be empty!");
             valid = false;
-        } else {
+        }
+        else {
             firstNameText.setError(null);
         }
-        if (lastName.isEmpty() || lastName.length() < 3) {
-            lasNameText.setError("at least 3 characters");
+        if (lastName.isEmpty()) {
+            lasNameText.setError("Name can't be empty!");
             valid = false;
-        } else {
+        }
+        else {
             lasNameText.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailText.setError("enter a valid email address");
+            emailText.setError("Invalid email address");
             valid = false;
-        } else {
+        }
+        else {
             emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 ) {
-            passwordText.setError("password must contain at least 4 characters");
+            passwordText.setError("Must contain at least 4 characters");
             valid = false;
-        } else {
+        }
+        else {
             passwordText.setError(null);
         }
-//TODO: check email existence here
+
         return valid;
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -28,6 +30,8 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.charts.MainBarChartRenderer;
 import com.hixel.hixel.service.models.MainBarDataSet;
 import com.hixel.hixel.service.models.SearchEntry;
+import com.hixel.hixel.service.network.Client;
+import com.hixel.hixel.service.network.ServerInterface;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
@@ -38,6 +42,11 @@ import com.hixel.hixel.viewmodel.DashboardViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import io.reactivex.observers.DisposableObserver;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DashboardActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
 
@@ -61,7 +70,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
 
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
-        dashboardViewModel.setupSearch();
+        dashboardViewModel.setupSearch(getSearchObserver());
 
         // Setup the toolbar
         binding.toolbar.toolbar.setTitle(R.string.dashboard);
@@ -101,7 +110,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
 
-            dashboardViewModel.loadSearchResults(ticker);
+            goToCompanyView(ticker);
         });
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -113,7 +122,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             @Override
             public boolean onQueryTextChange(String newText) {
                 dashboardViewModel.loadSearchResults(searchAutoComplete.getText().toString());
-                showSearchResults();
                 return false;
             }
         });
@@ -121,12 +129,47 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void showSearchResults() {
+    //TODO: Implement this in pretty much any other way (Brayden, put on your MVVM wizard hat and robe)
+    public void goToCompanyView(String ticker) {
+        Call<ArrayList<Company>> call = Client.getClient()
+                                              .create(ServerInterface.class)
+                                              .doGetCompanies(ticker, 1);
 
-        SearchAdapter adapter = new SearchAdapter(this, dashboardViewModel.getSearchResults());
+        call.enqueue(new Callback<ArrayList<Company>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Company>> call,
+                                   @NonNull Response<ArrayList<Company>> response) {
 
-        searchAutoComplete.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+                try {
+                    Company company = Objects.requireNonNull(response.body()).get(0);
+                    goToCompanyView(company);
+                }
+                catch (Exception e) { //TODO: Provide user-facing message when this occurs.
+                    Log.e("loadDataForAParticularCompany",
+                            String.format("Failed to retrieve data for ticker: %s", ticker));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
+                // TODO: Add failure handling...
+            }
+        });
+    }
+
+    //TODO: See above.
+    public void goToCompanyView(Company company) {
+        Intent intent = new Intent(this, CompanyActivity.class);
+        Bundle extras = new Bundle();
+
+        ArrayList<Company> companies = dashboardViewModel.getPortfolio().getValue();
+
+        extras.putSerializable("CURRENT_COMPANY", company);
+        extras.putSerializable("PORTFOLIO", companies);
+
+        intent.putExtras(extras);
+        startActivityForResult(intent,1);
+
     }
 
     public void setupBottomNavigationView() {
@@ -290,5 +333,33 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     public void addItem(Company company) {
         dashboardAdapter.addItem(company);
+    }
+
+    //TODO: Move the following functions into a an ActivityWithSearch base class.
+    public void showSearchResults(List<SearchEntry> searchResults) {
+
+        SearchAdapter adapter = new SearchAdapter(this, searchResults);
+
+        searchAutoComplete.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    private DisposableObserver<List<SearchEntry>> getSearchObserver() {
+        return new DisposableObserver<List<SearchEntry>>() {
+            @Override
+            public void onNext(List<SearchEntry> searchResults) {
+                showSearchResults(searchResults);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 }

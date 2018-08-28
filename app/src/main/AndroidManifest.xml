@@ -5,7 +5,7 @@
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-  <application
+  <application android:name=".MyApp"
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
@@ -20,7 +20,8 @@
     </activity>
     <activity
       android:name=".view.ui.ComparisonActivity"
-      android:windowSoftInputMode="adjustNothing"/>
+        android:windowSoftInputMode="stateHidden">
+    </activity>
     <!-- suppress AndroidDomInspection -->
    <!-- <activity android:name=".comparisonGraph.MainActivity"/>-->
     <activity android:name=".view.ui.GraphActivity"/>
@@ -29,14 +30,20 @@
       android:name="preloaded_fonts"
       android:resource="@array/preloaded_fonts"/>
 
-    <activity android:name=".view.ui.LoginActivity">
+    <activity
+      android:name=".view.ui.LoginActivity"
+      android:windowSoftInputMode="stateHidden">
+
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
+
     </activity>
-    <activity android:name=".view.ui.SignupActivity">
+    <activity
+        android:name=".view.ui.SignupActivity"
+        android:windowSoftInputMode="stateHidden">
     </activity>
   </application>
 
