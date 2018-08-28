@@ -4,83 +4,77 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
 
-<android.support.constraint.ConstraintLayout
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="@color/primary_background"
-  tools:context="sample.android.databinding.comparison.ComparisonActivity">
-
-
-
-  <android.support.v7.widget.SearchView
-    android:id="@+id/searchView"
+  <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="49dp"
-    android:layout_marginTop="32dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:background="@color/secondary_background"
-    android:clickable="true"
-    android:contextClickable="true"
-    android:icon="@drawable/ic_baseline_search_24"
-    app:closeIcon="@drawable/ic_clear_24dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/textView"
-    app:searchIcon="@drawable/ic_baseline_search_24"
-    app:showAsAction="collapseActionView"/>
+    android:layout_height="match_parent"
+    android:background="@color/primary_background"
+    tools:context="sample.android.databinding.comparison.ComparisonActivity">
 
 
-  <include
-    android:id="@+id/bottom_nav_compariton"
-    layout="@layout/bottom_navigation">
-  </include>
-  <Button
-    android:id="@+id/compareButton"
-    android:layout_width="242dp"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:background="@color/buttonBackground"
-    android:elevation="9dp"
-    android:text="Compare"
-    android:textColor="@color/text_main_light"
-    app:layout_constraintBottom_toTopOf="@+id/bottom_nav_compariton"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/recycleView"
-    app:layout_constraintVertical_bias="0.0"/>
-  <android.support.v7.widget.RecyclerView
-    android:id="@+id/recycleView"
-    android:layout_width="368dp"
-    android:layout_height="170dp"
-    android:layout_marginTop="32dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/searchView">
-  </android.support.v7.widget.RecyclerView>
+    <android.support.v7.widget.SearchView
+      android:id="@+id/searchView"
+      android:layout_width="match_parent"
+      android:layout_height="49dp"
+      android:layout_marginTop="32dp"
+      android:background="@color/secondary_background"
+      android:clickable="true"
+      android:contextClickable="true"
+      android:icon="@drawable/ic_baseline_search_24"
+      app:closeIcon="@drawable/ic_clear_24dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/textView"
+      app:searchIcon="@drawable/ic_baseline_search_24"
+      app:showAsAction="collapseActionView"/>
 
-  <TextView
-    android:id="@+id/textView"
-    android:layout_width="wrap_content"
-    android:layout_height="38dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:text="Comparison"
-    android:textAlignment="center"
-    android:textColor="@color/text_main_light"
-    android:textSize="24sp"
-    app:layout_constraintBottom_toTopOf="@+id/searchView"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.502"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.0"/>
-</android.support.constraint.ConstraintLayout>
+
+    <include
+      android:id="@+id/bottom_nav_compariton"
+      layout="@layout/bottom_navigation">
+    </include>
+    <Button
+      android:id="@+id/compareButton"
+      android:layout_width="242dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:background="@color/buttonBackground"
+      android:elevation="9dp"
+      android:text="Compare"
+      android:textColor="@color/text_main_light"
+      app:layout_constraintBottom_toTopOf="@+id/bottom_nav_compariton"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/recycleView"
+      app:layout_constraintVertical_bias="0.0"/>
+    <android.support.v7.widget.RecyclerView
+      android:id="@+id/recycleView"
+      android:layout_width="368dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/searchView">
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+      android:id="@+id/textView"
+      android:layout_width="wrap_content"
+      android:layout_height="38dp"
+      android:layout_marginBottom="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:text="Comparison"
+      android:textAlignment="center"
+      android:textColor="@color/text_main_light"
+      android:textSize="24sp"
+      app:layout_constraintBottom_toTopOf="@+id/searchView"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.502"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.0"/>
+  </android.support.constraint.ConstraintLayout>
 </layout>

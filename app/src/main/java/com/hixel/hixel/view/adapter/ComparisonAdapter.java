@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
@@ -50,13 +52,21 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
                                               .get(position)
                                               .getIdentifiers()
                                               .getTicker());
-
+        Company company = companies.get(position);
         int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
+        double currentRatio = company.getRatio("Current Ratio", last_year);
 
-        /*holder.companyHealth.setText(String.format(Locale.ENGLISH, "%.1f%%",
-                                    companies
-                                                   .get(position)
-                                                   .getRatio("Current Ratio", last_year) * 100));*/
+
+        if (currentRatio < 1.0) {
+            holder.indicator.setBackgroundColor(ContextCompat.getColor(mContext, R.color.bad));
+            holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_downward);
+        } else if (currentRatio >= 1.0 && currentRatio <= 1.2) {
+            holder.indicator.setBackgroundColor(ContextCompat.getColor(mContext, R.color.average));
+            holder.companyIndicator.setBackgroundResource(R.drawable.ic_remove_black_24dp);
+        } else {
+            holder.indicator.setBackgroundColor(ContextCompat.getColor(mContext, R.color.good));
+            holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
+        }
 
         holder.foreground.setOnClickListener((View view) -> {
             Intent intent = new Intent(mContext, CompanyActivity.class);
@@ -94,20 +104,22 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
         this.companies=companies;
         notifyDataSetChanged();
     }
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ConstraintLayout foreground;
         public ConstraintLayout background;
         TextView companyName;
         TextView companyTicker;
-        TextView companyHealth;
+        ImageView companyIndicator;
+        View indicator;
 
         ViewHolder(View itemView) {
             super(itemView);
             companyName = itemView.findViewById(R.id.company_name);
             companyTicker = itemView.findViewById(R.id.company_ticker);
-            // companyHealth = itemView.findViewById(R.id.indicator_value);
+            companyIndicator = itemView.findViewById(R.id.company_indicator);
             foreground = itemView.findViewById(R.id.foreground);
             background = itemView.findViewById(R.id.background);
+            indicator = itemView.findViewById(R.id.indicator);
         }
     }
 }
