@@ -309,7 +309,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
             dashboardAdapter.removeItem(viewHolder.getAdapterPosition());
 
-            // Remove Company from RecyclerView
+            // Remove CompanyEntity from RecyclerView
             Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio",
                     Snackbar.LENGTH_LONG);
 

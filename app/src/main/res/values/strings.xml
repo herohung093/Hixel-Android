@@ -12,7 +12,7 @@
     <string name="overview">Overview</string>
     <string name="portfolio">Portfolio</string>
 
-    <!-- Company -->
+    <!-- CompanyEntity -->
     <string name="indicators">Indicators</string>
     <string name="company_score">Score</string>
 

@@ -5,6 +5,8 @@ import com.hixel.hixel.service.models.LoginData;
 import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.service.models.ApplicationUser;
 
+import com.hixel.hixel.service.models.database.CompanyEntity;
+
 import java.util.ArrayList;
 
 import io.reactivex.Single;
@@ -32,6 +34,9 @@ public interface ServerInterface {
 
     @GET("/companydata")
     Call<ArrayList<Company>> doGetCompanies(@Query("tickers") String tickers, @Query("years") int years);
+
+    @GET("/companydata")
+    Call<ArrayList<CompanyEntity>> getCompanies(@Query("tickers") String tickers, @Query("years") int years);
 
     @GET("/search")
     Single<List<SearchEntry>> doSearchQuery(@Query("query") String query);
