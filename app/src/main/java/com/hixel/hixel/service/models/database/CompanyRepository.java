@@ -1,8 +1,10 @@
 package com.hixel.hixel.service.models.database;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import com.hixel.hixel.service.network.ServerInterface;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,15 +26,15 @@ public class CompanyRepository {
         this.executor = executor;
     }
 
-    public LiveData<CompanyEntity> getCompany(String cik) {
-        refreshCompany(cik); // try and refresh from the server if possible
+    public MutableLiveData<ArrayList<CompanyEntity>> getCompanies(List<String> tickers) {
+        refreshCompany(tickers); // try and refresh from the server if possible
         return companyDao.loadCompanies(); // returns live data from the db
     }
 
-    private void refreshCompany(final String cik) {
+    private void refreshCompany(final List<String> cik) {
         executor.execute(() -> {
-            // Check if the company was recently fetched
-            boolean companyExists = (companyDao.hasCompany(cik) != null);
+            // TODO: Check if the company was recently fetched
+            boolean companyExists = true;
 
             if (!companyExists) {
                 serverInterface.getCompanies("x", -1).enqueue(new Callback<ArrayList<CompanyEntity>>() {
