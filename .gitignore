@@ -77,5 +77,5 @@ fastlane/readme.md
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
-Thumbs.db
+ehthumbs.appDatabase
+Thumbs.appDatabase

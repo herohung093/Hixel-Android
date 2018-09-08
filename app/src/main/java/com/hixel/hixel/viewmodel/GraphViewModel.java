@@ -7,7 +7,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.network.Client;
-import com.hixel.hixel.service.network.ServerInterface;
+import com.hixel.hixel.db.remote.ServerInterface;
 import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import retrofit2.Call;

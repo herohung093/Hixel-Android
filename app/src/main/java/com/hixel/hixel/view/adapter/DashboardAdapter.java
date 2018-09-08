@@ -14,8 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hixel.hixel.R;
+import com.hixel.hixel.service.models.database.CompanyEntity;
 import com.hixel.hixel.view.ui.CompanyActivity;
-import com.hixel.hixel.service.models.Company;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +24,9 @@ import java.util.List;
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
 
     private Context context;
-    private List<Company> companies;
+    private List<CompanyEntity> companies;
 
-    public DashboardAdapter(Context context, List<Company> companies) {
+    public DashboardAdapter(Context context, List<CompanyEntity> companies) {
         this.context = context;
         this.companies = companies;
     }
@@ -42,18 +43,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-        Company company = companies.get(position);
-        double currentRatio = company.getRatio("Current Ratio", 2017);
+        CompanyEntity company = companies.get(position);
+        double currentRatio = company.getRatio();
 
-        String companyName = company.getIdentifiers()
-                .getName()
-                .split("[\\s, ]")[0]
-                .toLowerCase();
+        String companyName = company.getName();
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyName.setText(companyName);
 
-        String tickerFormat = "NASDAQ:" + company.getIdentifiers().getTicker();
+        String tickerFormat = "NASDAQ:" + company.getTicker();
         holder.companyTicker.setText(tickerFormat);
 
         // Set the indicator based upon the current ratio
@@ -73,7 +71,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             Intent intent = new Intent(context, CompanyActivity.class);
             Bundle extras = new Bundle();
 
-            extras.putSerializable("CURRENT_COMPANY", company);
+            // TODO: Reimplement
+            // extras.putSerializable("CURRENT_COMPANY", company);
             extras.putSerializable("PORTFOLIO", (ArrayList) companies);
 
             intent.putExtras(extras);
@@ -92,12 +91,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         notifyItemRemoved(position);
     }
 
-    public void restoreItem(Company company, int position) {
+    public void restoreItem(CompanyEntity company, int position) {
         companies.add(position, company);
         notifyItemInserted(position);
     }
 
-    public void addItems(List<Company> companies) {
+    public void addItems(List<CompanyEntity> companies) {
         this.companies = companies;
         notifyDataSetChanged();
     }
@@ -121,7 +120,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         }
     }
 
-    public void addItem(Company company) {
+    public void addItem(CompanyEntity company) {
         companies.add(getItemCount(),company);
         notifyItemInserted(getItemCount());
     }

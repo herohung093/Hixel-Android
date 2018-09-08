@@ -3,8 +3,6 @@ package com.hixel.hixel.service.network;
 import static com.hixel.hixel.service.network.Const.BASE_URL;
 import static com.hixel.hixel.service.network.Const.REQUEST_TIMEOUT;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
 import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
 
@@ -13,11 +11,8 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import retrofit2.Retrofit;

@@ -1,11 +1,12 @@
 package com.hixel.hixel.service.network;
 
-import com.hixel.hixel.MyApp;
+import com.hixel.hixel.App;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+import com.hixel.hixel.db.remote.ServerInterface;
 import java.io.IOException;
 
 import okhttp3.Authenticator;
@@ -23,7 +24,7 @@ public class TokenAuthenticator implements Authenticator {
         boolean needsCredentials = response.request().header(NO_AUTHENTICATION) == null;
 
         if (response.code() == 401 && needsCredentials) {
-            SharedPreferences preferences = MyApp.preferences();
+            SharedPreferences preferences = App.preferences();
             String refreshToken = preferences.getString("REFRESH_TOKEN", null);
 
             Call<Void> refreshCall = Client.getClient()

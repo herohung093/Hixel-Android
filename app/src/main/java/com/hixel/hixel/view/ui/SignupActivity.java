@@ -12,12 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.ApplicationUser;
-import com.hixel.hixel.service.models.Company;
-import com.hixel.hixel.service.network.ServerInterface;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
+import com.hixel.hixel.db.remote.ServerInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;

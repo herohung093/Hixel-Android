@@ -3,12 +3,9 @@ package com.hixel.hixel.service.network;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
-import com.hixel.hixel.MyApp;
+import com.hixel.hixel.App;
 
 import java.io.IOException;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -23,7 +20,7 @@ public class TokenInterceptor implements Interceptor {
         Request.Builder requestBuilder = request.newBuilder();
         boolean needsCredentials = request.header(NO_AUTHENTICATION) == null;
 
-        SharedPreferences preferences = MyApp.preferences();
+        SharedPreferences preferences = App.preferences();
         String authToken = preferences.getString("AUTH_TOKEN", null);
 
         if (needsCredentials) {

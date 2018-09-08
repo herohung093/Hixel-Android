@@ -15,11 +15,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hixel.hixel.MyApp;
+import com.hixel.hixel.App;
 import com.hixel.hixel.R;
-import com.hixel.hixel.service.models.ApplicationUser;
 import com.hixel.hixel.service.models.LoginData;
-import com.hixel.hixel.service.network.ServerInterface;
+import com.hixel.hixel.db.remote.ServerInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -92,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 switch (response.code()) {
                     case 200:
-                        SharedPreferences preferences = MyApp.preferences();
+                        SharedPreferences preferences = App.preferences();
             Log.e("Successful OnResponse headers: ", response.headers().toString());
                         preferences.edit()
                                 .putString("AUTH_TOKEN", response.headers().get("Authorization"))
