@@ -3,7 +3,6 @@
 
     <!-- Toolbar Titles-->
     <string name="dashboard">Dashboard</string>
-    <string name="comparison">Comparison</string>
 
     <!-- Common -->
     <string name="search_title">Search</string>
@@ -21,8 +20,6 @@
     <string name="strength">Strength</string>
     <string name="health">Health</string>
     <string name="risk">Risk</string>
-
-    <!-- Comparison -->
 
     <!-- Snackbar messages -->
     <string name="load_error_message">There was an error loading your portfolio</string>
@@ -45,5 +42,14 @@
     <string name="email_hint">Email</string>
     <string name="last_name_hint">Last name</string>
     <string name="first_name_hint">First name</string>
+
+    <!--Comparison -->
+    <string name="comparison_title">Comparison</string>
+    <string name="compare">Compare</string>
+    <!--Login -->
+    <string name="logo_description">Logo</string>
+    <string name="forgot_your_password">Forgot your password? Take it back</string>
+    <string name="login">Login</string>
+    <string name="no_account">No account yet? Create one</string>
 
 </resources>
