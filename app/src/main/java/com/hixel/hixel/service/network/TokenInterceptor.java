@@ -21,7 +21,8 @@ public class TokenInterceptor implements Interceptor {
     @Inject
     public TokenInterceptor() {}
 
-    @Override public Response intercept(@NonNull Chain chain) throws IOException {
+    @Override
+    public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
 
         Request.Builder requestBuilder = request.newBuilder();

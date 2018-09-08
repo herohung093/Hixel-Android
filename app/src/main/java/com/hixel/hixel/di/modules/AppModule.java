@@ -16,6 +16,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import javax.inject.Singleton;
 import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -61,14 +62,6 @@ public class AppModule {
 
     @Provides
     @Singleton
-    Cache provideHttpCache(Application application) {
-        int cacheSize = 10 * 1024 * 1024;
-        Cache cache = new Cache(application.getCacheDir(), cacheSize);
-        return cache;
-    }
-
-    @Provides
-    @Singleton
     Gson provideGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
@@ -77,19 +70,19 @@ public class AppModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkhttpClient(Cache cache) {
-        OkHttpClient.Builder client = new OkHttpClient.Builder();
-        client.cache(cache);
-        return client.build();
+    OkHttpClient provideOkHttpClient(Cache cache) {
+        return new OkHttpClient();
     }
 
     @Provides
     @Singleton
-    Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
+    Retrofit provideRetrofit(Gson gson, OkHttpClient client, Interceptor interceptor) {
         return new Retrofit.Builder()
+                .client(client.newBuilder()
+                    .addNetworkInterceptor(interceptor)
+                    .build())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(BASE_URL)
-                .client(okHttpClient)
                 .build();
     }
 

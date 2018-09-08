@@ -7,6 +7,7 @@ import com.hixel.hixel.di.modules.AppModule;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
+import dagger.android.AndroidInjector;
 import javax.inject.Singleton;
 
 /**
@@ -15,12 +16,14 @@ import javax.inject.Singleton;
  */
 
 @Singleton
-@Component(modules = {AndroidInjectionModule.class,
+@Component(modules = {
+        AndroidInjectionModule.class,
         AppModule.class,
-        ActivityBuilderModule.class
+        CompanyModule.class,
+        ActivityBuilderModule.class,
+        RepositoryModule.class
 })
-public interface AppComponent {
-
+public interface AppComponent extends AndroidInjector<App> {
 
     // Application wil be provided the dependency graph. To use this:
     // DaggerApplicationComponent.builder().application(this).build().inject(this)
