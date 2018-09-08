@@ -1,5 +1,7 @@
 package com.hixel.hixel.view.ui;
 
+import static com.hixel.hixel.service.network.Client.getClient;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,25 +16,20 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.hixel.hixel.MyApp;
 import com.hixel.hixel.R;
-import com.hixel.hixel.service.models.ApplicationUser;
 import com.hixel.hixel.service.models.LoginData;
 import com.hixel.hixel.service.network.ServerInterface;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.hixel.hixel.service.network.Client.getClient;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     TextInputLayout emailText;
     TextInputLayout passwordText;
     Button loginButton;
-    TextView signupLink;
+    TextView signupLink, forgotPasswordLink;
     int REQUEST_SIGNUP = 0;
 
     @Override
@@ -43,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordText= (TextInputLayout) findViewById(R.id.passwordWrapper);
         loginButton= (Button) findViewById(R.id.btn_login);
         signupLink = (TextView) findViewById(R.id.link_signup);
-
+        forgotPasswordLink= findViewById(R.id.link_forgot_password);
         loginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +53,10 @@ public class LoginActivity extends AppCompatActivity {
             Intent moveToSignup = new Intent(getApplicationContext(),SignupActivity.class);
             startActivity(moveToSignup);
             }
+        });
+        forgotPasswordLink.setOnClickListener(event->{
+            Intent moveToForgotView = new Intent(getApplicationContext(),ForgotPasswordActivity.class);
+            startActivity(moveToForgotView);
         });
     }
 

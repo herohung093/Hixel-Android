@@ -33,7 +33,7 @@
         android:id="@+id/input_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/email_logo"
+        android:drawableLeft="@drawable/email"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:textColor="@color/text_main_dark"
@@ -57,13 +57,20 @@
         android:textColor="@color/text_main_dark"
         android:textColorHint="@color/text_main_dark"/>
     </android.support.design.widget.TextInputLayout>
-
+    <TextView
+      android:id="@+id/link_forgot_password"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10dp"
+      android:gravity="center"
+      android:text="Forgot your password? Take it back"
+      android:textColor="@color/text_secondary_dark"
+      android:textSize="16sp"/>
     <android.support.v7.widget.AppCompatButton
       android:id="@+id/btn_login"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="24dp"
-      android:layout_marginBottom="24dp"
+      android:layout_marginBottom="10dp"
       android:padding="12dp"
       android:background="@color/buttonBackground"
       android:text="Login"

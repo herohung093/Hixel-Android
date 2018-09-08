@@ -26,7 +26,24 @@
 
     <!-- Snackbar messages -->
     <string name="load_error_message">There was an error loading your portfolio</string>
-
+    <!-- Forgot Password -->
+    <string name="registered_email">Email ID</string>
+    <string name="hint_registered_email">Please enter your Registered Email ID below:</string>
+    <string name="back_to_login">Back</string>
+    <string name="submit">Submit</string>
+    <!-- Profile -->
+    <string name="change_pass">Change your password</string>
+    <string name="new_password">Enter your new password</string>
+    <string name="confirm_pass">Confirm your password</string>
     <!-- Defaults -->
     <string name="default_text">Default</string>
+    <string name="profile_cancel">Cancel</string>
+    <!-- Sign up -->
+    <string name="already_member">Already a member? Login</string>
+    <string name="create_account">Create Account</string>
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email</string>
+    <string name="last_name_hint">Last name</string>
+    <string name="first_name_hint">First name</string>
+
 </resources>

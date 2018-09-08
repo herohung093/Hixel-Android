@@ -87,7 +87,8 @@ public class GraphActivity extends FragmentActivity implements
                     break;
 
                 case R.id.settings_button:
-                    // This screen is yet to be implemented
+                    Intent moveToProfile = new Intent(this,ProfileActivity.class);
+                    startActivity(moveToProfile);
                     break;
             }
 

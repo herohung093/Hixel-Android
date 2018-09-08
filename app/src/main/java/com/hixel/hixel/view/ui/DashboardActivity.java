@@ -185,7 +185,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
                     startActivity(moveToCompare);
                     break;
                 case R.id.settings_button:
-                    // This screen is yet to be implemented
+                    Intent moveToProfile = new Intent(this,ProfileActivity.class);
+                    startActivity(moveToProfile);
                     break;
             }
 

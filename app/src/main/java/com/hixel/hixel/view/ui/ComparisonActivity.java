@@ -19,7 +19,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -33,10 +32,9 @@ import com.hixel.hixel.view.adapter.ComparisonAdapter;
 import com.hixel.hixel.view.adapter.ComparisonAdapter.ViewHolder;
 import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.viewmodel.ComparisonViewModel;
+import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.observers.DisposableObserver;
 
 public class ComparisonActivity extends AppCompatActivity {
 
@@ -219,7 +217,8 @@ public class ComparisonActivity extends AppCompatActivity {
                     // Already here
                     break;
                 case R.id.settings_button:
-                    // This screen is yet to be implemented
+                    Intent moveToProfile = new Intent(this,ProfileActivity.class);
+                    startActivity(moveToProfile);
                     break;
             }
 

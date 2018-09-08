@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -12,15 +11,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ProgressBar;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import com.hixel.hixel.R;
+import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.viewmodel.CompanyViewModel;
 import java.util.ArrayList;
 import java.util.Objects;
-import com.hixel.hixel.databinding.ActivityCompanyBinding;
 
 
 public class CompanyActivity extends AppCompatActivity {
@@ -107,7 +105,8 @@ public class CompanyActivity extends AppCompatActivity {
                     startActivity(moveToCompare);
                     break;
                 case R.id.settings_button:
-                    // This screen is yet to be implemented
+                    Intent moveToProfile = new Intent(this,ProfileActivity.class);
+                    startActivity(moveToProfile);
                     break;
             }
 
