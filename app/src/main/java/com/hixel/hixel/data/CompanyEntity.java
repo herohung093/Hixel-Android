@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.util.Objects;
 
 /**
@@ -15,19 +16,20 @@ public class CompanyEntity {
 
     @PrimaryKey
     @NonNull
-    private String cik;
+    @SerializedName("ticker")
+    @Expose
     private String ticker;
+
+    @SerializedName("name")
+    @Expose
     private String name;
 
-    public CompanyEntity(@NonNull String cik, String ticker, String name) {
-        this.cik = cik;
+    public CompanyEntity(String ticker, String name) {
         this.ticker = ticker;
         this.name = name;
     }
 
     @NonNull
-    public String getCik() { return cik; }
-
     public String getTicker() { return ticker; }
 
     public String getName() { return name; }
@@ -47,12 +49,11 @@ public class CompanyEntity {
         }
         CompanyEntity company = (CompanyEntity) o;
         return Objects.equals(ticker, company.ticker) &&
-                Objects.equals(name, company.name) &&
-                Objects.equals(cik, company.cik);
+                Objects.equals(name, company.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ticker, name, cik);
+        return Objects.hash(ticker, name);
     }
 }

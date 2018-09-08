@@ -1,9 +1,13 @@
 package com.hixel.hixel.data.source;
 
+import static android.support.constraint.Constraints.TAG;
+
 import android.arch.lifecycle.LiveData;
+import android.util.Log;
 import com.hixel.hixel.data.CompanyEntity;
 import com.hixel.hixel.data.source.local.CompanyDao;
 import com.hixel.hixel.service.network.ServerInterface;
+import com.hixel.hixel.view.ui.LoginActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -19,6 +23,9 @@ import retrofit2.Response;
  */
 @Singleton
 public class CompanyRepository {
+
+    @SuppressWarnings("unused")
+    private static final String TAG = CompanyRepository.class.getSimpleName();
 
     private static int FRESH_TIMEOUT_IN_MINUTES = 5;
 
@@ -45,8 +52,7 @@ public class CompanyRepository {
         executor.execute(() -> {
             // TODO: Check if the companies were recently fetched.
             boolean companiesExist = true;
-
-            if (!companiesExist) {
+            if (companiesExist) {
                 // TODO: check efficiency of join.
                 serverInterface.getCompanies(StringUtils.join(tickers, ','), 1)
                         .enqueue(new Callback<ArrayList<CompanyEntity>>() {
@@ -55,6 +61,9 @@ public class CompanyRepository {
                                     Response<ArrayList<CompanyEntity>> response) {
                                 executor.execute(() -> {
                                     List<CompanyEntity> companies = response.body();
+
+                                    Log.d(TAG, "" + companies.get(0).getTicker());
+
                                     companyDao.saveCompanies(companies);
                                 });
                             }

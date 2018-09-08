@@ -27,21 +27,22 @@ import retrofit2.Response;
 import static com.hixel.hixel.service.network.Client.getClient;
 
 public class LoginActivity extends AppCompatActivity {
+
     private static final String TAG = LoginActivity.class.getSimpleName();
+
     TextInputLayout emailText;
     TextInputLayout passwordText;
     Button loginButton;
     TextView signupLink;
-    int REQUEST_SIGNUP = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        emailText = (TextInputLayout) findViewById(R.id.emailWrapper);
-        passwordText= (TextInputLayout) findViewById(R.id.passwordWrapper);
-        loginButton= (Button) findViewById(R.id.btn_login);
-        signupLink = (TextView) findViewById(R.id.link_signup);
+        emailText = findViewById(R.id.emailWrapper);
+        passwordText = findViewById(R.id.passwordWrapper);
+        loginButton = findViewById(R.id.btn_login);
+        signupLink = findViewById(R.id.link_signup);
 
         loginButton.setOnClickListener(new OnClickListener() {
             @Override

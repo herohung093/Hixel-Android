@@ -2,31 +2,47 @@ package com.hixel.hixel.view.ui;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
 import android.util.Log;
+import com.hixel.hixel.databinding.ActivityDashboardBinding;
+import com.hixel.hixel.R;
 import com.hixel.hixel.data.CompanyEntity;
 
+import com.hixel.hixel.view.adapter.DashboardAdapter;
+import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
+import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
 import com.hixel.hixel.viewmodel.DashboardViewModel;
 import dagger.android.AndroidInjection;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class DashboardActivity extends AppCompatActivity {
+
+// TODO: Figure out Databinding again...
+public class DashboardActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
+
+    @SuppressWarnings("unused")
+    private static final String TAG = LoginActivity.class.getSimpleName();
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private DashboardViewModel viewModel;
 
-    //ActivityDashboardBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
 
         this.configureDagger();
         this.configureViewModel();
@@ -44,18 +60,49 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void show() {
+        ActivityDashboardBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+
+        // Setup the toolbar
+        binding.toolbar.toolbar.setTitle(R.string.dashboard);
+        binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
+
+        setSupportActionBar(binding.toolbar.toolbar);
     }
 
     private void updateUI(@Nullable List<CompanyEntity> companies) {
-        Log.d("DASHBOARD_ACTIVITY", "" + companies.get(0).getName());
+        if (companies != null) {
+            setupDashboardAdapter(companies);
+        }
     }
 
+    public void setupDashboardAdapter(List<CompanyEntity> companies) {
 
+        ActivityDashboardBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+
+        RecyclerView recyclerView = binding.recyclerView;
+        DashboardAdapter dashboardAdapter = new DashboardAdapter(this, new ArrayList<>());
+
+        recyclerView.setAdapter(dashboardAdapter);
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setNestedScrollingEnabled(false);
+
+        SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+
+        dashboardAdapter.addItems(companies);
+    }
+
+    @Override
+    public void onSwiped(ViewHolder viewHolder, int direction, int position) {
+
+    }
 
 /*
-    private void configureDagger() {
-        AndroidInjection.inject(this);
-    }
 
     private void configureViewModel() {
         ArrayList<String> tickers = new ArrayList<>();

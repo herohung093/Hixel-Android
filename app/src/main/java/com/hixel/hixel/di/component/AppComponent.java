@@ -4,6 +4,7 @@ import android.app.Application;
 import com.hixel.hixel.App;
 import com.hixel.hixel.di.modules.ActivityBuilderModule;
 import com.hixel.hixel.di.modules.AppModule;
+import com.hixel.hixel.di.modules.RepositoryModule;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
@@ -19,7 +20,7 @@ import javax.inject.Singleton;
 @Component(modules = {
         AndroidInjectionModule.class,
         AppModule.class,
-        CompanyModule.class,
+        // CompanyModule.class,
         ActivityBuilderModule.class,
         RepositoryModule.class
 })
