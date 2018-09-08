@@ -9,7 +9,7 @@ import android.util.Log;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.service.network.Client;
-import com.hixel.hixel.db.remote.ServerInterface;
+import com.hixel.hixel.service.network.ServerInterface;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

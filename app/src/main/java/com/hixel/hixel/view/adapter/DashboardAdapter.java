@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hixel.hixel.R;
-import com.hixel.hixel.service.models.database.CompanyEntity;
+import com.hixel.hixel.data.CompanyEntity;
 import com.hixel.hixel.view.ui.CompanyActivity;
 
 

@@ -2,14 +2,12 @@ package com.hixel.hixel.view.ui;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import com.hixel.hixel.R;
-import com.hixel.hixel.service.models.database.CompanyEntity;
+import com.hixel.hixel.data.CompanyEntity;
 
 import com.hixel.hixel.viewmodel.DashboardViewModel;
 import dagger.android.AndroidInjection;

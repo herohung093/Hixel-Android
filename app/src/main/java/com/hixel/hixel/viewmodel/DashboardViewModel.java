@@ -2,8 +2,8 @@ package com.hixel.hixel.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-import com.hixel.hixel.db.CompanyRepository;
-import com.hixel.hixel.service.models.database.CompanyEntity;
+import com.hixel.hixel.data.source.CompanyRepository;
+import com.hixel.hixel.data.CompanyEntity;
 import java.util.List;
 import javax.inject.Inject;
 

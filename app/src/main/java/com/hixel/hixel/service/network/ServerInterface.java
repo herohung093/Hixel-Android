@@ -1,11 +1,11 @@
-package com.hixel.hixel.db.remote;
+package com.hixel.hixel.service.network;
 
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.LoginData;
 import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.service.models.ApplicationUser;
 
-import com.hixel.hixel.service.models.database.CompanyEntity;
+import com.hixel.hixel.data.CompanyEntity;
 
 import java.util.ArrayList;
 

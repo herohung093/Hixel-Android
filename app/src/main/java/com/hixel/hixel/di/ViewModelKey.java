@@ -1,4 +1,4 @@
-package com.hixel.hixel.di.key;
+package com.hixel.hixel.di;
 
 import android.arch.lifecycle.ViewModel;
 import dagger.MapKey;

@@ -1,4 +1,4 @@
-package com.hixel.hixel.viewmodel;
+package com.hixel.hixel;
 
 
 import android.arch.lifecycle.ViewModel;
@@ -8,13 +8,17 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+/**
+ * Provides all the dependencies required for ViewModels
+ */
+
 @Singleton
-public class FactoryViewModel implements ViewModelProvider.Factory {
+public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private final Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
 
     @Inject
-    public FactoryViewModel(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
+    public ViewModelFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
         this.creators = creators;
     }
 

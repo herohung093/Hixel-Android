@@ -10,6 +10,10 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import javax.inject.Inject;
 
+/**
+ *
+ */
+
 public class App extends Application implements HasActivityInjector {
 
     @Inject
@@ -22,8 +26,9 @@ public class App extends Application implements HasActivityInjector {
     @Override
     public void onCreate() {
         super.onCreate();
-        this.initDagger();
         context = getApplicationContext();
+
+        DaggerAppComponent.builder().application(this).build().inject(this);
     }
 
     public static SharedPreferences preferences() {
@@ -33,9 +38,5 @@ public class App extends Application implements HasActivityInjector {
     @Override
     public DispatchingAndroidInjector<Activity> activityInjector() {
         return dispatchingAndroidInjector;
-    }
-
-    private void initDagger(){
-        DaggerAppComponent.builder().application(this).build().inject(this);
     }
 }

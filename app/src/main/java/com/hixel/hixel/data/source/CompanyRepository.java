@@ -1,13 +1,10 @@
-package com.hixel.hixel.db;
+package com.hixel.hixel.data.source;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.util.Log;
-import com.hixel.hixel.db.local.CompanyDao;
-import com.hixel.hixel.db.remote.ServerInterface;
-import com.hixel.hixel.service.models.database.CompanyEntity;
+import com.hixel.hixel.data.CompanyEntity;
+import com.hixel.hixel.data.source.local.CompanyDao;
+import com.hixel.hixel.service.network.ServerInterface;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executor;
 import javax.inject.Inject;
@@ -17,7 +14,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// Tells Dagger to only construct the class once.
+/**
+ *  Gets data from the server if the timeout has not occurred, otherwise gets it from the database.
+ */
 @Singleton
 public class CompanyRepository {
 

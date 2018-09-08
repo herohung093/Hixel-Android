@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
-import com.hixel.hixel.db.remote.ServerInterface;
 import java.io.IOException;
 
 import okhttp3.Authenticator;
