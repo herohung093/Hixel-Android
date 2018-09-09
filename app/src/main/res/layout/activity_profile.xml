@@ -82,7 +82,7 @@
       android:layout_marginBottom="0dp"
       android:layout_below="@+id/profile_layout"
       android:paddingTop="10dp"
-
+      android:animateLayoutChanges="true"
       android:paddingBottom="10dp"
       android:paddingLeft="5dp"
       android:paddingRight="5dp"
@@ -90,27 +90,39 @@
       android:elevation="4dp"
       android:orientation="vertical">
 
-      <Button
+      <android.support.v7.widget.AppCompatButton
+        android:id="@+id/logout_BT"
+        android:layout_width="199dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="#ff000d"
+        android:animateLayoutChanges="true"
+        android:textColor="@color/text_main_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/logout"/>
+      <android.support.v7.widget.AppCompatButton
         android:id="@+id/cancel_BT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="24dp"
+        android:animateLayoutChanges="true"
         android:background="@color/grey_background"
         android:textColor="@color/text_main_dark"
         android:textColorHint="@color/percentageTextBackground"
-        app:layout_constraintEnd_toStartOf="@+id/submit_BT"
-        app:layout_constraintHorizontal_bias="0.361"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_ConfirmPassWrapper"
         tools:text="@string/profile_cancel"/>
-      <Button
+      <android.support.v7.widget.AppCompatButton
         android:id="@+id/submit_BT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="24dp"
         android:background="@color/grey_background"
         android:textColor="@color/text_main_dark"
         android:textColorHint="@color/percentageTextBackground"
@@ -189,7 +201,6 @@
           android:inputType="textPassword"
           android:textSize="14sp"/>
       </android.support.design.widget.TextInputLayout>
-
     </android.support.constraint.ConstraintLayout>
   </RelativeLayout>
   <android.support.design.widget.BottomNavigationView

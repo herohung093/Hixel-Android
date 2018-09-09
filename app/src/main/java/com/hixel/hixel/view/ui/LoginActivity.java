@@ -52,11 +52,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
             Intent moveToSignup = new Intent(getApplicationContext(),SignupActivity.class);
             startActivity(moveToSignup);
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
         forgotPasswordLink.setOnClickListener(event->{
             Intent moveToForgotView = new Intent(getApplicationContext(),ForgotPasswordActivity.class);
             startActivity(moveToForgotView);
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });
     }
 
@@ -163,4 +165,16 @@ public class LoginActivity extends AppCompatActivity {
 
         return valid;
     }
+//Responds to enter
+/*    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_ENTER:
+                login();
+                return true;
+
+            default:
+                return super.onKeyUp(keyCode, event);
+        }
+    }*/
 }

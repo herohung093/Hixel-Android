@@ -28,10 +28,12 @@
     <string name="hint_registered_email">Please enter your Registered Email ID below:</string>
     <string name="back_to_login">Back</string>
     <string name="submit">Submit</string>
+    <string name="update_password">Update Password</string>
     <!-- Profile -->
     <string name="change_pass">Change your password</string>
     <string name="new_password">Enter your new password</string>
     <string name="confirm_pass">Confirm your password</string>
+    <string name="logout">Log Out</string>
     <!-- Defaults -->
     <string name="default_text">Default</string>
     <string name="profile_cancel">Cancel</string>
@@ -52,4 +54,6 @@
     <string name="login">Login</string>
     <string name="no_account">No account yet? Create one</string>
 
+    <!--Pin View -->
+    <string name="enter_pin">Please type the verification code sent to you</string>
 </resources>

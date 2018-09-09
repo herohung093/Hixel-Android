@@ -90,4 +90,7 @@ dependencies {
 
     //imageview in a circular shape
     implementation 'de.hdodenhof:circleimageview:2.1.0'
+
+    //Pin View
+    implementation 'com.github.GoodieBag:Pinview:v1.3'
 }

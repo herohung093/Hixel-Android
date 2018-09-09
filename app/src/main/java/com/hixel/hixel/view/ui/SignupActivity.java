@@ -1,5 +1,7 @@
 package com.hixel.hixel.view.ui;
 
+import static com.hixel.hixel.service.network.Client.getClient;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,18 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.ApplicationUser;
-import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.network.ServerInterface;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.hixel.hixel.service.network.Client.getClient;
 
 public class SignupActivity extends AppCompatActivity {
     TextInputLayout emailText,passwordText,firstNameText,lasNameText;
@@ -51,6 +45,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent moveToLogin= new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(moveToLogin);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
     }
@@ -157,6 +152,11 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
     }
 }
 

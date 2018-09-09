@@ -26,12 +26,11 @@ import java.io.IOException;
 public class ProfileActivity extends AppCompatActivity {
     TextView userName_TV, userEmail_TV, changePasswordLink_TV;
     TextInputLayout newPassword_Text, confirmPassword_Text;
-    Button cancel_BT, submit_BT;
+    Button cancel_BT, submit_BT, logout_BT;
     CircleImageView circleImageView;
     ImageView edit_IW;
     private int PICK_IMAGE_REQUEST = 1;
     FileOutputStream outputStream;
-    FileInputStream inputStream;
     String fileName="profile_photo.jpg";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +39,20 @@ public class ProfileActivity extends AppCompatActivity {
         //TODO: implement get user info from server
         userName_TV = findViewById(R.id.userFullName);
         userEmail_TV = findViewById(R.id.email);
+
         changePasswordLink_TV= findViewById(R.id.textView5);
         newPassword_Text = findViewById(R.id.profile_PassWrapper);
         newPassword_Text.setVisibility(View.INVISIBLE);
         confirmPassword_Text= findViewById(R.id.profile_ConfirmPassWrapper);
         confirmPassword_Text.setVisibility(View.INVISIBLE);
+
         cancel_BT = findViewById(R.id.cancel_BT);
         cancel_BT.setVisibility(View.INVISIBLE);
+
         submit_BT = findViewById(R.id.submit_BT);
         submit_BT.setVisibility(View.INVISIBLE);
+        logout_BT= (Button)findViewById(R.id.logout_BT);
+
         circleImageView = findViewById(R.id.profile);
         edit_IW= findViewById(R.id.edit);
         // dummy data just for now
@@ -69,6 +73,10 @@ public class ProfileActivity extends AppCompatActivity {
             } else {
                 //TODO update password on server
             }
+        });
+        logout_BT.setOnClickListener(event->{
+            Intent moveToLogin = new Intent(this, LoginActivity.class);
+            startActivity(moveToLogin);
         });
 
         edit_IW.setOnClickListener(event->{
@@ -151,11 +159,13 @@ public class ProfileActivity extends AppCompatActivity {
         confirmPassword_Text.setVisibility(View.VISIBLE);
         cancel_BT.setVisibility(View.VISIBLE);
         submit_BT.setVisibility(View.VISIBLE);
+        logout_BT.setVisibility(View.GONE);
     }
     public void setViewInvisible(){
         newPassword_Text.setVisibility(View.INVISIBLE);
         confirmPassword_Text.setVisibility(View.INVISIBLE);
         cancel_BT.setVisibility(View.INVISIBLE);
         submit_BT.setVisibility(View.INVISIBLE);
+        logout_BT.setVisibility(View.VISIBLE);
     }
 }
