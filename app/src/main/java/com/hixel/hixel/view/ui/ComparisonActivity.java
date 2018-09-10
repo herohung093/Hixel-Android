@@ -108,7 +108,7 @@ public class ComparisonActivity extends AppCompatActivity {
         searchAutoComplete.setOnItemClickListener((adapterView, view, i, l) -> {
             SearchEntry entry = (SearchEntry)adapterView.getItemAtPosition(i);
             String ticker = entry.getTicker();
-            searchAutoComplete.setText(entry.getName());
+            searchAutoComplete.setText("");
 
             ArrayList<Company> companies = comparisonViewModel.getCompanies().getValue();
             int size = (companies == null) ? 0 : companies.size();
