@@ -12,7 +12,7 @@ import com.hixel.hixel.data.CompanyEntity;
 
 // TODO: Rename class from AppDB to CompanyDB ??
 // TODO: schema and migration handling
-@Database(entities = {CompanyEntity.class}, version = 2, exportSchema = false)
+@Database(entities = {CompanyEntity.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

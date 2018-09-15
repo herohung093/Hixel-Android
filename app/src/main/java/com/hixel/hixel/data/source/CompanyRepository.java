@@ -1,13 +1,10 @@
 package com.hixel.hixel.data.source;
 
-import static android.support.constraint.Constraints.TAG;
-
 import android.arch.lifecycle.LiveData;
 import android.util.Log;
 import com.hixel.hixel.data.CompanyEntity;
 import com.hixel.hixel.data.source.local.CompanyDao;
 import com.hixel.hixel.service.network.ServerInterface;
-import com.hixel.hixel.view.ui.LoginActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -62,7 +59,7 @@ public class CompanyRepository {
                                 executor.execute(() -> {
                                     List<CompanyEntity> companies = response.body();
 
-                                    Log.d(TAG, "" + companies.get(0).getTicker());
+                                    Log.d(TAG, "" + companies.get(0).getIdentifiers().getTicker());
 
                                     companyDao.saveCompanies(companies);
                                 });

@@ -14,7 +14,7 @@ public class DashboardViewModel extends ViewModel {
     @SuppressWarnings("unused")
     private static final String TAG = DashboardViewModel.class.getSimpleName();
 
-    private static final String[] tickers = { "AAPL", "TSLA" };
+    private static final String[] tickers = { "AAPL" };
 
 
     private LiveData<List<CompanyEntity>> companies;

@@ -46,12 +46,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         CompanyEntity company = companies.get(position);
         double currentRatio = company.getRatio();
 
-        String companyName = company.getName();
+        String companyName = company.getIdentifiers().getName();
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyName.setText(companyName);
 
-        String tickerFormat = "NASDAQ:" + company.getTicker();
+        String tickerFormat = "NASDAQ:" + company.getIdentifiers().getTicker();
         holder.companyTicker.setText(tickerFormat);
 
         // Set the indicator based upon the current ratio
@@ -101,6 +101,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         notifyDataSetChanged();
     }
 
+    public void addItem(CompanyEntity company) {
+        companies.add(getItemCount(),company);
+        notifyItemInserted(getItemCount());
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ConstraintLayout foreground;
         public ConstraintLayout background;
@@ -118,10 +123,5 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             background = itemView.findViewById(R.id.background);
             indicator = itemView.findViewById(R.id.indicator);
         }
-    }
-
-    public void addItem(CompanyEntity company) {
-        companies.add(getItemCount(),company);
-        notifyItemInserted(getItemCount());
     }
 }

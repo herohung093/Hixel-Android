@@ -28,7 +28,7 @@ public class AppModule {
     @Singleton
     AppDatabase provideDatabase(Application application) {
         return Room.databaseBuilder(application,
-                AppDatabase .class, "companies.db")
+                AppDatabase.class, "companies.db")
                 // TODO: Better migration
                 .fallbackToDestructiveMigration()
                 .build();

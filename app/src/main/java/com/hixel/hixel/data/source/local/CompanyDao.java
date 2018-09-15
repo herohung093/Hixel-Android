@@ -13,7 +13,7 @@ import java.util.List;
  * This uses LiveData so we can notify observers when the data changes.
  */
 
-// TODO: Needs more methods for all activites.
+// TODO: Needs more methods for all activities.
 @Dao
 public interface CompanyDao {
 
