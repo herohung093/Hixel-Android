@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 /**
- * Immutable Company Model.
+ * Company entity acts as an entry point to other models
  */
 
 @Entity(tableName = "companies")

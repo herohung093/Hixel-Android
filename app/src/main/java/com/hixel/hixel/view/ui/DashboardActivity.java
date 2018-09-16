@@ -2,51 +2,95 @@ package com.hixel.hixel.view.ui;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ImageView;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.CompanyEntity;
 
+import com.hixel.hixel.service.models.SearchEntry;
+import com.hixel.hixel.service.models.charts.MainBarChartRenderer;
+import com.hixel.hixel.service.models.charts.MainBarDataSet;
+import com.hixel.hixel.service.network.Client;
+import com.hixel.hixel.service.network.ServerInterface;
 import com.hixel.hixel.view.adapter.DashboardAdapter;
+import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
 import com.hixel.hixel.viewmodel.DashboardViewModel;
 import dagger.android.AndroidInjection;
+import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Objects;
 import javax.inject.Inject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 // TODO: Figure out Databinding again...
 public class DashboardActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
 
     @SuppressWarnings("unused")
-    private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final String TAG = DashboardActivity.class.getSimpleName();
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private DashboardViewModel viewModel;
 
+    private ActivityDashboardBinding binding;
+    private SearchAutoComplete searchAutoComplete;
+    private DashboardAdapter dashboardAdapter;
+    private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
 
         this.configureDagger();
         this.configureViewModel();
-        this.show();
+
+        // Setup the toolbar
+        binding.toolbar.toolbar.setTitle(R.string.dashboard);
+        binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(binding.toolbar.toolbar);
+
+        recyclerView = binding.recyclerView;
+
+        viewModel.setupSearch(getSearchObserver());
+
+        setupBottomNavigationView();
+        populateChart();
     }
 
     private void configureDagger() {
@@ -59,16 +103,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         viewModel.getCompanies().observe(this, this::updateUI);
     }
 
-    private void show() {
-        ActivityDashboardBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
-
-        // Setup the toolbar
-        binding.toolbar.toolbar.setTitle(R.string.dashboard);
-        binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
-
-        setSupportActionBar(binding.toolbar.toolbar);
-    }
-
     private void updateUI(@Nullable List<CompanyEntity> companies) {
         if (companies != null) {
             setupDashboardAdapter(companies);
@@ -77,10 +111,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     public void setupDashboardAdapter(List<CompanyEntity> companies) {
 
-        ActivityDashboardBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
-
-        RecyclerView recyclerView = binding.recyclerView;
-        DashboardAdapter dashboardAdapter = new DashboardAdapter(this, new ArrayList<>());
+        dashboardAdapter = new DashboardAdapter(this, new ArrayList<>());
 
         recyclerView.setAdapter(dashboardAdapter);
 
@@ -98,55 +129,14 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     }
 
     @Override
-    public void onSwiped(ViewHolder viewHolder, int direction, int position) {
-
-    }
-
-/*
-
-    private void configureViewModel() {
-        ArrayList<String> tickers = new ArrayList<>();
-        tickers.add("APPL");
-        tickers.add("TSLA");
-        tickers.add("TWTR");
-        tickers.add("SNAP");
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
-        viewModel.init(tickers);
-        viewModel.getCompanies().observe(this, this::updateUI);
-    }
-
-    public void setupDashboardAdapter() {
-        dashboardAdapter = new DashboardAdapter(this, new ArrayList<>());
-        mRecyclerView.setAdapter(this.dashboardAdapter);
-
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setNestedScrollingEnabled(false);
-
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
-                new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
-
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
-
-    }
-
-    private void updateUI(@Nullable List<CompanyEntity> companies) {
-        if (companies != null) {
-            dashboardAdapter.addItems(companies);
-        }
-    }
-
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu: entered");
+
 
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         MenuItem searchView = menu.findItem(R.id.action_search);
 
-        search = (SearchView) searchView.getActionView();
+        SearchView search = (SearchView) searchView.getActionView();
         searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         // Styling the search bar
@@ -160,7 +150,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
 
-            //goToCompanyView(ticker);
+            goToCompanyView(ticker);
         });
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -199,8 +189,10 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             return true;
         });
     }
-    public void setupChart() {
-        chart = binding.chart;
+
+    public void populateChart() {
+
+        BarChart chart = binding.chart;
 
         chart.setRenderer(new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
 
@@ -209,8 +201,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         chart.getDescription().setEnabled(false);
         chart.setDrawValueAboveBar(false);
         chart.setDrawBarShadow(false);
-    }
-    public void populateChart() {
 
         List<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0, 3));
@@ -274,7 +264,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         chart.setData(data);
         chart.invalidate();
     }
-/*
+
     //TODO: Implement this in pretty much any other way (Brayden, put on your MVVM wizard hat and robe
     public void goToCompanyView(String ticker) {
         Call<ArrayList<CompanyEntity>> call = Client.getClient()
@@ -289,8 +279,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
                 try {
                     CompanyEntity company = Objects.requireNonNull(response.body()).get(0);
                     goToCompanyView(company);
-                }
-                catch (Exception e) { //TODO: Provide user-facing message when this occurs.
+                } catch (Exception e) { //TODO: Provide user-facing message when this occurs.
                     Log.e("loadDataForAParticularCompany",
                             String.format("Failed to retrieve data for ticker: %s", ticker));
                 }
@@ -301,15 +290,14 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
                 // TODO: Add failure handling...
             }
         });
-    }*/
+    }
 
     //TODO: See above.
-    /*
-    public void goToCompanyView() {
+    public void goToCompanyView(CompanyEntity company) {
         Intent intent = new Intent(this, CompanyActivity.class);
         Bundle extras = new Bundle();
 
-        ArrayList<CompanyEntity> companies = (ArrayList) viewModel.getCompanies().getValue();
+        ArrayList companies = (ArrayList) viewModel.getCompanies().getValue();
 
         //TODO: Get this to pass a company
         extras.putSerializable("CURRENT_COMPANY", null);
@@ -318,18 +306,15 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         intent.putExtras(extras);
         startActivityForResult(intent,1);
 
-    }*/
+    }
 
-    /*
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
 
         if (viewHolder instanceof DashboardAdapter.ViewHolder) {
             // Get name of removed item
 
-            String name = Objects.requireNonNull(viewModel.getCompanies().getValue())
-                    .get(viewHolder.getAdapterPosition())
-                    .getName();
+            String name = Objects.requireNonNull(viewModel.getCompanies().getValue()).get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
 
             // Backup item for undo purposes
             final CompanyEntity deletedCompany = viewModel.getCompanies()
@@ -350,23 +335,23 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             snackbar.show();
        }
     }
-/*
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                Company mCompanyReturned = ((Company) data.getSerializableExtra("COMPANY_ADD"));
+                CompanyEntity mCompanyReturned = ((CompanyEntity) data.getSerializableExtra("COMPANY_ADD"));
                 addItem(mCompanyReturned);
             }
         }
-    }*/
-/*
+    }
+
     public void addItem(CompanyEntity company) {
         dashboardAdapter.addItem(company);
-    }*/
+    }
 
-    /*
+
     //TODO: Move the following functions into a an ActivityWithSearch base class.
     public void showSearchResults(List<SearchEntry> searchResults) {
 
@@ -393,5 +378,5 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
             }
         };
-    }*/
+    }
 }
