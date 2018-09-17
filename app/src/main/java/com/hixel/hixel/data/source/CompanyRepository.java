@@ -48,6 +48,7 @@ public class CompanyRepository {
         return companyDao.load(); // return LiveData from the db.
     }
 
+    // TODO: Check the effects of not having an executor here.
     public MutableLiveData<CompanyEntity> getCompany(String ticker) {
         //executor.execute(() -> {
             serverInterface.getCompanies(StringUtils.join(ticker, ','), 1)

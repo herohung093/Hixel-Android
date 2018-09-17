@@ -160,6 +160,15 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         return super.onCreateOptionsMenu(menu);
     }
 
+    public void goToCompanyView(String ticker) {
+        Intent intent = new Intent(this, CompanyActivity.class);
+
+        Log.d(TAG, "goToCompanyView: " + ticker);
+
+        intent.putExtra("COMPANY_TICKER", ticker);
+        startActivity(intent);
+    }
+
     public void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) binding.bottomNav;
         bottomNavigationView.getMenu().getItem(0).setChecked(false);
@@ -254,13 +263,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         chart.setData(data);
         chart.invalidate();
-    }
-
-    public void goToCompanyView(String ticker) {
-        Intent intent = new Intent(this, CompanyActivity.class);
-
-        intent.putExtra("COMPANY_ADD", ticker);
-        startActivityForResult(intent, 1);
     }
 
     @Override
