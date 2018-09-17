@@ -1,32 +1,32 @@
 <resources>
-    <string name="app_name">Hixel</string>
+  <string name="app_name">Hixel</string>
 
-    <!-- Toolbar Titles-->
-    <string name="dashboard">Dashboard</string>
-    <string name="comparison">Comparison</string>
+  <!-- Toolbar Titles-->
+  <string name="dashboard">Dashboard</string>
+  <string name="comparison">Comparison</string>
 
-    <!-- Common -->
-    <string name="search_title">Search</string>
+  <!-- Common -->
+  <string name="search_title">Search</string>
 
-    <!-- Dashboard -->
-    <string name="overview">Overview</string>
-    <string name="portfolio">Portfolio</string>
+  <!-- Dashboard -->
+  <string name="overview">Overview</string>
+  <string name="portfolio">Portfolio</string>
 
-    <!-- CompanyEntity -->
-    <string name="indicators">Indicators</string>
-    <string name="company_score">Score</string>
+  <!-- CompanyEntity -->
+  <string name="indicators">Indicators</string>
+  <string name="company_score">Score</string>
 
-    <string name="returns">Returns</string>
-    <string name="performance">Performance</string>
-    <string name="strength">Strength</string>
-    <string name="health">Health</string>
-    <string name="risk">Risk</string>
+  <string name="returns">Returns</string>
+  <string name="performance">Performance</string>
+  <string name="strength">Strength</string>
+  <string name="health">Health</string>
+  <string name="risk">Risk</string>
 
-    <!-- Comparison -->
+  <!-- Comparison -->
 
-    <!-- Snackbar messages -->
-    <string name="load_error_message">There was an error loading your portfolio</string>
+  <!-- Snackbar messages -->
+  <string name="load_error_message">There was an error loading your portfolio</string>
 
-    <!-- Defaults -->
-    <string name="default_text">Default</string>
+  <!-- Defaults -->
+  <string name="default_text">Default</string>
 </resources>
