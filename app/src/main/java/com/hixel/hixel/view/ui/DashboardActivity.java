@@ -7,7 +7,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
@@ -38,8 +37,6 @@ import com.hixel.hixel.data.CompanyEntity;
 import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.service.models.charts.MainBarChartRenderer;
 import com.hixel.hixel.service.models.charts.MainBarDataSet;
-import com.hixel.hixel.service.network.Client;
-import com.hixel.hixel.service.network.ServerInterface;
 import com.hixel.hixel.view.adapter.DashboardAdapter;
 import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
@@ -52,12 +49,8 @@ import java.util.List;
 
 import java.util.Objects;
 import javax.inject.Inject;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
-// TODO: Figure out Databinding again...
 public class DashboardActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
 
     @SuppressWarnings("unused")
@@ -130,8 +123,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu: entered");
-
 
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         MenuItem searchView = menu.findItem(R.id.action_search);
@@ -142,8 +133,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         // Styling the search bar
         searchAutoComplete.setHintTextColor(ContextCompat.getColor(this, R.color.text_main_light));
         searchAutoComplete.setTextColor(ContextCompat.getColor(this, R.color.text_main_light));
-        ImageView searchClose = search
-                .findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+
+        ImageView searchClose = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         searchClose.setImageResource(R.drawable.ic_clear);
 
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
@@ -265,47 +256,11 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         chart.invalidate();
     }
 
-    //TODO: Implement this in pretty much any other way (Brayden, put on your MVVM wizard hat and robe
     public void goToCompanyView(String ticker) {
-        Call<ArrayList<CompanyEntity>> call = Client.getClient()
-                .create(ServerInterface.class)
-                .getCompanies(ticker, 1);
-
-        call.enqueue(new Callback<ArrayList<CompanyEntity>>() {
-            @Override
-            public void onResponse(@NonNull Call<ArrayList<CompanyEntity>> call,
-                    @NonNull Response<ArrayList<CompanyEntity>> response) {
-
-                try {
-                    CompanyEntity company = Objects.requireNonNull(response.body()).get(0);
-                    goToCompanyView(company);
-                } catch (Exception e) { //TODO: Provide user-facing message when this occurs.
-                    Log.e("loadDataForAParticularCompany",
-                            String.format("Failed to retrieve data for ticker: %s", ticker));
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ArrayList<CompanyEntity>> call, @NonNull Throwable t) {
-                // TODO: Add failure handling...
-            }
-        });
-    }
-
-    //TODO: See above.
-    public void goToCompanyView(CompanyEntity company) {
         Intent intent = new Intent(this, CompanyActivity.class);
-        Bundle extras = new Bundle();
 
-        ArrayList companies = (ArrayList) viewModel.getCompanies().getValue();
-
-        //TODO: Get this to pass a company
-        extras.putSerializable("CURRENT_COMPANY", null);
-        extras.putSerializable("PORTFOLIO", companies);
-
-        intent.putExtras(extras);
-        startActivityForResult(intent,1);
-
+        intent.putExtra("COMPANY_ADD", ticker);
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -339,10 +294,11 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 CompanyEntity mCompanyReturned = ((CompanyEntity) data.getSerializableExtra("COMPANY_ADD"));
-                addItem(mCompanyReturned);
+                this.addItem(mCompanyReturned);
             }
         }
     }

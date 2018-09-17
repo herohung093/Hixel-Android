@@ -2,11 +2,11 @@ package com.hixel.hixel.view.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +17,11 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.data.CompanyEntity;
 import com.hixel.hixel.view.ui.CompanyActivity;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
+
+    private static final String TAG = DashboardAdapter.class.getSimpleName();
 
     private Context context;
     private List<CompanyEntity> companies;
@@ -68,15 +68,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
 
         holder.foreground.setOnClickListener((View view) -> {
+            // TODO: Reimplement so that the Company view knows this was from the portfolio.
+            Log.d(TAG, "" + company.getIdentifiers().getTicker());
+
+
+            String ticker = company.getIdentifiers().getTicker();
+
             Intent intent = new Intent(context, CompanyActivity.class);
-            Bundle extras = new Bundle();
-
-            // TODO: Reimplement
-            // extras.putSerializable("CURRENT_COMPANY", company);
-            extras.putSerializable("PORTFOLIO", (ArrayList) companies);
-
-            intent.putExtras(extras);
-
+            intent.putExtra("COMPANY_TICKER", ticker);
             context.startActivity(intent);
         });
     }

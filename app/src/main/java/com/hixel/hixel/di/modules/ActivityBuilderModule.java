@@ -1,5 +1,6 @@
 package com.hixel.hixel.di.modules;
 
+import com.hixel.hixel.view.ui.CompanyActivity;
 import com.hixel.hixel.view.ui.DashboardActivity;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -13,4 +14,7 @@ public abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract DashboardActivity dashboardActivity();
+
+    @ContributesAndroidInjector
+    abstract CompanyActivity companyActivity();
 }

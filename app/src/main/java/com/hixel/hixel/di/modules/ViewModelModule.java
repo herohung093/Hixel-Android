@@ -3,6 +3,7 @@ package com.hixel.hixel.di.modules;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import com.hixel.hixel.di.ViewModelKey;
+import com.hixel.hixel.viewmodel.CompanyViewModel;
 import com.hixel.hixel.viewmodel.DashboardViewModel;
 import com.hixel.hixel.ViewModelFactory;
 import dagger.Binds;
@@ -20,6 +21,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DashboardViewModel.class)
     abstract ViewModel bindDashboardViewModel(DashboardViewModel dashboardViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CompanyViewModel.class)
+    abstract ViewModel bindCompanyViewModel(CompanyViewModel companyViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);

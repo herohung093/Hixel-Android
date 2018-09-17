@@ -1,6 +1,8 @@
 package com.hixel.hixel.data.source;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import com.hixel.hixel.data.CompanyEntity;
 import com.hixel.hixel.data.source.local.CompanyDao;
@@ -30,6 +32,9 @@ public class CompanyRepository {
     private final CompanyDao companyDao;
     private final Executor executor;
 
+    // NOTE: This is a temporary workaround
+    private MutableLiveData<CompanyEntity> company = new MutableLiveData<>();
+
     @Inject
     public CompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, Executor executor) {
         this.serverInterface = serverInterface;
@@ -43,6 +48,37 @@ public class CompanyRepository {
         return companyDao.load(); // return LiveData from the db.
     }
 
+    public MutableLiveData<CompanyEntity> getCompany(String ticker) {
+        //executor.execute(() -> {
+            serverInterface.getCompanies(StringUtils.join(ticker, ','), 1)
+                    .enqueue(new Callback<ArrayList<CompanyEntity>>() {
+                        @Override
+                        public void onResponse(@NonNull Call<ArrayList<CompanyEntity>> call,
+                                @NonNull Response<ArrayList<CompanyEntity>> response) {
+                            //executor.execute(() -> {
+                                List<CompanyEntity> companies = response.body();
+
+                                Log.d(TAG, "" + companies.get(0).getIdentifiers().getName());
+
+                                company.setValue(companies.get(0));
+                            //});
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<ArrayList<CompanyEntity>> call,
+                                @NonNull Throwable t) {
+                            // TODO: Handle errors.
+                        }
+                    });
+        //});
+
+        return company;
+    }
+
+    public void saveCompany(CompanyEntity company) {
+        companyDao.saveCompany(company);
+    }
+
     // TODO: Check if update occurred recently.
     private void refreshCompanies(final String[] tickers) {
 
@@ -54,25 +90,23 @@ public class CompanyRepository {
                 serverInterface.getCompanies(StringUtils.join(tickers, ','), 1)
                         .enqueue(new Callback<ArrayList<CompanyEntity>>() {
                             @Override
-                            public void onResponse(Call<ArrayList<CompanyEntity>> call,
-                                    Response<ArrayList<CompanyEntity>> response) {
+                            public void onResponse(@NonNull Call<ArrayList<CompanyEntity>> call,
+                                    @NonNull Response<ArrayList<CompanyEntity>> response) {
                                 executor.execute(() -> {
                                     List<CompanyEntity> companies = response.body();
-
-                                    Log.d(TAG, "" + companies.get(0).getIdentifiers().getTicker());
-
                                     companyDao.saveCompanies(companies);
                                 });
                             }
 
                             @Override
-                            public void onFailure(Call<ArrayList<CompanyEntity>> call,
-                                    Throwable t) {
+                            public void onFailure(@NonNull Call<ArrayList<CompanyEntity>> call,
+                                    @NonNull Throwable t) {
                                 // TODO: Handle errors.
                             }
                         });
             }
         });
     }
+
 
 }

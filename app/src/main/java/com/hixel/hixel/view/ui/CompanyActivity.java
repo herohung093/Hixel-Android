@@ -1,31 +1,37 @@
 package com.hixel.hixel.view.ui;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ProgressBar;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import com.hixel.hixel.R;
-import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.data.CompanyEntity;
 import com.hixel.hixel.viewmodel.CompanyViewModel;
-import java.util.ArrayList;
-import java.util.Objects;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
+import dagger.android.AndroidInjection;
+import javax.inject.Inject;
 
 
 public class CompanyActivity extends AppCompatActivity {
 
-    CompanyViewModel companyViewModel;
+    @SuppressWarnings("unused")
+    private static final String TAG = CompanyActivity.class.getSimpleName();
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private CompanyViewModel viewModel;
+
     FloatingActionButton fab;
     ActivityCompanyBinding binding;
 
@@ -34,51 +40,62 @@ public class CompanyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_company);
 
-        companyViewModel = ViewModelProviders.of(this).get(CompanyViewModel.class);
+        String ticker = getIntent().getStringExtra("COMPANY_TICKER");
 
-        setupBottomNavigationView();
+        Log.d(TAG, "Ticker: " + ticker);
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-
-        Company company = (Company) Objects.requireNonNull(extras).getSerializable("CURRENT_COMPANY");
-        companyViewModel.setCompany(company);
-
-        ArrayList<Company> companies = (ArrayList<Company>) extras.getSerializable("PORTFOLIO");
-
-
-        // Setup the toolbar
-        String title = companyViewModel.getCompany().getValue().getIdentifiers().getName();
-        binding.toolbar.toolbar.setTitle(title);
-        binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
-
-        binding.toolbar.toolbar.setNavigationIcon(R.drawable.ic_close);
-
-        setSupportActionBar(binding.toolbar.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-        // Setup FAB
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
-            Intent backIntent = getIntent();
-            backIntent.putExtra("COMPANY_ADD", company);
-            setResult(RESULT_OK,backIntent);
-            finish();
-        });
-
-        if (companies != null) {
-            for (Company c : companies) {
-                if (c.getIdentifiers().getName().equals(companyViewModel.getCompany().getValue().getIdentifiers().getName())) {
-                    fab.setVisibility(View.INVISIBLE);
-                 }
-            }
-        }
-
-        companyChartSetup();
-        setupProgressPercentage();
+        this.configureDagger();
+        this.configureViewModel(ticker);
     }
+
+    private void configureDagger() {
+        AndroidInjection.inject(this);
+    }
+
+    private void configureViewModel(String ticker) {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CompanyViewModel.class);
+        viewModel.loadCompany(ticker);
+
+        if (viewModel.getCompany() != null) {
+            viewModel.getCompany().observe(this, this::updateUI);
+        }
+    }
+
+    private void updateUI(CompanyEntity company) {
+
+        if (company != null) {
+            setupBottomNavigationView();
+
+            // Setup the toolbar
+            String title = company.getIdentifiers().getName();
+            binding.toolbar.toolbar.setTitle(title);
+            binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
+
+            binding.toolbar.toolbar.setNavigationIcon(R.drawable.ic_close);
+
+            setSupportActionBar(binding.toolbar.toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+            // Setup FAB
+            fab = findViewById(R.id.fab);
+            fab.setOnClickListener(v -> {
+                Intent backIntent = getIntent();
+                viewModel.saveCompany();
+                setResult(RESULT_OK, backIntent);
+                finish();
+            });
+
+            if (viewModel.companyIsInPortfolio()) {
+                fab.setVisibility(View.INVISIBLE);
+            }
+
+            companyChartSetup();
+            setupProgressPercentage();
+        }
+    }
+
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -123,9 +140,9 @@ public class CompanyActivity extends AppCompatActivity {
         pieView.setMainBackgroundColor(ContextCompat.getColor(this, R.color.secondary_background));
         pieView.setPieInnerPadding(20);
 
-        companyViewModel.getCompany().observe(this, company -> {
-            pieView.setPercentage((float) (company.getRatio("Current Ratio", 2017) + 80));
-            pieView.setPercentageBackgroundColor(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 80)));
+        viewModel.getCompany().observe(this, company -> {
+            pieView.setPercentage((float) (company.getRatio() + 80));
+            pieView.setPercentageBackgroundColor(getColorIndicator((int) (company.getRatio() + 80)));
         });
 
         PieAngleAnimation animation = new PieAngleAnimation(pieView);
@@ -135,21 +152,21 @@ public class CompanyActivity extends AppCompatActivity {
     }
 
     private void setupProgressPercentage() {
-        companyViewModel.getCompany().observe(this, company -> {
-            binding.healthProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 15));
-            binding.healthProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 15)));
+        viewModel.getCompany().observe(this, company -> {
+            binding.healthProgress.setProgress((int) (company.getRatio() + 15));
+            binding.healthProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio() + 15)));
 
-            binding.performanceProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 25));
-            binding.performanceProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 25)));
+            binding.performanceProgress.setProgress((int) (company.getRatio() + 25));
+            binding.performanceProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio() + 25)));
 
-            binding.riskProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 5018531));
-            binding.riskProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 50)));
+            binding.riskProgress.setProgress((int) (company.getRatio() + 5018531));
+            binding.riskProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio() + 50)));
 
-            binding.strengthProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 75));
-            binding.strengthProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 75)));
+            binding.strengthProgress.setProgress((int) (company.getRatio() + 75));
+            binding.strengthProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio() + 75)));
 
-            binding.returnProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 85));
-            binding.returnProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 85)));
+            binding.returnProgress.setProgress((int) (company.getRatio() + 85));
+            binding.returnProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio() + 85)));
         });
     }
 

@@ -1,29 +1,37 @@
 package com.hixel.hixel.viewmodel;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
-import android.support.annotation.NonNull;
-import com.hixel.hixel.service.models.Company;
+import android.arch.lifecycle.ViewModel;
+import com.hixel.hixel.data.CompanyEntity;
+import com.hixel.hixel.data.source.CompanyRepository;
+import javax.inject.Inject;
 
 
+public class CompanyViewModel extends ViewModel {
 
-public class CompanyViewModel extends AndroidViewModel {
+    private MutableLiveData<CompanyEntity> company;
+    private CompanyRepository companyRepository;
 
-    private MutableLiveData<Company> company= new MutableLiveData<>();
-
-    public CompanyViewModel(@NonNull Application application) {
-        super(application);
-    }
-    public MutableLiveData<Company> getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company.setValue(company);
+    @Inject
+    CompanyViewModel(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
     }
 
-    // TODO: Logic for adding a company to the portfolio
+    public void loadCompany(String ticker) {
+        company = companyRepository.getCompany(ticker);
+    }
 
+    public MutableLiveData<CompanyEntity> getCompany() {
+        return this.company;
+    }
+
+    public void saveCompany() {
+        companyRepository.saveCompany(company.getValue());
+    }
+
+    // TODO: Actually check if it is in the portfolio.
+    public boolean companyIsInPortfolio() {
+        return true;
+    }
 
 }
