@@ -23,6 +23,7 @@ import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -98,7 +99,12 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     private void updateUI(@Nullable List<CompanyEntity> companies) {
         if (companies != null) {
+            Log.d(TAG, "updateUI: HERE");
+            binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
+        } else {
+            // show loading
+            binding.progressBar.setVisibility(View.VISIBLE);
         }
     }
 
@@ -152,7 +158,10 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                binding.progressBar.setVisibility(View.VISIBLE);
                 viewModel.loadSearchResults(searchAutoComplete.getText().toString());
+                binding.progressBar.setVisibility(View.INVISIBLE);
+
                 return false;
             }
         });
@@ -162,8 +171,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     public void goToCompanyView(String ticker) {
         Intent intent = new Intent(this, CompanyActivity.class);
-
-        Log.d(TAG, "goToCompanyView: " + ticker);
 
         intent.putExtra("COMPANY_TICKER", ticker);
         startActivity(intent);
@@ -282,8 +289,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             dashboardAdapter.removeItem(viewHolder.getAdapterPosition());
 
             // Remove CompanyEntity from RecyclerView
-            Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio",
-                    Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(binding.getRoot(),
+                    name + " removed from portfolio", Snackbar.LENGTH_LONG);
 
             snackbar.setAction("UNDO",
                     view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));

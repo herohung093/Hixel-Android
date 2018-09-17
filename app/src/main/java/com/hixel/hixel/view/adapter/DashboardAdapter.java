@@ -54,16 +54,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         String tickerFormat = "NASDAQ:" + company.getIdentifiers().getTicker();
         holder.companyTicker.setText(tickerFormat);
 
+        // TODO: Work out something with the indicator image
         // Set the indicator based upon the current ratio
         if (currentRatio < 1.0) {
             holder.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.bad));
-            holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_downward);
+            // holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_downward);
         } else if (currentRatio >= 1.0 && currentRatio <= 1.2) {
             holder.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.average));
-            holder.companyIndicator.setBackgroundResource(R.drawable.ic_remove_black_24dp);
+            // holder.companyIndicator.setBackgroundResource(R.drawable.ic_remove_black_24dp);
         } else {
             holder.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.good));
-            holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
+            // holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
         }
 
 
