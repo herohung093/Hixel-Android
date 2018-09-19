@@ -121,7 +121,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                dashboardViewModel.loadSearchResults(searchAutoComplete.getText().toString());
+                dashboardViewModel.loadSearchResults(newText);
                 return false;
             }
         });
@@ -337,13 +337,14 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         dashboardAdapter.addItem(company);
     }
 
-    //TODO: Move the following functions into a an ActivityWithSearch base class.
     public void showSearchResults(List<SearchEntry> searchResults) {
-
         SearchAdapter adapter = new SearchAdapter(this, searchResults);
-
         searchAutoComplete.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        if (!searchResults.isEmpty()) {
+            searchAutoComplete.showDropDown();
+        }
     }
 
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {

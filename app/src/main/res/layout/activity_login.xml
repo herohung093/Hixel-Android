@@ -57,15 +57,7 @@
         android:textColor="@color/text_main_dark"
         android:textColorHint="@color/text_main_dark"/>
     </android.support.design.widget.TextInputLayout>
-    <TextView
-      android:id="@+id/link_forgot_password"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="10dp"
-      android:gravity="center"
-      android:text="@string/forgot_your_password"
-      android:textColor="@color/text_secondary_dark"
-      android:textSize="16sp"/>
+
     <android.support.v7.widget.AppCompatButton
       android:id="@+id/btn_login"
       android:layout_width="fill_parent"
@@ -78,14 +70,24 @@
       android:textColorHint="@color/text_main_light"/>
 
     <TextView
-      android:id="@+id/link_signup"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="24dp"
-      android:gravity="center"
-      android:text="@string/no_account"
-      android:textColor="@color/text_secondary_dark"
-      android:textSize="16sp"/>
+        android:id="@+id/link_forgot_password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="@string/forgot_your_password"
+        android:textColor="@color/text_secondary_dark"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/link_signup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:text="@string/no_account"
+        android:textColor="@color/text_secondary_dark"
+        android:textSize="16sp" />
 
   </LinearLayout>
 </ScrollView>

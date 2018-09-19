@@ -125,13 +125,12 @@ public class ComparisonActivity extends AppCompatActivity {
         this.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter.notifyDataSetChanged();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                comparisonViewModel.loadSearchResults(searchAutoComplete.getText().toString());
+                comparisonViewModel.loadSearchResults(newText);
                 return false;
             }
         });
@@ -237,21 +236,18 @@ public class ComparisonActivity extends AppCompatActivity {
     }
 
     private void observeViewModel(ComparisonViewModel viewModel){
-        viewModel.getCompanies().observe(this, new Observer<ArrayList<Company>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<Company> companies) {
-                adapter.setCompanies(companies);
-            }
-        });
-
+        viewModel.getCompanies().observe(this, companies -> adapter.setCompanies(companies));
         viewModel.setupSearch(getSearchObserver());
     }
 
     public void showSearchResults(List<SearchEntry> searchResults) {
         SearchAdapter adapter = new SearchAdapter(this, searchResults);
-
         searchAutoComplete.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        if (!searchResults.isEmpty()) {
+            searchAutoComplete.showDropDown();
+        }
     }
 
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {

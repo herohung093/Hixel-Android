@@ -83,7 +83,7 @@ public class DashboardViewModel extends ViewModel {
 
     public void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
         disposable.add(publishSubject
-                .debounce(300, TimeUnit.MILLISECONDS)
+                .debounce(100, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .filter(text -> !text.isEmpty())
                 .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm -> getClient()
