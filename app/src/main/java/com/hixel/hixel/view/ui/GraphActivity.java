@@ -9,28 +9,31 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.view.adapter.HorizontalListViewAdapter;
 import com.hixel.hixel.viewmodel.GraphViewModel;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class GraphActivity extends FragmentActivity implements
-        AdapterView.OnItemSelectedListener, GenericChartFragment.OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener {
+         GenericChartFragment.OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener {
     private final String TAG = getClass().getSimpleName();
 
     ArrayList<String> ratios = new ArrayList<>();
-    ArrayAdapter<String> listRatiosAdapter;
+    RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView.Adapter mAdapter;
     Intent intentReceiver;
-    Spinner listOfGraph;
+    GraphFragment fragmentA;
     Button companyA, companyB;
     ArrayList<Company> receivedCompanies;
     GraphViewModel graphViewModel;
@@ -51,7 +54,7 @@ public class GraphActivity extends FragmentActivity implements
         //setup bottom navigator
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.graph_generic_navigator);
         setupBottomNavigationView(bottomNavigationView);
-        Log.d(TAG,"COMPANIES SIZE" + receivedCompanies.size());
+        fragmentA = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_bar_char);
 
         graphViewModel= ViewModelProviders.of(this).get(GraphViewModel.class);
         //Observe changes in list of ratios
@@ -87,27 +90,36 @@ public class GraphActivity extends FragmentActivity implements
     }
 
     public void setupListOfRatios(ArrayList<String> spinnerList) {
-        listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerList);
+        /*listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerList);
         listRatiosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         listOfGraph = findViewById(R.id.spinner2);
         listOfGraph.setOnItemSelectedListener(this);
-        listOfGraph.setAdapter(listRatiosAdapter);
+        listOfGraph.setAdapter(listRatiosAdapter);*/
+
+        mRecyclerView = findViewById(R.id.ratios_list_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new HorizontalListViewAdapter(this,spinnerList,receivedCompanies,fragmentA);
+        mRecyclerView.setAdapter(mAdapter);
+
+        fragmentA.drawGraph(receivedCompanies,ratios.get(0));
+        GenericChartFragment fragmentB =
+            (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
+        fragmentB.drawGraph(receivedCompanies);
     }
 
-    @Override
+
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        GraphFragment fragmentA =
-                (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_bar_char);
+        fragmentA = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_bar_char);
         fragmentA.drawGraph(receivedCompanies, adapterView.getSelectedItem().toString());
         GenericChartFragment fragmentB =
             (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
         fragmentB.drawGraph(receivedCompanies);
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
         bottomNavigationView.setSelectedItemId(R.id.compare_button);

@@ -21,7 +21,7 @@ public class LoginUnitTest {
         assertEquals("validate failed",true,result);
 
     }
-    
+
     private boolean validate(String email, String password) {
         boolean valid = true;
 
