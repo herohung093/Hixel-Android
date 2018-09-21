@@ -34,6 +34,9 @@ public class FinancialData implements Serializable {
     // Flag = 1 for positively skewed ratio
     // TODO: Make this not suck.
     public Integer setScore(int flag, Double value) {
+        if (value == null)
+            return -1;
+
         if (flag == 1) {
             if (value < 0.5) {
                 return 1;
