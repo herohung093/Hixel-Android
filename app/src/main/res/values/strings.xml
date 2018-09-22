@@ -52,6 +52,7 @@
     <string name="selected_companies">Companies Selected</string>
     <string name="compare_by">Compare By</string>
     <string name="generic_ratios">Generic Ratios</string>
+    <string name="dashboard_companies">Companies from your Dashboard</string>
     <!--Login -->
     <string name="logo_description">Logo</string>
     <string name="forgot_your_password">Forgot your password? Take it back</string>

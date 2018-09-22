@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +20,14 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
     GraphFragment fragmentGraph;
     static Context context;
     int rowIndex =0;
-    boolean[] items= new boolean[5];
-    private static SparseBooleanArray sSelectedItems;
+
     public HorizontalListViewAdapter(Context context,ArrayList<String> ratios,
         ArrayList<Company> companies, GraphFragment fragmentGraph) {
         this.context=context;
         this.ratios = ratios;
         this.companies = companies;
         this.fragmentGraph = fragmentGraph;
-        sSelectedItems = new SparseBooleanArray();
-        sSelectedItems.append(0,true);
+
     }
 
     @NonNull
@@ -41,9 +38,7 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
 
         return new HorizontalListViewAdapter.ViewHolder(view);
     }
-    private void setRowIndex(int index){
-        rowIndex= index;
-    }
+
     @Override
     public void onBindViewHolder(@NonNull HorizontalListViewAdapter.ViewHolder holder,
         int position) {
@@ -58,7 +53,6 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
                 notifyItemChanged(rowIndex);
                 rowIndex=position;
                 notifyItemChanged(rowIndex);
-
             }
         });
 
@@ -73,9 +67,7 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
     public void onClick(View view) {
 
     }
-    public void selectedItemController(int position){
 
-    }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvSpecies;
         public CardView cardView;

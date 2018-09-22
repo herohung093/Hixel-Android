@@ -2,6 +2,7 @@ package com.hixel.hixel.viewmodel;
 
 import static com.hixel.hixel.service.network.Client.getClient;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
@@ -13,7 +14,6 @@ import com.hixel.hixel.service.network.ServerInterface;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,11 +32,41 @@ public class ComparisonViewModel extends ViewModel {
     private final String TAG = getClass().getSimpleName();
 
     private MutableLiveData<ArrayList<Company>> companies = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Company>> portfolioCompanies;
     private CompositeDisposable disposable = new CompositeDisposable();
     private PublishSubject<String> publishSubject = PublishSubject.create();
 
     private MutableLiveData<SearchEntry> searchResults = new MutableLiveData<>();
+    public LiveData<ArrayList<Company>> getPortfolio() {
+        if (portfolioCompanies == null) {
+            portfolioCompanies = new MutableLiveData<>();
+            loadPortfolio();
+        }
 
+        return portfolioCompanies;
+    }
+
+    private void loadPortfolio() {
+        // TODO: Create a repository for this data to ease communication.
+        String[] companies = {"AAPL", "TSLA", "TWTR", "SNAP", "FB", "AMZN"};
+
+        Call<ArrayList<Company>> call = getClient()
+            .create(ServerInterface.class)
+            .doGetCompanies(StringUtils.join(companies, ','), 1);
+
+        call.enqueue(new Callback<ArrayList<Company>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Company>> call,
+                @NonNull Response<ArrayList<Company>> response) {
+                portfolioCompanies.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
+            }
+        });
+
+    }
     public void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
         disposable.add(publishSubject
             .debounce(100, TimeUnit.MILLISECONDS)

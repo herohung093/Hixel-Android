@@ -58,6 +58,7 @@ public class GraphActivity extends FragmentActivity implements
 
         graphViewModel= ViewModelProviders.of(this).get(GraphViewModel.class);
         //Observe changes in list of ratios
+
         observeViewModel(graphViewModel);
 
         companyA = findViewById(R.id.companyA);
@@ -104,7 +105,7 @@ public class GraphActivity extends FragmentActivity implements
 
         mAdapter = new HorizontalListViewAdapter(this,spinnerList,receivedCompanies,fragmentA);
         mRecyclerView.setAdapter(mAdapter);
-
+        checkUpFinancialEntry(ratios);
         fragmentA.drawGraph(receivedCompanies,ratios.get(0));
         GenericChartFragment fragmentB =
             (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);

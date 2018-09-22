@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.view.ui.CompanyActivity;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -24,9 +25,11 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
 
     public ComparisonAdapter(Context mContext, List<Company> companies) {
         this.mContext = mContext;
-        this.companies = companies;
+        this.companies = new ArrayList<>();
+        if(companies!=null) {
+            companies.addAll(companies);
+        }
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
