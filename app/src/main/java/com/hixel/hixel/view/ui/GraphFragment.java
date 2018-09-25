@@ -12,8 +12,6 @@ import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -23,7 +21,6 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.FinancialData;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -31,8 +28,7 @@ public class GraphFragment extends Fragment {
 
     private CombinedChart mChart;
     String[] years;
-    ArrayList<Integer> compAColors= new ArrayList<Integer>();
-    ArrayList<Integer> compBColors= new ArrayList<Integer>();
+    ArrayList<Integer> colors =new ArrayList<>();
     private OnFragmentInteractionListener mListener;
     public GraphFragment() {
         // Required empty public constructor
@@ -43,6 +39,16 @@ public class GraphFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        colors.add(Color.rgb(255,218,185));
+        colors.add(Color.rgb(139,136,120));
+        colors.add(Color.rgb(208,32,144));
+        colors.add(Color.rgb(	193,205,193));
+        colors.add(Color.rgb(230,230,250));
+        colors.add(Color.rgb(	100,149,237));
+        colors.add(Color.rgb(	106,90,205));
+        colors.add(Color.rgb(0,255,127));
+        colors.add(Color.rgb(255,215,0));
+        colors.add(Color.rgb(	205,92,92));
 
     }
 
@@ -72,7 +78,7 @@ public class GraphFragment extends Fragment {
         return new LineDataSet(compEntry,company.getIdentifiers().getTicker());
     }
 
-    public BarDataSet barChartDataSetup(String selectedRatio, Company company){
+/*    public BarDataSet barChartDataSetup(String selectedRatio, Company company){
         List<BarEntry> compEntry = new ArrayList<>();
         List<FinancialData> financialData= company.getFinancialDataEntries();
         checkYearNull(financialData);
@@ -112,20 +118,21 @@ public class GraphFragment extends Fragment {
             }else colors.add(i-1,getResources().getColor(R.color.average));
         }
 
-    }
+    }*/
     public void drawGraph(ArrayList<Company> companies,String selectedRatio){
 
         LineData lineData = new LineData();
-        LineDataSet setCompA= lineChartDataSetup( selectedRatio, companies.get(0));
-        lineData.addDataSet(setCompA);
-        LineDataSet setCompB = lineChartDataSetup(selectedRatio, companies.get(1));
-        //BarDataSet setCompB = barChartDataSetup(selectedRatio, companies.get(1));
-        //BarData barData = new BarData(setCompB);
-        lineData.addDataSet(setCompB);
-        ///barData.setBarWidth(0.45f);
-        //colorIndicator(companies.get(0),selectedRatio,compAColors);
+       ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
+        for(int i=0;i<companies.size();i++){
+            LineDataSet setComp= lineChartDataSetup( selectedRatio, companies.get(i));
+            lineDataSets.add(setComp);
+        }
 
-        setupDatasetStyle(setCompA,setCompB);//
+
+        setupDatasetStyle(lineDataSets);
+        for(int i=0;i<lineDataSets.size();i++){
+            lineData.addDataSet(lineDataSets.get(i));
+        }
         //draw graph
         mChart.setDrawOrder(new CombinedChart.DrawOrder[]{
             CombinedChart.DrawOrder.BAR,  CombinedChart.DrawOrder.LINE
@@ -146,7 +153,14 @@ public class GraphFragment extends Fragment {
         mchart.animateXY(1000, 1000);
         mchart.setDrawGridBackground(false);
         XAxis xAxis = mchart.getXAxis();
-
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                if(value ==0)
+                    return "N/A";
+                else return String.valueOf(value);
+            }
+        });
         YAxis yAxis = mchart.getAxisLeft();
 
         setupAxis(xAxis, yAxis);
@@ -184,22 +198,19 @@ public class GraphFragment extends Fragment {
         years = toConvertYears.toArray(new String[toConvertYears.size()]);
     }
 
-    public void setupDatasetStyle(LineDataSet setCompA, LineDataSet setCompB) {//
-        //Line
-        setCompA.setDrawCircleHole(true);
-        setCompA.setValueTextSize(12);
-        setCompA.setValueTextColor(Color.GRAY);
-        setCompA.setCircleHoleRadius(3);
-        setCompA.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setCompA.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        setCompA.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setCompA.setColor(Color.rgb(229, 13, 92));
-        //Bar
-        setCompB.setColors(Color.rgb(47, 237, 208));
-        setCompB.setValueTextColor(Color.rgb(60, 220, 78));
-        setCompB.setValueTextSize(10f);
-        setCompB.setAxisDependency(YAxis.AxisDependency.LEFT);
+    public void setupDatasetStyle(ArrayList<LineDataSet> lineDataSets/*, LineDataSet setCompA, LineDataSet setCompB*/) {
 
+
+        for (int i=0;i<lineDataSets.size();i++ ){
+            lineDataSets.get(i).setDrawCircleHole(true);
+            lineDataSets.get(i).setValueTextSize(12);
+            lineDataSets.get(i).setValueTextColor(colors.get(i));
+            lineDataSets.get(i).setCircleHoleRadius(3);
+            lineDataSets.get(i).setAxisDependency(YAxis.AxisDependency.LEFT);
+            lineDataSets.get(i).setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            lineDataSets.get(i).setAxisDependency(YAxis.AxisDependency.LEFT);
+            lineDataSets.get(i).setColor(colors.get(i));
+        }
     }
 
     public void setupLegend(Legend legend) {

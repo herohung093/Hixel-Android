@@ -35,8 +35,10 @@ import com.hixel.hixel.view.adapter.HorizontalCompanyListAdapter;
 import com.hixel.hixel.view.adapter.SearchAdapter;
 import com.hixel.hixel.viewmodel.ComparisonViewModel;
 import io.reactivex.observers.DisposableObserver;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ComparisonActivity extends AppCompatActivity {
 
@@ -85,7 +87,7 @@ public class ComparisonActivity extends AppCompatActivity {
         comparisonViewModel.getPortfolio().observe(ComparisonActivity.this,
             companies ->{
                 horizontalCompanyListAdapter.setCompanies(companies);
-                portfolioCompanies=companies;
+                //portfolioCompanies=companies;
                 horizontalCompanyListAdapter.notifyDataSetChanged();
         });
 
@@ -166,14 +168,15 @@ public class ComparisonActivity extends AppCompatActivity {
             Intent moveToGraph = new Intent(this, GraphActivity.class);
 
             ArrayList<Company> companies = comparisonViewModel.getCompanies().getValue();
-
-            if (companies == null || companies.size() < 2) {
-                Toast.makeText(getApplicationContext(), "Select 2 companies first!", Toast.LENGTH_LONG).show();
+            Log.d(TAG,"@@@@ "+companies.size());
+            List<Company> deDupStringList3 = companies.stream().distinct().collect(Collectors.toList());
+                if (companies == null) {
+                Toast.makeText(getApplicationContext(), "Select at least 2 companies!", Toast.LENGTH_LONG).show();
                 return;
             }
 
             moveToGraph.putExtra("COMPARISON_COMPANIES",
-                comparisonViewModel.getCompanies().getValue());
+                (Serializable) deDupStringList3);
 
             startActivity(moveToGraph);
         });
@@ -208,12 +211,12 @@ public class ComparisonActivity extends AppCompatActivity {
             ArrayList<Company> companies = comparisonViewModel.getCompanies().getValue();
             int size = (companies == null) ? 0 : companies.size();
 
-            if (size < 2) {
+            if (size < 10) {
                 comparisonViewModel.addToCompare(ticker);
             }
             else {
-                Toast.makeText(this, "Can only compare 2 companies!", Toast.LENGTH_LONG)
-                     .show();
+                //Toast.makeText(this, "Can only compare 2 companies!", Toast.LENGTH_LONG)
+                  //   .show();
             }
         });
 
@@ -332,9 +335,10 @@ public class ComparisonActivity extends AppCompatActivity {
 
     private void observeViewModel(ComparisonViewModel viewModel){
         viewModel.getCompanies().observe(this, companies -> {
-            //adapter.setCompanies(companies);
-            //selectedCompany.addAll(companies);
-            adapter.setCompanies(companies);
+            //ArrayList<Company> companies1 = comparisonViewModel.getCompanies().getValue();
+
+            List<Company> deDupStringList3 = companies.stream().distinct().collect(Collectors.toList());
+            adapter.setCompanies(deDupStringList3);
         });
         viewModel.setupSearch(getSearchObserver());
     }

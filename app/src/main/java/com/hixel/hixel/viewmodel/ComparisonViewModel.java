@@ -102,7 +102,10 @@ public class ComparisonViewModel extends ViewModel {
                         ArrayList<Company> temp = new ArrayList<>();
 
                         if (current != null && !current.isEmpty()){
-                            temp.add(current.get(0));
+                            for(int i=0;i<current.size();i++)
+                            {
+                                temp.add(current.get(i));
+                            }
                         }
 
                         temp.add(Objects.requireNonNull(response.body()).get(0));

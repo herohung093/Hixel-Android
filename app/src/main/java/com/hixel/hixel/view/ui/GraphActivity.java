@@ -49,7 +49,7 @@ public class GraphActivity extends FragmentActivity implements
         intentReceiver = getIntent();
         receivedCompanies =
             (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
-
+        Log.d(TAG,"@@@@@@"+ String.valueOf(receivedCompanies.size()));
         Context context = this;
         //setup bottom navigator
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.graph_generic_navigator);
@@ -91,12 +91,6 @@ public class GraphActivity extends FragmentActivity implements
     }
 
     public void setupListOfRatios(ArrayList<String> spinnerList) {
-        /*listRatiosAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerList);
-        listRatiosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        listOfGraph = findViewById(R.id.spinner2);
-        listOfGraph.setOnItemSelectedListener(this);
-        listOfGraph.setAdapter(listRatiosAdapter);*/
-
         mRecyclerView = findViewById(R.id.ratios_list_view);
         mRecyclerView.setHasFixedSize(true);
 
