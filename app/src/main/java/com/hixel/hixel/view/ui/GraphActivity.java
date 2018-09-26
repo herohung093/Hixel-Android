@@ -14,11 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.view.adapter.CompanyScoreListAdapter;
 import com.hixel.hixel.view.adapter.HorizontalListViewAdapter;
 import com.hixel.hixel.viewmodel.GraphViewModel;
 import java.util.ArrayList;
@@ -29,12 +28,12 @@ public class GraphActivity extends FragmentActivity implements
     private final String TAG = getClass().getSimpleName();
 
     ArrayList<String> ratios = new ArrayList<>();
-    RecyclerView mRecyclerView;
+    RecyclerView mRecyclerView, companyRecycleView;
     RecyclerView.LayoutManager mLayoutManager;
-    RecyclerView.Adapter mAdapter;
+    RecyclerView.Adapter mAdapter,companyListAdapter;
     Intent intentReceiver;
     GraphFragment fragmentA;
-    Button companyA, companyB;
+
     ArrayList<Company> receivedCompanies;
     GraphViewModel graphViewModel;
     ImageView inforButton;
@@ -60,11 +59,8 @@ public class GraphActivity extends FragmentActivity implements
         //Observe changes in list of ratios
 
         observeViewModel(graphViewModel);
+        setUpListOFCompanies();
 
-        companyA = findViewById(R.id.companyA);
-        companyA.setText(receivedCompanies.get(0).getIdentifiers().getName());
-        companyB = findViewById(R.id.companyB);
-        companyB.setText(receivedCompanies.get(1).getIdentifiers().getName());
 
         inforButton = findViewById(R.id.imageView3);
         inforButton.setOnClickListener(new OnClickListener(){
@@ -90,6 +86,16 @@ public class GraphActivity extends FragmentActivity implements
 
     }
 
+    private void setUpListOFCompanies() {
+        companyRecycleView = findViewById(R.id.company_list);
+        companyRecycleView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager;
+        mLayoutManager=  new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        companyRecycleView.setLayoutManager(mLayoutManager);
+        companyListAdapter=new CompanyScoreListAdapter(this,receivedCompanies);
+        companyRecycleView.setAdapter(companyListAdapter);
+    }
+
     public void setupListOfRatios(ArrayList<String> spinnerList) {
         mRecyclerView = findViewById(R.id.ratios_list_view);
         mRecyclerView.setHasFixedSize(true);
@@ -106,14 +112,6 @@ public class GraphActivity extends FragmentActivity implements
         fragmentB.drawGraph(receivedCompanies);
     }
 
-
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        fragmentA = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_bar_char);
-        fragmentA.drawGraph(receivedCompanies, adapterView.getSelectedItem().toString());
-        GenericChartFragment fragmentB =
-            (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
-        fragmentB.drawGraph(receivedCompanies);
-    }
 
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
