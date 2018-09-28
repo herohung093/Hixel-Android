@@ -22,7 +22,7 @@
 
       <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="140dp"
         app:cardBackgroundColor="@color/colorPrimaryDark">
         <RelativeLayout
           android:layout_width="match_parent"
@@ -32,6 +32,7 @@
             android:id="@+id/company_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
             android:layout_below="@+id/textView7"/>
           <TextView
             android:id="@+id/textView7"

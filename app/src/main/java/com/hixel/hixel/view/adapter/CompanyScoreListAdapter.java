@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
 import java.util.List;
+import java.util.Random;
 
 public class CompanyScoreListAdapter extends RecyclerView.Adapter<CompanyScoreListAdapter.ViewHolder>{
 
@@ -39,6 +41,8 @@ public class CompanyScoreListAdapter extends RecyclerView.Adapter<CompanyScoreLi
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyName.setText(companyName);
+        Random rand = new Random();
+        holder.progressBar.setCurrentProgress(rand.nextInt(100)+1);
     }
 
     @Override
@@ -48,9 +52,11 @@ public class CompanyScoreListAdapter extends RecyclerView.Adapter<CompanyScoreLi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView companyName,score;
+        private CircularProgressIndicator progressBar;
         public ViewHolder(View itemView) {
             super(itemView);
             companyName= itemView.findViewById(R.id.textViewName41);
+            progressBar = itemView.findViewById(R.id.progressBar);
             //score= itemView.findViewById(R.id.textView41);
         }
     }
