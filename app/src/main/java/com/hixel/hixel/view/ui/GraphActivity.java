@@ -1,6 +1,7 @@
 package com.hixel.hixel.view.ui;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -33,7 +35,7 @@ public class GraphActivity extends FragmentActivity implements
     RecyclerView.Adapter mAdapter,companyListAdapter;
     Intent intentReceiver;
     GraphFragment fragmentA;
-
+    ProgressDialog progressDialog;
     ArrayList<Company> receivedCompanies;
     GraphViewModel graphViewModel;
     ImageView inforButton;
@@ -45,6 +47,12 @@ public class GraphActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.getWindow().setGravity(Gravity.CENTER);
+
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.show();
         intentReceiver = getIntent();
         receivedCompanies =
             (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
@@ -60,7 +68,7 @@ public class GraphActivity extends FragmentActivity implements
 
         observeViewModel(graphViewModel);
         setUpListOFCompanies();
-
+        progressDialog.dismiss();
 
         inforButton = findViewById(R.id.imageView3);
         inforButton.setOnClickListener(new OnClickListener(){
@@ -110,6 +118,8 @@ public class GraphActivity extends FragmentActivity implements
         GenericChartFragment fragmentB =
             (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
         fragmentB.drawGraph(receivedCompanies);
+
+
     }
 
 

@@ -146,6 +146,7 @@ public class GraphFragment extends Fragment {
         mChart.getDescription().setEnabled(false);
         mChart.setData(data);
         mChart.invalidate();
+
     }
 
     public void decorLineChart(CombinedChart mchart){

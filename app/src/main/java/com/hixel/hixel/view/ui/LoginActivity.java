@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailText.getEditText().getText().toString();
         String password = passwordText.getEditText().getText().toString();
 
-        // TODO: Implement  authentication logic here.
+
 
         Call<Void> call = getClient()
                 .create(ServerInterface.class)
