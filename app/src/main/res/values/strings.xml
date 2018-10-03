@@ -29,4 +29,5 @@
 
   <!-- Defaults -->
   <string name="default_text">Default</string>
+  <string name="dot">&#xb7;</string>
 </resources>

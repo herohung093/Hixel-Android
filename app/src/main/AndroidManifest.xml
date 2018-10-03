@@ -34,17 +34,17 @@
     <activity
       android:name=".view.ui.LoginActivity"
       android:windowSoftInputMode="stateHidden">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
     </activity>
     <activity
       android:name=".view.ui.SignupActivity"
       android:windowSoftInputMode="stateHidden">
     </activity>
     <activity android:name=".view.ui.Onboarding">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
     </activity>
   </application>
 

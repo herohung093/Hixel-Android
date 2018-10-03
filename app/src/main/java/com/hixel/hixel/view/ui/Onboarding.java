@@ -38,8 +38,8 @@ public class Onboarding extends AppCompatActivity {
 
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);
-            dots[i].setText("o");
-            dots[i].setTextSize(35);
+            dots[i].setText(R.string.dot);
+            dots[i].setTextSize(50);
             dots[i].setTextColor(getColor(R.color.primary_background));
 
             linearLayout.addView(dots[i]);

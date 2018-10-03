@@ -18,15 +18,15 @@ public class SliderAdapter extends PagerAdapter {
     private Context context;
 
     public String[] headers = {
+            "INTUITIVE ANALYTICS",
             "YOUR PORTFOLIO",
-            "LIVE DATA",
-            "BETTER DECISIONS"
+            "JOIN US!"
     };
 
     public String[] descriptions = {
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            "Forget candle charts and complicated ratios, our algorithm turns it all into a simple scale from 1-5",
+            "You add the companies you like and the algorithm does the analytics behind the scenes.",
+            "That's are there is too it! We make the complex simple so you can make better financial decisions with less stress. Come join us today, and get dat $$$$$"
     };
 
     public SliderAdapter(Context context) {
