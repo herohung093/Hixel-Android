@@ -17,4 +17,7 @@ public abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract CompanyActivity companyActivity();
+
+    @ContributesAndroidInjector
+    abstract CompanyActivity comparisonActivity();
 }
