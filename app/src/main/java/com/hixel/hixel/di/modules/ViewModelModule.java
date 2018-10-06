@@ -3,9 +3,9 @@ package com.hixel.hixel.di.modules;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import com.hixel.hixel.di.ViewModelKey;
-import com.hixel.hixel.viewmodel.CompanyViewModel;
-import com.hixel.hixel.viewmodel.ComparisonViewModel;
-import com.hixel.hixel.viewmodel.DashboardViewModel;
+import com.hixel.hixel.companydetail.CompanyDetailViewModel;
+import com.hixel.hixel.companycomparison.CompanyComparisonViewModel;
+import com.hixel.hixel.dashboard.DashboardViewModel;
 import com.hixel.hixel.ViewModelFactory;
 import dagger.Binds;
 import dagger.Module;
@@ -25,13 +25,13 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(CompanyViewModel.class)
-    abstract ViewModel bindCompanyViewModel(CompanyViewModel companyViewModel);
+    @ViewModelKey(CompanyDetailViewModel.class)
+    abstract ViewModel bindCompanyDetailViewModel(CompanyDetailViewModel companyDetailViewModel);
 
     @Binds
     @IntoMap
-    @ViewModelKey(ComparisonViewModel.class)
-    abstract ViewModel bindComparisonViewModel(ComparisonViewModel comparisonViewModel);
+    @ViewModelKey(CompanyComparisonViewModel.class)
+    abstract ViewModel bindCompanyComparisonViewModel(CompanyComparisonViewModel companyComparisonViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);

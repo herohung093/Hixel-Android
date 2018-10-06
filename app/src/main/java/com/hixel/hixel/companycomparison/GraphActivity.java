@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.ui;
+package com.hixel.hixel.companycomparison;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -14,10 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import com.hixel.hixel.R;
+import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.databinding.ActivityGraphBinding;
 import com.hixel.hixel.service.models.Company;
-import com.hixel.hixel.view.ui.GraphFragment.OnFragmentInteractionListener;
-import com.hixel.hixel.viewmodel.GraphViewModel;
+import com.hixel.hixel.companycomparison.GraphFragment.OnFragmentInteractionListener;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -82,7 +82,7 @@ public class GraphActivity extends FragmentActivity implements
                     break;
 
                 case R.id.compare_button:
-                    Intent moveToCompare = new Intent(this, ComparisonActivity.class);
+                    Intent moveToCompare = new Intent(this, CompanyComparisonActivity.class);
                     startActivity(moveToCompare);
                     break;
 

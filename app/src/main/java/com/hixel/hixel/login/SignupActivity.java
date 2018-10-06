@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.ui;
+package com.hixel.hixel.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

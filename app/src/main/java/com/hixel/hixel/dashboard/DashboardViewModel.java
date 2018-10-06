@@ -1,4 +1,4 @@
-package com.hixel.hixel.viewmodel;
+package com.hixel.hixel.dashboard;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;

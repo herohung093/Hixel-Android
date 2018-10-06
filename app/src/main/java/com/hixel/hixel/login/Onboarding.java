@@ -1,14 +1,13 @@
-package com.hixel.hixel.view.ui;
+package com.hixel.hixel.login;
 
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.hixel.hixel.R;
-import com.hixel.hixel.view.adapter.SliderAdapter;
+import com.hixel.hixel.commonui.SliderAdapter;
 
 public class Onboarding extends AppCompatActivity {
 

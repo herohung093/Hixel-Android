@@ -2,7 +2,6 @@ package com.hixel.hixel;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasChildCount;
@@ -12,7 +11,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 import android.support.test.rule.ActivityTestRule;
-import com.hixel.hixel.view.ui.DashboardActivity;
+import com.hixel.hixel.dashboard.DashboardActivity;
 import org.junit.Rule;
 import org.junit.Test;
 

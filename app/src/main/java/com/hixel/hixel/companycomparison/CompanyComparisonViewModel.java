@@ -1,4 +1,4 @@
-package com.hixel.hixel.viewmodel;
+package com.hixel.hixel.companycomparison;
 
 import static com.hixel.hixel.service.network.Client.getClient;
 
@@ -21,11 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ComparisonViewModel extends ViewModel {
+public class CompanyComparisonViewModel extends ViewModel {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -34,6 +35,11 @@ public class ComparisonViewModel extends ViewModel {
     private PublishSubject<String> publishSubject = PublishSubject.create();
 
     private MutableLiveData<SearchEntry> searchResults = new MutableLiveData<>();
+
+    @Inject
+    CompanyComparisonViewModel() {
+
+    }
 
     public void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
         disposable.add(publishSubject

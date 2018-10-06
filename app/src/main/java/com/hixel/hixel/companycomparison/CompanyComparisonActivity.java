@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.ui;
+package com.hixel.hixel.companycomparison;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -19,26 +19,26 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
+import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.databinding.ActivityComparisonBinding;
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.SearchEntry;
-import com.hixel.hixel.view.adapter.ComparisonAdapter;
-import com.hixel.hixel.view.adapter.ComparisonAdapter.ViewHolder;
-import com.hixel.hixel.view.adapter.SearchAdapter;
-import com.hixel.hixel.viewmodel.ComparisonViewModel;
+import com.hixel.hixel.commonui.ComparisonAdapter;
+import com.hixel.hixel.commonui.ComparisonAdapter.ViewHolder;
+import com.hixel.hixel.commonui.SearchAdapter;
+import com.hixel.hixel.dashboard.DashboardActivity;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class ComparisonActivity extends AppCompatActivity {
+public class CompanyComparisonActivity extends AppCompatActivity {
 
     ComparisonAdapter adapter;
     RecyclerView recyclerView;
@@ -46,17 +46,17 @@ public class ComparisonActivity extends AppCompatActivity {
     TextView textView;
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
-    ComparisonViewModel comparisonViewModel;
+    CompanyComparisonViewModel companyComparisonViewModel;
     ActivityComparisonBinding binding;
 
-    private static final String TAG = CompanyActivity.class.getSimpleName();
+    private static final String TAG = CompanyDetailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_comparison);
-        comparisonViewModel = ViewModelProviders.of(this).get(ComparisonViewModel.class);
-        observeViewModel(comparisonViewModel);
+        companyComparisonViewModel = ViewModelProviders.of(this).get(CompanyComparisonViewModel.class);
+        observeViewModel(companyComparisonViewModel);
 
         recyclerView = binding.recycleView;
         compareButton = binding.compareButton;
@@ -72,7 +72,7 @@ public class ComparisonActivity extends AppCompatActivity {
         compareButton.setOnClickListener((View view) -> {
             Intent moveToGraph = new Intent(this, GraphActivity.class);
 
-            ArrayList<Company> companies = comparisonViewModel.getCompanies().getValue();
+            ArrayList<Company> companies = companyComparisonViewModel.getCompanies().getValue();
 
             if (companies == null || companies.size() < 2) {
                 Toast.makeText(getApplicationContext(), "Select 2 companies first!", Toast.LENGTH_LONG).show();
@@ -80,7 +80,7 @@ public class ComparisonActivity extends AppCompatActivity {
             }
 
             moveToGraph.putExtra("COMPARISON_COMPANIES",
-                comparisonViewModel.getCompanies().getValue());
+                companyComparisonViewModel.getCompanies().getValue());
 
             startActivity(moveToGraph);
         });
@@ -112,11 +112,11 @@ public class ComparisonActivity extends AppCompatActivity {
             String ticker = entry.getTicker();
             searchAutoComplete.setText(entry.getName());
 
-            ArrayList<Company> companies = comparisonViewModel.getCompanies().getValue();
+            ArrayList<Company> companies = companyComparisonViewModel.getCompanies().getValue();
             int size = (companies == null) ? 0 : companies.size();
 
             if (size < 2) {
-                comparisonViewModel.addToCompare(ticker);
+                companyComparisonViewModel.addToCompare(ticker);
             }
             else {
                 Toast.makeText(this, "Can only compare 2 companies!", Toast.LENGTH_LONG)
@@ -133,7 +133,7 @@ public class ComparisonActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                comparisonViewModel.loadSearchResults(searchAutoComplete.getText().toString());
+                companyComparisonViewModel.loadSearchResults(searchAutoComplete.getText().toString());
                 return false;
             }
         });
@@ -228,7 +228,7 @@ public class ComparisonActivity extends AppCompatActivity {
     }
 
     public void setupListViewAdapter(){
-        adapter = new ComparisonAdapter(this,comparisonViewModel.getCompanies().getValue());
+        adapter = new ComparisonAdapter(this, companyComparisonViewModel.getCompanies().getValue());
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -237,7 +237,7 @@ public class ComparisonActivity extends AppCompatActivity {
         setUpItemTouchHelper();
     }
 
-    private void observeViewModel(ComparisonViewModel viewModel){
+    private void observeViewModel(CompanyComparisonViewModel viewModel){
         viewModel.getCompanies().observe(this, new Observer<ArrayList<Company>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Company> companies) {

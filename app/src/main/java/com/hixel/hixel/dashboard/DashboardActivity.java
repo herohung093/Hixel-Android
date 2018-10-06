@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.ui;
+package com.hixel.hixel.dashboard;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -31,6 +31,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
+import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
+import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.CompanyEntity;
@@ -38,11 +40,10 @@ import com.hixel.hixel.data.CompanyEntity;
 import com.hixel.hixel.service.models.SearchEntry;
 import com.hixel.hixel.service.models.charts.MainBarChartRenderer;
 import com.hixel.hixel.service.models.charts.MainBarDataSet;
-import com.hixel.hixel.view.adapter.DashboardAdapter;
-import com.hixel.hixel.view.adapter.SearchAdapter;
-import com.hixel.hixel.view.callback.RecyclerItemTouchHelper;
-import com.hixel.hixel.view.callback.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
-import com.hixel.hixel.viewmodel.DashboardViewModel;
+import com.hixel.hixel.commonui.DashboardAdapter;
+import com.hixel.hixel.commonui.SearchAdapter;
+import com.hixel.hixel.commonui.RecyclerItemTouchHelper;
+import com.hixel.hixel.commonui.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
@@ -170,7 +171,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     }
 
     public void goToCompanyView(String ticker) {
-        Intent intent = new Intent(this, CompanyActivity.class);
+        Intent intent = new Intent(this, CompanyDetailActivity.class);
 
         intent.putExtra("COMPANY_TICKER", ticker);
         startActivity(intent);
@@ -185,7 +186,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
                     // Already on this screen.
                     break;
                 case R.id.compare_button:
-                    Intent moveToCompare = new Intent(this, ComparisonActivity.class);
+                    Intent moveToCompare = new Intent(this, CompanyComparisonActivity.class);
                     startActivity(moveToCompare);
                     break;
                 case R.id.settings_button:

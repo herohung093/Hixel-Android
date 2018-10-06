@@ -14,25 +14,25 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
     <activity
-      android:name=".view.ui.DashboardActivity"
+      android:name=".dashboard.DashboardActivity"
       android:windowSoftInputMode="adjustNothing">
     </activity>
-    <activity android:name=".view.ui.CompanyActivity">
+    <activity android:name=".companydetail.CompanyDetailActivity">
     </activity>
     <activity
-      android:name=".view.ui.ComparisonActivity"
+      android:name=".companycomparison.CompanyComparisonActivity"
       android:windowSoftInputMode="stateHidden">
     </activity>
     <!-- suppress AndroidDomInspection -->
     <!-- <activity android:name=".comparisonGraph.MainActivity"/> -->
-    <activity android:name=".view.ui.GraphActivity"/>
+    <activity android:name=".companycomparison.GraphActivity"/>
 
     <meta-data
       android:name="preloaded_fonts"
       android:resource="@array/preloaded_fonts"/>
 
     <activity
-      android:name=".view.ui.LoginActivity"
+      android:name=".login.LoginActivity"
       android:windowSoftInputMode="stateHidden">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -41,10 +41,10 @@
       </intent-filter>
     </activity>
     <activity
-      android:name=".view.ui.SignupActivity"
+      android:name=".login.SignupActivity"
       android:windowSoftInputMode="stateHidden">
     </activity>
-    <activity android:name=".view.ui.Onboarding">
+    <activity android:name=".login.Onboarding">
     </activity>
   </application>
 

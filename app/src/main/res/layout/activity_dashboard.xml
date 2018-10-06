@@ -10,7 +10,7 @@
 
     <variable
       name="viewModel"
-      type="com.hixel.hixel.viewmodel.DashboardViewModel" />
+      type="com.hixel.hixel.dashboard.DashboardViewModel" />
   </data>
 
 
@@ -18,7 +18,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_background"
-    tools:context=".view.ui.DashboardActivity">
+    tools:context=".dashboard.DashboardActivity">
 
     <include
       android:id="@+id/toolbar"

@@ -1,10 +1,10 @@
-package com.hixel.hixel.view.callback;
+package com.hixel.hixel.commonui;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import com.hixel.hixel.view.adapter.DashboardAdapter.ViewHolder;
+import com.hixel.hixel.commonui.DashboardAdapter.ViewHolder;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 

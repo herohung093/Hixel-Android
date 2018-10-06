@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.adapter;
+package com.hixel.hixel.commonui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hixel.hixel.R;
+import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.CompanyEntity;
-import com.hixel.hixel.view.ui.CompanyActivity;
 
 import java.util.List;
 
@@ -75,7 +75,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
             String ticker = company.getIdentifiers().getTicker();
 
-            Intent intent = new Intent(context, CompanyActivity.class);
+            Intent intent = new Intent(context, CompanyDetailActivity.class);
             intent.putExtra("COMPANY_TICKER", ticker);
             context.startActivity(intent);
         });

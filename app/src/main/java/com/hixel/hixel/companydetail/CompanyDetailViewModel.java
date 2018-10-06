@@ -1,4 +1,4 @@
-package com.hixel.hixel.viewmodel;
+package com.hixel.hixel.companydetail;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
@@ -7,13 +7,13 @@ import com.hixel.hixel.data.source.CompanyRepository;
 import javax.inject.Inject;
 
 
-public class CompanyViewModel extends ViewModel {
+public class CompanyDetailViewModel extends ViewModel {
 
     private MutableLiveData<CompanyEntity> company;
     private CompanyRepository companyRepository;
 
     @Inject
-    CompanyViewModel(CompanyRepository companyRepository) {
+    CompanyDetailViewModel(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
 

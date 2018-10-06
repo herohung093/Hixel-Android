@@ -1,4 +1,4 @@
-package com.hixel.hixel.viewmodel;
+package com.hixel.hixel.companycomparison;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;

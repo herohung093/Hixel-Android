@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.lifecycle.Observer;
 import com.hixel.hixel.service.models.Company;
-import com.hixel.hixel.viewmodel.DashboardViewModel;
+import com.hixel.hixel.dashboard.DashboardViewModel;
 import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Before;

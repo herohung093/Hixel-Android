@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.adapter;
+package com.hixel.hixel.commonui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

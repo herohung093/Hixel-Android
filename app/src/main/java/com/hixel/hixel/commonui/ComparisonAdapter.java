@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.adapter;
+package com.hixel.hixel.commonui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
-import com.hixel.hixel.view.ui.CompanyActivity;
+import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import java.util.Calendar;
 import java.util.List;
 
@@ -69,7 +69,7 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
         }
 
         holder.foreground.setOnClickListener((View view) -> {
-            Intent intent = new Intent(mContext, CompanyActivity.class);
+            Intent intent = new Intent(mContext, CompanyDetailActivity.class);
             intent.putExtra("CURRENT_COMPANY",
                     companies.get(holder.getAdapterPosition()));
 

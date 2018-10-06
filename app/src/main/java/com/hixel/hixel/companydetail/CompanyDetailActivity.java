@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.ui;
+package com.hixel.hixel.companydetail;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -17,20 +17,21 @@ import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.CompanyEntity;
-import com.hixel.hixel.viewmodel.CompanyViewModel;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
+import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
+import com.hixel.hixel.dashboard.DashboardActivity;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
 
-public class CompanyActivity extends AppCompatActivity {
+public class CompanyDetailActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
-    private static final String TAG = CompanyActivity.class.getSimpleName();
+    private static final String TAG = CompanyDetailActivity.class.getSimpleName();
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-    private CompanyViewModel viewModel;
+    private CompanyDetailViewModel viewModel;
 
     FloatingActionButton fab;
     ActivityCompanyBinding binding;
@@ -53,7 +54,7 @@ public class CompanyActivity extends AppCompatActivity {
     }
 
     private void configureViewModel(String ticker) {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CompanyViewModel.class);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CompanyDetailViewModel.class);
         viewModel.loadCompany(ticker);
 
         if (viewModel.getCompany() != null) {
@@ -120,7 +121,7 @@ public class CompanyActivity extends AppCompatActivity {
                     startActivity(moveToDashBoard);
                     break;
                 case R.id.compare_button:
-                    Intent moveToCompare = new Intent(this, ComparisonActivity.class);
+                    Intent moveToCompare = new Intent(this, CompanyComparisonActivity.class);
                     startActivity(moveToCompare);
                     break;
                 case R.id.settings_button:

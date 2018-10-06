@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.ui;
+package com.hixel.hixel.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,10 +17,10 @@ import android.widget.Toast;
 
 import com.hixel.hixel.App;
 import com.hixel.hixel.R;
+import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.service.models.LoginData;
 import com.hixel.hixel.service.network.ServerInterface;
 
-import com.hixel.hixel.view.adapter.SliderAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
