@@ -48,6 +48,10 @@ public class CompanyRepository {
         return companyDao.load(); // return LiveData from the db.
     }
 
+    public LiveData<List<Company>> getPortfolioCompanies() {
+        return companyDao.load();
+    }
+
     // TODO: Check the effects of not having an executor here.
     public MutableLiveData<Company> getCompany(String ticker) {
         //executor.execute(() -> {

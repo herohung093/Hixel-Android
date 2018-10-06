@@ -23,7 +23,7 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.RecyclerView
-      android:id="@+id/dashboardComp_recycleView"
+      android:id="@+id/dashboardComp_recyclerView"
       android:layout_width="match_parent"
       android:layout_height="100dp"
       app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,6 @@
     <android.support.v7.widget.SearchView
       android:id="@+id/searchView"
       android:layout_width="match_parent"
-
       android:layout_height="49dp"
       android:background="@color/secondary_background"
       android:clickable="true"
@@ -48,7 +47,7 @@
       app:showAsAction="collapseActionView"/>
 
     <include
-      android:id="@+id/bottom_nav_compariton"
+      android:id="@+id/bottom_nav_comparison"
       layout="@layout/bottom_navigation">
     </include>
 
@@ -64,14 +63,14 @@
       android:elevation="9dp"
       android:text="@string/compare"
       android:textColor="@color/text_main_light"
-      app:layout_constraintBottom_toTopOf="@+id/bottom_nav_compariton"
+      app:layout_constraintBottom_toTopOf="@+id/bottom_nav_comparison"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/recycleView"
+      app:layout_constraintTop_toBottomOf="@+id/comparison_recycler_view"
       app:layout_constraintVertical_bias="0.0"/>
 
     <android.support.v7.widget.RecyclerView
-      android:id="@+id/recycleView"
+      android:id="@+id/comparison_recycler_view"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_marginBottom="7dp"
@@ -86,7 +85,7 @@
       android:layout_width="0dp"
       android:layout_height="5dp"
       android:background="?android:attr/listDivider"
-      app:layout_constraintBottom_toTopOf="@+id/dashboardComp_recycleView"
+      app:layout_constraintBottom_toTopOf="@+id/dashboardComp_recyclerView"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/cardView"/>
@@ -100,7 +99,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/dashboardComp_recycleView"
+      app:layout_constraintTop_toBottomOf="@+id/dashboardComp_recyclerView"
       app:layout_constraintVertical_bias="0.0"/>
 
     <android.support.v7.widget.CardView
@@ -135,7 +134,7 @@
       android:layout_width="0dp"
       android:layout_height="5dp"
       android:background="?android:attr/listDivider"
-      app:layout_constraintBottom_toTopOf="@+id/recycleView"
+      app:layout_constraintBottom_toTopOf="@+id/comparison_recycler_view"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/cardView2"/>

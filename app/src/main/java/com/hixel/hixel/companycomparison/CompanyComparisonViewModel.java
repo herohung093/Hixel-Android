@@ -7,6 +7,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.data.api.Client;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,48 +33,33 @@ public class CompanyComparisonViewModel extends ViewModel {
     @SuppressWarnings("unused")
     private final String TAG = getClass().getSimpleName();
 
+    private CompanyRepository repository;
+    private LiveData<List<Company>> dashboardCompanies;
+
     private MutableLiveData<ArrayList<Company>> companies = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Company>> portfolioCompanies;
     private CompositeDisposable disposable = new CompositeDisposable();
     private PublishSubject<String> publishSubject = PublishSubject.create();
 
-    private MutableLiveData<SearchEntry> searchResults = new MutableLiveData<>();
-
     @Inject
-    CompanyComparisonViewModel() {
-
+    CompanyComparisonViewModel(CompanyRepository repository) {
+        this.repository = repository;
     }
 
+    public void init() {
+        if (this.dashboardCompanies != null) {
+            return;
+        }
+
+        dashboardCompanies = repository.getPortfolioCompanies();
+    }
 
     public LiveData<ArrayList<Company>> getPortfolio() {
         if (portfolioCompanies == null) {
             portfolioCompanies = new MutableLiveData<>();
-            loadPortfolio();
         }
 
         return portfolioCompanies;
-    }
-
-    private void loadPortfolio() {
-        // TODO: Create a repository for this data to ease communication.
-        String[] companies = {"AAPL", "TSLA", "TWTR", "SNAP", "FB", "AMZN"};
-
-        Call<ArrayList<Company>> call = getClient()
-            .create(ServerInterface.class)
-            .doGetCompanies(StringUtils.join(companies, ','), 1);
-
-        call.enqueue(new Callback<ArrayList<Company>>() {
-            @Override
-            public void onResponse(@NonNull Call<ArrayList<Company>> call,
-                @NonNull Response<ArrayList<Company>> response) {
-                portfolioCompanies.setValue(response.body());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
-            }
-        });
-
     }
 
     public void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
@@ -138,6 +123,5 @@ public class CompanyComparisonViewModel extends ViewModel {
     public MutableLiveData<ArrayList<Company>> getCompanies(){
         return companies;
     }
-
 }
 

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.models.Company;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,8 +50,6 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
         holder.companyName.setText(companyName);
         holder.companyTicker.setText(companyTicker);
 
-
-        int last_year = Calendar.getInstance().get(Calendar.YEAR) - 1;
         double currentRatio = companies.get(position).getRatio();
 
 

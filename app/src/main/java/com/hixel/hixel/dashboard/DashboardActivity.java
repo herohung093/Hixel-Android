@@ -70,9 +70,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     private SearchAutoComplete searchAutoComplete;
     private DashboardAdapter dashboardAdapter;
     private RecyclerView recyclerView;
-    DashboardViewModel dashboardViewModel;
 
-    RecyclerView mRecyclerView;
     FileOutputStream outputStream;
     String fileName="CompanyList";
     private BarChart chart;
@@ -112,7 +110,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     private void updateUI(@Nullable List<Company> companies) {
         if (companies != null) {
-            Log.d(TAG, "updateUI: HERE");
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
         } else {
@@ -174,7 +171,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
                 binding.progressBar.setVisibility(View.VISIBLE);
                 viewModel.loadSearchResults(searchAutoComplete.getText().toString());
                 binding.progressBar.setVisibility(View.INVISIBLE);
-                dashboardViewModel.loadSearchResults(newText);
+                viewModel.loadSearchResults(newText);
                 return false;
             }
         });
@@ -289,20 +286,20 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     public void setupDashboardAdapter() {
 
         dashboardAdapter = new DashboardAdapter(this, new ArrayList<>());
-        mRecyclerView.setAdapter(this.dashboardAdapter);
+        recyclerView.setAdapter(this.dashboardAdapter);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setNestedScrollingEnabled(false);
 
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
+        SimpleCallback itemTouchHelperCallback =
                 new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
 
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
-        dashboardViewModel.getCompanies().observe(DashboardActivity.this,
+        viewModel.getCompanies().observe(DashboardActivity.this,
                 companies -> {dashboardAdapter.addItems(companies);
                 savePortfolioCompanies(companies);
         });
