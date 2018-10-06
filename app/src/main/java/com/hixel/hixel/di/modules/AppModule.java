@@ -37,7 +37,6 @@ public class AppModule {
     @Singleton
     CompanyDao provideUserDao(AppDatabase database) { return database.companyDao(); }
 
-
     // --- REPOSITORY INJECTION ---
     @Provides
     Executor provideExecutor() {

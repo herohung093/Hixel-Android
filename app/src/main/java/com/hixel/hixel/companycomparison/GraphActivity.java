@@ -14,15 +14,13 @@ import android.view.Gravity;
 import android.widget.ImageView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.commonui.HorizontalListViewAdapter;
+import com.hixel.hixel.companycomparison.GraphFragment.OnFragmentInteractionListener;
 import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.login.ProfileActivity;
-import com.hixel.hixel.view.ui.GenericChartFragment;
-import com.hixel.hixel.view.ui.GenericChartFragment.OnFragmentInteractionListener;
 import java.util.ArrayList;
 
-public class GraphActivity extends FragmentActivity implements
-        OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener {
+public class GraphActivity extends FragmentActivity implements OnFragmentInteractionListener {
 
     @SuppressWarnings("unused")
     private final String TAG = getClass().getSimpleName();

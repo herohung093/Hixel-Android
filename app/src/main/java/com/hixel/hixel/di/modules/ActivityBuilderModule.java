@@ -9,10 +9,8 @@ import dagger.android.ContributesAndroidInjector;
 /**
  * Lets Dagger know our Views at compile time
  */
-
 @Module
 public abstract class ActivityBuilderModule {
-
     @ContributesAndroidInjector
     abstract DashboardActivity dashboardActivity();
 

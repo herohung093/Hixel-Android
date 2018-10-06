@@ -25,13 +25,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         submitButton= findViewById(R.id.btn_submit);
         hint_TV = findViewById(R.id.textView4);
 
-        backButton.setOnClickListener(event->{
+        backButton.setOnClickListener(event -> {
             Intent moveToLogin= new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(moveToLogin);
             overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
         });
 
-        submitButton.setOnClickListener(event->{
+        submitButton.setOnClickListener(event -> {
             //TODO: show notification and get respond from server here
             if(!validate()){
                 Toast.makeText(getBaseContext(), "Invalid email address! Try again", Toast.LENGTH_LONG).show();
@@ -45,22 +45,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private boolean validate() {
         boolean valid = true;
-
         String email = emailIdText.getEditText().getText().toString().trim();
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailIdText.setError("Invalid email address");
             valid = false;
-        }
-        else {
+        } else {
             emailIdText.setError(null);
         }
 
         return valid;
     }
 
-    public void onSendCodeSuccess(){
-        Intent moveToPinInput = new Intent(this, com.hixel.hixel.view.ui.PinInputActivity.class);
+    public void onSendCodeSuccess() {
+        Intent moveToPinInput = new Intent(this, PinInputActivity.class);
         startActivity(moveToPinInput);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }

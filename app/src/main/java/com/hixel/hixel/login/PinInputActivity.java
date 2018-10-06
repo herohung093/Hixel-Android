@@ -15,12 +15,12 @@ public class PinInputActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pin_input);
 
-        Intent moveToUpdatePassword = new Intent(this, com.hixel.hixel.view.ui.UpdatePasswordActivity.class);
+        Intent moveToUpdatePassword = new Intent(this, UpdatePasswordActivity.class);
         pin = new Pinview(this);
         pin = findViewById(R.id.pinview);
 
         pin.setPinViewEventListener((view, bool) -> {
-            //TODO get pin values by pin.getValue() to verify
+            // TODO: get pin values by pin.getValue() to verify
             startActivity(moveToUpdatePassword);
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });
