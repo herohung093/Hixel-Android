@@ -3,7 +3,6 @@ package com.hixel.hixel.data;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import com.hixel.hixel.data.database.CompanyDao;
 import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.data.api.ServerInterface;
@@ -25,8 +24,6 @@ public class CompanyRepository {
 
     @SuppressWarnings("unused")
     private static final String TAG = CompanyRepository.class.getSimpleName();
-
-    private static int FRESH_TIMEOUT_IN_MINUTES = 5;
 
     private ServerInterface serverInterface;
     private final CompanyDao companyDao;
@@ -54,26 +51,21 @@ public class CompanyRepository {
 
     // TODO: Check the effects of not having an executor here.
     public MutableLiveData<Company> getCompany(String ticker) {
-        //executor.execute(() -> {
-            serverInterface.getCompanies(StringUtils.join(ticker, ','), 1)
-                    .enqueue(new Callback<ArrayList<Company>>() {
-                        @Override
-                        public void onResponse(@NonNull Call<ArrayList<Company>> call,
-                                @NonNull Response<ArrayList<Company>> response) {
-                            //executor.execute(() -> {
-                                List<Company> companies = response.body();
+        executor.execute(() -> serverInterface.getCompanies(StringUtils.join(ticker, ','), 1)
+                .enqueue(new Callback<ArrayList<Company>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ArrayList<Company>> call,
+                            @NonNull Response<ArrayList<Company>> response) {
 
-                                company.setValue(companies.get(0));
-                            //});
-                        }
+                        executor.execute(() -> {
+                            List<Company> companies = response.body();
+                            company.setValue(companies.get(0));
+                        });
+                    }
 
-                        @Override
-                        public void onFailure(@NonNull Call<ArrayList<Company>> call,
-                                @NonNull Throwable t) {
-                            // TODO: Handle errors.
-                        }
-                    });
-        //});
+                    @Override
+                    public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) { }
+                }));
 
         return company;
     }
@@ -82,12 +74,11 @@ public class CompanyRepository {
         companyDao.saveCompany(company);
     }
 
-    // TODO: Check if update occurred recently.
     private void refreshCompanies(final String[] tickers) {
-
         executor.execute(() -> {
-            // TODO: Check if the companies were recently fetched.
-            boolean companiesExist = true;
+            // TODO: Do a better check if companies are present.
+            boolean companiesExist = (companyDao.load() != null);
+
             if (companiesExist) {
                 // TODO: check efficiency of join.
                 serverInterface.getCompanies(StringUtils.join(tickers, ','), 1)
@@ -102,10 +93,7 @@ public class CompanyRepository {
                             }
 
                             @Override
-                            public void onFailure(@NonNull Call<ArrayList<Company>> call,
-                                    @NonNull Throwable t) {
-                                // TODO: Handle errors.
-                            }
+                            public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) { }
                         });
             }
         });

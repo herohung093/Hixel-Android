@@ -7,7 +7,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -84,15 +83,9 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         viewModel.getCompanies().observe(this, this::setupDashboardCompanyListAdapter);
     }
 
-    private void updateComparisonRecyclerView(@Nullable List<Company> companies) {
-        if (companies != null) {
-            comparisonCompaniesAdapter.setCompanies(companies);
-            comparisonCompaniesAdapter.notifyDataSetChanged();
-        }
-    }
-
     private void setupDashboardCompanyListAdapter(List<Company> companies) {
         Log.d(TAG, "setupDashboardCompanyListAdapter: " + companies.get(0).getFinancialIdentifiers());
+
         HorizontalCompanyListAdapter userCompaniesAdapter = new HorizontalCompanyListAdapter(new ArrayList<>());
         userCompaniesRecyclerView.setAdapter(userCompaniesAdapter);
 
