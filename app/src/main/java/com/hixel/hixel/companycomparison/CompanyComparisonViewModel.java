@@ -37,7 +37,6 @@ public class CompanyComparisonViewModel extends ViewModel {
     private LiveData<List<Company>> dashboardCompanies;
 
     private MutableLiveData<ArrayList<Company>> companies = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<Company>> portfolioCompanies;
     private CompositeDisposable disposable = new CompositeDisposable();
     private PublishSubject<String> publishSubject = PublishSubject.create();
 
@@ -52,14 +51,6 @@ public class CompanyComparisonViewModel extends ViewModel {
         }
 
         dashboardCompanies = repository.getPortfolioCompanies();
-    }
-
-    public LiveData<ArrayList<Company>> getPortfolio() {
-        if (portfolioCompanies == null) {
-            portfolioCompanies = new MutableLiveData<>();
-        }
-
-        return portfolioCompanies;
     }
 
     public void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
@@ -97,8 +88,7 @@ public class CompanyComparisonViewModel extends ViewModel {
                         ArrayList<Company> temp = new ArrayList<>();
 
                         if (current != null && !current.isEmpty()){
-                            for(int i=0;i<current.size();i++)
-                            {
+                            for(int i=0;i<current.size();i++) {
                                 temp.add(current.get(i));
                             }
                         }
@@ -107,15 +97,13 @@ public class CompanyComparisonViewModel extends ViewModel {
                         companies.setValue(temp);
                     }
                     catch (Exception e) {
-                        Log.e("loadDataForAParticularCompany",
-                                String.format("Failed to retrieve data for ticker: %s", ticker));
+                        Log.e("loadDataForAParticularCompany", "Failed to retrieve data for ticker: %s" + ticker);
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
-                    Log.d("addToCompare",
-                        "Failed to load company data from the server: " + t.getMessage());
+                    Log.d("addToCompare", "Failed to load company data from the server: " + t.getMessage());
                 }
             });
     }

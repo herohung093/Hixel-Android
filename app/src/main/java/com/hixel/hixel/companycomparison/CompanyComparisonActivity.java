@@ -56,7 +56,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     RecyclerView dashboardCompanyRecycleView;
     SearchView search;
     SearchView.SearchAutoComplete searchAutoComplete;
-    ArrayList<Company> selectedCompany;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,13 +142,14 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    // TODO: Restore functionality
                     // Row is swiped from recycler view remove it from adapter
-                    final Company temp = (viewModel.getPortfolio().getValue().get(viewHolder.getAdapterPosition()));
+                    // final Company temp = (viewModel.getPortfolio().getValue().get(viewHolder.getAdapterPosition()));
 
-                    selectedCompany.add(temp);
-                    userCompaniesAdapter.removeItem(viewHolder.getAdapterPosition());
-                    comparisonCompaniesAdapter.addItem(temp);
-                    viewModel.addToCompare(temp.getFinancialIdentifiers().getTicker());
+                    // selectedCompany.add(temp);
+                    // userCompaniesAdapter.removeItem(viewHolder.getAdapterPosition());
+                    // comparisonCompaniesAdapter.addItem(temp);
+                    // viewModel.addToCompare(temp.getFinancialIdentifiers().getTicker());
                 }
 
                 @Override
