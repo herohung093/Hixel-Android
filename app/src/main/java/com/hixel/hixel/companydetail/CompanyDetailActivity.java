@@ -79,8 +79,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
 
             // Setup FAB
-            fab = findViewById(R.id.fab);
-            fab.setOnClickListener(v -> {
+            binding.fab.setOnClickListener(v -> {
                 Intent backIntent = getIntent();
                 viewModel.saveCompany();
                 setResult(RESULT_OK, backIntent);
@@ -88,7 +87,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             });
 
             if (viewModel.companyIsInPortfolio()) {
-                fab.setVisibility(View.INVISIBLE);
+                binding.fab.setVisibility(View.INVISIBLE);
             }
 
             companyChartSetup();
@@ -112,6 +111,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
     }
 
     public void setupBottomNavigationView() {
+        // TODO: Make this so I can data bind
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
 
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {

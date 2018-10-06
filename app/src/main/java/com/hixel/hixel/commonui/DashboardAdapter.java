@@ -34,7 +34,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+        // TODO: See if it is worthwhile doing a null check.
         if (layoutInflater == null) {
             layoutInflater = LayoutInflater.from(parent.getContext());
         }
@@ -46,14 +46,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        // TODO: Have the company class give me these already formatted.
-        String companyName = companies.get(position).getFinancialIdentifiers().getName();
-        companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         double currentRatio = companies.get(position).getRatio();
-        String tickerFormat = "NASDAQ:" + companies.get(position).getFinancialIdentifiers().getTicker();
 
-        holder.binding.companyName.setText(companyName);
-        holder.binding.companyTicker.setText(tickerFormat);
+        holder.binding.companyName.setText(companies.get(position).getFormattedName());
+        holder.binding.companyTicker.setText(companies.get(position).getFormattedTicker());
 
         // TODO: Work out something with the indicator image
         // Set the indicator based upon the current ratio
@@ -96,7 +92,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     }
 
     public void addItem(Company company) {
-        companies.add(getItemCount(),company);
+        companies.add(getItemCount(), company);
         notifyItemInserted(getItemCount());
     }
 
