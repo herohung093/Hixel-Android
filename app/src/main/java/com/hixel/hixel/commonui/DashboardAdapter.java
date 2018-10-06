@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,23 +35,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row, parent, false);
+                                  .inflate(R.layout.row, parent, false);
 
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-
-        Company company = companies.get(position);
-        double currentRatio = company.getRatio();
-
-        String companyName = company.getFinancialIdentifiers().getName();
-
+        // TODO: Have the company class give me these already formatted.
+        String companyName = companies.get(position).getFinancialIdentifiers().getName();
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
-        holder.companyName.setText(companyName);
+        double currentRatio = companies.get(position).getRatio();
+        String tickerFormat = "NASDAQ:" + companies.get(position).getFinancialIdentifiers().getTicker();
 
-        String tickerFormat = "NASDAQ:" + company.getFinancialIdentifiers().getTicker();
+        holder.companyName.setText(companyName);
         holder.companyTicker.setText(tickerFormat);
 
         // TODO: Work out something with the indicator image
@@ -68,13 +64,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             // holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
         }
 
-
         holder.foreground.setOnClickListener((View view) -> {
             // TODO: Reimplement so that the Company view knows this was from the portfolio.
-            Log.d(TAG, "" + company.getFinancialIdentifiers().getTicker());
-
-
-            String ticker = company.getFinancialIdentifiers().getTicker();
+            String ticker = companies.get(position).getFinancialIdentifiers().getTicker();
 
             Intent intent = new Intent(context, CompanyDetailActivity.class);
             intent.putExtra("COMPANY_TICKER", ticker);
