@@ -140,7 +140,8 @@
           android:layout_height="match_parent"
           android:layout_margin="0dp"
           android:layout_marginTop="8dp"
-          android:layout_gravity="fill" />
+          android:layout_gravity="fill"
+          />
 
       </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

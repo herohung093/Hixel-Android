@@ -3,13 +3,11 @@ package com.hixel.hixel.dashboard;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
-import android.preference.PreferenceManager;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -48,7 +46,6 @@ import com.hixel.hixel.commonui.RecyclerItemTouchHelper.RecyclerItemTouchHelperL
 import com.hixel.hixel.login.ProfileActivity;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
-import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,24 +64,19 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     private ActivityDashboardBinding binding;
     private SearchAutoComplete searchAutoComplete;
     private DashboardAdapter dashboardAdapter;
-    private RecyclerView recyclerView;
-
-    String fileName="CompanyList";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
 
-        this.configureDagger();
-        this.configureViewModel();
-
         // Setup the toolbar
         binding.toolbar.toolbar.setTitle(R.string.dashboard);
         binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(binding.toolbar.toolbar);
 
-        recyclerView = binding.recyclerView;
+        this.configureDagger();
+        this.configureViewModel();
 
         viewModel.setupSearch(getSearchObserver());
 
@@ -113,14 +105,16 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     }
 
     public void setupDashboardAdapter(List<Company> companies) {
+        RecyclerView recyclerView = binding.recyclerView;
+
         // TODO: Set this up with companies straight away
-        dashboardAdapter = new DashboardAdapter(this, new ArrayList<>());
+        dashboardAdapter = new DashboardAdapter(this, companies);
 
         recyclerView.setAdapter(dashboardAdapter);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 
-        recyclerView.setLayoutManager(mLayoutManager);
+        binding.recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
 
@@ -343,15 +337,5 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             @Override
             public void onComplete() { }
         };
-    }
-
-    public void savePortfolioCompanies(List<Company> companies){
-        SharedPreferences appSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(companies);
-        prefsEditor.putString(fileName, json);
-        // NOTE: This used to be commit() not apply(). May need to change back.
-        prefsEditor.apply();
     }
 }
