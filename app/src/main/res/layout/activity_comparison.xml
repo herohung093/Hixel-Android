@@ -47,9 +47,8 @@
       app:showAsAction="collapseActionView"/>
 
     <include
-      android:id="@+id/bottom_nav_comparison"
-      layout="@layout/bottom_navigation">
-    </include>
+      android:id="@+id/bottom_navigation"
+      layout="@layout/bottom_navigation"/>
 
     <Button
       android:id="@+id/compareButton"
@@ -63,7 +62,7 @@
       android:elevation="9dp"
       android:text="@string/compare"
       android:textColor="@color/text_main_light"
-      app:layout_constraintBottom_toTopOf="@+id/bottom_nav_comparison"
+      app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/comparison_recycler_view"

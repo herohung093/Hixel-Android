@@ -10,7 +10,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import az.plainpie.PieView;
@@ -42,8 +41,6 @@ public class CompanyDetailActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_company);
 
         String ticker = getIntent().getStringExtra("COMPANY_TICKER");
-
-        Log.d(TAG, "Ticker: " + ticker);
 
         this.configureDagger();
         this.configureViewModel(ticker);
@@ -111,10 +108,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
     }
 
     public void setupBottomNavigationView() {
-        // TODO: Make this so I can data bind
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
+        binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
                 case R.id.home_button:
                     Intent moveToDashBoard = new Intent(this, DashboardActivity.class);
@@ -129,13 +123,12 @@ public class CompanyDetailActivity extends AppCompatActivity {
                     startActivity(moveToProfile);
                     break;
             }
-
             return true;
         });
     }
 
     private void companyChartSetup() {
-        PieView pieView = findViewById(R.id.company_pie);
+        PieView pieView = binding.companyPie;
 
         pieView.setMainBackgroundColor(ContextCompat.getColor(this, R.color.shaded));
         pieView.setTextColor(ContextCompat.getColor(this, R.color.text_main_light));

@@ -94,6 +94,7 @@
         </android.support.constraint.ConstraintLayout>
 
       </android.support.v7.widget.CardView>
+
       <TextView
         android:id="@+id/indicator_text"
         android:textStyle="bold"
@@ -224,13 +225,13 @@
     </LinearLayout>
 
     <include
-      android:id="@id/bottom_nav"
+      android:id="@id/bottom_navigation"
       layout="@layout/bottom_navigation"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="bottom"
       app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"/>
+      app:layout_constraintStart_toStartOf="parent" />
   </android.support.constraint.ConstraintLayout>
 </layout>

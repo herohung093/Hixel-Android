@@ -146,8 +146,9 @@
     </android.support.v4.widget.NestedScrollView>
 
     <include
-      android:id="@+id/bottom_nav"
+      android:id="@+id/bottom_navigation"
       layout="@layout/bottom_navigation" />
+
     <ProgressBar
       android:id="@+id/progressBar"
       style="?android:attr/progressBarStyle"

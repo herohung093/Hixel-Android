@@ -282,7 +282,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
     public void setupBottomNavigationView() {
         // TODO: Rename the resource & do I really need to cast
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) binding.bottomNavComparison;
+        BottomNavigationView bottomNavigationView = binding.bottomNavigation.bottomNavigation;
         bottomNavigationView.getMenu().getItem(0).setChecked(false);
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
 

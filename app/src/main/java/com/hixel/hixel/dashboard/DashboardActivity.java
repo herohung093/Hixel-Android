@@ -187,7 +187,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     }
 
     public void setupBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) binding.bottomNav;
+        BottomNavigationView bottomNavigationView = binding.bottomNavigation.bottomNavigation;
         bottomNavigationView.getMenu().getItem(0).setChecked(false);
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
