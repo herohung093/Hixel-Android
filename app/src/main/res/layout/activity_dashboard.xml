@@ -6,14 +6,12 @@
   android:id="@+id/dashboard_root_layout">
 
   <data>
-
     <import type="android.view.View" />
 
     <variable
       name="viewModel"
       type="com.hixel.hixel.dashboard.DashboardViewModel" />
   </data>
-
 
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"

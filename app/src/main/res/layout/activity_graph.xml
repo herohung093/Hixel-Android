@@ -18,8 +18,6 @@
       android:layout_height="match_parent"
       android:paddingBottom="0dp"
       android:orientation="vertical">
-
-
       <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="140dp">
@@ -49,8 +47,7 @@
         android:id="@+id/divider2"
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:background="?android:attr/listDivider"
-        />
+        android:background="?android:attr/listDivider"/>
       <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="40dp">
@@ -68,8 +65,7 @@
         android:id="@+id/divider4"
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:background="?android:attr/listDivider"
-        />
+        android:background="?android:attr/listDivider"/>
       <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

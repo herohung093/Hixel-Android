@@ -9,7 +9,6 @@
     android:layout_height="match_parent"
     tools:context=".companydetail.CompanyDetailActivity">
 
-
     <android.support.design.widget.FloatingActionButton
       android:id="@+id/fab"
       android:layout_width="wrap_content"
@@ -34,6 +33,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"/>
+
     <LinearLayout
       android:id="@+id/linearLayout"
       android:layout_width="0dp"
@@ -41,7 +41,6 @@
       android:layout_margin="0dp"
       android:layout_marginTop="8dp"
       android:orientation="vertical"
-
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.0"
@@ -106,6 +105,7 @@
         android:fontFamily="@font/montserrat"
         android:text="@string/indicators"
         android:textColor="@color/text_secondary_dark"/>
+
       <TextView
         android:id="@+id/health_text"
         android:textStyle="bold"
@@ -118,17 +118,18 @@
         android:text="@string/health"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/text_secondary_dark"/>
+
       <ProgressBar
         android:id="@+id/health_progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:layout_marginStart="16dp"
-
         android:layout_marginEnd="16dp"
         android:progress="30"
         android:progressBackgroundTint="@color/shaded"
         android:progressTint="@color/bad"/>
+
       <TextView
         android:id="@+id/performance_text"
         android:textStyle="bold"
@@ -140,12 +141,12 @@
         android:fontFamily="@font/montserrat"
         android:text="@string/performance"
         android:textColor="@color/text_secondary_dark"/>
+
       <ProgressBar
         android:id="@+id/strength_progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:progress="90"
@@ -174,6 +175,7 @@
         android:progress="60"
         android:progressBackgroundTint="@color/shaded"
         android:progressTint="@color/average"/>
+
       <TextView
         android:id="@+id/strength_text"
         android:textStyle="bold"
@@ -185,6 +187,7 @@
         android:fontFamily="@font/montserrat"
         android:text="@string/strength"
         android:textColor="@color/text_secondary_dark"/>
+
       <ProgressBar
         android:id="@+id/return_progress"
         style="?android:attr/progressBarStyleHorizontal"
@@ -195,6 +198,7 @@
         android:progress="80"
         android:progressBackgroundTint="@color/shaded"
         android:progressTint="@color/good"/>
+
       <TextView
         android:id="@+id/return_text"
         android:textStyle="bold"
@@ -206,6 +210,7 @@
         android:fontFamily="@font/montserrat"
         android:text="@string/returns"
         android:textColor="@color/text_secondary_dark"/>
+
       <ProgressBar
         android:id="@+id/performance_progress"
         style="?android:attr/progressBarStyleHorizontal"
@@ -214,11 +219,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:progress="50"
-
         android:progressBackgroundTint="@color/shaded"
         android:progressTint="@color/average"/>
-
     </LinearLayout>
+
     <include
       android:id="@id/bottom_nav"
       layout="@layout/bottom_navigation"

@@ -1,4 +1,4 @@
-package com.hixel.hixel.login;
+package com.hixel.hixel.companycomparison;
 
 import android.app.Fragment;
 import android.content.Context;
