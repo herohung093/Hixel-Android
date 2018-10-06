@@ -2,6 +2,7 @@ package com.hixel.hixel.dashboard;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.models.SearchEntry;

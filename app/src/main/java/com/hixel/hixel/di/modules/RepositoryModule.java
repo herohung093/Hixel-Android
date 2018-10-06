@@ -1,6 +1,7 @@
 package com.hixel.hixel.di.modules;
 
 import android.support.annotation.NonNull;
+import com.hixel.hixel.data.api.EnvelopeConverterFactory;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.api.TokenAuthenticator;
 import com.hixel.hixel.data.api.TokenInterceptor;
@@ -90,8 +91,7 @@ public class RepositoryModule {
 
         }
         // Create an ssl socket factory with our all-trusting manager
-        final SSLSocketFactory sslSocketFactory = sslContext
-                .getSocketFactory();
+        final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
         // Create a logging interceptor
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();

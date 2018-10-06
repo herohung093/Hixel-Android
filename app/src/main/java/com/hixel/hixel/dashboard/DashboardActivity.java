@@ -20,6 +20,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +44,7 @@ import com.hixel.hixel.commonui.DashboardAdapter;
 import com.hixel.hixel.commonui.SearchAdapter;
 import com.hixel.hixel.commonui.RecyclerItemTouchHelper;
 import com.hixel.hixel.commonui.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
-import com.hixel.hixel.login.ProfileActivity;
+import com.hixel.hixel.profile.ProfileActivity;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
@@ -96,10 +97,12 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     private void updateUI(@Nullable List<Company> companies) {
         if (companies != null) {
+            Log.d(TAG, "updateUI: " + companies.size());
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
         } else {
             // show loading
+            Log.d(TAG, "updateUI: Loading");
             binding.progressBar.setVisibility(View.VISIBLE);
         }
     }
@@ -107,14 +110,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     public void setupDashboardAdapter(List<Company> companies) {
         RecyclerView recyclerView = binding.recyclerView;
 
-        // TODO: Set this up with companies straight away
-        dashboardAdapter = new DashboardAdapter(this, companies);
-
-        recyclerView.setAdapter(dashboardAdapter);
-
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-
-        binding.recyclerView.setLayoutManager(mLayoutManager);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
 
@@ -122,7 +118,10 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
-        dashboardAdapter.addItems(companies);
+        dashboardAdapter = new DashboardAdapter(this, companies);
+        recyclerView.setAdapter(dashboardAdapter);
+
+        Log.d(TAG, "setupDashboardAdapter: " + recyclerView.getAdapter().getItemCount());
     }
 
     @Override
@@ -169,7 +168,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     public void goToCompanyView(String ticker) {
         Intent intent = new Intent(this, CompanyDetailActivity.class);
-
         intent.putExtra("COMPANY_TICKER", ticker);
         startActivity(intent);
     }
@@ -311,7 +309,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     public void addItem(Company company) {
         dashboardAdapter.addItem(company);
     }
-
 
     //TODO: Move the following functions into a an ActivityWithSearch base class.
     public void showSearchResults(List<SearchEntry> searchResults) {

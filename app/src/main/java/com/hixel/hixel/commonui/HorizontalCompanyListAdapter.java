@@ -34,8 +34,7 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String companyName = companies.get(position)
-                                      .getFinancialIdentifiers()
+        String companyName = companies.get(position).getFinancialIdentifiers()
                                       .getName()
                                       .split("[\\s, ]")[0]
                                       .toLowerCase();

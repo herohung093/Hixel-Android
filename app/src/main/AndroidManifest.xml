@@ -57,11 +57,11 @@
 
     <activity android:name=".login.ForgotPasswordActivity"/>
 
-    <activity android:name=".login.ProfileActivity" />
+    <activity android:name=".profile.ProfileActivity" />
 
     <activity android:name=".login.PinInputActivity" />
 
-    <activity android:name=".login.UpdatePasswordActivity" />
+    <activity android:name=".profile.UpdatePasswordActivity" />
 
   </application>
 </manifest>

@@ -8,12 +8,11 @@ import com.hixel.hixel.data.models.Company;
  * Room DB that contains the companies table.
  */
 
-// TODO: Rename class from AppDB to CompanyDB ??
 // TODO: schema and migration handling
-@Database(entities = {Company.class}, version = 4)
+@Database(entities = {Company.class}, version = 6, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
-    private static volatile AppDatabase INSTANCE;
+    private static AppDatabase INSTANCE;
 
     public abstract CompanyDao companyDao();
 

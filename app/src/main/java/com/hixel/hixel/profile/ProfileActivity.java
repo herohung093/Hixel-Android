@@ -1,4 +1,4 @@
-package com.hixel.hixel.login;
+package com.hixel.hixel.profile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
+import com.hixel.hixel.login.LoginActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 import java.io.File;
 import java.io.FileInputStream;

@@ -16,11 +16,14 @@ public class Company {
     @Embedded
     private FinancialIdentifiers financialIdentifiers;
 
-    public Company() { }
 
-    public int getId() { return this.id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
     public FinancialIdentifiers getFinancialIdentifiers() {
         return financialIdentifiers;

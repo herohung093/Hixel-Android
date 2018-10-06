@@ -58,7 +58,10 @@ public class CompanyRepository {
 
                         executor.execute(() -> {
                             List<Company> companies = response.body();
-                            company.setValue(companies.get(0));
+
+                            if (companies != null) {
+                                company.setValue(companies.get(0));
+                            }
                         });
                     }
 
@@ -75,26 +78,22 @@ public class CompanyRepository {
 
     private void refreshCompanies(final String[] tickers) {
         executor.execute(() -> {
-            // TODO: Do a better check if companies are present.
-            boolean companiesExist = (companyDao.load() != null);
+            companyDao.nuke();
 
-            if (companiesExist) {
-                // TODO: check efficiency of join.
-                serverInterface.getCompanies(StringUtils.join(tickers, ','), 1)
-                        .enqueue(new Callback<ArrayList<Company>>() {
-                            @Override
-                            public void onResponse(@NonNull Call<ArrayList<Company>> call,
-                                    @NonNull Response<ArrayList<Company>> response) {
-                                executor.execute(() -> {
-                                    List<Company> companies = response.body();
-                                    companyDao.saveCompanies(companies);
-                                });
-                            }
-
-                            @Override
-                            public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) { }
-                        });
-            }
+            // TODO: check efficiency of join.
+            serverInterface.getCompanies(StringUtils.join(tickers, ','), 1)
+                    .enqueue(new Callback<ArrayList<Company>>() {
+                        @Override
+                        public void onResponse(@NonNull Call<ArrayList<Company>> call,
+                                @NonNull Response<ArrayList<Company>> response) {
+                            executor.execute(() -> {
+                                List<Company> companies = response.body();
+                                companyDao.saveCompanies(companies);
+                            });
+                        }
+                        @Override
+                        public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) { }
+                    });
         });
     }
 

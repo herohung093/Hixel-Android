@@ -19,7 +19,7 @@ import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
-import com.hixel.hixel.login.ProfileActivity;
+import com.hixel.hixel.profile.ProfileActivity;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
@@ -108,7 +108,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
     }
 
     public void setupBottomNavigationView() {
-        binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener((item) -> {
+        BottomNavigationView bottomNavigationView = binding.bottomNavigation.bottomNavigation;
+        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
                 case R.id.home_button:
                     Intent moveToDashBoard = new Intent(this, DashboardActivity.class);

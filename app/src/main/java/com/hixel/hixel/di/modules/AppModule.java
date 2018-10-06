@@ -24,9 +24,9 @@ public class AppModule {
     // --- DATABASE INJECTION ---
     @Provides
     @Singleton
-    AppDatabase provideDatabase(Application application) {
-        return Room.databaseBuilder(application,
-                AppDatabase.class, "companies.db")
+    AppDatabase provideDatabase(Application context) {
+        return Room.databaseBuilder(context.getApplicationContext(),
+                AppDatabase.class, "companiesDB")
                 // TODO: Better migration
                 .fallbackToDestructiveMigration()
                 .build();

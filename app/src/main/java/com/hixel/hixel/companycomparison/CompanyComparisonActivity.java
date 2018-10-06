@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -28,7 +27,7 @@ import com.hixel.hixel.commonui.ComparisonAdapter;
 import com.hixel.hixel.commonui.ComparisonAdapter.ViewHolder;
 import com.hixel.hixel.commonui.SearchAdapter;
 import com.hixel.hixel.dashboard.DashboardActivity;
-import com.hixel.hixel.login.ProfileActivity;
+import com.hixel.hixel.profile.ProfileActivity;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
 import java.io.Serializable;
@@ -84,7 +83,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     }
 
     private void setupDashboardCompanyListAdapter(List<Company> companies) {
-        Log.d(TAG, "setupDashboardCompanyListAdapter: " + companies.get(0).getFinancialIdentifiers());
 
         HorizontalCompanyListAdapter userCompaniesAdapter = new HorizontalCompanyListAdapter(companies);
         userCompaniesRecyclerView.setAdapter(userCompaniesAdapter);
