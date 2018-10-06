@@ -1,6 +1,5 @@
 package com.hixel.hixel.commonui;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,12 +14,9 @@ import java.util.Random;
 
 public class CompanyScoreListAdapter extends RecyclerView.Adapter<CompanyScoreListAdapter.ViewHolder>{
 
-    Context context;
-    List<Company> companies;
+    private List<Company> companies;
 
-    public CompanyScoreListAdapter(Context context,
-        List<Company> companies) {
-        this.context = context;
+    public CompanyScoreListAdapter(List<Company> companies) {
         this.companies = companies;
     }
 
@@ -34,12 +30,11 @@ public class CompanyScoreListAdapter extends RecyclerView.Adapter<CompanyScoreLi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String companyName = null;
-        /*
-                companies.get(position).getIdentifiers()
-            .getName()
-            .split("[\\s, ]")[0]
-            .toLowerCase();*/
+        String companyName = companies.get(position)
+                .getFinancialIdentifiers()
+                .getName()
+                .split("[\\s, ]")[0]
+                .toLowerCase();
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyName.setText(companyName);
@@ -52,14 +47,16 @@ public class CompanyScoreListAdapter extends RecyclerView.Adapter<CompanyScoreLi
         return companies.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView companyName,score;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView companyName;
+        TextView score;
         private CircularProgressIndicator progressBar;
-        public ViewHolder(View itemView) {
+
+        ViewHolder(View itemView) {
             super(itemView);
             companyName= itemView.findViewById(R.id.textViewName41);
             progressBar = itemView.findViewById(R.id.progressBar);
-            //score= itemView.findViewById(R.id.textView41);
+            score = itemView.findViewById(R.id.textView40);
         }
     }
 }

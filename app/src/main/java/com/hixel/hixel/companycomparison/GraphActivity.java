@@ -39,7 +39,7 @@ public class GraphActivity extends FragmentActivity implements
     ProgressDialog progressDialog;
     ArrayList<Company> receivedCompanies;
     GraphViewModel graphViewModel;
-    ImageView inforButton;
+    ImageView infoButton;
 
 
    // ActivityGraphBinding binding;
@@ -71,8 +71,8 @@ public class GraphActivity extends FragmentActivity implements
         setUpListOFCompanies();
         progressDialog.dismiss();
 
-        inforButton = findViewById(R.id.imageView3);
-        inforButton.setOnClickListener(new OnClickListener(){
+        infoButton = findViewById(R.id.imageView3);
+        infoButton.setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(View view) {
                 final Dialog dialog= new Dialog(context);
