@@ -17,7 +17,7 @@ import java.util.List;
 @Dao
 public interface CompanyDao {
 
-    @Query("SELECT * FROM Company")
+    @Query("SELECT * FROM companies")
     LiveData<List<Company>> load();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -20,9 +20,9 @@ import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
+import com.hixel.hixel.login.ProfileActivity;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
-
 
 public class CompanyDetailActivity extends AppCompatActivity {
 
@@ -125,7 +125,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
                     startActivity(moveToCompare);
                     break;
                 case R.id.settings_button:
-                    // This screen is yet to be implemented
+                    Intent moveToProfile = new Intent(this, ProfileActivity.class);
+                    startActivity(moveToProfile);
                     break;
             }
 

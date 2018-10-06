@@ -2,11 +2,12 @@ package com.hixel.hixel.companycomparison;
 
 import static com.hixel.hixel.data.api.Client.getClient;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.api.ServerInterface;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,6 +33,7 @@ public class CompanyComparisonViewModel extends ViewModel {
     private final String TAG = getClass().getSimpleName();
 
     private MutableLiveData<ArrayList<Company>> companies = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Company>> portfolioCompanies;
     private CompositeDisposable disposable = new CompositeDisposable();
     private PublishSubject<String> publishSubject = PublishSubject.create();
 
@@ -41,9 +44,41 @@ public class CompanyComparisonViewModel extends ViewModel {
 
     }
 
+
+    public LiveData<ArrayList<Company>> getPortfolio() {
+        if (portfolioCompanies == null) {
+            portfolioCompanies = new MutableLiveData<>();
+            loadPortfolio();
+        }
+
+        return portfolioCompanies;
+    }
+
+    private void loadPortfolio() {
+        // TODO: Create a repository for this data to ease communication.
+        String[] companies = {"AAPL", "TSLA", "TWTR", "SNAP", "FB", "AMZN"};
+
+        Call<ArrayList<Company>> call = getClient()
+            .create(ServerInterface.class)
+            .doGetCompanies(StringUtils.join(companies, ','), 1);
+
+        call.enqueue(new Callback<ArrayList<Company>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Company>> call,
+                @NonNull Response<ArrayList<Company>> response) {
+                portfolioCompanies.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) {
+            }
+        });
+
+    }
+
     public void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
         disposable.add(publishSubject
-            .debounce(150, TimeUnit.MILLISECONDS)
+            .debounce(100, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .filter(text -> !text.isEmpty())
             .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm -> getClient()
@@ -76,7 +111,10 @@ public class CompanyComparisonViewModel extends ViewModel {
                         ArrayList<Company> temp = new ArrayList<>();
 
                         if (current != null && !current.isEmpty()){
-                            temp.add(current.get(0));
+                            for(int i=0;i<current.size();i++)
+                            {
+                                temp.add(current.get(i));
+                            }
                         }
 
                         temp.add(Objects.requireNonNull(response.body()).get(0));

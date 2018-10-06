@@ -10,7 +10,7 @@
   <color name="accent">#00A7FE</color>
 
   <!-- Text colour -->
-  <color name="text_main_dark">#172B4D</color>
+  <color name="text_main_dark">#172b4d</color>
   <color name="text_main_light">#FFFFFF</color>
   <color name="text_secondary_dark">#505F79</color>
 

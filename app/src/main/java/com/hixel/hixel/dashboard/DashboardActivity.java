@@ -3,11 +3,13 @@ package com.hixel.hixel.dashboard;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
+import android.preference.PreferenceManager;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -44,14 +46,16 @@ import com.hixel.hixel.commonui.DashboardAdapter;
 import com.hixel.hixel.commonui.SearchAdapter;
 import com.hixel.hixel.commonui.RecyclerItemTouchHelper;
 import com.hixel.hixel.commonui.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
+import com.hixel.hixel.login.ProfileActivity;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
+import com.google.gson.Gson;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Objects;
 import javax.inject.Inject;
-
 
 public class DashboardActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
 
@@ -66,7 +70,14 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     private SearchAutoComplete searchAutoComplete;
     private DashboardAdapter dashboardAdapter;
     private RecyclerView recyclerView;
+    DashboardViewModel dashboardViewModel;
 
+    RecyclerView mRecyclerView;
+    FileOutputStream outputStream;
+    String fileName="CompanyList";
+    private BarChart chart;
+
+    SearchView search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,7 +173,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
                 binding.progressBar.setVisibility(View.VISIBLE);
                 viewModel.loadSearchResults(searchAutoComplete.getText().toString());
                 binding.progressBar.setVisibility(View.INVISIBLE);
-
+                dashboardViewModel.loadSearchResults(newText);
                 return false;
             }
         });
@@ -190,7 +201,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
                     startActivity(moveToCompare);
                     break;
                 case R.id.settings_button:
-                    // This screen is yet to be implemented
+                    Intent moveToProfile = new Intent(this, ProfileActivity.class);
+                    startActivity(moveToProfile);
                     break;
             }
 
@@ -273,6 +285,29 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         chart.invalidate();
     }
 
+    public void setupDashboardAdapter() {
+
+        dashboardAdapter = new DashboardAdapter(this, new ArrayList<>());
+        mRecyclerView.setAdapter(this.dashboardAdapter);
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setNestedScrollingEnabled(false);
+
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
+                new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
+
+        dashboardViewModel.getCompanies().observe(DashboardActivity.this,
+                companies -> {dashboardAdapter.addItems(companies);
+                savePortfolioCompanies(companies);
+        });
+
+    }
+
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
 
@@ -320,11 +355,13 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     //TODO: Move the following functions into a an ActivityWithSearch base class.
     public void showSearchResults(List<SearchEntry> searchResults) {
-
         SearchAdapter adapter = new SearchAdapter(this, searchResults);
-
         searchAutoComplete.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        if (!searchResults.isEmpty()) {
+            searchAutoComplete.showDropDown();
+        }
     }
 
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {
@@ -344,5 +381,13 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
             }
         };
+    }
+    public void savePortfolioCompanies(List<Company> companies){
+        SharedPreferences appSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(companies);
+        prefsEditor.putString(fileName, json);
+        prefsEditor.commit();
     }
 }

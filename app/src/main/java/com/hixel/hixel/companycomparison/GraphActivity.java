@@ -1,5 +1,5 @@
-package com.hixel.hixel.view.ui;
-​
+package com.hixel.hixel.companycomparison;
+
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
@@ -18,16 +18,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import com.hixel.hixel.R;
-import com.hixel.hixel.companycomparison.GraphFragment;
-import com.hixel.hixel.companycomparison.GraphViewModel;
+import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.login.ProfileActivity;
+import com.hixel.hixel.view.adapter.HorizontalListViewAdapter;
+import com.hixel.hixel.view.ui.GenericChartFragment;
+import com.hixel.hixel.view.ui.GenericChartFragment.OnFragmentInteractionListener;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-​
+
 public class GraphActivity extends FragmentActivity implements
-        GenericChartFragment.OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener {
+        OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener {
     private final String TAG = getClass().getSimpleName();
-​
+
     ArrayList<String> ratios = new ArrayList<>();
     RecyclerView mRecyclerView, companyRecycleView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -38,37 +40,37 @@ public class GraphActivity extends FragmentActivity implements
     ArrayList<Company> receivedCompanies;
     GraphViewModel graphViewModel;
     ImageView inforButton;
-​
-        ​
-        // ActivityGraphBinding binding;
-        ​
+
+
+   // ActivityGraphBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         progressDialog = new ProgressDialog(this);
         progressDialog.getWindow().setGravity(Gravity.CENTER);
-​
+
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
         intentReceiver = getIntent();
         receivedCompanies =
-                (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
+            (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
         Log.d(TAG,"@@@@@@"+ String.valueOf(receivedCompanies.size()));
         Context context = this;
         //setup bottom navigator
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.graph_generic_navigator);
         setupBottomNavigationView(bottomNavigationView);
         fragmentA = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_bar_char);
-​
+
         graphViewModel= ViewModelProviders.of(this).get(GraphViewModel.class);
         //Observe changes in list of ratios
-​
+
         observeViewModel(graphViewModel);
         setUpListOFCompanies();
         progressDialog.dismiss();
-​
+
         inforButton = findViewById(R.id.imageView3);
         inforButton.setOnClickListener(new OnClickListener(){
             @Override
@@ -90,39 +92,39 @@ public class GraphActivity extends FragmentActivity implements
                 dialog.show();
             }
         });
-​
+
     }
-​
+
     private void setUpListOFCompanies() {
         companyRecycleView = findViewById(R.id.company_list);
         companyRecycleView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager;
         mLayoutManager=  new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         companyRecycleView.setLayoutManager(mLayoutManager);
-        companyListAdapter=new CompanyScoreListAdapter(this,receivedCompanies);
+        //companyListAdapter=new CompanyScoreListAdapter(this,receivedCompanies);
         companyRecycleView.setAdapter(companyListAdapter);
     }
-​
+
     public void setupListOfRatios(ArrayList<String> spinnerList) {
         mRecyclerView = findViewById(R.id.ratios_list_view);
         mRecyclerView.setHasFixedSize(true);
-​
+
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-​
+
         mAdapter = new HorizontalListViewAdapter(this,spinnerList,receivedCompanies,fragmentA);
         mRecyclerView.setAdapter(mAdapter);
         checkUpFinancialEntry(ratios);
         fragmentA.drawGraph(receivedCompanies,ratios.get(0));
         GenericChartFragment fragmentB =
-                (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
-        fragmentB.drawGraph(receivedCompanies);
-​
-​
+            (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
+        //fragmentB.drawGraph(receivedCompanies);
+
+
     }
-​
-        ​
-        ​
+
+
+
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
         bottomNavigationView.setSelectedItemId(R.id.compare_button);
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
@@ -131,34 +133,35 @@ public class GraphActivity extends FragmentActivity implements
                     Intent moveToDashBoard = new Intent(this, DashboardActivity.class);
                     startActivity(moveToDashBoard);
                     break;
-​
+
                 case R.id.compare_button:
-                    Intent moveToCompare = new Intent(this, ComparisonActivity.class);
+                    Intent moveToCompare = new Intent(this, CompanyComparisonActivity.class);
                     startActivity(moveToCompare);
                     break;
-​
+
                 case R.id.settings_button:
                     Intent moveToProfile = new Intent(this,ProfileActivity.class);
                     startActivity(moveToProfile);
                     break;
             }
-​
+
             return true;
         });
     }
-​
+
     public void checkUpFinancialEntry(ArrayList<String> toBeCheckRatios) {
         for (Company c : receivedCompanies) {
+            /*
             for (int i = 0; i<c.getFinancialDataEntries().size(); i++) {
                 LinkedHashMap<String, Double> ratiosData = c.getFinancialDataEntries().get(i).getRatios();
-​
+
                 for (String k : toBeCheckRatios) {
                     if (ratiosData.get(k) == null) {
                         Log.d(String.valueOf(c.getFinancialDataEntries().get(i).getYear()) + k + ": ", "NULL***");
                         c.getFinancialDataEntries().get(i).getRatios().put(k,0.0);
                     }
                 }
-            }
+            }*/
         }
     }
     private void observeViewModel(GraphViewModel graphViewModel){
@@ -173,7 +176,6 @@ public class GraphActivity extends FragmentActivity implements
             }
         });
     }
-​
-        ​
-}
 
+
+}

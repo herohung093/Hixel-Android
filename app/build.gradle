@@ -28,6 +28,9 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    implementation 'com.android.support:support-v4:27.1.1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -57,7 +60,7 @@ dependencies {
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.github.AnyChart:AnyChart-Android:0.1.9'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
-
+    implementation 'com.github.AnyChart:AnyChart-Android:1.0.2'
     // Testing
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.21.0'
@@ -96,4 +99,11 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    //imageview in a circular shape
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+
+    //Pin View
+    implementation 'com.github.GoodieBag:Pinview:v1.3'
+    // circular progress indicator
+    implementation 'com.github.antonKozyriatskyi:CircularProgressIndicator:1.2.2'
 }

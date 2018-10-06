@@ -14,14 +14,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.hixel.hixel.App;
 import com.hixel.hixel.R;
 import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.models.LoginData;
 import com.hixel.hixel.data.api.ServerInterface;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout passwordText;
     Button loginButton;
     TextView signupLink;
+    TextView forgotPasswordLink;
+    int REQUEST_SIGNUP = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,11 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.btn_login);
         signupLink = findViewById(R.id.link_signup);
 
+        emailText = (TextInputLayout) findViewById(R.id.emailWrapper);
+        passwordText= (TextInputLayout) findViewById(R.id.passwordWrapper);
+        loginButton= (Button) findViewById(R.id.btn_login);
+        signupLink = (TextView) findViewById(R.id.link_signup);
+        forgotPasswordLink= findViewById(R.id.link_forgot_password);
         loginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,7 +60,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
             Intent moveToSignup = new Intent(getApplicationContext(),SignupActivity.class);
             startActivity(moveToSignup);
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
+        });
+        forgotPasswordLink.setOnClickListener(event->{
+            Intent moveToForgotView = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
+            startActivity(moveToForgotView);
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });
     }
 
@@ -79,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailText.getEditText().getText().toString();
         String password = passwordText.getEditText().getText().toString();
 
-        // TODO: Implement  authentication logic here.
+
 
         Call<Void> call = Client.getClient()
                 .create(ServerInterface.class)
@@ -162,4 +173,16 @@ public class LoginActivity extends AppCompatActivity {
 
         return valid;
     }
+//Responds to enter
+/*    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_ENTER:
+                login();
+                return true;
+
+            default:
+                return super.onKeyUp(keyCode, event);
+        }
+    }*/
 }

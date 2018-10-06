@@ -7,9 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.models.SearchEntry;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchAdapter extends ArrayAdapter<SearchEntry> {
@@ -41,5 +44,41 @@ public class SearchAdapter extends ArrayAdapter<SearchEntry> {
         }
 
         return view;
+    }
+
+    @NonNull
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
+                if (constraint != null) {
+                    String query = constraint.toString().toLowerCase();
+                    List<SearchEntry> filtered = new ArrayList<>();
+
+                    for (SearchEntry entry : searchEntries){
+                        if (entry.getTicker().toLowerCase().contains(query)
+                         || entry.getName().toLowerCase().contains(query)) {
+                            filtered.add(entry);
+                        }
+                    }
+                    // Now assign the values and count to the FilterResults object
+                    filterResults.values = filtered;
+                    filterResults.count = filtered.size();
+                }
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                if (results != null && results.count > 0) {
+                    notifyDataSetChanged();
+                }
+                else {
+                    notifyDataSetInvalidated();
+                }
+            }
+        };
     }
 }

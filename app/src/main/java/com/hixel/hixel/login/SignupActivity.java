@@ -14,7 +14,6 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.models.ApplicationUser;
 import com.hixel.hixel.data.api.ServerInterface;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,6 +44,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent moveToLogin= new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(moveToLogin);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
     }
@@ -151,6 +151,11 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
     }
 }
 

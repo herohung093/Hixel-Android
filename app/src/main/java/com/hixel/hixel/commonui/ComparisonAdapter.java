@@ -1,10 +1,8 @@
 package com.hixel.hixel.commonui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.hixel.hixel.R;
-import com.hixel.hixel.service.models.Company;
-import com.hixel.hixel.companydetail.CompanyDetailActivity;
-import java.util.Calendar;
+import com.hixel.hixel.data.models.Company;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.ViewHolder> {
@@ -24,9 +21,11 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
 
     public ComparisonAdapter(Context mContext, List<Company> companies) {
         this.mContext = mContext;
-        this.companies = companies;
+        this.companies = new ArrayList<>();
+        if(companies!=null) {
+            companies.addAll(companies);
+        }
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,7 +36,7 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-
+/*
         String companyName = companies
             .get(position)
             .getIdentifiers()
@@ -74,7 +73,7 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
                     companies.get(holder.getAdapterPosition()));
 
             mContext.startActivity(intent);
-        });
+        });*/
 
     }
 

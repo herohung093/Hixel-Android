@@ -4,13 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottoms_navigation"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
+    android:layout_height="wrap_content"
     android:layout_weight="1.5"
     android:background="@color/secondary_background"
     android:paddingTop="16dp"
+    android:layout_gravity="bottom"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintVertical_bias="1.0"
+
     app:menu="@menu/bottom_navigation_menu" />
