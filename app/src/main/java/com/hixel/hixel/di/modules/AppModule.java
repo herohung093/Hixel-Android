@@ -18,7 +18,6 @@ import javax.inject.Singleton;
  * This puts the Application & Activities into the graph. No need to pass the
  * Application instance to modules.
  */
-
 @Module(includes = {AndroidInjectionModule.class, ViewModelModule.class})
 public class AppModule {
 

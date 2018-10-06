@@ -50,7 +50,11 @@ public class CompanyComparisonViewModel extends ViewModel {
             return;
         }
 
+        Log.d(TAG, "init: HERE");
+        
         dashboardCompanies = repository.getPortfolioCompanies();
+
+        Log.d(TAG, "init: " + repository.getPortfolioCompanies().getValue());
     }
 
     public void setupSearch(DisposableObserver<List<SearchEntry>> observer) {

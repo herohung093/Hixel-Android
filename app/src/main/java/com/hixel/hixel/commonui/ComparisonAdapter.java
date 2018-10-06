@@ -82,13 +82,8 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
         notifyItemRemoved(position);
     }
 
-    public void restoreItem(Company company, int position) {
-        companies.add(position, company);
-        notifyItemInserted(position);
-    }
-
-    public void addItem(Company company) {
-        this.companies.add(company);
+    public void addItems(List<Company> companies) {
+        this.companies = companies;
         notifyDataSetChanged();
     }
 

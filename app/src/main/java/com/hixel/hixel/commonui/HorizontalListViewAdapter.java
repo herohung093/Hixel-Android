@@ -21,9 +21,8 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
     private Context context;
     private int rowIndex = 0;
 
-    public HorizontalListViewAdapter(Context context,ArrayList<String> ratios,
-        ArrayList<Company> companies, GraphFragment fragmentGraph) {
-        this.context=context;
+    public HorizontalListViewAdapter(Context context,ArrayList<String> ratios, ArrayList<Company> companies, GraphFragment fragmentGraph) {
+        this.context = context;
         this.ratios = ratios;
         this.companies = companies;
         this.fragmentGraph = fragmentGraph;
@@ -67,9 +66,7 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
     }
 
     @Override
-    public void onClick(View view) {
-
-    }
+    public void onClick(View view) { }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         public CardView cardView;

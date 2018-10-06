@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -48,7 +49,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
     private ActivityComparisonBinding binding;
     private ComparisonAdapter comparisonCompaniesAdapter;
-    private HorizontalCompanyListAdapter userCompaniesAdapter;
     private RecyclerView userCompaniesRecyclerView;
     private RecyclerView comparisonCompaniesRecyclerView;
     private Button compareButton;
@@ -66,11 +66,9 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         this.configureViewModel();
 
         userCompaniesRecyclerView = binding.dashboardCompRecyclerView;
-        // TODO: Rename the resource.
         comparisonCompaniesRecyclerView = binding.comparisonRecyclerView;
         compareButton = binding.compareButton;
 
-        setupDashboardCompanyListAdapter();
         setupComparisonAdapter();
         dragDownToAdd();
         setupButtons();
@@ -83,14 +81,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     private void configureViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CompanyComparisonViewModel.class);
         viewModel.init();
-        viewModel.getCompanies().observe(this, this::updatePortfolioCompaniesRecyclerView);
-    }
-
-    private void updatePortfolioCompaniesRecyclerView(@Nullable List<Company> companies) {
-        if (companies != null) {
-            userCompaniesAdapter.setCompanies(companies);
-            userCompaniesAdapter.notifyDataSetChanged();
-        }
+        viewModel.getCompanies().observe(this, this::setupDashboardCompanyListAdapter);
     }
 
     private void updateComparisonRecyclerView(@Nullable List<Company> companies) {
@@ -100,14 +91,16 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         }
     }
 
-    private void setupDashboardCompanyListAdapter() {
-        userCompaniesAdapter = new HorizontalCompanyListAdapter(new ArrayList<>());
+    private void setupDashboardCompanyListAdapter(List<Company> companies) {
+        Log.d(TAG, "setupDashboardCompanyListAdapter: " + companies.get(0).getFinancialIdentifiers());
+        HorizontalCompanyListAdapter userCompaniesAdapter = new HorizontalCompanyListAdapter(new ArrayList<>());
+        userCompaniesRecyclerView.setAdapter(userCompaniesAdapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-
-        userCompaniesRecyclerView.setHasFixedSize(true);
         userCompaniesRecyclerView.setLayoutManager(layoutManager);
-        userCompaniesRecyclerView.setAdapter(userCompaniesAdapter);
+        // userCompaniesRecyclerView.setHasFixedSize(true);
+
+        userCompaniesAdapter.addItems(companies);
     }
 
     private void setupComparisonAdapter() {

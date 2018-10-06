@@ -22,7 +22,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,7 +49,6 @@ import com.hixel.hixel.login.ProfileActivity;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
 import com.google.gson.Gson;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,11 +69,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     private DashboardAdapter dashboardAdapter;
     private RecyclerView recyclerView;
 
-    FileOutputStream outputStream;
     String fileName="CompanyList";
-    private BarChart chart;
-
-    SearchView search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +113,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     }
 
     public void setupDashboardAdapter(List<Company> companies) {
-
+        // TODO: Set this up with companies straight away
         dashboardAdapter = new DashboardAdapter(this, new ArrayList<>());
 
         recyclerView.setAdapter(dashboardAdapter);
@@ -283,29 +277,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         chart.invalidate();
     }
 
-    public void setupDashboardAdapter() {
-
-        dashboardAdapter = new DashboardAdapter(this, new ArrayList<>());
-        recyclerView.setAdapter(this.dashboardAdapter);
-
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setNestedScrollingEnabled(false);
-
-        SimpleCallback itemTouchHelperCallback =
-                new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
-
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
-
-        viewModel.getCompanies().observe(DashboardActivity.this,
-                companies -> {dashboardAdapter.addItems(companies);
-                savePortfolioCompanies(companies);
-        });
-
-    }
-
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
 
@@ -316,19 +287,16 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
             // Backup item for undo purposes
             final Company deletedCompany = viewModel.getCompanies()
-                    .getValue()
-                    .get(viewHolder.getAdapterPosition());
+                                                    .getValue()
+                                                    .get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
             dashboardAdapter.removeItem(viewHolder.getAdapterPosition());
 
             // Remove Company from RecyclerView
-            Snackbar snackbar = Snackbar.make(binding.getRoot(),
-                    name + " removed from portfolio", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio", Snackbar.LENGTH_LONG);
 
-            snackbar.setAction("UNDO",
-                    view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));
-
+            snackbar.setAction("UNDO", view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));
             snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.warning));
             snackbar.show();
        }
@@ -370,24 +338,20 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             }
 
             @Override
-            public void onError(Throwable e) {
-
-            }
+            public void onError(Throwable e) { }
 
             @Override
-            public void onComplete() {
-
-            }
+            public void onComplete() { }
         };
     }
 
-    // TODO: Try out apply instead of commit
     public void savePortfolioCompanies(List<Company> companies){
         SharedPreferences appSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(companies);
         prefsEditor.putString(fileName, json);
-        prefsEditor.commit();
+        // NOTE: This used to be commit() not apply(). May need to change back.
+        prefsEditor.apply();
     }
 }
