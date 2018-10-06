@@ -23,7 +23,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         if(viewHolder != null) {
-            final View foreground = ((ViewHolder) viewHolder).foreground;
+            final View foreground = ((ViewHolder) viewHolder).binding.foreground;
 
             getDefaultUIUtil().onSelected(foreground);
         }
@@ -33,14 +33,14 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     public void onChildDraw(Canvas c, RecyclerView recyclerView,
             RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
-        final View foreground = ((ViewHolder) viewHolder).foreground;
+        final View foreground = ((ViewHolder) viewHolder).binding.foreground;
 
         getDefaultUIUtil().onDraw(c, recyclerView, foreground, dX, dY, actionState, isCurrentlyActive);
     }
 
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        final View foreground = ((ViewHolder) viewHolder).foreground;
+        final View foreground = ((ViewHolder) viewHolder).binding.foreground;
         getDefaultUIUtil().clearView(foreground);
 
     }

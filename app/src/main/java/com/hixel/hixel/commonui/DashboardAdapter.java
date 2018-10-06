@@ -2,20 +2,19 @@ package com.hixel.hixel.commonui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.models.Company;
 
+import com.hixel.hixel.databinding.RowBinding;
 import java.util.List;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
@@ -23,6 +22,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @SuppressWarnings("unused")
     private static final String TAG = DashboardAdapter.class.getSimpleName();
 
+    private LayoutInflater layoutInflater;
     private Context context;
     private List<Company> companies;
 
@@ -34,10 +34,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.row, parent, false);
 
-        return new ViewHolder(view);
+        if (layoutInflater == null) {
+            layoutInflater = LayoutInflater.from(parent.getContext());
+        }
+
+        RowBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.row, parent,false);
+
+        return new ViewHolder(binding);
     }
 
     @Override
@@ -48,23 +52,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         double currentRatio = companies.get(position).getRatio();
         String tickerFormat = "NASDAQ:" + companies.get(position).getFinancialIdentifiers().getTicker();
 
-        holder.companyName.setText(companyName);
-        holder.companyTicker.setText(tickerFormat);
+        holder.binding.companyName.setText(companyName);
+        holder.binding.companyTicker.setText(tickerFormat);
 
         // TODO: Work out something with the indicator image
         // Set the indicator based upon the current ratio
         if (currentRatio < 1.0) {
-            holder.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.bad));
-            // holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_downward);
+            holder.binding.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.bad));
         } else if (currentRatio >= 1.0 && currentRatio <= 1.2) {
-            holder.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.average));
-            // holder.companyIndicator.setBackgroundResource(R.drawable.ic_remove_black_24dp);
+            holder.binding.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.average));
         } else {
-            holder.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.good));
-            // holder.companyIndicator.setBackgroundResource(R.drawable.ic_arrow_upward_black_24dp);
+            holder.binding.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.good));
         }
 
-        holder.foreground.setOnClickListener((View view) -> {
+        holder.binding.foreground.setOnClickListener((View view) -> {
             // TODO: Reimplement so that the Company view knows this was from the portfolio.
             String ticker = companies.get(position).getFinancialIdentifiers().getTicker();
 
@@ -100,21 +101,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ConstraintLayout foreground;
-        public ConstraintLayout background;
-        public TextView companyTicker;
-        public TextView companyName;
-        ImageView companyIndicator;
-        View indicator;
+        public final RowBinding binding;
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            companyName = itemView.findViewById(R.id.company_name);
-            companyTicker = itemView.findViewById(R.id.company_ticker);
-            companyIndicator = itemView.findViewById(R.id.company_indicator);
-            foreground = itemView.findViewById(R.id.foreground);
-            background = itemView.findViewById(R.id.background);
-            indicator = itemView.findViewById(R.id.indicator);
+        ViewHolder(final RowBinding itemBinding) {
+            super(itemBinding.getRoot());
+            this.binding = itemBinding;
         }
     }
 }
