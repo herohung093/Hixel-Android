@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
+import com.hixel.hixel.databinding.ActivityProfileBinding;
 import com.hixel.hixel.login.LoginActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 import java.io.File;
@@ -27,6 +28,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ProfileActivity extends AppCompatActivity {
+
+    ActivityProfileBinding binding;
 
     TextView userName_TV, userEmail_TV, changePasswordLink_TV;
     TextInputLayout newPassword_Text, confirmPassword_Text;
