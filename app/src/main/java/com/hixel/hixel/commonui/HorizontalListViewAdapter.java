@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.adapter;
+package com.hixel.hixel.commonui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -15,11 +15,11 @@ import java.util.ArrayList;
 
 public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> implements View.OnClickListener {
 
-    ArrayList<String> ratios;
-    ArrayList<Company> companies;
-    GraphFragment fragmentGraph;
-    static Context context;
-    int rowIndex =0;
+    private ArrayList<String> ratios;
+    private ArrayList<Company> companies;
+    private GraphFragment fragmentGraph;
+    private Context context;
+    private int rowIndex = 0;
 
     public HorizontalListViewAdapter(Context context,ArrayList<String> ratios,
         ArrayList<Company> companies, GraphFragment fragmentGraph) {
@@ -27,7 +27,6 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
         this.ratios = ratios;
         this.companies = companies;
         this.fragmentGraph = fragmentGraph;
-
     }
 
     @NonNull
@@ -40,22 +39,26 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HorizontalListViewAdapter.ViewHolder holder,
-        int position) {
-        holder.setSelectedItem(holder.getAdapterPosition()==rowIndex);
+    public void onBindViewHolder(@NonNull HorizontalListViewAdapter.ViewHolder holder, int position) {
+
+        if (position == rowIndex) {
+            holder.cardView.setCardBackgroundColor(
+                    context.getResources().getColor(R.color.colorPrimaryDark));
+        } else {
+            holder.cardView.setCardBackgroundColor(
+                    context.getResources().getColor(R.color.colorPrimary));
+        }
+
+
         holder.tvSpecies.setText(ratios.get(position));
 
-        holder.tvSpecies.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                fragmentGraph.drawGraph(companies,ratios.get(position));
-                //setRowIndex(position);
-                notifyItemChanged(rowIndex);
-                rowIndex=position;
-                notifyItemChanged(rowIndex);
-            }
+        holder.tvSpecies.setOnClickListener(view -> {
+            fragmentGraph.drawGraph(companies,ratios.get(position));
+            //setRowIndex(position);
+            notifyItemChanged(rowIndex);
+            rowIndex = position;
+            notifyItemChanged(rowIndex);
         });
-
     }
 
     @Override
@@ -68,21 +71,14 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
 
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvSpecies;
+    static class ViewHolder extends RecyclerView.ViewHolder {
         public CardView cardView;
-        public ViewHolder(View itemView) {
+        TextView tvSpecies;
+
+        ViewHolder(View itemView) {
             super(itemView);
             tvSpecies =  itemView.findViewById(R.id.tv_species);
             cardView =  itemView.findViewById(R.id.ratio_item_cardView);
         }
-
-        public void setSelectedItem(boolean selected){
-            if(selected)
-                cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            else
-                cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-        }
     }
-
 }
