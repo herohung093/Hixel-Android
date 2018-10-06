@@ -61,18 +61,18 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_comparison);
 
-        this.configureDagger();
-        this.configureViewModel();
-
         userCompaniesRecyclerView = binding.dashboardCompRecyclerView;
         comparisonCompaniesRecyclerView = binding.comparisonRecyclerView;
         compareButton = binding.compareButton;
 
-        setupComparisonAdapter();
-        dragDownToAdd();
-        setupButtons();
-        setupSearchView();
-        setupBottomNavigationView();
+        this.configureDagger();
+        this.configureViewModel();
+
+        // setupComparisonAdapter();
+        // dragDownToAdd();
+        // setupButtons();
+        // setupSearchView();
+        // setupBottomNavigationView();
     }
 
     private void configureDagger() { AndroidInjection.inject(this); }
@@ -86,10 +86,10 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     private void setupDashboardCompanyListAdapter(List<Company> companies) {
         Log.d(TAG, "setupDashboardCompanyListAdapter: " + companies.get(0).getFinancialIdentifiers());
 
-        HorizontalCompanyListAdapter userCompaniesAdapter = new HorizontalCompanyListAdapter(new ArrayList<>());
+        HorizontalCompanyListAdapter userCompaniesAdapter = new HorizontalCompanyListAdapter(companies);
         userCompaniesRecyclerView.setAdapter(userCompaniesAdapter);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
         userCompaniesRecyclerView.setLayoutManager(layoutManager);
         // userCompaniesRecyclerView.setHasFixedSize(true);
 
@@ -155,7 +155,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
                 public int convertToAbsoluteDirection(int flags, int layoutDirection) {
                     return super.convertToAbsoluteDirection(flags, layoutDirection);
                 }
-
             };
 
         // attaching the touch helper to recycler view

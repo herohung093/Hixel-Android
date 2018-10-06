@@ -29,8 +29,10 @@ public class CompanyRepository {
     private final CompanyDao companyDao;
     private final Executor executor;
 
-    // NOTE: This is a temporary workaround
+    // TODO: Find a way to not use these vars
+    // NOTE: THESE VARIABLES ARE TEMPORARY WORKAROUNDS
     private MutableLiveData<Company> company = new MutableLiveData<>();
+    private String[] userTickers;
 
     @Inject
     public CompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, Executor executor) {
@@ -40,13 +42,10 @@ public class CompanyRepository {
     }
 
     public LiveData<List<Company>> getCompanies(String[] tickers) {
+        userTickers = tickers;
         refreshCompanies(tickers); // try to refresh from the server if possible.
 
         return companyDao.load(); // return LiveData from the db.
-    }
-
-    public LiveData<List<Company>> getPortfolioCompanies() {
-        return companyDao.load();
     }
 
     // TODO: Check the effects of not having an executor here.
@@ -99,5 +98,7 @@ public class CompanyRepository {
         });
     }
 
-
+    public String[] getTickers() {
+        return userTickers;
+    }
 }
