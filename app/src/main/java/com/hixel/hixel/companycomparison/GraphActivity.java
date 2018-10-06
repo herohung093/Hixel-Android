@@ -36,7 +36,6 @@ public class GraphActivity extends FragmentActivity implements OnFragmentInterac
     GraphViewModel graphViewModel;
     ImageView infoButton;
 
-
     // ActivityGraphBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

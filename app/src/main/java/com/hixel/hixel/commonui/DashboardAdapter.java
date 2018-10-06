@@ -21,6 +21,7 @@ import java.util.List;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = DashboardAdapter.class.getSimpleName();
 
     private Context context;
