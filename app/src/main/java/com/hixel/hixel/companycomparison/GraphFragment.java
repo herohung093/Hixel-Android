@@ -28,13 +28,11 @@ public class GraphFragment extends Fragment {
 
     private CombinedChart mChart;
     String[] years;
-    ArrayList<Integer> colors =new ArrayList<>();
-    private OnFragmentInteractionListener mListener;
-    public GraphFragment() {
-        // Required empty public constructor
-    }
+    ArrayList<Integer> colors = new ArrayList<>();
+    private OnFragmentInteractionListener listener;
 
-    // TODO: Rename and change types and number of parameters
+    public GraphFragment() { }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +47,6 @@ public class GraphFragment extends Fragment {
         colors.add(Color.rgb(0,255,127));
         colors.add(Color.rgb(255,215,0));
         colors.add(Color.rgb(	205,92,92));
-
     }
 
 
@@ -149,35 +146,33 @@ public class GraphFragment extends Fragment {
 
     }
 
-    public void decorLineChart(CombinedChart mchart){
+    public void decorLineChart(CombinedChart chart){
 
-        mchart.animateXY(1000, 1000);
-        mchart.setDrawGridBackground(false);
-        XAxis xAxis = mchart.getXAxis();
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                if(value ==0)
-                    return "N/A";
-                else return String.valueOf(value);
+        chart.animateXY(1000, 1000);
+        chart.setDrawGridBackground(false);
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setValueFormatter((value, axis) -> {
+            if(value ==0) {
+                return "N/A";
+            } else {
+                return String.valueOf(value);
             }
-        });
-        YAxis yAxis = mchart.getAxisLeft();
 
+        });
+
+        YAxis yAxis = chart.getAxisLeft();
         setupAxis(xAxis, yAxis);
 
-        Legend legend = mchart.getLegend();
+        Legend legend = chart.getLegend();
         setupLegend(legend);
     }
 
 
     IAxisValueFormatter formatter = new IAxisValueFormatter() {
-
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
             return years[(int) value];
         }
-
     };
 
     private void checkYearNull(List<FinancialData> financial) {
@@ -199,10 +194,8 @@ public class GraphFragment extends Fragment {
         years = toConvertYears.toArray(new String[toConvertYears.size()]);
     }
 
-    public void setupDatasetStyle(ArrayList<LineDataSet> lineDataSets/*, LineDataSet setCompA, LineDataSet setCompB*/) {
-
-
-        for (int i=0;i<lineDataSets.size();i++ ){
+    public void setupDatasetStyle(ArrayList<LineDataSet> lineDataSets) {
+        for (int i=0; i < lineDataSets.size(); i++){
             lineDataSets.get(i).setDrawCircleHole(true);
             lineDataSets.get(i).setValueTextSize(12);
             lineDataSets.get(i).setValueTextColor(colors.get(i));
@@ -243,24 +236,22 @@ public class GraphFragment extends Fragment {
 
         yAxis.setTextSize(12f);
         yAxis.setTextColor(Color.BLACK);
-
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            listener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        listener = null;
     }
 
     interface OnFragmentInteractionListener {

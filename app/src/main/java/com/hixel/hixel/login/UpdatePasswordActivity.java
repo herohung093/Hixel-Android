@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.ui;
+package com.hixel.hixel.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
-import com.hixel.hixel.login.LoginActivity;
 
 public class UpdatePasswordActivity extends AppCompatActivity {
     TextInputLayout newPassTV, confirmPassTV;
@@ -22,8 +21,7 @@ public class UpdatePasswordActivity extends AppCompatActivity {
         confirmPassTV= findViewById(R.id.forgotView_ConfirmPassWrapper);
 
         changePassButton.setOnClickListener(event->{
-            if(validate());
-            {
+            if (validate()) {
                 Toast.makeText(getBaseContext(), "Your password has been updated",
                     Toast.LENGTH_LONG + 1).show();
                 Intent moveToLogin = new Intent(getApplicationContext(), LoginActivity.class);
@@ -31,22 +29,25 @@ public class UpdatePasswordActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
-
     }
+
     public boolean validate() {
         boolean valid = true;
 
-        if(newPassTV.getEditText().getText().toString()
+        if (newPassTV.getEditText().getText().toString()
             .compareTo(confirmPassTV.getEditText().getText().toString())!=0){
             valid=false;
             Toast.makeText(getBaseContext(), "Your passwords do not match", Toast.LENGTH_LONG).show();
         }
-        if(newPassTV.getEditText().getText().toString().length()<4){
+
+        if (newPassTV.getEditText().getText().toString().length()<4){
             valid=false;
             newPassTV.setError("Must contain at least 4 characters");
         }
+
         return valid;
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

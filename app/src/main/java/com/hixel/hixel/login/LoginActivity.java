@@ -39,31 +39,26 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         emailText = findViewById(R.id.emailWrapper);
         passwordText = findViewById(R.id.passwordWrapper);
         loginButton = findViewById(R.id.btn_login);
         signupLink = findViewById(R.id.link_signup);
-
-        emailText = (TextInputLayout) findViewById(R.id.emailWrapper);
-        passwordText= (TextInputLayout) findViewById(R.id.passwordWrapper);
-        loginButton= (Button) findViewById(R.id.btn_login);
-        signupLink = (TextView) findViewById(R.id.link_signup);
+        emailText = findViewById(R.id.emailWrapper);
+        passwordText= findViewById(R.id.passwordWrapper);
+        loginButton= findViewById(R.id.btn_login);
+        signupLink = findViewById(R.id.link_signup);
         forgotPasswordLink= findViewById(R.id.link_forgot_password);
-        loginButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                login();
-            }
-        });
-        signupLink.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
+
+        loginButton.setOnClickListener(view -> login());
+
+        signupLink.setOnClickListener(view -> {
             Intent moveToSignup = new Intent(getApplicationContext(),SignupActivity.class);
             startActivity(moveToSignup);
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-            }
         });
-        forgotPasswordLink.setOnClickListener(event->{
+
+        forgotPasswordLink.setOnClickListener(event-> {
             Intent moveToForgotView = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
             startActivity(moveToForgotView);
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
@@ -173,6 +168,7 @@ public class LoginActivity extends AppCompatActivity {
 
         return valid;
     }
+
 //Responds to enter
 /*    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

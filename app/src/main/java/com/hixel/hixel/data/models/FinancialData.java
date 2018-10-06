@@ -23,7 +23,7 @@ public class FinancialData implements Serializable {
         return ratios;
     }
 
-    public void createIndicators() {
+    private void createIndicators() {
         indicators.put("health", setScore(1, ratios.get("Current Ratio")));
         indicators.put("performance", setScore(1, ratios.get("Quick Ratio")));
         indicators.put("risk", setScore(1, ratios.get("Cash Ratio")));
@@ -33,7 +33,7 @@ public class FinancialData implements Serializable {
 
     // Flag = 1 for positively skewed ratio
     // TODO: Make this not suck.
-    public Integer setScore(int flag, Double value) {
+    private Integer setScore(int flag, Double value) {
         if (value == null)
             return -1;
 

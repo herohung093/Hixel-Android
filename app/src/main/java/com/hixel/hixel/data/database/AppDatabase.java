@@ -19,6 +19,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CompanyDao companyDao();
 
+    // TODO: DI is taking care of this, can be removed
     public static AppDatabase getAppDatabase(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),

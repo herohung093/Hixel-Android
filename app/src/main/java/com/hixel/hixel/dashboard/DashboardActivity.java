@@ -78,6 +78,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     private BarChart chart;
 
     SearchView search;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -382,6 +383,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             }
         };
     }
+
+    // TODO: Try out apply instead of commit
     public void savePortfolioCompanies(List<Company> companies){
         SharedPreferences appSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();

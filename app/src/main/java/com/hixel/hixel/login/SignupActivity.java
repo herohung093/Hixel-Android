@@ -19,13 +19,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity {
+
     TextInputLayout emailText,passwordText,firstNameText,lasNameText;
     TextView loginText;
     Button signupButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
         emailText = findViewById(R.id.signup_EmailWrapper);
         passwordText=findViewById(R.id.signup_PassWrapper);
         firstNameText= findViewById(R.id.firstNameWrapper);
@@ -33,19 +36,12 @@ public class SignupActivity extends AppCompatActivity {
         loginText = findViewById(R.id.link_login);
         signupButton= findViewById(R.id.btn_signup);
 
-        signupButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                signup();
-            }
-        });
+        signupButton.setOnClickListener(view -> signup());
 
-        loginText.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent moveToLogin= new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(moveToLogin);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-            }
+        loginText.setOnClickListener(view -> {
+            Intent moveToLogin= new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(moveToLogin);
+            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });
     }
 
@@ -72,22 +68,18 @@ public class SignupActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(@NonNull Call<Void> call,
-                                   @NonNull Response<Void> response) {
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 switch (response.code()) {
                     case 200:
                         onSignupSuccess();
                         progressDialog.dismiss();
                         break;
-
                     case 409:
                         onSignupFailed("Email is already in use");
                         break;
-
                     case 500:
                         onSignupFailed("Invalid input");
                         break;
-
                     default:
                         onSignupFailed("Unknown error: Code " + response.code());
                         break;
@@ -104,13 +96,14 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupFailed(String reason) {
         Toast.makeText(getBaseContext(), "Signup failed: " + reason, Toast.LENGTH_LONG).show();
-
         signupButton.setEnabled(true);
     }
+
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
         finish();
     }
+
     public boolean validate() {
         boolean valid = true;
 
@@ -122,36 +115,34 @@ public class SignupActivity extends AppCompatActivity {
         if (firstName.isEmpty()) {
             firstNameText.setError("Name can't be empty!");
             valid = false;
-        }
-        else {
+        } else {
             firstNameText.setError(null);
         }
+
         if (lastName.isEmpty()) {
             lasNameText.setError("Name can't be empty!");
             valid = false;
-        }
-        else {
+        } else {
             lasNameText.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError("Invalid email address");
             valid = false;
-        }
-        else {
+        } else {
             emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 ) {
             passwordText.setError("Must contain at least 4 characters");
             valid = false;
-        }
-        else {
+        } else {
             passwordText.setError(null);
         }
 
         return valid;
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

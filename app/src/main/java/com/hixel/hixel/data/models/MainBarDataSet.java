@@ -20,6 +20,4 @@ public class MainBarDataSet extends BarDataSet{
             return mColors.get(1);
         }
     }
-
-
 }

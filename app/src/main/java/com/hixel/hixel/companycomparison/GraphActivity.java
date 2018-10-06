@@ -2,32 +2,29 @@ package com.hixel.hixel.companycomparison;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import com.hixel.hixel.R;
+import com.hixel.hixel.commonui.HorizontalListViewAdapter;
 import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.login.ProfileActivity;
-import com.hixel.hixel.view.adapter.HorizontalListViewAdapter;
 import com.hixel.hixel.view.ui.GenericChartFragment;
 import com.hixel.hixel.view.ui.GenericChartFragment.OnFragmentInteractionListener;
 import java.util.ArrayList;
 
 public class GraphActivity extends FragmentActivity implements
         OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener {
+
+    @SuppressWarnings("unused")
     private final String TAG = getClass().getSimpleName();
 
     ArrayList<String> ratios = new ArrayList<>();
@@ -42,8 +39,7 @@ public class GraphActivity extends FragmentActivity implements
     ImageView infoButton;
 
 
-   // ActivityGraphBinding binding;
-
+    // ActivityGraphBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +51,11 @@ public class GraphActivity extends FragmentActivity implements
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
         intentReceiver = getIntent();
-        receivedCompanies =
-            (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
-        Log.d(TAG,"@@@@@@"+ String.valueOf(receivedCompanies.size()));
+        receivedCompanies = (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
         Context context = this;
+
         //setup bottom navigator
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.graph_generic_navigator);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.graph_generic_navigator);
         setupBottomNavigationView(bottomNavigationView);
         fragmentA = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_bar_char);
 
@@ -72,25 +67,19 @@ public class GraphActivity extends FragmentActivity implements
         progressDialog.dismiss();
 
         infoButton = findViewById(R.id.imageView3);
-        infoButton.setOnClickListener(new OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                final Dialog dialog= new Dialog(context);
-                dialog.setContentView(R.layout.information_popup_window);
-                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                dialog.setTitle("Title...");
-                int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-                int height = (int)(getResources().getDisplayMetrics().heightPixels*0.90);
-                dialog.getWindow().setLayout(width,height);
-                ImageView close_ib =dialog.findViewById(R.id.popup_ib_close);;
-                close_ib.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view){
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-            }
+        infoButton.setOnClickListener(view -> {
+
+            final Dialog dialog= new Dialog(context);
+            dialog.setContentView(R.layout.information_popup_window);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.setTitle("Title...");
+            int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+            int height = (int)(getResources().getDisplayMetrics().heightPixels*0.90);
+            dialog.getWindow().setLayout(width,height);
+            ImageView close_ib =dialog.findViewById(R.id.popup_ib_close);
+
+            close_ib.setOnClickListener(dialogView -> dialog.dismiss());
+            dialog.show();
         });
 
     }
@@ -99,9 +88,9 @@ public class GraphActivity extends FragmentActivity implements
         companyRecycleView = findViewById(R.id.company_list);
         companyRecycleView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager;
-        mLayoutManager=  new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         companyRecycleView.setLayoutManager(mLayoutManager);
-        //companyListAdapter=new CompanyScoreListAdapter(this,receivedCompanies);
+        //companyListAdapter = new CompanyScoreListAdapter(this,receivedCompanies);
         companyRecycleView.setAdapter(companyListAdapter);
     }
 
@@ -116,14 +105,9 @@ public class GraphActivity extends FragmentActivity implements
         mRecyclerView.setAdapter(mAdapter);
         checkUpFinancialEntry(ratios);
         fragmentA.drawGraph(receivedCompanies,ratios.get(0));
-        GenericChartFragment fragmentB =
-            (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
+        GenericChartFragment fragmentB = (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
         //fragmentB.drawGraph(receivedCompanies);
-
-
     }
-
-
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
         bottomNavigationView.setSelectedItemId(R.id.compare_button);
@@ -165,17 +149,12 @@ public class GraphActivity extends FragmentActivity implements
         }
     }
     private void observeViewModel(GraphViewModel graphViewModel){
-        graphViewModel.getRatios().observe(this, new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<String> strings) {
-                if (strings != null) {
-                    ratios = strings;
-                    setupListOfRatios(strings);
-                    checkUpFinancialEntry(strings);
-                }
+        graphViewModel.getRatios().observe(this, strings -> {
+            if (strings != null) {
+                ratios = strings;
+                setupListOfRatios(strings);
+                checkUpFinancialEntry(strings);
             }
         });
     }
-
-
 }

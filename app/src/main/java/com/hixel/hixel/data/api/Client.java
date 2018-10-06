@@ -3,13 +3,7 @@ package com.hixel.hixel.data.api;
 import static com.hixel.hixel.data.api.Const.BASE_URL;
 import static com.hixel.hixel.data.api.Const.REQUEST_TIMEOUT;
 
-import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -11,28 +11,25 @@ import com.hixel.hixel.commonui.SliderAdapter;
 
 public class Onboarding extends AppCompatActivity {
 
-    private ViewPager viewPager;
     private LinearLayout linearLayout;
-    private SliderAdapter sliderAdapter;
-
-    private TextView[] dots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding);
 
-        viewPager = findViewById(R.id.viewPager);
+        ViewPager viewPager = findViewById(R.id.viewPager);
         linearLayout = findViewById(R.id.linearLayout);
 
-        sliderAdapter = new SliderAdapter(this);
+        SliderAdapter sliderAdapter = new SliderAdapter(this);
 
         viewPager.setAdapter(sliderAdapter);
         viewPager.addOnPageChangeListener(viewListener);
     }
 
     public void addDotsIndicator(int position) {
-        dots = new TextView[3];
+
+        TextView[] dots = new TextView[3];
         linearLayout.removeAllViews();
 
         for (int i = 0; i < dots.length; i++) {
@@ -44,6 +41,7 @@ public class Onboarding extends AppCompatActivity {
             linearLayout.addView(dots[i]);
         }
 
+        // TODO: Check if this if-statement can be removed
         if (dots.length > 0) {
             dots[position].setTextColor(getColor(R.color.good));
         }
@@ -51,9 +49,7 @@ public class Onboarding extends AppCompatActivity {
 
     ViewPager.OnPageChangeListener viewListener = new OnPageChangeListener() {
         @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
         @Override
         public void onPageSelected(int position) {
@@ -61,8 +57,6 @@ public class Onboarding extends AppCompatActivity {
         }
 
         @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
+        public void onPageScrollStateChanged(int state) { }
     };
 }

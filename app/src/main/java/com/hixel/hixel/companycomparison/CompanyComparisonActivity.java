@@ -21,7 +21,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -45,6 +44,8 @@ import java.util.stream.Collectors;
 
 public class CompanyComparisonActivity extends AppCompatActivity {
 
+    private static final String TAG = CompanyDetailActivity.class.getSimpleName();
+
     ComparisonAdapter adapter;
     RecyclerView recyclerView,dashboardCompanyRecycleView;
     private Button compareButton;
@@ -52,8 +53,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     SearchView.SearchAutoComplete searchAutoComplete;
     CompanyComparisonViewModel companyComparisonViewModel;
     ActivityComparisonBinding binding;
-
-    private static final String TAG = CompanyDetailActivity.class.getSimpleName();
 
     HorizontalCompanyListAdapter horizontalCompanyListAdapter;
     ArrayList<Company> portfolioCompanies,selectedCompany;
@@ -178,7 +177,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             if (companies == null || companies.size() < 2) {
                 Toast.makeText(getApplicationContext(), "Select 2 companies first!", Toast.LENGTH_LONG).show();
             // ArrayList<Company> companies = comparisonViewModel.getCompanies().getValue();
-            Log.d(TAG,"@@@@ "+companies.size());
+
             List<Company> deDupStringList3 = companies.stream().distinct().collect(Collectors.toList());
                 if (companies == null) {
                 Toast.makeText(getApplicationContext(), "Select at least 2 companies!", Toast.LENGTH_LONG).show();

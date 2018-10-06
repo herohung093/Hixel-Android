@@ -15,6 +15,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class GraphViewModel extends AndroidViewModel {
+
+    @SuppressWarnings("unused")
     private final String TAG = getClass().getSimpleName();
 
     private MutableLiveData<ArrayList<Company>> companies;
@@ -42,12 +44,11 @@ public class GraphViewModel extends AndroidViewModel {
             }
             @Override
             public void onFailure(@NonNull Call<ArrayList<String>> call, @NonNull Throwable t) {
-                Log.d("loadPortfolio",
-                    "Failed to load Search suggestions from the server: " + t.getMessage());
+                Log.d(TAG, "Failed to load Search suggestions from the server: " + t.getMessage());
             }
         });
 
-        //TODO: You can't just return the result right after starting an asynchronous API call...
+        // TODO: You can't just return the result right after starting an asynchronous API call...
         return tempRatios;
     }
 

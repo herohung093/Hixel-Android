@@ -59,8 +59,6 @@ public class CompanyRepository {
                             //executor.execute(() -> {
                                 List<Company> companies = response.body();
 
-                                Log.d(TAG, "" + companies.get(0).getFinancialIdentifiers().getName());
-
                                 company.setValue(companies.get(0));
                             //});
                         }

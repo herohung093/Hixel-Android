@@ -30,6 +30,7 @@ import retrofit2.Response;
 
 public class CompanyComparisonViewModel extends ViewModel {
 
+    @SuppressWarnings("unused")
     private final String TAG = getClass().getSimpleName();
 
     private MutableLiveData<ArrayList<Company>> companies = new MutableLiveData<>();

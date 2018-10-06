@@ -23,7 +23,6 @@ import javax.inject.Singleton;
 public class AppModule {
 
     // --- DATABASE INJECTION ---
-
     @Provides
     @Singleton
     AppDatabase provideDatabase(Application application) {
@@ -38,8 +37,8 @@ public class AppModule {
     @Singleton
     CompanyDao provideUserDao(AppDatabase database) { return database.companyDao(); }
 
-    // --- REPOSITORY INJECTION ---
 
+    // --- REPOSITORY INJECTION ---
     @Provides
     Executor provideExecutor() {
         return Executors.newSingleThreadExecutor();

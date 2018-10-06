@@ -8,12 +8,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
-import com.hixel.hixel.login.LoginActivity;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
+
     TextInputLayout emailIdText;
-    Button backButton, submitButton;
+    Button backButton;
+    Button submitButton;
     TextView hint_TV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             }
         });
     }
+
     private boolean validate() {
         boolean valid = true;
 
@@ -55,11 +58,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         return valid;
     }
+
     public void onSendCodeSuccess(){
-        Intent moveToPininput = new Intent(this, com.hixel.hixel.view.ui.PinInputActivity.class);
-        startActivity(moveToPininput);
+        Intent moveToPinInput = new Intent(this, com.hixel.hixel.view.ui.PinInputActivity.class);
+        startActivity(moveToPinInput);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

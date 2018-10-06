@@ -3,6 +3,7 @@ package com.hixel.hixel;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import android.support.annotation.NonNull;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -11,20 +12,20 @@ import javax.inject.Singleton;
 /**
  * Provides all the dependencies required for ViewModels
  */
-
 @Singleton
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private final Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
 
     @Inject
-    public ViewModelFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
+    ViewModelFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
         this.creators = creators;
     }
 
+    @NonNull
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends ViewModel> T create(Class<T> modelClass) {
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         Provider<? extends ViewModel> creator = creators.get(modelClass);
 
         if (creator == null) {

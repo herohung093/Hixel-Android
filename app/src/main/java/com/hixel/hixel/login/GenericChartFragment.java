@@ -1,4 +1,4 @@
-package com.hixel.hixel.view.ui;
+package com.hixel.hixel.login;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -28,47 +28,41 @@ import java.util.ArrayList;
 
 public class GenericChartFragment extends Fragment {
 
-
     private OnFragmentInteractionListener mListener;
     private RadarChart radarChart;
-    public GenericChartFragment() {
-        // Required empty public constructor
-    }
 
+    public GenericChartFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-        Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_generic_chart, container, false);
         radarChart= view.findViewById(R.id.radarChart);
+
         return view;
     }
 
     public void drawGraph(ArrayList<Company> companies){
 
-
-
         ArrayList<RadarEntry> entries1= new ArrayList<>();
 
-            entries1.add(new RadarEntry(5f, 1));
-            entries1.add(new RadarEntry(2f, 2));
-            entries1.add(new RadarEntry(1f, 3));
-            entries1.add(new RadarEntry(3f, 4));
-            entries1.add(new RadarEntry(5f, 5));
-        ArrayList<RadarEntry> entries2 = new ArrayList<>();
-            entries2.add(new RadarEntry(1f, 1));
-            entries2.add(new RadarEntry(5f, 2));
-            entries2.add(new RadarEntry(4f, 3));
-            entries2.add(new RadarEntry(3f, 4));
-            entries2.add(new RadarEntry(4f, 5));
+        entries1.add(new RadarEntry(5f, 1));
+        entries1.add(new RadarEntry(2f, 2));
+        entries1.add(new RadarEntry(1f, 3));
+        entries1.add(new RadarEntry(3f, 4));
+        entries1.add(new RadarEntry(5f, 5));
 
+        ArrayList<RadarEntry> entries2 = new ArrayList<>();
+        entries2.add(new RadarEntry(1f, 1));
+        entries2.add(new RadarEntry(5f, 2));
+        entries2.add(new RadarEntry(4f, 3));
+        entries2.add(new RadarEntry(3f, 4));
+        entries2.add(new RadarEntry(4f, 5));
 
         RadarDataSet dataSet_compA= null; //new RadarDataSet(entries1,companies.get(0).getIdentifiers().getName());
         RadarDataSet dataSet_compB= null; //new RadarDataSet(entries2,companies.get(1).getIdentifiers().getName());
@@ -101,14 +95,8 @@ public class GenericChartFragment extends Fragment {
         data.setValueTextSize(10f);
         data.setDrawValues(true);
         data.setValueTextColor(Color.BLACK);
-        data.setValueFormatter(new IValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex,
-                ViewPortHandler viewPortHandler) {
-                String displayValue= String.valueOf((int) value);
-                return displayValue;
-            }
-        });
+        data.setValueFormatter((value, entry , dataSetIndex, viewPortHandler) -> String.valueOf((int) value));
+
         Legend legend = radarChart.getLegend();
         legend.setEnabled(true);
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
@@ -156,15 +144,13 @@ public class GenericChartFragment extends Fragment {
         radarChart.invalidate();
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -174,14 +160,5 @@ public class GenericChartFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this fragment to allow an
-     * interaction in this fragment to be communicated to the activity and potentially other
-     * fragments contained in that activity. <p> See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html" >Communicating
-     * with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-
-    }
+    interface OnFragmentInteractionListener { }
 }

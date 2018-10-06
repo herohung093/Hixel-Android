@@ -13,7 +13,6 @@ import javax.inject.Inject;
 /**
  * Entry point for the application
  */
-
 public class App extends Application implements HasActivityInjector {
 
     @Inject
