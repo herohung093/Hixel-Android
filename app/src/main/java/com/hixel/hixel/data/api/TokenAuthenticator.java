@@ -1,4 +1,4 @@
-package com.hixel.hixel.service.network;
+package com.hixel.hixel.data.api;
 
 import com.hixel.hixel.App;
 
@@ -14,7 +14,7 @@ import okhttp3.Route;
 import okhttp3.Response;
 import retrofit2.Call;
 
-import static com.hixel.hixel.service.network.Const.NO_AUTHENTICATION;
+import static com.hixel.hixel.data.api.Const.NO_AUTHENTICATION;
 
 public class TokenAuthenticator implements Authenticator {
     @SuppressLint("ApplySharedPref")

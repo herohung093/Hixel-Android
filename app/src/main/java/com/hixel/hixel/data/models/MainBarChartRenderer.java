@@ -1,4 +1,4 @@
-package com.hixel.hixel.service.models.charts;
+package com.hixel.hixel.data.models;
 
 import android.graphics.Canvas;
 import android.graphics.RectF;

@@ -1,7 +1,7 @@
 package com.hixel.hixel;
 
 
-import com.hixel.hixel.service.models.SearchEntry;
+import com.hixel.hixel.data.models.SearchEntry;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

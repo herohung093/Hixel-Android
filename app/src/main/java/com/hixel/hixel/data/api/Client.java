@@ -1,7 +1,7 @@
-package com.hixel.hixel.service.network;
+package com.hixel.hixel.data.api;
 
-import static com.hixel.hixel.service.network.Const.BASE_URL;
-import static com.hixel.hixel.service.network.Const.REQUEST_TIMEOUT;
+import static com.hixel.hixel.data.api.Const.BASE_URL;
+import static com.hixel.hixel.data.api.Const.REQUEST_TIMEOUT;
 
 import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;

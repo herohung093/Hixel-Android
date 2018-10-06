@@ -18,14 +18,13 @@ import android.widget.Toast;
 import com.hixel.hixel.App;
 import com.hixel.hixel.R;
 import com.hixel.hixel.dashboard.DashboardActivity;
-import com.hixel.hixel.service.models.LoginData;
-import com.hixel.hixel.service.network.ServerInterface;
+import com.hixel.hixel.data.api.Client;
+import com.hixel.hixel.data.models.LoginData;
+import com.hixel.hixel.data.api.ServerInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.hixel.hixel.service.network.Client.getClient;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -82,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // TODO: Implement  authentication logic here.
 
-        Call<Void> call = getClient()
+        Call<Void> call = Client.getClient()
                 .create(ServerInterface.class)
                 .login(new LoginData(email, password));
 

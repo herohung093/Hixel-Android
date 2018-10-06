@@ -1,9 +1,9 @@
 package com.hixel.hixel.di.modules;
 
 import android.support.annotation.NonNull;
-import com.hixel.hixel.service.network.ServerInterface;
-import com.hixel.hixel.service.network.TokenAuthenticator;
-import com.hixel.hixel.service.network.TokenInterceptor;
+import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.data.api.TokenAuthenticator;
+import com.hixel.hixel.data.api.TokenInterceptor;
 import dagger.Module;
 import dagger.Provides;
 import java.security.cert.CertificateException;

@@ -2,10 +2,10 @@ package com.hixel.hixel.di.modules;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
-import com.hixel.hixel.data.source.CompanyRepository;
-import com.hixel.hixel.data.source.local.AppDatabase;
-import com.hixel.hixel.data.source.local.CompanyDao;
-import com.hixel.hixel.service.network.ServerInterface;
+import com.hixel.hixel.data.CompanyRepository;
+import com.hixel.hixel.data.database.AppDatabase;
+import com.hixel.hixel.data.database.CompanyDao;
+import com.hixel.hixel.data.api.ServerInterface;
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.AndroidInjectionModule;

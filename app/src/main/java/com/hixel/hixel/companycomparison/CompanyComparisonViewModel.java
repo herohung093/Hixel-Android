@@ -1,15 +1,15 @@
 package com.hixel.hixel.companycomparison;
 
-import static com.hixel.hixel.service.network.Client.getClient;
+import static com.hixel.hixel.data.api.Client.getClient;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.hixel.hixel.service.models.Company;
-import com.hixel.hixel.service.models.SearchEntry;
-import com.hixel.hixel.service.network.Client;
-import com.hixel.hixel.service.network.ServerInterface;
+import com.hixel.hixel.data.models.SearchEntry;
+import com.hixel.hixel.data.api.Client;
+import com.hixel.hixel.data.api.ServerInterface;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

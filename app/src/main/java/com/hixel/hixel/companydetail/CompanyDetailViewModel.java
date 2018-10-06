@@ -2,14 +2,14 @@ package com.hixel.hixel.companydetail;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import com.hixel.hixel.data.CompanyEntity;
-import com.hixel.hixel.data.source.CompanyRepository;
+import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.CompanyRepository;
 import javax.inject.Inject;
 
 
 public class CompanyDetailViewModel extends ViewModel {
 
-    private MutableLiveData<CompanyEntity> company;
+    private MutableLiveData<Company> company;
     private CompanyRepository companyRepository;
 
     @Inject
@@ -21,7 +21,7 @@ public class CompanyDetailViewModel extends ViewModel {
         company = companyRepository.getCompany(ticker);
     }
 
-    public MutableLiveData<CompanyEntity> getCompany() {
+    public MutableLiveData<Company> getCompany() {
         return this.company;
     }
 
@@ -29,9 +29,7 @@ public class CompanyDetailViewModel extends ViewModel {
         companyRepository.saveCompany(company.getValue());
     }
 
-    // TODO: Actually check if it is in the portfolio.
     public boolean companyIsInPortfolio() {
         return true;
     }
-
 }

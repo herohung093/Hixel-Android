@@ -1,5 +1,7 @@
 <resources>
+  <!-- Common -->
   <string name="app_name">Hixel</string>
+  <string name="default_text">Default</string>
 
   <!-- Toolbar Titles-->
   <string name="dashboard">Dashboard</string>
@@ -12,7 +14,7 @@
   <string name="overview">Overview</string>
   <string name="portfolio">Portfolio</string>
 
-  <!-- CompanyEntity -->
+  <!-- Company -->
   <string name="indicators">Indicators</string>
   <string name="company_score">Score</string>
 
@@ -21,13 +23,73 @@
   <string name="strength">Strength</string>
   <string name="health">Health</string>
   <string name="risk">Risk</string>
+  <string name="safety">Safety</string>
 
   <!-- Comparison -->
+  <string name="comparison_title">Comparison</string>
+  <string name="compare">Compare</string>
+  <string name="selected_companies">Companies Selected</string>
+  <string name="compare_by">Compare By</string>
+  <string name="generic_ratios">Generic Ratios</string>
+  <string name="dashboard_companies">Companies from your Dashboard</string>
 
   <!-- Snackbar messages -->
   <string name="load_error_message">There was an error loading your portfolio</string>
 
-  <!-- Defaults -->
-  <string name="default_text">Default</string>
+  <!-- Forgot Password -->
+  <string name="registered_email">Email ID</string>
+  <string name="hint_registered_email">Please enter your Registered Email ID below:</string>
+  <string name="back_to_login">Back</string>
+  <string name="submit">Submit</string>
+  <string name="update_password">Update Password</string>
+
+  <!-- Profile -->
+  <string name="change_pass">Change your password</string>
+  <string name="new_password">Enter your new password</string>
+  <string name="confirm_pass">Confirm your password</string>
+  <string name="logout">Log Out</string>
+  <string name="profile_cancel">Cancel</string>
+
+  <!-- Sign up -->
+  <string name="already_member">Already a member? Login</string>
+  <string name="create_account">Create Account</string>
+  <string name="password_hint">Password</string>
+  <string name="email_hint">Email</string>
+  <string name="last_name_hint">Last name</string>
+  <string name="first_name_hint">First name</string>
+
+  <!--Login -->
+  <string name="logo_description">Logo</string>
+  <string name="forgot_your_password">Forgot your password? Take it back</string>
+  <string name="login">Login</string>
+  <string name="no_account">No account yet? Create one</string>
+
+  <!--Pin View -->
+  <string name="enter_pin">Please type the verification code sent to you</string>
+
+  <!-- Onboarding -->
   <string name="dot">&#xb7;</string>
+
+  <!--information popup window -->
+  <string name="returns_explanatory">How much a company pays out in dividends each year relative to its share price. It measures how much \"bang for your buck\" you are getting from dividends.</string>
+  <string name="based_on">Based on: </string>
+  <string name="return_based_on">Dividend Yield = Annual Dividends per share/Price per share</string>
+  <string name="Formula">Formula: </string>
+  <string name="return_Formula">Dividend Yield = Annual Dividends per share/Price per share</string>
+
+  <string name="performance_explanatory">Can also be known as profitability, it\'s a measure of how much profit a company generates with the money shareholders have invested. It illustrates how effective the company is at turning the cash put into the business into greater gains and growth.</string>
+  <string name="performance_based_on">Return on equity (ROE) = Net Income / Shareholder\'s Equity</string>
+  <string name="performance_Formula">Return on equity = NetIncome(Loss) / Equity</string>
+
+  <string name="strength_explanatory">Reflects how easily a company can pay interest on its outstanding debt with its available earnings. In other words, it measures the margin of safety a company has for paying interest during a given period.</string>
+  <string name="strength_based_on">Interest coverage = earnings before interest and taxes (EBIT) / net interest expense</string>
+  <string name="strength_Formula">Interest coverage = EBIT / net interest expense</string>
+
+  <string name="health_explanatory">Gauges a company\'s ability to pay short-term and long-term obligations. It\'s used to give an idea of a company's ability to pay back its liabilities (e.g. debt) with its assets.</string>
+  <string name="health_based_on">Current ratio = Current Assets / Current Liabilities</string>
+  <string name="health_Formula">Current ratio = AssetsCurrent / LiabilitiesCurrent</string>
+
+  <string name="safety_explanatory">Is a measure of a company\'s financial leverage e.g. it gauges the extent to which a company is taking on debt as a means of leveraging (attempting to increase its value by using borrowed money to fund various projects).</string>
+  <string name="safety_based_on">Current Debt/Equity (D/E) Ratio = Current Liabilities / Equity</string>
+  <string name="safety_Formula">Current Debt/Equity (D/E) Ratio = LiabilitiesCurrent/ Equity</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.hixel.hixel.service.models;
+package com.hixel.hixel.data.models;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import java.util.List;

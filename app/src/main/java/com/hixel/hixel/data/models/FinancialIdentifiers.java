@@ -1,6 +1,6 @@
-package com.hixel.hixel.data;
+package com.hixel.hixel.data.models;
 
-public class Identifiers {
+public class FinancialIdentifiers {
 
     private String ticker;
     private String name;

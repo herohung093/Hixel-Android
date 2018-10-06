@@ -11,14 +11,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
-import com.hixel.hixel.service.models.ApplicationUser;
-import com.hixel.hixel.service.network.ServerInterface;
+import com.hixel.hixel.data.api.Client;
+import com.hixel.hixel.data.models.ApplicationUser;
+import com.hixel.hixel.data.api.ServerInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.hixel.hixel.service.network.Client.getClient;
 
 public class SignupActivity extends AppCompatActivity {
     TextInputLayout emailText,passwordText,firstNameText,lasNameText;
@@ -67,7 +66,7 @@ public class SignupActivity extends AppCompatActivity {
         String email = emailText.getEditText().getText().toString().trim();
         String password = passwordText.getEditText().getText().toString().trim();
 
-        Call<Void> call = getClient()
+        Call<Void> call = Client.getClient()
                 .create(ServerInterface.class)
                 .signup(new ApplicationUser(firstName, lastName, email, password));
 

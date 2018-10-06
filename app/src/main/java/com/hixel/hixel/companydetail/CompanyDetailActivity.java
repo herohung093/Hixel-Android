@@ -16,7 +16,7 @@ import android.view.View;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import com.hixel.hixel.R;
-import com.hixel.hixel.data.CompanyEntity;
+import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
@@ -62,13 +62,13 @@ public class CompanyDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUI(CompanyEntity company) {
+    private void updateUI(Company company) {
 
         if (company != null) {
             setupBottomNavigationView();
 
             // Setup the toolbar
-            String title = company.getIdentifiers().getName();
+            String title = company.getFinancialIdentifiers().getName();
             binding.toolbar.toolbar.setTitle(title);
             binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
 

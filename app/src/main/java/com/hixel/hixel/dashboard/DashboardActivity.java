@@ -33,13 +33,13 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
+import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.R;
-import com.hixel.hixel.data.CompanyEntity;
 
-import com.hixel.hixel.service.models.SearchEntry;
-import com.hixel.hixel.service.models.charts.MainBarChartRenderer;
-import com.hixel.hixel.service.models.charts.MainBarDataSet;
+import com.hixel.hixel.data.models.SearchEntry;
+import com.hixel.hixel.data.models.MainBarChartRenderer;
+import com.hixel.hixel.data.models.MainBarDataSet;
 import com.hixel.hixel.commonui.DashboardAdapter;
 import com.hixel.hixel.commonui.SearchAdapter;
 import com.hixel.hixel.commonui.RecyclerItemTouchHelper;
@@ -98,7 +98,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         viewModel.getCompanies().observe(this, this::updateUI);
     }
 
-    private void updateUI(@Nullable List<CompanyEntity> companies) {
+    private void updateUI(@Nullable List<Company> companies) {
         if (companies != null) {
             Log.d(TAG, "updateUI: HERE");
             binding.progressBar.setVisibility(View.INVISIBLE);
@@ -109,7 +109,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         }
     }
 
-    public void setupDashboardAdapter(List<CompanyEntity> companies) {
+    public void setupDashboardAdapter(List<Company> companies) {
 
         dashboardAdapter = new DashboardAdapter(this, new ArrayList<>());
 
@@ -279,17 +279,17 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         if (viewHolder instanceof DashboardAdapter.ViewHolder) {
             // Get name of removed item
 
-            String name = Objects.requireNonNull(viewModel.getCompanies().getValue()).get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
+            String name = Objects.requireNonNull(viewModel.getCompanies().getValue()).get(viewHolder.getAdapterPosition()).getFinancialIdentifiers().getName();
 
             // Backup item for undo purposes
-            final CompanyEntity deletedCompany = viewModel.getCompanies()
+            final Company deletedCompany = viewModel.getCompanies()
                     .getValue()
                     .get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
             dashboardAdapter.removeItem(viewHolder.getAdapterPosition());
 
-            // Remove CompanyEntity from RecyclerView
+            // Remove Company from RecyclerView
             Snackbar snackbar = Snackbar.make(binding.getRoot(),
                     name + " removed from portfolio", Snackbar.LENGTH_LONG);
 
@@ -307,13 +307,13 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                CompanyEntity mCompanyReturned = ((CompanyEntity) data.getSerializableExtra("COMPANY_ADD"));
+                Company mCompanyReturned = ((Company) data.getSerializableExtra("COMPANY_ADD"));
                 this.addItem(mCompanyReturned);
             }
         }
     }
 
-    public void addItem(CompanyEntity company) {
+    public void addItem(Company company) {
         dashboardAdapter.addItem(company);
     }
 

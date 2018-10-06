@@ -1,4 +1,4 @@
-package com.hixel.hixel.service.models;
+package com.hixel.hixel.data.models;
 
 public class SearchEntry {
     private String ticker;

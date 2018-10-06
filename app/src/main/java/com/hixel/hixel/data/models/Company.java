@@ -1,4 +1,4 @@
-package com.hixel.hixel.data;
+package com.hixel.hixel.data.models;
 
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
@@ -11,27 +11,27 @@ import android.support.annotation.NonNull;
  */
 
 @Entity(tableName = "companies")
-public class CompanyEntity {
+public class Company {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
     private int id;
 
     @Embedded
-    private Identifiers identifiers;
+    private FinancialIdentifiers financialIdentifiers;
 
-    public CompanyEntity() { }
+    public Company() { }
 
     public int getId() { return this.id; }
 
     public void setId(int id) { this.id = id; }
 
-    public Identifiers getIdentifiers() {
-        return identifiers;
+    public FinancialIdentifiers getFinancialIdentifiers() {
+        return financialIdentifiers;
     }
 
-    public void setIdentifiers(Identifiers identifiers) {
-        this.identifiers = identifiers;
+    public void setFinancialIdentifiers(FinancialIdentifiers financialIdentifiers) {
+        this.financialIdentifiers = financialIdentifiers;
     }
 
     // NOTE: TEMPORARY METHOD FOR DISPLAY.

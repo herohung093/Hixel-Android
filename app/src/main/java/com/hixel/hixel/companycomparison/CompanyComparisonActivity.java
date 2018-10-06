@@ -28,7 +28,7 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.databinding.ActivityComparisonBinding;
 import com.hixel.hixel.service.models.Company;
-import com.hixel.hixel.service.models.SearchEntry;
+import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.commonui.ComparisonAdapter;
 import com.hixel.hixel.commonui.ComparisonAdapter.ViewHolder;
 import com.hixel.hixel.commonui.SearchAdapter;

@@ -1,4 +1,4 @@
-package com.hixel.hixel.service.network;
+package com.hixel.hixel.data.api;
 
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -13,7 +13,7 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.hixel.hixel.service.network.Const.NO_AUTHENTICATION;
+import static com.hixel.hixel.data.api.Const.NO_AUTHENTICATION;
 
 @Singleton
 public class TokenInterceptor implements Interceptor {

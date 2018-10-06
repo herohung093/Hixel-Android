@@ -1,11 +1,11 @@
-package com.hixel.hixel.data.source.local;
+package com.hixel.hixel.data.database;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
-import com.hixel.hixel.data.CompanyEntity;
+import com.hixel.hixel.data.models.Company;
 import java.util.List;
 
 /**
@@ -17,13 +17,13 @@ import java.util.List;
 @Dao
 public interface CompanyDao {
 
-    @Query("SELECT * FROM companies")
-    LiveData<List<CompanyEntity>> load();
+    @Query("SELECT * FROM Company")
+    LiveData<List<Company>> load();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void saveCompanies(List<CompanyEntity> companies);
+    void saveCompanies(List<Company> companies);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void saveCompany(CompanyEntity company);
+    void saveCompany(Company company);
 
 }

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.hixel.hixel.R;
-import com.hixel.hixel.service.models.SearchEntry;
+import com.hixel.hixel.data.models.SearchEntry;
 import java.util.List;
 
 public class SearchAdapter extends ArrayAdapter<SearchEntry> {

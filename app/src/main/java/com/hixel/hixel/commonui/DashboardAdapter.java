@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
-import com.hixel.hixel.data.CompanyEntity;
+import com.hixel.hixel.data.models.Company;
 
 import java.util.List;
 
@@ -24,9 +24,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private static final String TAG = DashboardAdapter.class.getSimpleName();
 
     private Context context;
-    private List<CompanyEntity> companies;
+    private List<Company> companies;
 
-    public DashboardAdapter(Context context, List<CompanyEntity> companies) {
+    public DashboardAdapter(Context context, List<Company> companies) {
         this.context = context;
         this.companies = companies;
     }
@@ -43,15 +43,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-        CompanyEntity company = companies.get(position);
+        Company company = companies.get(position);
         double currentRatio = company.getRatio();
 
-        String companyName = company.getIdentifiers().getName();
+        String companyName = company.getFinancialIdentifiers().getName();
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyName.setText(companyName);
 
-        String tickerFormat = "NASDAQ:" + company.getIdentifiers().getTicker();
+        String tickerFormat = "NASDAQ:" + company.getFinancialIdentifiers().getTicker();
         holder.companyTicker.setText(tickerFormat);
 
         // TODO: Work out something with the indicator image
@@ -70,10 +70,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         holder.foreground.setOnClickListener((View view) -> {
             // TODO: Reimplement so that the Company view knows this was from the portfolio.
-            Log.d(TAG, "" + company.getIdentifiers().getTicker());
+            Log.d(TAG, "" + company.getFinancialIdentifiers().getTicker());
 
 
-            String ticker = company.getIdentifiers().getTicker();
+            String ticker = company.getFinancialIdentifiers().getTicker();
 
             Intent intent = new Intent(context, CompanyDetailActivity.class);
             intent.putExtra("COMPANY_TICKER", ticker);
@@ -91,17 +91,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         notifyItemRemoved(position);
     }
 
-    public void restoreItem(CompanyEntity company, int position) {
+    public void restoreItem(Company company, int position) {
         companies.add(position, company);
         notifyItemInserted(position);
     }
 
-    public void addItems(List<CompanyEntity> companies) {
+    public void addItems(List<Company> companies) {
         this.companies = companies;
         notifyDataSetChanged();
     }
 
-    public void addItem(CompanyEntity company) {
+    public void addItem(Company company) {
         companies.add(getItemCount(),company);
         notifyItemInserted(getItemCount());
     }

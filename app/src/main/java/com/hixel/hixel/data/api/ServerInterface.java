@@ -1,11 +1,9 @@
-package com.hixel.hixel.service.network;
+package com.hixel.hixel.data.api;
 
-import com.hixel.hixel.service.models.Company;
-import com.hixel.hixel.service.models.LoginData;
-import com.hixel.hixel.service.models.SearchEntry;
-import com.hixel.hixel.service.models.ApplicationUser;
-
-import com.hixel.hixel.data.CompanyEntity;
+import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.models.LoginData;
+import com.hixel.hixel.data.models.SearchEntry;
+import com.hixel.hixel.data.models.ApplicationUser;
 
 import java.util.ArrayList;
 
@@ -36,7 +34,7 @@ public interface ServerInterface {
     Call<ArrayList<Company>> doGetCompanies(@Query("tickers") String tickers, @Query("years") int years);
 
     @GET("/companydata")
-    Call<ArrayList<CompanyEntity>> getCompanies(@Query("tickers") String tickers, @Query("years") int years);
+    Call<ArrayList<Company>> getCompanies(@Query("tickers") String tickers, @Query("years") int years);
 
     @GET("/search")
     Single<List<SearchEntry>> doSearchQuery(@Query("query") String query);

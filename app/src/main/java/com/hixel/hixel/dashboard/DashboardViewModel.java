@@ -2,11 +2,11 @@ package com.hixel.hixel.dashboard;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-import com.hixel.hixel.data.source.CompanyRepository;
-import com.hixel.hixel.data.CompanyEntity;
-import com.hixel.hixel.service.models.SearchEntry;
-import com.hixel.hixel.service.network.Client;
-import com.hixel.hixel.service.network.ServerInterface;
+import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.CompanyRepository;
+import com.hixel.hixel.data.models.SearchEntry;
+import com.hixel.hixel.data.api.Client;
+import com.hixel.hixel.data.api.ServerInterface;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -26,7 +26,7 @@ public class DashboardViewModel extends ViewModel {
 
     private static final String[] tickers = { "AAPL", "TSLA", "TWTR"};
 
-    private LiveData<List<CompanyEntity>> companies;
+    private LiveData<List<Company>> companies;
     private CompanyRepository companyRepository;
 
     private PublishSubject<String> publishSubject = PublishSubject.create();
@@ -46,7 +46,7 @@ public class DashboardViewModel extends ViewModel {
         companies = companyRepository.getCompanies(tickers);
     }
 
-    public LiveData<List<CompanyEntity>> getCompanies() {
+    public LiveData<List<Company>> getCompanies() {
         return this.companies;
     }
 
