@@ -41,10 +41,7 @@ public class Onboarding extends AppCompatActivity {
             linearLayout.addView(dots[i]);
         }
 
-        // TODO: Check if this if-statement can be removed
-        if (dots.length > 0) {
-            dots[position].setTextColor(getColor(R.color.good));
-        }
+        dots[position].setTextColor(getColor(R.color.good));
     }
 
     ViewPager.OnPageChangeListener viewListener = new OnPageChangeListener() {

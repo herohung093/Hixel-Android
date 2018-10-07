@@ -12,6 +12,8 @@ import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -49,8 +51,6 @@ public class GraphFragment extends Fragment {
         colors.add(Color.rgb(	205,92,92));
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -58,52 +58,55 @@ public class GraphFragment extends Fragment {
         mChart =  view.findViewById(R.id.chart1);
         return view;
     }
-    /*
+
     public LineDataSet lineChartDataSetup( String selectedRatio, Company company){
         List <Entry> compEntry = new ArrayList<>();
         List<CompanyData> companyData = null; //company.getFinancialDataEntries();
         checkYearNull(companyData);
 
         createListOfYears(companyData);
-        int j=4;
-        for (int i=0;i<5;i++){
-            LinkedHashMap<String, Double> DataCompAYear1 = companyData.get(j).getRatios();
+        int j = 4;
+        for (int i=0;i<5;i++) {
+         //   LinkedHashMap<String, Double> DataCompAYear1 = companyData.get(j).getCurrentRatio();
             j--;
-            Entry compYearData = new Entry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
-            compEntry.add(compYearData);
+         //   Entry compYearData = new Entry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
+         //   compEntry.add(compYearData);
         }
+
 
         return null; //new LineDataSet(compEntry,company.getIdentifiers().getTicker());
-    }*/
+    }
 
-/*    public BarDataSet barChartDataSetup(String selectedRatio, Company company){
+    public BarDataSet barChartDataSetup(String selectedRatio, Company company){
         List<BarEntry> compEntry = new ArrayList<>();
-        List<CompanyData> financialData= company.getFinancialDataEntries();
-        checkYearNull(financialData);
-        createListOfYears(financialData);
+      //  List<CompanyData> financialData = company.getFinancialDataEntries();
+      //  checkYearNull(financialData);
+      //  createListOfYears(financialData);
         int j=4;
         for (int i=0;i<5;i++){
-            LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
+        //    LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
             j--;
-            BarEntry compYearData = new BarEntry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
-            compEntry.add(compYearData);
+        //    BarEntry compYearData = new BarEntry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
+        //    compEntry.add(compYearData);
         }
-        return new BarDataSet(compEntry,company.getIdentifiers().getTicker());
+        return null; // new BarDataSet(compEntry,company.getIdentifiers().getTicker());
     }
     public void colorIndicator(Company company, String selectedRatio, ArrayList<Integer> colors){
         ArrayList<Float> rawData= new ArrayList<>();
         ArrayList<Float> sortedData= new ArrayList<>();
-        List<CompanyData> financialData= company.getFinancialDataEntries();
-        checkYearNull(financialData);
+       // List<CompanyData> financialData= company.getFinancialDataEntries();
+       // checkYearNull(financialData);
+
         int j=4;
-        for (int i=0;i<5;i++){
-            LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
+        for (int i=0; i < 5; i++){
+        //    LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
             j--;
-            rawData.add(Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
+        //    rawData.add(Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
             colors.add(0);
         }
         sortedData.addAll(rawData);
-        Collections.sort(sortedData);
+
+       // Collections.sort(sortedData);
         for(int i=1;i<rawData.size();i++){
             if(rawData.get(i)==sortedData.get(0))
                 colors.add(i-1,getResources().getColor(R.color.bad));
@@ -116,9 +119,8 @@ public class GraphFragment extends Fragment {
             }else colors.add(i-1,getResources().getColor(R.color.average));
         }
 
-    }*/
+    }
 
-/*
     public void drawGraph(ArrayList<Company> companies,String selectedRatio){
 
         LineData lineData = new LineData();
@@ -147,7 +149,7 @@ public class GraphFragment extends Fragment {
         mChart.setData(data);
         mChart.invalidate();
 
-    }*/
+    }
 
     public void decorLineChart(CombinedChart chart){
 
@@ -178,26 +180,24 @@ public class GraphFragment extends Fragment {
         }
     };
 
-    /*
     private void checkYearNull(List<CompanyData> financial) {
         for (int i = 0; i < financial.size(); i++) {
             if (financial.get(i) == null) {
-                financial.get(i).setDefaultFinancialData(); //set all values equal to -0 for visualising purpose
-                financial.get(i).setYear(financial.get(i - 1).getYear() - 1);
+               // financial.get(i).setDefaultFinancialData(); //set all values equal to -0 for visualising purpose
+               // financial.get(i).setYear(financial.get(i - 1).getYear() - 1);
             }
         }
-    }*/
+    }
 
-    /*
     private void createListOfYears(List<CompanyData> companyDataCompA) {
         List<String> toConvertYears = new ArrayList<>();
 
         for (int i = companyDataCompA.size() - 1; i >= 0; i--) {
-            toConvertYears.add(String.valueOf(companyDataCompA.get(i).getYear()));
+           // toConvertYears.add(String.valueOf(companyDataCompA.get(i).getYear()));
         }
 
         years = toConvertYears.toArray(new String[toConvertYears.size()]);
-    }*/
+    }
 
     public void setupDatasetStyle(ArrayList<LineDataSet> lineDataSets) {
         for (int i=0; i < lineDataSets.size(); i++){
@@ -213,7 +213,7 @@ public class GraphFragment extends Fragment {
     }
 
     public void setupLegend(Legend legend) {
-/*        legend.setEnabled(true);
+        legend.setEnabled(true);
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setFormSize(7f); // set the size of the legend forms/shapes
         legend.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
@@ -224,7 +224,7 @@ public class GraphFragment extends Fragment {
         legend.setXEntrySpace(55); // set the space between the legend entries on the x-axis
         legend.setYEntrySpace(5f); // set the space between the legend entries on the y-axis
         // set custom labels and colors
-        */
+
         legend.setWordWrapEnabled(true);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);

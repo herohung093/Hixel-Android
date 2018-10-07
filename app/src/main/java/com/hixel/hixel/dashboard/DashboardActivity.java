@@ -23,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import com.github.mikephil.charting.data.BarData;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
@@ -32,7 +31,6 @@ import com.hixel.hixel.R;
 
 
 import com.hixel.hixel.data.models.SearchEntry;
-import com.hixel.hixel.data.models.MainBarDataSet;
 import com.hixel.hixel.commonui.DashboardAdapter;
 import com.hixel.hixel.commonui.SearchAdapter;
 import com.hixel.hixel.commonui.RecyclerItemTouchHelper;
@@ -73,7 +71,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         viewModel.setupSearch(getSearchObserver());
 
         setupBottomNavigationView();
-        // populateChart();
     }
 
     private void configureDagger() {

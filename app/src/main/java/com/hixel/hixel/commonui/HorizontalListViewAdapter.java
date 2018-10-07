@@ -13,7 +13,7 @@ import com.hixel.hixel.companycomparison.GraphFragment;
 import com.hixel.hixel.data.entities.Company;
 import java.util.ArrayList;
 
-public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> implements View.OnClickListener {
+public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> {
 
     private ArrayList<String> ratios;
     private ArrayList<Company> companies;
@@ -48,12 +48,10 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
                     context.getResources().getColor(R.color.colorPrimary));
         }
 
-
         holder.tvSpecies.setText(ratios.get(position));
 
         holder.tvSpecies.setOnClickListener(view -> {
-            //fragmentGraph.drawGraph(companies,ratios.get(position));
-            //setRowIndex(position);
+            fragmentGraph.drawGraph(companies,ratios.get(position));
             notifyItemChanged(rowIndex);
             rowIndex = position;
             notifyItemChanged(rowIndex);
@@ -64,9 +62,6 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
     public int getItemCount() {
         return ratios.size();
     }
-
-    @Override
-    public void onClick(View view) { }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         public CardView cardView;

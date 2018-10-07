@@ -46,7 +46,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        double currentRatio = 0; //companies.get(position).getRatio();
+        double currentRatio = companies.get(position).getCurrentRatio();
 
         holder.binding.companyName.setText(companies.get(position).getFormattedName());
         holder.binding.companyTicker.setText(companies.get(position).getFormattedTicker());
@@ -84,11 +84,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     public void restoreItem(Company company, int position) {
         companies.add(position, company);
         notifyItemInserted(position);
-    }
-
-    public void addItems(List<Company> companies) {
-        this.companies = companies;
-        notifyDataSetChanged();
     }
 
     public void addItem(Company company) {

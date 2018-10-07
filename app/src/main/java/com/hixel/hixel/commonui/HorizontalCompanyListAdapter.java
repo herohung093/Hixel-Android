@@ -34,12 +34,10 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String companyName = ""; /*companies.get(position).getCompanyIdentifiers()
+        String companyName = companies.get(position)
                                       .getName()
                                       .split("[\\s, ]")[0]
-                                      .toLowerCase();*/
-
-        Log.d(TAG, "onBindViewHolder: " + companyName);
+                                      .toLowerCase();
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyNameTV.setText(companyName);

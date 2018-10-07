@@ -15,7 +15,6 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
 import java.util.List;
-import java.util.Locale;
 
 public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.ViewHolder> {
 
@@ -38,18 +37,13 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-        String companyTicker = ""; //String.format(Locale.US, "NASDAQ: %s", companies.get(position).getCompanyIdentifiers().getTicker());
-        String companyName = ""; /*companies.get(position).getCompanyIdentifiers()
-                                      .getName()
-                                      .split("[\\s, ]")[0]
-                                      .toLowerCase();*/
-
-        companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
+        String companyTicker = companies.get(position).getFormattedTicker();
+        String companyName = companies.get(position).getFormattedName();
 
         holder.companyName.setText(companyName);
         holder.companyTicker.setText(companyTicker);
 
-        double currentRatio = 0; //companies.get(position).getRatio();
+        double currentRatio = companies.get(position).getCurrentRatio();
 
 
         if (currentRatio < 1.0) {
@@ -79,11 +73,6 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
     public void removeItem(int position) {
         companies.remove(position);
         notifyItemRemoved(position);
-    }
-
-    public void addItems(List<Company> companies) {
-        this.companies = companies;
-        notifyDataSetChanged();
     }
 
     public void setCompanies(List<Company> companies){
