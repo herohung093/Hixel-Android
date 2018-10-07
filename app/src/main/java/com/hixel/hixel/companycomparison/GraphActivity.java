@@ -120,7 +120,7 @@ public class GraphActivity extends FragmentActivity implements OnFragmentInterac
                     startActivity(moveToCompare);
                     break;
 
-                case R.id.settings_button:
+                case R.id.profile_button:
                     Intent moveToProfile = new Intent(this,ProfileActivity.class);
                     startActivity(moveToProfile);
                     break;

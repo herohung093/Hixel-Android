@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -95,6 +94,24 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         viewModel.getCompanies().observe(this, this::updateUI);
     }
 
+    public void setupBottomNavigationView() {
+        binding.bottomNavigation.bottomNavigation.setSelectedItemId(R.id.home_button);
+        binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.compare_button:
+                    Intent moveToCompare = new Intent(this, CompanyComparisonActivity.class);
+                    startActivity(moveToCompare);
+                    break;
+                case R.id.profile_button:
+                    Intent moveToProfile = new Intent(this, ProfileActivity.class);
+                    startActivity(moveToProfile);
+                    break;
+            }
+
+            return true;
+        });
+    }
+
     private void updateUI(@Nullable List<Company> companies) {
         if (companies != null) {
             binding.progressBar.setVisibility(View.INVISIBLE);
@@ -167,28 +184,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         Intent intent = new Intent(this, CompanyDetailActivity.class);
         intent.putExtra("COMPANY_TICKER", ticker);
         startActivity(intent);
-    }
-
-    public void setupBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = binding.bottomNavigation.bottomNavigation;
-        bottomNavigationView.getMenu().getItem(0).setChecked(false);
-        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
-            switch (item.getItemId()) {
-                case R.id.home_button:
-                    // Already on this screen.
-                    break;
-                case R.id.compare_button:
-                    Intent moveToCompare = new Intent(this, CompanyComparisonActivity.class);
-                    startActivity(moveToCompare);
-                    break;
-                case R.id.settings_button:
-                    Intent moveToProfile = new Intent(this, ProfileActivity.class);
-                    startActivity(moveToProfile);
-                    break;
-            }
-
-            return true;
-        });
     }
 
     public void populateChart() {

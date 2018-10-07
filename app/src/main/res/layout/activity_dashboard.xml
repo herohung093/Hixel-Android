@@ -21,11 +21,7 @@
 
     <include
       android:id="@+id/toolbar"
-      layout="@layout/toolbar"
-      app:layout_constraintBottom_toTopOf="@+id/nested_scroll_view"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"/>
+      layout="@layout/toolbar"/>
 
     <android.support.v4.widget.NestedScrollView
       android:id="@+id/nested_scroll_view"

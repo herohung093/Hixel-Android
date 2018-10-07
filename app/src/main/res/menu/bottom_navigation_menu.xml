@@ -4,18 +4,21 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
   <item
     android:id="@+id/home_button"
+    android:enabled="true"
     android:icon="@drawable/ic_home"
     app:showAsAction="ifRoom"
     android:title=""/>
 
   <item
     android:id="@+id/compare_button"
+    android:enabled="true"
     android:icon="@drawable/ic_compare"
     app:showAsAction="ifRoom"
     android:title=""/>
 
   <item
-    android:id="@+id/settings_button"
+    android:id="@+id/profile_button"
+    android:enabled="true"
     android:icon="@drawable/ic_settings"
     app:showAsAction="ifRoom"
     android:title=""/>

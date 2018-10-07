@@ -27,7 +27,6 @@
 
   <!-- Comparison -->
   <string name="comparison_title">Comparison</string>
-  <string name="compare">Compare</string>
   <string name="selected_companies">Companies Selected</string>
   <string name="compare_by">Compare By</string>
   <string name="generic_ratios">Generic Ratios</string>
@@ -101,4 +100,9 @@
   <string name="safety_explanatory">Is a measure of a company\'s financial leverage e.g. it gauges the extent to which a company is taking on debt as a means of leveraging (attempting to increase its value by using borrowed money to fund various projects).</string>
   <string name="safety_based_on">Current Debt/Equity (D/E) Ratio = Current Liabilities / Equity</string>
   <string name="safety_Formula">Current Debt/Equity (D/E) Ratio = LiabilitiesCurrent/ Equity</string>
+
+  <!-- Bottom Navigation -->
+  <string name="home">Home</string>
+  <string name="compare">Compare</string>
+  <string name="profile">Profile</string>
 </resources>

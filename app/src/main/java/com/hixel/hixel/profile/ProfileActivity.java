@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import com.hixel.hixel.R;
+import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
+import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.databinding.ActivityProfileBinding;
 import com.hixel.hixel.login.LoginActivity;
 
@@ -29,6 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
 
+        setupBottomNavigationView();
         updateUI();
         setupEditButtons();
         setupLogout();
@@ -49,6 +52,24 @@ public class ProfileActivity extends AppCompatActivity {
         binding.name.setFocusable(false);
         binding.email.setFocusable(false);
         binding.password.setFocusable(false);
+    }
+
+    public void setupBottomNavigationView() {
+        binding.bottomNavigation.bottomNavigation.setSelectedItemId(R.id.profile_button);
+        binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home_button:
+                    Intent moveToHome = new Intent(this, DashboardActivity.class);
+                    startActivity(moveToHome);
+                    break;
+                case R.id.compare_button:
+                    Intent moveToCompare = new Intent(this, CompanyComparisonActivity.class);
+                    startActivity(moveToCompare);
+                    break;
+            }
+
+            return true;
+        });
     }
 
     public void setupEditButtons() {

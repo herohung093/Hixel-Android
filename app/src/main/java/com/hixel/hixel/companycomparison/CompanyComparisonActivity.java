@@ -7,7 +7,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,7 +70,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         // dragDownToAdd();
         // setupButtons();
         // setupSearchView();
-        // setupBottomNavigationView();
+        setupBottomNavigationView();
     }
 
     private void configureDagger() { AndroidInjection.inject(this); }
@@ -80,6 +79,24 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CompanyComparisonViewModel.class);
         viewModel.init();
         viewModel.getCompanies().observe(this, this::setupDashboardCompanyListAdapter);
+    }
+
+    public void setupBottomNavigationView() {
+        binding.bottomNavigation.bottomNavigation.setSelectedItemId(R.id.compare_button);
+        binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home_button:
+                    Intent moveToHome = new Intent(this, DashboardActivity.class);
+                    startActivity(moveToHome);
+                    break;
+                case R.id.profile_button:
+                    Intent moveToCompare = new Intent(this, ProfileActivity.class);
+                    startActivity(moveToCompare);
+                    break;
+            }
+
+            return true;
+        });
     }
 
     private void setupDashboardCompanyListAdapter(List<Company> companies) {
@@ -261,31 +278,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         // attaching the touch helper to recycler view
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         mItemTouchHelper.attachToRecyclerView(comparisonCompaniesRecyclerView);
-    }
-
-    public void setupBottomNavigationView() {
-        // TODO: Rename the resource & do I really need to cast
-        BottomNavigationView bottomNavigationView = binding.bottomNavigation.bottomNavigation;
-        bottomNavigationView.getMenu().getItem(0).setChecked(false);
-        bottomNavigationView.getMenu().getItem(1).setChecked(true);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
-            switch (item.getItemId()) {
-                case R.id.home_button:
-                    Intent moveToDashBoard = new Intent(this, DashboardActivity.class);
-                    startActivity(moveToDashBoard);
-                    break;
-                case R.id.compare_button:
-                    // Already here
-                    break;
-                case R.id.settings_button:
-                    Intent moveToProfile = new Intent(this, ProfileActivity.class);
-                    startActivity(moveToProfile);
-                    break;
-            }
-
-            return true;
-        });
     }
 
     public void showSearchResults(List<SearchEntry> searchResults) {
