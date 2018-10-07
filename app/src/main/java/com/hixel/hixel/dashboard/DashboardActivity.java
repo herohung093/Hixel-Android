@@ -49,7 +49,6 @@ import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.Objects;
 import javax.inject.Inject;
 
 public class DashboardActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
@@ -269,7 +268,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         if (viewHolder instanceof DashboardAdapter.ViewHolder) {
             // Get name of removed item
-
             String name = viewModel.getCompanies().getValue().get(viewHolder.getAdapterPosition()).getName();
 
             // Backup item for undo purposes

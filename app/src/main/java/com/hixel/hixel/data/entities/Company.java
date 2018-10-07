@@ -25,26 +25,26 @@ public class Company {
     private double currentRatio;
 
     @SerializedName("Debt-to-Equity Ratio")
-    private double debtToEquityRatio;
+    private double debtToEquity;
 
     @SerializedName("Return-on-Equity Ratio")
-    private double returnOnEquityRatio;
+    private double returnOnEquity;
 
     @SerializedName("Return-on-Assets Ratio")
-    private double returnOnAssetsRatio;
+    private double returnOnAssets;
 
     @SerializedName("Profit-Margin Ratio")
-    private double profitMarginRatio;
+    private double profitMargin;
 
-    public Company(@NonNull String cik, String name, String ticker, double currentRatio, double debtToEquityRatio, double returnOnEquityRatio, double returnOnAssetsRatio, double profitMarginRatio) {
+    public Company(@NonNull String cik, String name, String ticker, double currentRatio, double debtToEquity, double returnOnEquity, double returnOnAssets, double profitMargin) {
         this.cik = cik;
         this.name = name;
         this.ticker = ticker;
         this.currentRatio = currentRatio;
-        this.debtToEquityRatio = debtToEquityRatio;
-        this.returnOnEquityRatio = returnOnEquityRatio;
-        this.returnOnAssetsRatio = returnOnAssetsRatio;
-        this.profitMarginRatio = profitMarginRatio;
+        this.debtToEquity = debtToEquity;
+        this.returnOnEquity = returnOnEquity;
+        this.returnOnAssets = returnOnAssets;
+        this.profitMargin = profitMargin;
     }
 
     @NonNull
@@ -60,20 +60,20 @@ public class Company {
         return ticker;
     }
 
-    public double getDebtToEquityRatio() {
-        return debtToEquityRatio;
+    public double getDebtToEquity() {
+        return debtToEquity;
     }
 
-    public double getReturnOnAssetsRatio() {
-        return returnOnAssetsRatio;
+    public double getReturnOnAssets() {
+        return returnOnAssets;
     }
 
-    public double getProfitMarginRatio() {
-        return profitMarginRatio;
+    public double getProfitMargin() {
+        return profitMargin;
     }
 
-    public double getReturnOnEquityRatio() {
-        return returnOnEquityRatio;
+    public double getReturnOnEquity() {
+        return returnOnEquity;
     }
 
     public double getCurrentRatio() {
@@ -100,9 +100,10 @@ public class Company {
             return "";
         }
     }
-/*
+
     public int getReturnsScore() {
-        return generateScore(this.dividendYield);
+        // TODO: Make this dividend yield.
+        return generateScore(this.returnOnAssets);
     }
 
     public int getPerformanceScore() {
@@ -110,7 +111,8 @@ public class Company {
     }
 
     public int getStrengthScore() {
-        return generateScore(this.interestCoverage);
+        // TODO: Make this interest coverage
+        return generateScore(this.profitMargin);
     }
 
     public int getHealthScore() {
@@ -118,8 +120,8 @@ public class Company {
     }
 
     public int getSafetyScore() {
-        return generateScore(this.debtToEquityRatio);
-    }*/
+        return generateScore(this.debtToEquity);
+    }
 
     private int generateScore(double ratio) {
         int score = 1;

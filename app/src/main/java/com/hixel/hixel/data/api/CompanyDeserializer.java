@@ -1,8 +1,6 @@
 package com.hixel.hixel.data.api;
 
-import android.util.Log;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -15,8 +13,6 @@ import java.lang.reflect.Type;
  */
 public class CompanyDeserializer<T> implements JsonDeserializer<T> {
 
-    private static final String TAG = CompanyDeserializer.class.getSimpleName();
-
     @Override
     public T deserialize(JsonElement jsonElement, Type type,
             JsonDeserializationContext jdc) throws JsonParseException {
@@ -26,12 +22,8 @@ public class CompanyDeserializer<T> implements JsonDeserializer<T> {
 
         String formattedResp1 = identifiers.substring(0, identifiers.length() - 1);
         String formattedResp2 = "," + financialDataEntries.substring(2, financialDataEntries.length() - 2) + "}";
-        // String combined = formattedResp1 + formattedResp2;
-
         String formattedResp3 = "{" + formattedResp2.substring(1, formattedResp2.length() - 2) + "}}";
 
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonParser jp = new JsonParser();
         JsonElement je = jp.parse(formattedResp3);
 
@@ -39,9 +31,6 @@ public class CompanyDeserializer<T> implements JsonDeserializer<T> {
         String formattedResp5 = "," + ratios.substring(1, ratios.length());
         String combined = formattedResp1 + formattedResp5;
 
-        // String prettyJsonString = gson.toJson(je);
-
-        Log.d(TAG, "deserialize: " + combined);
 
         return new Gson().fromJson(combined, type);
     }
