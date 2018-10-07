@@ -6,8 +6,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Company is an Envelope for CompanyIdentifiers and CompanyData classes
- * allows us to format strings, calculate ratios, etc.
+ * Immutable Company Entity
  */
 @Entity(tableName = "companies")
 public class Company {
@@ -22,17 +21,30 @@ public class Company {
     @SerializedName("ticker")
     private String ticker;
 
-    private String resp;
+    @SerializedName("Current Ratio")
+    private double currentRatio;
 
-    public Company(@NonNull String cik, String name, String ticker, String resp) {
+    @SerializedName("Debt-to-Equity Ratio")
+    private double debtToEquityRatio;
+
+    @SerializedName("Return-on-Equity Ratio")
+    private double returnOnEquityRatio;
+
+    @SerializedName("Return-on-Assets Ratio")
+    private double returnOnAssetsRatio;
+
+    @SerializedName("Profit-Margin Ratio")
+    private double profitMarginRatio;
+
+    public Company(@NonNull String cik, String name, String ticker, double currentRatio, double debtToEquityRatio, double returnOnEquityRatio, double returnOnAssetsRatio, double profitMarginRatio) {
         this.cik = cik;
         this.name = name;
         this.ticker = ticker;
-        this.resp = resp;
-    }
-
-    public String getResp() {
-        return resp;
+        this.currentRatio = currentRatio;
+        this.debtToEquityRatio = debtToEquityRatio;
+        this.returnOnEquityRatio = returnOnEquityRatio;
+        this.returnOnAssetsRatio = returnOnAssetsRatio;
+        this.profitMarginRatio = profitMarginRatio;
     }
 
     @NonNull
@@ -46,6 +58,26 @@ public class Company {
 
     public String getTicker() {
         return ticker;
+    }
+
+    public double getDebtToEquityRatio() {
+        return debtToEquityRatio;
+    }
+
+    public double getReturnOnAssetsRatio() {
+        return returnOnAssetsRatio;
+    }
+
+    public double getProfitMarginRatio() {
+        return profitMarginRatio;
+    }
+
+    public double getReturnOnEquityRatio() {
+        return returnOnEquityRatio;
+    }
+
+    public double getCurrentRatio() {
+        return currentRatio;
     }
 
     // TODO: Do this in a nicer way, and test against a bunch of companies.
@@ -68,24 +100,40 @@ public class Company {
             return "";
         }
     }
-
+/*
     public int getReturnsScore() {
-        return 0;
+        return generateScore(this.dividendYield);
     }
 
     public int getPerformanceScore() {
-        return 0;
+        return generateScore(this.returnOnEquity);
     }
 
     public int getStrengthScore() {
-        return 0;
+        return generateScore(this.interestCoverage);
     }
 
     public int getHealthScore() {
-        return 0;
+        return generateScore(this.currentRatio);
     }
 
     public int getSafetyScore() {
-        return 0;
+        return generateScore(this.debtToEquityRatio);
+    }*/
+
+    private int generateScore(double ratio) {
+        int score = 1;
+
+        if (ratio >= 0.5 && ratio < 1.0) {
+            score = 2;
+        } else if (ratio >= 1.0 && ratio < 1.5) {
+            score = 3;
+        } else if (ratio >= 1.5 && ratio < 2.0) {
+            score = 4;
+        } else if (ratio >= 2.0) {
+            score = 5;
+        }
+
+        return score;
     }
 }

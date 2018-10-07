@@ -9,7 +9,7 @@ import com.hixel.hixel.data.entities.Company;
  */
 
 // TODO: schema and migration handling
-@Database(entities = {Company.class}, version = 14, exportSchema = false)
+@Database(entities = {Company.class}, version = 16, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

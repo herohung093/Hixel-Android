@@ -87,6 +87,7 @@ public class CompanyRepository {
                                 @NonNull Response<ArrayList<Company>> response) {
                             executor.execute(() -> {
                                 List<Company> companies = response.body();
+                                Log.d(TAG, "onResponse: " + companies.get(0).getName());
                                 companyDao.saveCompanies(companies);
                             });
                         }
