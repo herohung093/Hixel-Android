@@ -49,26 +49,23 @@ public class CompanyRepository {
         return companyDao.load(); // return LiveData from the db.
     }
 
-    // TODO: Check the effects of not having an executor here.
     public MutableLiveData<Company> getCompany(String ticker) {
-        executor.execute(() -> serverInterface.getCompanies(StringUtils.join(ticker, ','), 1)
+        serverInterface.getCompanies(StringUtils.join(ticker, ','), 1)
                 .enqueue(new Callback<ArrayList<Company>>() {
                     @Override
                     public void onResponse(@NonNull Call<ArrayList<Company>> call,
                             @NonNull Response<ArrayList<Company>> response) {
 
-                        executor.execute(() -> {
                             List<Company> companies = response.body();
 
                             if (companies != null) {
                                 company.setValue(companies.get(0));
                             }
-                        });
-                    }
+                        }
 
                     @Override
                     public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) { }
-                }));
+                });
 
         return company;
     }
@@ -78,6 +75,7 @@ public class CompanyRepository {
     }
 
     private void refreshCompanies(final String[] tickers) {
+        // Access room off the main thread
         executor.execute(() -> {
             // TODO: Remove this - db currently doesnt have a pk based on the class itself.
             // NOTE: THIS IS A TEMPORARY MEASURE!

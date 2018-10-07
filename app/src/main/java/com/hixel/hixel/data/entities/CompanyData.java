@@ -1,10 +1,9 @@
 package com.hixel.hixel.data.entities;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class CompanyData implements Serializable {
+public class CompanyData {
     private int year;
     private LinkedHashMap<String, Double> ratios;
     private HashMap<String, Integer> indicators = new HashMap<>();
