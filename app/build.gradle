@@ -108,4 +108,7 @@ dependencies {
 
     // circular progress indicator
     implementation 'com.github.antonKozyriatskyi:CircularProgressIndicator:1.2.2'
+
+    // Tab layout
+    implementation 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
 }

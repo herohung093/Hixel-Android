@@ -41,11 +41,6 @@
     <activity
       android:name=".login.LoginActivity"
       android:windowSoftInputMode="stateHidden">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
     </activity>
 
     <activity
@@ -53,7 +48,12 @@
       android:windowSoftInputMode="stateHidden">
     </activity>
 
-    <activity android:name=".login.Onboarding"/>
+    <activity android:name=".login.Onboarding">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
 
     <activity android:name=".login.ForgotPasswordActivity"/>
 

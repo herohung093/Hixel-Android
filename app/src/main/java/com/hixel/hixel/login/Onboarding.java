@@ -1,9 +1,12 @@
 package com.hixel.hixel.login;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.hixel.hixel.R;
@@ -12,6 +15,7 @@ import com.hixel.hixel.commonui.SliderAdapter;
 public class Onboarding extends AppCompatActivity {
 
     private LinearLayout linearLayout;
+    private Button signupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,7 @@ public class Onboarding extends AppCompatActivity {
 
         viewPager.setAdapter(sliderAdapter);
         viewPager.addOnPageChangeListener(viewListener);
+
     }
 
     public void addDotsIndicator(int position) {
@@ -42,6 +47,11 @@ public class Onboarding extends AppCompatActivity {
         }
 
         dots[position].setTextColor(getColor(R.color.good));
+    }
+
+    private void openSignup() {
+        Intent moveToSignup = new Intent(getApplicationContext(), SignupActivity.class);
+        startActivity(moveToSignup);
     }
 
     ViewPager.OnPageChangeListener viewListener = new OnPageChangeListener() {
