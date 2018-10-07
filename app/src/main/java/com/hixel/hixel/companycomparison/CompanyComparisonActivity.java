@@ -133,7 +133,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
                     // selectedCompany.add(temp);
                     // userCompaniesAdapter.removeItem(viewHolder.getAdapterPosition());
                     // comparisonCompaniesAdapter.addItem(temp);
-                    // viewModel.addToCompare(temp.getFinancialIdentifiers().getTicker());
+                    // viewModel.addToCompare(temp.getCompanyIdentifiers().getTicker());
                 }
 
                 @Override

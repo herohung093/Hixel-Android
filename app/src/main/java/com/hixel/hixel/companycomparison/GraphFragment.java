@@ -19,7 +19,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.entities.FinancialData;
+import com.hixel.hixel.data.entities.CompanyData;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -60,13 +60,13 @@ public class GraphFragment extends Fragment {
     }
     public LineDataSet lineChartDataSetup( String selectedRatio, Company company){
         List <Entry> compEntry = new ArrayList<>();
-        List<FinancialData> financialData= null; //company.getFinancialDataEntries();
-        checkYearNull(financialData);
+        List<CompanyData> companyData = null; //company.getFinancialDataEntries();
+        checkYearNull(companyData);
 
-        createListOfYears(financialData);
+        createListOfYears(companyData);
         int j=4;
         for (int i=0;i<5;i++){
-            LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
+            LinkedHashMap<String, Double> DataCompAYear1 = companyData.get(j).getRatios();
             j--;
             Entry compYearData = new Entry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
             compEntry.add(compYearData);
@@ -77,7 +77,7 @@ public class GraphFragment extends Fragment {
 
 /*    public BarDataSet barChartDataSetup(String selectedRatio, Company company){
         List<BarEntry> compEntry = new ArrayList<>();
-        List<FinancialData> financialData= company.getFinancialDataEntries();
+        List<CompanyData> financialData= company.getFinancialDataEntries();
         checkYearNull(financialData);
         createListOfYears(financialData);
         int j=4;
@@ -92,7 +92,7 @@ public class GraphFragment extends Fragment {
     public void colorIndicator(Company company, String selectedRatio, ArrayList<Integer> colors){
         ArrayList<Float> rawData= new ArrayList<>();
         ArrayList<Float> sortedData= new ArrayList<>();
-        List<FinancialData> financialData= company.getFinancialDataEntries();
+        List<CompanyData> financialData= company.getFinancialDataEntries();
         checkYearNull(financialData);
         int j=4;
         for (int i=0;i<5;i++){
@@ -175,7 +175,7 @@ public class GraphFragment extends Fragment {
         }
     };
 
-    private void checkYearNull(List<FinancialData> financial) {
+    private void checkYearNull(List<CompanyData> financial) {
         for (int i = 0; i < financial.size(); i++) {
             if (financial.get(i) == null) {
                 financial.get(i).setDefaultFinancialData(); //set all values equal to -0 for visualising purpose
@@ -184,11 +184,11 @@ public class GraphFragment extends Fragment {
         }
     }
 
-    private void createListOfYears(List<FinancialData> financialDataCompA) {
+    private void createListOfYears(List<CompanyData> companyDataCompA) {
         List<String> toConvertYears = new ArrayList<>();
 
-        for (int i = financialDataCompA.size() - 1; i >= 0; i--) {
-            toConvertYears.add(String.valueOf(financialDataCompA.get(i).getYear()));
+        for (int i = companyDataCompA.size() - 1; i >= 0; i--) {
+            toConvertYears.add(String.valueOf(companyDataCompA.get(i).getYear()));
         }
 
         years = toConvertYears.toArray(new String[toConvertYears.size()]);

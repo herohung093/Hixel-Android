@@ -61,7 +61,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             setupBottomNavigationView();
 
             // Setup the toolbar
-            String title = company.getFinancialIdentifiers().getName();
+            String title = company.getCompanyIdentifiers().getName();
             binding.toolbar.toolbar.setTitle(title);
             binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
 

@@ -1,6 +1,6 @@
 package com.hixel.hixel.data.entities;
 
-public class FinancialIdentifiers {
+public class CompanyIdentifiers {
 
     private String ticker;
     private String name;

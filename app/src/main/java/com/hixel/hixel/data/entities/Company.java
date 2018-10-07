@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Company entity acts as an intermediary between FinancialData & FinancialIdentifier
+ * Company is an Envelope for CompanyIdentifiers and CompanyData classes
  * allows us to format strings, calculate ratios, etc.
  */
 @Entity(tableName = "companies")
@@ -17,7 +17,7 @@ public class Company {
 
     @Embedded
     @SerializedName("identifiers")
-    private FinancialIdentifiers financialIdentifiers;
+    private CompanyIdentifiers companyIdentifiers;
 
     public void setId(int id) {
         this.id = id;
@@ -27,22 +27,22 @@ public class Company {
         return id;
     }
 
-    public FinancialIdentifiers getFinancialIdentifiers() {
-        return financialIdentifiers;
+    public CompanyIdentifiers getCompanyIdentifiers() {
+        return companyIdentifiers;
     }
 
-    public void setFinancialIdentifiers(FinancialIdentifiers financialIdentifiers) {
-        this.financialIdentifiers = financialIdentifiers;
+    public void setCompanyIdentifiers(CompanyIdentifiers companyIdentifiers) {
+        this.companyIdentifiers = companyIdentifiers;
     }
 
     // TODO: Do this in a nicer way, and test against a bunch of companies.
     // TODO: Get a better way of checking for null object.
     public String getFormattedName() {
         try {
-            return (this.financialIdentifiers.getName()
+            return (this.companyIdentifiers.getName()
                     .split("[\\s, ]")[0].toLowerCase()
                     .substring(0, 1).toUpperCase())
-                    + this.financialIdentifiers.getName().substring(1);
+                    + this.companyIdentifiers.getName().substring(1);
         } catch (NullPointerException e) {
             return "";
         }
@@ -50,7 +50,7 @@ public class Company {
 
     public String getFormattedTicker() {
         try {
-            return String.format("NASDAQ: %s", financialIdentifiers.getTicker());
+            return String.format("NASDAQ: %s", companyIdentifiers.getTicker());
         } catch (NullPointerException e) {
             return "";
         }

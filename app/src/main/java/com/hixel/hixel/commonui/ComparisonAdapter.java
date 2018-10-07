@@ -38,8 +38,8 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-        String companyTicker = String.format(Locale.US, "NASDAQ: %s", companies.get(position).getFinancialIdentifiers().getTicker());
-        String companyName = companies.get(position).getFinancialIdentifiers()
+        String companyTicker = String.format(Locale.US, "NASDAQ: %s", companies.get(position).getCompanyIdentifiers().getTicker());
+        String companyName = companies.get(position).getCompanyIdentifiers()
                                       .getName()
                                       .split("[\\s, ]")[0]
                                       .toLowerCase();

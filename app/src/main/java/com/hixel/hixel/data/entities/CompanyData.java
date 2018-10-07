@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class FinancialData implements Serializable {
+public class CompanyData implements Serializable {
     private int year;
     private LinkedHashMap<String, Double> ratios;
     private HashMap<String, Integer> indicators = new HashMap<>();
 
-    public FinancialData(int year, LinkedHashMap<String, Double> ratios) {
+    public CompanyData(int year, LinkedHashMap<String, Double> ratios) {
         this.year = year;
         this.ratios = ratios;
         createIndicators();
@@ -64,7 +64,7 @@ public class FinancialData implements Serializable {
         }
     }
 
-    // will be called when FinancialData is null
+    // will be called when CompanyData is null
     public void setDefaultFinancialData() {
         ratios.put("Current Ratio", 0.0);
         ratios.put("Quick Ratio", 0.0);
@@ -74,7 +74,7 @@ public class FinancialData implements Serializable {
         ratios.put("Long_Term_Debt_Ratio", 0.0);
     }
 
-    // will be called when FinancialData is null
+    // will be called when CompanyData is null
     public void setYear(int year) { this.year = year; }
 
 }

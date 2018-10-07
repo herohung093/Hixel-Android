@@ -4,7 +4,7 @@ import static junit.framework.Assert.assertEquals;
 
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.CompanyIdentifiers;
-import com.hixel.hixel.data.entities.FinancialData;
+import com.hixel.hixel.data.entities.CompanyData;
 import java.util.ArrayList;
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ public class CompanyTest {
     public void testGetRatio() {
         Company company = new Company(new CompanyIdentifiers("AAPL", "APPLE", "CIK"), new ArrayList<>());
 
-        for (FinancialData f : company.getFinancialDataEntries()) {
+        for (CompanyData f : company.getFinancialDataEntries()) {
             f.setYear(1);
             f.setDefaultFinancialData();
         }

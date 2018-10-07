@@ -63,7 +63,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         holder.binding.foreground.setOnClickListener((View view) -> {
             // TODO: Reimplement so that the Company view knows this was from the portfolio.
-            String ticker = companies.get(position).getFinancialIdentifiers().getTicker();
+            String ticker = companies.get(position).getCompanyIdentifiers().getTicker();
 
             Intent intent = new Intent(context, CompanyDetailActivity.class);
             intent.putExtra("COMPANY_TICKER", ticker);
