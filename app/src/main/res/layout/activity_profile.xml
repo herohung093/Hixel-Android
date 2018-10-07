@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
+  xmlns:tools="http://schemas.android.com/tools"
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -16,6 +17,7 @@
 
     <TextView
       android:id="@+id/full_name"
+      android:textStyle="bold"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
@@ -76,7 +78,9 @@
       android:layout_marginBottom="24dp"
       android:layout_marginStart="24dp"
       android:layout_marginEnd="24dp"
+      android:background="@color/accent"
       android:text="@string/logout"
+      android:textColor="@android:color/white"
       app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -122,62 +126,67 @@
       android:id="@+id/edit_name_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
+      android:layout_marginTop="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
+      android:background="@android:color/transparent"
+      android:contentDescription="@string/default_text"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@+id/name"
-      app:layout_constraintTop_toBottomOf="@+id/user_details"
-      app:srcCompat="@drawable/edit_image"
-      android:contentDescription="@string/default_text"/>
+      app:layout_constraintTop_toTopOf="@+id/name"
+      app:srcCompat="@drawable/edit_image"/>
     <ImageButton
       android:id="@+id/edit_email_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
+      android:layout_marginTop="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
+      android:background="@android:color/transparent"
+      android:contentDescription="@string/default_text"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@+id/email"
-      app:layout_constraintTop_toBottomOf="@+id/edit_name_button"
-      app:srcCompat="@drawable/edit_image"
-      android:contentDescription="@string/default_text"/>
+      app:layout_constraintTop_toTopOf="@+id/email"
+      app:srcCompat="@drawable/edit_image"/>
     <ImageButton
       android:id="@+id/edit_password_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
+      android:layout_marginTop="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
+      android:background="@android:color/transparent"
+      android:contentDescription="@string/default_text"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@+id/password"
-      app:layout_constraintTop_toBottomOf="@+id/edit_email_button"
-      app:srcCompat="@drawable/edit_image"
-      android:contentDescription="@string/default_text"/>
+      app:layout_constraintTop_toTopOf="@+id/password"
+      app:srcCompat="@drawable/edit_image"/>
     <ImageButton
       android:id="@+id/confirm_edit_name_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
+      android:layout_marginTop="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
+      android:background="@android:color/transparent"
+      android:contentDescription="@string/default_text"
+      android:visibility="invisible"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@+id/name"
-      app:layout_constraintTop_toBottomOf="@+id/user_details"
-      app:srcCompat="@drawable/check_image"
-      android:visibility="invisible"
-      android:contentDescription="@string/default_text"/>
+      app:layout_constraintTop_toTopOf="@+id/name"
+      app:srcCompat="@drawable/check_image"/>
     <ImageButton
       android:id="@+id/confirm_edit_email_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
+      android:layout_marginTop="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
+      android:background="@android:color/transparent"
+      android:contentDescription="@string/default_text"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@+id/email"
-      app:layout_constraintTop_toBottomOf="@+id/confirm_edit_name_button"
-      app:srcCompat="@drawable/check_image"
-      android:contentDescription="@string/default_text"/>
+      app:layout_constraintTop_toTopOf="@+id/email"
+      app:srcCompat="@drawable/check_image"/>
   </android.support.constraint.ConstraintLayout>
 </layout>

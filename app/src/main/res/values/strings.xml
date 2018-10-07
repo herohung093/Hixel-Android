@@ -46,7 +46,7 @@
   <!-- Profile -->
   <string name="change_password">Change password</string>
   <string name="confirm_pass">Confirm your password</string>
-  <string name="user_details">User Details:</string>
+  <string name="user_details"><ul>User Details:</ul></string>
   <string name="edit">Edit</string>
   <string name="logout">Log Out</string>
   <string name="profile_cancel">Cancel</string>
@@ -58,7 +58,6 @@
   <string name="new_password">New</string>
   <string name="retype_new_password">Retype new</string>
   <string name="confirm">Confirm</string>
-
 
   <!-- Sign up -->
   <string name="already_member">Already a member? Login</string>
