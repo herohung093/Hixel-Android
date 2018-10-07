@@ -3,7 +3,6 @@ package com.hixel.hixel.data;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import com.hixel.hixel.data.database.CompanyDao;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.entities.Company;
@@ -76,11 +75,8 @@ public class CompanyRepository {
 
     private void refreshCompanies(final String[] tickers) {
         // Access room off the main thread
-        executor.execute(() -> {
-            // TODO: Remove this - db currently doesn't have a pk based on the class itself.
-            // NOTE: THIS IS A TEMPORARY MEASURE!
-            // companyDao.deleteAll();
-            serverInterface.getCompanies(StringUtils.join(tickers, ','), 1)
+        executor.execute(() ->
+                serverInterface.getCompanies(StringUtils.join(tickers, ','), 1)
                     .enqueue(new Callback<ArrayList<Company>>() {
                         @Override
                         public void onResponse(@NonNull Call<ArrayList<Company>> call,
@@ -92,8 +88,7 @@ public class CompanyRepository {
                         }
                         @Override
                         public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) { }
-                    });
-        });
+                    }));
     }
 
     public String[] getTickers() {

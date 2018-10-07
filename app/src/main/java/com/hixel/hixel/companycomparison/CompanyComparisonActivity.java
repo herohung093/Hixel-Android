@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -66,10 +67,10 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         this.configureDagger();
         this.configureViewModel();
 
-        // setupComparisonAdapter();
-        // dragDownToAdd();
-        // setupButtons();
-        // setupSearchView();
+        setupComparisonAdapter();
+        dragDownToAdd();
+        setupButtons();
+        setupSearchView();
         setupBottomNavigationView();
     }
 

@@ -1,6 +1,5 @@
 package com.hixel.hixel.companycomparison;
 
-import static com.hixel.hixel.data.api.Client.getClient;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -9,20 +8,12 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.api.ServerInterface;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Function;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +28,6 @@ public class CompanyComparisonViewModel extends ViewModel {
     private LiveData<List<Company>> dashboardCompanies;
 
     private MutableLiveData<ArrayList<Company>> companies = new MutableLiveData<>();
-    private CompositeDisposable disposable = new CompositeDisposable();
     private PublishSubject<String> publishSubject = PublishSubject.create();
 
     @Inject
@@ -49,22 +39,11 @@ public class CompanyComparisonViewModel extends ViewModel {
         if (this.dashboardCompanies != null) {
             return;
         }
-        
+
+        Log.d(TAG, "init: HIT!");
         dashboardCompanies = repository.getCompanies(repository.getTickers());
     }
 
-    public void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
-        disposable.add(publishSubject
-            .debounce(100, TimeUnit.MILLISECONDS)
-            .distinctUntilChanged()
-            .filter(text -> !text.isEmpty())
-            .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm -> getClient()
-                .create(ServerInterface.class)
-                .doSearchQuery(searchTerm)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()))
-            .subscribeWith(observer));
-    }
 
     public void loadSearchResults(String query) {
         publishSubject.onNext(query);

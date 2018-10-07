@@ -23,12 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
@@ -37,7 +32,6 @@ import com.hixel.hixel.R;
 
 
 import com.hixel.hixel.data.models.SearchEntry;
-import com.hixel.hixel.data.models.MainBarChartRenderer;
 import com.hixel.hixel.data.models.MainBarDataSet;
 import com.hixel.hixel.commonui.DashboardAdapter;
 import com.hixel.hixel.commonui.SearchAdapter;
@@ -46,7 +40,6 @@ import com.hixel.hixel.commonui.RecyclerItemTouchHelper.RecyclerItemTouchHelperL
 import com.hixel.hixel.profile.ProfileActivity;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -80,7 +73,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         viewModel.setupSearch(getSearchObserver());
 
         setupBottomNavigationView();
-        populateChart();
+        // populateChart();
     }
 
     private void configureDagger() {
@@ -115,6 +108,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         if (companies != null) {
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
+            // updateChart(companies);
         } else {
             // Show Loading indicator
             Log.d(TAG, "updateUI: Loading");
@@ -183,84 +177,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         Intent intent = new Intent(this, CompanyDetailActivity.class);
         intent.putExtra("COMPANY_TICKER", ticker);
         startActivity(intent);
-    }
-
-    public void populateChart() {
-
-        BarChart chart = binding.chart;
-
-        chart.setRenderer(new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
-
-        // Configuring the chart
-        chart.getLegend().setEnabled(false);
-        chart.getDescription().setEnabled(false);
-        chart.setDrawValueAboveBar(false);
-        chart.setDrawBarShadow(false);
-
-        List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, 3));
-        entries.add(new BarEntry(1, 4));
-        entries.add(new BarEntry(2, 1));
-        entries.add(new BarEntry(3, 2));
-        entries.add(new BarEntry(4, 5));
-
-        ArrayList<String> labels = new ArrayList<>();
-        labels.add("Health");
-        labels.add("Performance");
-        labels.add("Return");
-        labels.add("Risk");
-        labels.add("Strength");
-
-        MainBarDataSet dataSet = new MainBarDataSet(entries, "");
-
-        int[] colours = {
-                ContextCompat.getColor(this, R.color.good),
-                ContextCompat.getColor(this, R.color.average),
-                ContextCompat.getColor(this, R.color.bad)
-        };
-
-        dataSet.setColors(colours);
-
-        BarData data = new BarData(dataSet);
-
-        data.setBarWidth(0.2f);
-        data.setDrawValues(false);
-
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
-        xAxis.setDrawGridLines(false);
-
-        xAxis.setDrawAxisLine(false);
-
-        xAxis.setTextColor(ContextCompat.getColor(this, R.color.text_secondary_dark));
-
-        // TODO: This is throwing a resource not found exception.
-        // Previously the font face was roboto_condensed_regular.
-        // xAxis.setTypeface(ResourcesCompat.getFont(this, R.font.montserrat));
-        xAxis.setTextSize(12);
-        xAxis.setGranularity(1f);
-        xAxis.setLabelCount(5);
-
-        xAxis.setValueFormatter((value, axis) -> labels.get((int) value));
-
-        YAxis yAxisLeft = chart.getAxisLeft();
-        yAxisLeft.setTextColor(ContextCompat.getColor(this, R.color.text_secondary_dark));
-        yAxisLeft.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
-
-        yAxisLeft.setDrawGridLines(true);
-        yAxisLeft.setTextSize(12);
-        yAxisLeft.setAxisMaximum(5.0f);
-        yAxisLeft.setAxisMinimum(0.0f);
-        yAxisLeft.setGranularity(1f); // set interval
-        yAxisLeft.setDrawLabels(true);
-        yAxisLeft.setDrawAxisLine(false);
-
-        YAxis yAxisRight = chart.getAxisRight();
-        yAxisRight.setEnabled(false);
-
-        chart.setData(data);
-        chart.invalidate();
     }
 
     @Override
