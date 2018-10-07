@@ -77,7 +77,7 @@ public class CompanyRepository {
     private void refreshCompanies(final String[] tickers) {
         // Access room off the main thread
         executor.execute(() -> {
-            // TODO: Remove this - db currently doesnt have a pk based on the class itself.
+            // TODO: Remove this - db currently doesn't have a pk based on the class itself.
             // NOTE: THIS IS A TEMPORARY MEASURE!
             companyDao.deleteAll();
             serverInterface.getCompanies(StringUtils.join(tickers, ','), 1)
@@ -87,7 +87,6 @@ public class CompanyRepository {
                                 @NonNull Response<ArrayList<Company>> response) {
                             executor.execute(() -> {
                                 List<Company> companies = response.body();
-                                Log.d(TAG, "onResponse: " + companies.get(0).getFormattedName());
                                 companyDao.saveCompanies(companies);
                             });
                         }

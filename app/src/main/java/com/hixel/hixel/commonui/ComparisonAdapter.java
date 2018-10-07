@@ -38,18 +38,18 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-        String companyTicker = String.format(Locale.US, "NASDAQ: %s", companies.get(position).getCompanyIdentifiers().getTicker());
-        String companyName = companies.get(position).getCompanyIdentifiers()
+        String companyTicker = ""; //String.format(Locale.US, "NASDAQ: %s", companies.get(position).getCompanyIdentifiers().getTicker());
+        String companyName = ""; /*companies.get(position).getCompanyIdentifiers()
                                       .getName()
                                       .split("[\\s, ]")[0]
-                                      .toLowerCase();
+                                      .toLowerCase();*/
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
 
         holder.companyName.setText(companyName);
         holder.companyTicker.setText(companyTicker);
 
-        double currentRatio = companies.get(position).getRatio();
+        double currentRatio = 0; //companies.get(position).getRatio();
 
 
         if (currentRatio < 1.0) {

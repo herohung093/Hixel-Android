@@ -61,7 +61,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             setupBottomNavigationView();
 
             // Setup the toolbar
-            String title = company.getCompanyIdentifiers().getName();
+            String title = ""; //company.getCompanyIdentifiers().getName();
             binding.toolbar.toolbar.setTitle(title);
             binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
 
@@ -84,7 +84,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             }
 
             companyChartSetup();
-            setupProgressPercentage();
+            // setupProgressPercentage();
         }
     }
 
@@ -133,11 +133,11 @@ public class CompanyDetailActivity extends AppCompatActivity {
         pieView.setTextColor(ContextCompat.getColor(this, R.color.text_main_light));
         pieView.setMainBackgroundColor(ContextCompat.getColor(this, R.color.secondary_background));
         pieView.setPieInnerPadding(20);
-
+/*
         viewModel.getCompany().observe(this, company -> {
             pieView.setPercentage((float) (company.getRatio() + 80));
             pieView.setPercentageBackgroundColor(getColorIndicator((int) (company.getRatio() + 80)));
-        });
+        });*/
 
         PieAngleAnimation animation = new PieAngleAnimation(pieView);
         animation.setDuration(1500);
@@ -145,6 +145,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
         pieView.startAnimation(animation);
     }
 
+    /*
     private void setupProgressPercentage() {
         viewModel.getCompany().observe(this, company -> {
             binding.healthProgress.setProgress((int) (company.getRatio() + 15));
@@ -162,7 +163,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             binding.returnProgress.setProgress((int) (company.getRatio() + 85));
             binding.returnProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio() + 85)));
         });
-    }
+    }*/
 
     private int getColorIndicator(int value) {
         if (value < 50) {

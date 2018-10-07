@@ -1,80 +1,67 @@
 package com.hixel.hixel.data.entities;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import com.google.gson.annotations.SerializedName;
 
 public class CompanyData {
-    private int year;
-    private LinkedHashMap<String, Double> ratios;
-    private HashMap<String, Integer> indicators = new HashMap<>();
+    @SerializedName("Current Ratio")
+    private double currentRatio;
 
-    public CompanyData(int year, LinkedHashMap<String, Double> ratios) {
-        this.year = year;
-        this.ratios = ratios;
-        createIndicators();
+    @SerializedName("Debt-to-Equity Ratio")
+    private double debtToEquityRatio;
+
+    @SerializedName("Return-on-Equity Ratio")
+    private double returnOnEquityRatio;
+
+    @SerializedName("Return-on-Assets Ratio")
+    private double returnOnAssetsRatio;
+
+    @SerializedName("Profit-Margin Ratio")
+    private double profitMarginRatio;
+
+    public CompanyData(double currentRatio, double debtToEquityRatio,
+            double returnOnEquityRatio, double returnOnAssetsRatio, double profitMarginRatio) {
+        this.currentRatio = currentRatio;
+        this.debtToEquityRatio = debtToEquityRatio;
+        this.returnOnEquityRatio = returnOnEquityRatio;
+        this.returnOnAssetsRatio = returnOnAssetsRatio;
+        this.profitMarginRatio = profitMarginRatio;
     }
 
-    public int getYear() {
-        return year;
+    public double getProfitMarginRatio() {
+        return profitMarginRatio;
     }
 
-    public LinkedHashMap<String, Double> getRatios() {
-        return ratios;
+    public double getReturnOnAssetsRatio() {
+        return returnOnAssetsRatio;
     }
 
-    private void createIndicators() {
-        indicators.put("health", setScore(1, ratios.get("Current Ratio")));
-        indicators.put("performance", setScore(1, ratios.get("Quick Ratio")));
-        indicators.put("risk", setScore(1, ratios.get("Cash Ratio")));
-        indicators.put("strength", setScore(1, ratios.get("Debt-to-Equity Ratio")));
-        indicators.put("return", setScore(1, ratios.get("Long_Term_Debt_Ratio")));
+    public double getDebtToEquityRatio() {
+        return debtToEquityRatio;
     }
 
-    // Flag = 1 for positively skewed ratio
-    // TODO: Make this not suck.
-    private Integer setScore(int flag, Double value) {
-        if (value == null)
-            return -1;
-
-        if (flag == 1) {
-            if (value < 0.5) {
-                return 1;
-            } else if (value < 0.8) {
-                return 2;
-            } else if (value < 1.0) {
-                return 3;
-            } else if (value < 1.3) {
-                return 4;
-            } else {
-                return 5;
-            }
-        } else {
-            if (value < 0.5) {
-                return 5;
-            } else if (value < 0.8) {
-                return 4;
-            } else if (value < 1.0) {
-                return 3;
-            } else if (value < 1.3) {
-                return 2;
-            } else {
-                return 1;
-            }
-        }
+    // Return on equity = NetIncome(Loss) / Equity
+    public double getReturnOnEquityRatio() {
+        return returnOnEquityRatio;
     }
 
-    // will be called when CompanyData is null
-    public void setDefaultFinancialData() {
-        ratios.put("Current Ratio", 0.0);
-        ratios.put("Quick Ratio", 0.0);
-        ratios.put("Cash Ratio", 0.0);
-        ratios.put("Dept-to-Equity Ratio", 0.0);
-        ratios.put("Health", 0.0);
-        ratios.put("Long_Term_Debt_Ratio", 0.0);
+    // Current ratio = AssetsCurrent / LiabilitiesCurrent
+    public double getCurrentRatio() {
+        return currentRatio;
     }
 
-    // will be called when CompanyData is null
-    public void setYear(int year) { this.year = year; }
+    // Dividend Yield = Annual Dividends per share/Price per share
+    public double getDividendYield() {
+        return 0;
+    }
 
+    // Interest coverage = EBIT / net interest expense
+    public double getInterestCoverage() {
+        return 0;
+    }
+
+    // Current Debt/Equity (D/E) Ratio = LiabilitiesCurrent/ Equity
+    public double getCurrentDebtToEquity() {
+        return 0;
+    }
 }
 

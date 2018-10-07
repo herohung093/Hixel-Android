@@ -52,7 +52,7 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
         holder.tvSpecies.setText(ratios.get(position));
 
         holder.tvSpecies.setOnClickListener(view -> {
-            fragmentGraph.drawGraph(companies,ratios.get(position));
+            //fragmentGraph.drawGraph(companies,ratios.get(position));
             //setRowIndex(position);
             notifyItemChanged(rowIndex);
             rowIndex = position;

@@ -46,7 +46,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        double currentRatio = companies.get(position).getRatio();
+        double currentRatio = 0; //companies.get(position).getRatio();
 
         holder.binding.companyName.setText(companies.get(position).getFormattedName());
         holder.binding.companyTicker.setText(companies.get(position).getFormattedTicker());
@@ -63,7 +63,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         holder.binding.foreground.setOnClickListener((View view) -> {
             // TODO: Reimplement so that the Company view knows this was from the portfolio.
-            String ticker = companies.get(position).getCompanyIdentifiers().getTicker();
+            String ticker = companies.get(position).getTicker();
 
             Intent intent = new Intent(context, CompanyDetailActivity.class);
             intent.putExtra("COMPANY_TICKER", ticker);

@@ -270,7 +270,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         if (viewHolder instanceof DashboardAdapter.ViewHolder) {
             // Get name of removed item
 
-            String name = Objects.requireNonNull(viewModel.getCompanies().getValue()).get(viewHolder.getAdapterPosition()).getCompanyIdentifiers().getName();
+            String name = viewModel.getCompanies().getValue().get(viewHolder.getAdapterPosition()).getName();
 
             // Backup item for undo purposes
             final Company deletedCompany = viewModel.getCompanies()

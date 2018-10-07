@@ -1,10 +1,15 @@
 package com.hixel.hixel.di.modules;
 
 import android.support.annotation.NonNull;
-import com.hixel.hixel.data.api.EnvelopeConverterFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.hixel.hixel.data.api.CompanyDeserializer;
+import com.hixel.hixel.data.api.RatiosDeserializer;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.api.TokenAuthenticator;
 import com.hixel.hixel.data.api.TokenInterceptor;
+import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.CompanyData;
 import dagger.Module;
 import dagger.Provides;
 import java.security.cert.CertificateException;
@@ -69,10 +74,7 @@ public class RepositoryModule {
             }
 
             @Override
-            public void checkServerTrusted(
-                    java.security.cert.X509Certificate[] chain,
-                    String authType) throws CertificateException {
-            }
+            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException { }
 
             @Override
             public java.security.cert.X509Certificate[] getAcceptedIssuers() {
@@ -86,10 +88,8 @@ public class RepositoryModule {
             sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, trustAllCerts,
                     new java.security.SecureRandom());
-        }
-        catch (Exception ignored) {
+        } catch (Exception ignored) { }
 
-        }
         // Create an ssl socket factory with our all-trusting manager
         final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
@@ -117,11 +117,16 @@ public class RepositoryModule {
             return chain.proceed(request);
         });
 
+        // Create Gson for custom deserialization
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Company.class, new CompanyDeserializer<Company>())
+                .create();
+
         //add retro builder
         Retrofit.Builder retroBuilder= new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create());
+                .addConverterFactory(GsonConverterFactory.create(gson));
 
         retroBuilder.client(client.build());
 

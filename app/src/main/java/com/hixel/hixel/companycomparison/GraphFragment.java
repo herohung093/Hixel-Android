@@ -58,6 +58,7 @@ public class GraphFragment extends Fragment {
         mChart =  view.findViewById(R.id.chart1);
         return view;
     }
+    /*
     public LineDataSet lineChartDataSetup( String selectedRatio, Company company){
         List <Entry> compEntry = new ArrayList<>();
         List<CompanyData> companyData = null; //company.getFinancialDataEntries();
@@ -73,7 +74,7 @@ public class GraphFragment extends Fragment {
         }
 
         return null; //new LineDataSet(compEntry,company.getIdentifiers().getTicker());
-    }
+    }*/
 
 /*    public BarDataSet barChartDataSetup(String selectedRatio, Company company){
         List<BarEntry> compEntry = new ArrayList<>();
@@ -116,6 +117,8 @@ public class GraphFragment extends Fragment {
         }
 
     }*/
+
+/*
     public void drawGraph(ArrayList<Company> companies,String selectedRatio){
 
         LineData lineData = new LineData();
@@ -144,7 +147,7 @@ public class GraphFragment extends Fragment {
         mChart.setData(data);
         mChart.invalidate();
 
-    }
+    }*/
 
     public void decorLineChart(CombinedChart chart){
 
@@ -175,6 +178,7 @@ public class GraphFragment extends Fragment {
         }
     };
 
+    /*
     private void checkYearNull(List<CompanyData> financial) {
         for (int i = 0; i < financial.size(); i++) {
             if (financial.get(i) == null) {
@@ -182,8 +186,9 @@ public class GraphFragment extends Fragment {
                 financial.get(i).setYear(financial.get(i - 1).getYear() - 1);
             }
         }
-    }
+    }*/
 
+    /*
     private void createListOfYears(List<CompanyData> companyDataCompA) {
         List<String> toConvertYears = new ArrayList<>();
 
@@ -192,7 +197,7 @@ public class GraphFragment extends Fragment {
         }
 
         years = toConvertYears.toArray(new String[toConvertYears.size()]);
-    }
+    }*/
 
     public void setupDatasetStyle(ArrayList<LineDataSet> lineDataSets) {
         for (int i=0; i < lineDataSets.size(); i++){

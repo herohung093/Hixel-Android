@@ -48,7 +48,7 @@ public class GraphActivity extends FragmentActivity implements OnFragmentInterac
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
         intentReceiver = getIntent();
-        receivedCompanies = (ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
+        receivedCompanies = null; //(ArrayList<Company>) intentReceiver.getSerializableExtra("COMPARISON_COMPANIES");
         Context context = this;
 
         //setup bottom navigator
@@ -101,7 +101,7 @@ public class GraphActivity extends FragmentActivity implements OnFragmentInterac
         mAdapter = new HorizontalListViewAdapter(this,spinnerList,receivedCompanies,fragmentA);
         mRecyclerView.setAdapter(mAdapter);
         checkUpFinancialEntry(ratios);
-        fragmentA.drawGraph(receivedCompanies,ratios.get(0));
+        // fragmentA.drawGraph(receivedCompanies,ratios.get(0));
         GenericChartFragment fragmentB = (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
         //fragmentB.drawGraph(receivedCompanies);
     }
