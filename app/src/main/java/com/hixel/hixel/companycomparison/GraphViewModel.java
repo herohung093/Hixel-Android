@@ -8,7 +8,7 @@ import android.util.Log;
 import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.api.ServerInterface;
 import android.support.annotation.NonNull;
-import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.entities.Company;
 import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;

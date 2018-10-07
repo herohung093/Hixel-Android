@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
-import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.entities.Company;
 import java.util.List;
 import java.util.Locale;
 

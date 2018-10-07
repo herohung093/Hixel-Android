@@ -2,7 +2,7 @@ package com.hixel.hixel.companydetail;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.CompanyRepository;
 import javax.inject.Inject;
 

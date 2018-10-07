@@ -8,7 +8,7 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.hixel.hixel.data.CompanyRepository;
-import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.api.ServerInterface;

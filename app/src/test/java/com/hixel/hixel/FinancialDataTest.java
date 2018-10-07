@@ -2,7 +2,7 @@ package com.hixel.hixel;
 
 import static junit.framework.Assert.assertEquals;
 
-import com.hixel.hixel.data.models.FinancialData;
+import com.hixel.hixel.data.entities.FinancialData;
 import java.util.LinkedHashMap;
 import org.junit.Test;
 

@@ -6,7 +6,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
-import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.entities.Company;
 import java.util.List;
 
 /**
@@ -27,9 +27,6 @@ public interface CompanyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveCompany(Company company);
 
-    @Delete
-    public void deleteAllCompanies(Company... companies);
-
     @Query("DELETE FROM companies")
-    public void nuke();
+    void deleteAll();
 }

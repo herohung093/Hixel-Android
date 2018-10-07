@@ -1,4 +1,4 @@
-package com.hixel.hixel.data.models;
+package com.hixel.hixel.data.entities;
 
 import java.io.Serializable;
 import java.util.HashMap;

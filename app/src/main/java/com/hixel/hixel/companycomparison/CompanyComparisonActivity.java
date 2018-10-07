@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.commonui.HorizontalCompanyListAdapter;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
-import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.databinding.ActivityComparisonBinding;
 import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.commonui.ComparisonAdapter;

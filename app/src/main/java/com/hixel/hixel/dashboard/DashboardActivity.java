@@ -32,7 +32,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
-import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.R;
 
@@ -97,11 +97,10 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     private void updateUI(@Nullable List<Company> companies) {
         if (companies != null) {
-            Log.d(TAG, "updateUI: " + companies.size());
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
         } else {
-            // show loading
+            // Show Loading indicator
             Log.d(TAG, "updateUI: Loading");
             binding.progressBar.setVisibility(View.VISIBLE);
         }
@@ -120,8 +119,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         dashboardAdapter = new DashboardAdapter(this, companies);
         recyclerView.setAdapter(dashboardAdapter);
-
-        Log.d(TAG, "setupDashboardAdapter: " + recyclerView.getAdapter().getItemCount());
     }
 
     @Override

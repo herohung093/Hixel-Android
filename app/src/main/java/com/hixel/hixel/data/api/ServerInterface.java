@@ -1,6 +1,6 @@
 package com.hixel.hixel.data.api;
 
-import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.LoginData;
 import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.data.models.ApplicationUser;

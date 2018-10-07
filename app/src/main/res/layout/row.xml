@@ -4,7 +4,7 @@
     <data>
         <variable
           name="company"
-          type="com.hixel.hixel.data.models.Company" />
+          type="com.hixel.hixel.data.entities.Company" />
     </data>
 
     <android.support.constraint.ConstraintLayout

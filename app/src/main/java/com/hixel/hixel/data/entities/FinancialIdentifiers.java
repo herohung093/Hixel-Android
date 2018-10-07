@@ -1,4 +1,4 @@
-package com.hixel.hixel.data.models;
+package com.hixel.hixel.data.entities;
 
 public class FinancialIdentifiers {
 

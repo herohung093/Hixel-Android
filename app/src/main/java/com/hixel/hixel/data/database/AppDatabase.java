@@ -2,7 +2,7 @@ package com.hixel.hixel.data.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
-import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.entities.Company;
 
 /**
  * Room DB that contains the companies table.

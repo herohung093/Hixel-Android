@@ -3,9 +3,10 @@ package com.hixel.hixel.data;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import com.hixel.hixel.data.database.CompanyDao;
-import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.data.entities.Company;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -78,9 +79,9 @@ public class CompanyRepository {
 
     private void refreshCompanies(final String[] tickers) {
         executor.execute(() -> {
-            companyDao.nuke();
-
-            // TODO: check efficiency of join.
+            // TODO: Remove this - db currently doesnt have a pk based on the class itself.
+            // NOTE: THIS IS A TEMPORARY MEASURE!
+            companyDao.deleteAll();
             serverInterface.getCompanies(StringUtils.join(tickers, ','), 1)
                     .enqueue(new Callback<ArrayList<Company>>() {
                         @Override
@@ -88,6 +89,7 @@ public class CompanyRepository {
                                 @NonNull Response<ArrayList<Company>> response) {
                             executor.execute(() -> {
                                 List<Company> companies = response.body();
+                                Log.d(TAG, "onResponse: " + companies.get(0).getFormattedName());
                                 companyDao.saveCompanies(companies);
                             });
                         }

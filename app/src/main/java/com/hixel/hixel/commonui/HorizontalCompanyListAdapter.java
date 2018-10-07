@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.hixel.hixel.R;
-import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.entities.Company;
 import java.util.List;
 
 public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<HorizontalCompanyListAdapter.ViewHolder>{

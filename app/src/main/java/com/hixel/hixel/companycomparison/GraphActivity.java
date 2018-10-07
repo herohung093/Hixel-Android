@@ -16,7 +16,7 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.commonui.HorizontalListViewAdapter;
 import com.hixel.hixel.companycomparison.GraphFragment.OnFragmentInteractionListener;
 import com.hixel.hixel.dashboard.DashboardActivity;
-import com.hixel.hixel.data.models.Company;
+import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.profile.ProfileActivity;
 import java.util.ArrayList;
 
