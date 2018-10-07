@@ -44,11 +44,21 @@
   <string name="update_password">Update Password</string>
 
   <!-- Profile -->
-  <string name="change_pass">Change your password</string>
-  <string name="new_password">Enter your new password</string>
+  <string name="change_password">Change password</string>
   <string name="confirm_pass">Confirm your password</string>
+  <string name="user_details">User Details:</string>
+  <string name="edit">Edit</string>
   <string name="logout">Log Out</string>
   <string name="profile_cancel">Cancel</string>
+  <string name="name">Name</string>
+  <string name="email">Email</string>
+  <string name="password">Password</string>
+  <string name="confirm_change">Confirm Change</string>
+  <string name="current_password">Current</string>
+  <string name="new_password">New</string>
+  <string name="retype_new_password">Retype new</string>
+  <string name="confirm">Confirm</string>
+
 
   <!-- Sign up -->
   <string name="already_member">Already a member? Login</string>

@@ -108,6 +108,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
     }
 
     public void setupBottomNavigationView() {
+/*
+        // TODO: Throwing a binding not found error??
         BottomNavigationView bottomNavigationView = binding.bottomNavigation.bottomNavigation;
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
@@ -125,7 +127,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                     break;
             }
             return true;
-        });
+        });*/
     }
 
     private void companyChartSetup() {

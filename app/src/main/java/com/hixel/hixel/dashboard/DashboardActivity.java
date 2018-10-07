@@ -37,6 +37,7 @@ import com.hixel.hixel.data.models.Company;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.R;
 
+
 import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.data.models.MainBarChartRenderer;
 import com.hixel.hixel.data.models.MainBarDataSet;
@@ -243,7 +244,10 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         xAxis.setDrawAxisLine(false);
 
         xAxis.setTextColor(ContextCompat.getColor(this, R.color.text_secondary_dark));
-        xAxis.setTypeface(ResourcesCompat.getFont(this, R.font.roboto_condensed_regular));
+
+        // TODO: This is throwing a resource not found exception.
+        // Previously the font face was roboto_condensed_regular.
+        // xAxis.setTypeface(ResourcesCompat.getFont(this, R.font.montserrat));
         xAxis.setTextSize(12);
         xAxis.setGranularity(1f);
         xAxis.setLabelCount(5);
