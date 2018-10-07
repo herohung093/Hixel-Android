@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import com.goodiebag.pinview.Pinview;
 import com.hixel.hixel.R;
-import com.hixel.hixel.profile.UpdatePasswordActivity;
 
 public class PinInputActivity extends AppCompatActivity {
 

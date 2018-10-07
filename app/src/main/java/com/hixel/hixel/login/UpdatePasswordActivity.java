@@ -1,4 +1,4 @@
-package com.hixel.hixel.profile;
+package com.hixel.hixel.login;
 
 import android.content.Intent;
 import android.os.Bundle;
