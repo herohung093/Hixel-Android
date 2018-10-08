@@ -2,6 +2,7 @@
   <!-- Common -->
   <string name="app_name">Hixel</string>
   <string name="default_text">Default</string>
+  <string name="long_default_text">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</string>
 
   <!-- Toolbar Titles-->
   <string name="dashboard">Dashboard</string>
@@ -106,4 +107,7 @@
   <string name="home">Home</string>
   <string name="compare">Compare</string>
   <string name="profile">Profile</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

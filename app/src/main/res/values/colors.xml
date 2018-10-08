@@ -28,4 +28,9 @@
   <color name="textColorDefault">#FFFFFFFF</color>
   <color name="colorPrimary">#172B4D</color>
   <color name="buttonBackground">#54698d</color>
+
+  <!-- Onboarding Colors -->
+  <color name="onboarding_yellow">#FFCE00</color>
+  <color name="onboarding_blue">#357180</color>
+  <color name="onboarding_green">#4ABC96</color>
 </resources>

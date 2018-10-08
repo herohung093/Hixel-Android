@@ -58,7 +58,7 @@ dependencies {
     // UI
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
-    implementation 'com.github.AnyChart:AnyChart-Android:0.1.9'
+    implementation 'com.github.AnyChart:AnyChart-Android:1.0.2'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.github.AnyChart:AnyChart-Android:1.0.2'
 
@@ -111,4 +111,8 @@ dependencies {
 
     // Tab layout
     implementation 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
+
+    // Onboarding Library
+    implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
+
 }

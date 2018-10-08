@@ -43,6 +43,5 @@
     android:layout_centerHorizontal="true"
     android:background="@color/accent"
     android:text="@string/get_started"
-    android:textColor="@android:color/white"
-    android:visibility="invisible"/>
+    android:textColor="@android:color/white"/>
 </android.widget.RelativeLayout>
