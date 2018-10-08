@@ -21,8 +21,6 @@ import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 import okhttp3.OkHttpClient.Builder;
 import okhttp3.Request;
-import okhttp3.logging.HttpLoggingInterceptor;
-import okhttp3.logging.HttpLoggingInterceptor.Level;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -30,7 +28,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * TODO: Explanation
  */
-
 @Module
 public class RepositoryModule {
 
@@ -67,9 +64,7 @@ public class RepositoryModule {
         // Create a trust manager that does not validate certificate chains
         final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
             @Override
-            public void checkClientTrusted(
-                    java.security.cert.X509Certificate[] chain,
-                    String authType) throws CertificateException { }
+            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException { }
 
             @Override
             public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException { }
@@ -91,17 +86,12 @@ public class RepositoryModule {
         // Create an ssl socket factory with our all-trusting manager
         final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
-        // Create a logging interceptor
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(Level.BODY);
-
         client.addNetworkInterceptor(new StethoInterceptor())
                 .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(tokenInterceptor)
                 .authenticator(tokenAuthenticator)
                 .sslSocketFactory(sslSocketFactory)
-                .addInterceptor(loggingInterceptor)
                 .hostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
         client.addInterceptor(chain -> {
@@ -138,7 +128,6 @@ public class RepositoryModule {
     /**
      * TODO: explanation
      */
-
     @Provides
     @Singleton
     @NonNull

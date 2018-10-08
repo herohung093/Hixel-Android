@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.api.Client;
-import com.hixel.hixel.data.models.ApplicationUser;
+import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.data.api.ServerInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,7 +63,7 @@ public class SignupActivity extends AppCompatActivity {
 
         Call<Void> call = Client.getClient()
                 .create(ServerInterface.class)
-                .signup(new ApplicationUser(firstName, lastName, email, password));
+                .signup(new User(firstName, lastName, email, password));
 
         call.enqueue(new Callback<Void>() {
             @Override

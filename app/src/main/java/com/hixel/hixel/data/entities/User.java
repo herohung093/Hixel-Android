@@ -1,23 +1,36 @@
-package com.hixel.hixel.data.models;
+package com.hixel.hixel.data.entities;
 
-public class ApplicationUser {
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+/**
+ * Immutable User object.
+ */
+@Entity(tableName = "user")
+public class User {
+
+    @PrimaryKey
+    @NonNull
+    private String email;
+
     private String firstName;
     private String lastName;
-    private String email;
     private String password;
 
-    public ApplicationUser(String firstName, String lastName,  String email, String password) {
+    public User(@NonNull String email, String firstName, String lastName, String password) {
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.password = password;
     }
 
+    @NonNull
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NonNull String email) {
         this.email = email;
     }
 

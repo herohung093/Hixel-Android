@@ -3,7 +3,7 @@ package com.hixel.hixel.data.api;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.LoginData;
 import com.hixel.hixel.data.models.SearchEntry;
-import com.hixel.hixel.data.models.ApplicationUser;
+import com.hixel.hixel.data.entities.User;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ public interface ServerInterface {
 
     @POST("/users/sign-up")
     @Headers("No-Authentication: true")
-    Call<Void> signup(@Body ApplicationUser request);
+    Call<Void> signup(@Body User request);
 
     @GET("/users/refresh")
     Call<Void> refreshAccessToken(@Header("Refresh") String Refresh);
