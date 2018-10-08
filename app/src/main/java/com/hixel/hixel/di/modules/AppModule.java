@@ -3,9 +3,11 @@ package com.hixel.hixel.di.modules;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 import com.hixel.hixel.data.CompanyRepository;
+import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.database.AppDatabase;
 import com.hixel.hixel.data.database.CompanyDao;
 import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.data.database.UserDao;
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.AndroidInjectionModule;
@@ -26,15 +28,18 @@ public class AppModule {
     @Singleton
     AppDatabase provideDatabase(Application context) {
         return Room.databaseBuilder(context.getApplicationContext(),
-                AppDatabase.class, "companiesDB")
-                // TODO: Better migration
+                AppDatabase.class, "appDB")
                 .fallbackToDestructiveMigration()
                 .build();
     }
 
     @Provides
     @Singleton
-    CompanyDao provideUserDao(AppDatabase database) { return database.companyDao(); }
+    CompanyDao provideCompanyDao(AppDatabase database) { return database.companyDao(); }
+
+    @Provides
+    @Singleton
+    UserDao provideUserDao(AppDatabase database) { return database.userDao(); }
 
     // --- REPOSITORY INJECTION ---
     @Provides
@@ -44,7 +49,13 @@ public class AppModule {
 
     @Provides
     @Singleton
-    CompanyRepository provideUserRepository(ServerInterface serverInterface, CompanyDao companyDao, Executor executor) {
+    CompanyRepository provideCompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, Executor executor) {
         return new CompanyRepository(serverInterface, companyDao, executor);
+    }
+
+    @Provides
+    @Singleton
+    UserRepository provideUserRepository(ServerInterface serverInterface, UserDao userDao, Executor executor) {
+        return new UserRepository(serverInterface, userDao, executor);
     }
 }

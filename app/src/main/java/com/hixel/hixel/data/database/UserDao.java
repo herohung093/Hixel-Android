@@ -18,7 +18,9 @@ public interface UserDao {
     @Query("SELECT * FROM user WHERE email = :userEmail AND password = :userPassword")
     LiveData<User> getUser(String userEmail, String userPassword);
 
-    @Query("SELECT * FROM user WHERE email = :userEmail AND lastRefresh > :lastRefreshMax LIMIT 1")
+    @Query("SELECT * FROM user WHERE email = :userEmail AND lastRefresh > :lastRefreshMax")
     int hasUser(String userEmail, Date lastRefreshMax);
 
+    @Query("SELECT * FROM user WHERE lastRefresh > :lastRefreshMax")
+    int isStaleUser(Date lastRefreshMax);
 }

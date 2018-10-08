@@ -2,9 +2,8 @@ package com.hixel.hixel.data;
 
 
 import android.arch.lifecycle.LiveData;
-import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.util.Log;
-import com.hixel.hixel.App;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.database.UserDao;
 import com.hixel.hixel.data.entities.User;
@@ -30,6 +29,10 @@ public class UserRepository {
     private final UserDao userDao;
     private final Executor executor;
 
+    // TEMPORARY WORKAROUND
+    private boolean isVerified;
+    private boolean isStale;
+
     @Inject
     public UserRepository(ServerInterface serverInterface, UserDao userDao, Executor executor) {
         this.serverInterface = serverInterface;
@@ -43,6 +46,30 @@ public class UserRepository {
         return userDao.getUser(userEmail, userPassword);
     }
 
+    public boolean verifyUser(String userEmail, String userPassword) {
+        serverInterface.login(new LoginData(userEmail, userPassword))
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                        if (response.code() == 200) {
+                            isVerified = true;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+                    }
+                });
+
+        return isVerified;
+    }
+
+    public boolean isUserStale() {
+        executor.execute(() -> isStale = (userDao.isStaleUser(getMaxRefreshTime(new Date())) != 1));
+        return isStale;
+    }
+
     private void refreshUser(String userEmail, String userPassword, String firstName, String lastName) {
         executor.execute(() -> {
             boolean userExists = (userDao.hasUser(userEmail, getMaxRefreshTime(new Date())) == 1);
@@ -52,7 +79,7 @@ public class UserRepository {
                 serverInterface.login(new LoginData(userEmail, userPassword))
                         .enqueue(new Callback<Void>() {
                             @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
+                            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                                 switch (response.code()) {
                                     case 200:
                                         User user = new User(userEmail, userPassword, firstName, lastName, new Date());
@@ -68,7 +95,7 @@ public class UserRepository {
                             }
 
                             @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
+                            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                                 // TODO: Error handling.
                             }
                         });

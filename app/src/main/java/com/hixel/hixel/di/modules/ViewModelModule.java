@@ -7,6 +7,7 @@ import com.hixel.hixel.companydetail.CompanyDetailViewModel;
 import com.hixel.hixel.companycomparison.CompanyComparisonViewModel;
 import com.hixel.hixel.dashboard.DashboardViewModel;
 import com.hixel.hixel.ViewModelFactory;
+import com.hixel.hixel.login.LoginViewModel;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
@@ -32,6 +33,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CompanyComparisonViewModel.class)
     abstract ViewModel bindCompanyComparisonViewModel(CompanyComparisonViewModel companyComparisonViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel.class)
+    abstract ViewModel bindLoginViewModel(LoginViewModel loginViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);

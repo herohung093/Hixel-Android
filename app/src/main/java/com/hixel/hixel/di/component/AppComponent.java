@@ -20,7 +20,6 @@ import javax.inject.Singleton;
 @Component(modules = {
         AndroidInjectionModule.class,
         AppModule.class,
-        // CompanyModule.class,
         ActivityBuilderModule.class,
         RepositoryModule.class
 })

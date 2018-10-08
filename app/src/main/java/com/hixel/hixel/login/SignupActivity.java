@@ -60,7 +60,7 @@ public class SignupActivity extends AppCompatActivity {
         String lastName = lasNameText.getEditText().getText().toString().trim();
         String email = emailText.getEditText().getText().toString().trim();
         String password = passwordText.getEditText().getText().toString().trim();
-
+/*
         Call<Void> call = Client.getClient()
                 .create(ServerInterface.class)
                 .signup(new User(firstName, lastName, email, password));
@@ -90,7 +90,7 @@ public class SignupActivity extends AppCompatActivity {
                 onSignupFailed("Couldn't connect to server!");
                 progressDialog.dismiss();
             }
-        });
+        });*/
     }
 
     public void onSignupFailed(String reason) {

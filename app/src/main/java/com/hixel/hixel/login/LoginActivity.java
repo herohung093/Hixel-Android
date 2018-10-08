@@ -1,41 +1,37 @@
 package com.hixel.hixel.login;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.hixel.hixel.App;
 import com.hixel.hixel.R;
 import com.hixel.hixel.dashboard.DashboardActivity;
-import com.hixel.hixel.data.api.Client;
-import com.hixel.hixel.data.models.LoginData;
-import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.databinding.ActivityLoginBinding;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import dagger.android.AndroidInjection;
+import javax.inject.Inject;
 
 public class LoginActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
     private static final String TAG = LoginActivity.class.getSimpleName();
 
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private LoginViewModel viewModel;
+
+    private ActivityLoginBinding binding;
     TextInputLayout emailText;
     TextInputLayout passwordText;
     Button loginButton;
-    TextView signupLink;
-    TextView forgotPasswordLink;
-    ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,33 +44,49 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(this, Onboarding.class));
         }
 
+        loginButton = findViewById(R.id.btn_login);
         emailText = findViewById(R.id.emailWrapper);
         passwordText = findViewById(R.id.passwordWrapper);
-        loginButton = findViewById(R.id.btn_login);
-        signupLink = findViewById(R.id.link_signup);
-        emailText = findViewById(R.id.emailWrapper);
-        passwordText= findViewById(R.id.passwordWrapper);
-        loginButton= findViewById(R.id.btn_login);
-        signupLink = findViewById(R.id.link_signup);
-        forgotPasswordLink= findViewById(R.id.link_forgot_password);
+
+        this.configureDagger();
+        this.configureViewModel();
+    }
+
+    private void configureDagger() {
+        AndroidInjection.inject(this);
+    }
+
+    private void configureViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+        viewModel.init();
+
+        if (viewModel.getIsUserStale()) {
+            setupUI();
+        } else {
+            Intent moveToSignup = new Intent(getApplicationContext(), SignupActivity.class);
+            startActivity(moveToSignup);
+        }
+    }
+
+    private void setupUI() {
 
         loginButton.setOnClickListener(view -> login());
 
-        signupLink.setOnClickListener(view -> {
+        binding.linkSignup.setOnClickListener(view -> {
             Intent moveToSignup = new Intent(getApplicationContext(),SignupActivity.class);
             startActivity(moveToSignup);
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });
 
-        forgotPasswordLink.setOnClickListener(event-> {
+        binding.linkForgotPassword.setOnClickListener(event-> {
             Intent moveToForgotView = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
             startActivity(moveToForgotView);
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });
+
     }
 
     private void login() {
-
         if (!validate()) {
             onLoginFailed("Invalid input");
             return;
@@ -89,45 +101,16 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = emailText.getEditText().getText().toString();
-        String password = passwordText.getEditText().getText().toString();
+        String email = emailText.getEditText().getText().toString().trim();
+        String password = passwordText.getEditText().getText().toString().trim();
 
-        Call<Void> call = Client.getClient().create(ServerInterface.class).login(new LoginData(email, password));
-
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call,
-                                   @NonNull Response<Void> response) {
-                progressDialog.dismiss();
-                switch (response.code()) {
-                    case 200:
-                        SharedPreferences preferences = App.preferences();
-                        preferences.edit()
-                                .putString("AUTH_TOKEN", response.headers().get("Authorization"))
-                                .apply();
-
-                        preferences.edit()
-                                .putString("REFRESH_TOKEN", response.headers().get("Refresh"))
-                                .apply();
-
-                        onLoginSuccess();
-                        break;
-                    case 401:
-                        onLoginFailed("Wrong username or password");
-                        break;
-                    default:
-                        onLoginFailed("Unknown error");
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                progressDialog.dismiss();
-                onLoginFailed("Couldn't connect to server!");
-            }
-        });
+        if (viewModel.login(email, password)) {
+            onLoginSuccess();
+        } else {
+            onLoginFailed("TODO: GET THIS FUNCTIONALITY BACK!");
+        }
     }
+
     @Override
     public void onBackPressed() {
         // Disable going back to the MainActivity
@@ -149,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validate() {
         boolean valid = true;
 
+        // TODO: Get rid of these null pointer errors.
         String email = emailText.getEditText().getText().toString().trim();
         String password = passwordText.getEditText().getText().toString().trim();
 
