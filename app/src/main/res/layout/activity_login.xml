@@ -33,14 +33,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:hint="@string/email_hint">
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
           android:id="@+id/input_email"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:drawableLeft="@drawable/email"
-          android:hint="@string/email_hint"
           android:inputType="textEmailAddress"
           android:textColor="@color/text_main_dark"
           android:textColorHint="@color/text_main_dark"/>
@@ -53,13 +53,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
-        <EditText
+        android:layout_marginBottom="8dp"
+        android:hint="@string/password_hint">
+        <android.support.design.widget.TextInputEditText
           android:id="@+id/input_password"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:drawableLeft="@drawable/password_logo"
-          android:hint="@string/password_hint"
           android:inputType="textPassword"
           android:textColor="@color/text_main_dark"
           android:textColorHint="@color/text_main_dark"/>

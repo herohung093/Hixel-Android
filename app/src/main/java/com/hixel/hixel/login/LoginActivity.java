@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.Button;
 import android.widget.Toast;
@@ -63,14 +64,18 @@ public class LoginActivity extends AppCompatActivity {
         if (viewModel.getIsUserStale()) {
             setupUI();
         } else {
-            Intent moveToSignup = new Intent(getApplicationContext(), SignupActivity.class);
-            startActivity(moveToSignup);
+            Log.d(TAG, "configureViewModel: user ain't stale");
+            Intent moveToDashboard = new Intent(getApplicationContext(), DashboardActivity.class);
+            startActivity(moveToDashboard);
         }
     }
 
     private void setupUI() {
 
-        loginButton.setOnClickListener(view -> login());
+        loginButton.setOnClickListener(view -> {
+            Log.d(TAG, "setupUI: login button clicked");
+            login();
+        });
 
         binding.linkSignup.setOnClickListener(view -> {
             Intent moveToSignup = new Intent(getApplicationContext(),SignupActivity.class);
@@ -87,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
+        Log.d(TAG, "login: HERE!");
         if (!validate()) {
             onLoginFailed("Invalid input");
             return;
@@ -101,10 +107,12 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
+
         String email = emailText.getEditText().getText().toString().trim();
         String password = passwordText.getEditText().getText().toString().trim();
 
         if (viewModel.login(email, password)) {
+            Log.d(TAG, "login: LOGIN SUCCESS!");
             onLoginSuccess();
         } else {
             onLoginFailed("TODO: GET THIS FUNCTIONALITY BACK!");
@@ -135,6 +143,8 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: Get rid of these null pointer errors.
         String email = emailText.getEditText().getText().toString().trim();
         String password = passwordText.getEditText().getText().toString().trim();
+
+        Log.d(TAG, "validate: " + email);
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError("Invalid email address");
