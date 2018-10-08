@@ -3,6 +3,7 @@ package com.hixel.hixel.login;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -19,12 +20,14 @@ import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.models.LoginData;
 import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.databinding.ActivityLoginBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    @SuppressWarnings("unused")
     private static final String TAG = LoginActivity.class.getSimpleName();
 
     TextInputLayout emailText;
@@ -32,11 +35,12 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     TextView signupLink;
     TextView forgotPasswordLink;
+    ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -70,7 +74,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
-        Log.d(TAG, "Login");
 
         if (!validate()) {
             onLoginFailed("Invalid input");
@@ -89,11 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailText.getEditText().getText().toString();
         String password = passwordText.getEditText().getText().toString();
 
-
-
-        Call<Void> call = Client.getClient()
-                .create(ServerInterface.class)
-                .login(new LoginData(email, password));
+        Call<Void> call = Client.getClient().create(ServerInterface.class).login(new LoginData(email, password));
 
         call.enqueue(new Callback<Void>() {
             @Override
@@ -103,7 +102,6 @@ public class LoginActivity extends AppCompatActivity {
                 switch (response.code()) {
                     case 200:
                         SharedPreferences preferences = App.preferences();
-            Log.e("Successful OnResponse headers: ", response.headers().toString());
                         preferences.edit()
                                 .putString("AUTH_TOKEN", response.headers().get("Authorization"))
                                 .apply();
@@ -132,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        // disable going back to the MainActivity
+        // Disable going back to the MainActivity
         moveTaskToBack(true);
     }
 
@@ -157,16 +155,14 @@ public class LoginActivity extends AppCompatActivity {
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError("Invalid email address");
             valid = false;
-        }
-        else {
+        } else {
             emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4) {
             passwordText.setError("Must contain at least 4 characters");
             valid = false;
-        }
-        else {
+        } else {
             passwordText.setError(null);
         }
 
