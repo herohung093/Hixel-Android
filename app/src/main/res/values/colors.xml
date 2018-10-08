@@ -33,4 +33,9 @@
   <color name="onboarding_yellow">#FFCE00</color>
   <color name="onboarding_blue">#357180</color>
   <color name="onboarding_green">#4ABC96</color>
+  <color name="onboarding_orange">#FFA655</color>
+
+  <color name="onboarding_alt_green">#3FBA91</color>
+  <color name="onboarding_alt_blue">#198DE0</color>
+  <color name="onboarding_alt_orange">#FDAC51</color>
 </resources>

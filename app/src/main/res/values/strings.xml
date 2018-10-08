@@ -78,7 +78,7 @@
 
   <!-- Onboarding -->
   <string name="dot">&#xb7;</string>
-  <string name="get_started">Get Started</string>
+  <string name="get_started"><b>Get Started</b></string>
 
   <!--information popup window -->
   <string name="returns_explanatory">How much a company pays out in dividends each year relative to its share price. It measures how much \"bang for your buck\" you are getting from dividends.</string>
@@ -107,7 +107,4 @@
   <string name="home">Home</string>
   <string name="compare">Compare</string>
   <string name="profile">Profile</string>
-
-  <!-- TODO: Remove or change this placeholder text -->
-  <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -114,5 +114,6 @@ dependencies {
 
     // Onboarding Library
     implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
+    implementation 'com.github.chyrta:AndroidOnboarder:0.7'
 
 }
