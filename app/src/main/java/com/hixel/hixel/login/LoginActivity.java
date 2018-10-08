@@ -61,7 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         viewModel.init();
 
-        if (viewModel.getIsUserStale()) {
+        // TODO: Fix up the Room query because this doesn't make sense.
+        if (!viewModel.getIsUserStale()) {
             setupUI();
         } else {
             Log.d(TAG, "configureViewModel: user ain't stale");

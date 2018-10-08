@@ -68,11 +68,16 @@ public class UserRepository {
                     }
                 });
 
+        Log.d(TAG, "verifyUser: " + isVerified);
+
         return isVerified;
     }
 
     public boolean isUserStale() {
-        executor.execute(() -> isStale = (userDao.isStaleUser(getMaxRefreshTime(new Date())) != 1));
+        executor.execute(() -> isStale = (userDao.isStaleUser("test@gmail.com", getMaxRefreshTime(new Date())) != 1));
+
+        Log.d(TAG, "isUserStale: " + isStale);
+
         return isStale;
     }
 
