@@ -1,6 +1,7 @@
 package com.hixel.hixel.di.modules;
 
 import android.support.annotation.NonNull;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hixel.hixel.data.api.CompanyDeserializer;
@@ -68,8 +69,7 @@ public class RepositoryModule {
             @Override
             public void checkClientTrusted(
                     java.security.cert.X509Certificate[] chain,
-                    String authType) throws CertificateException {
-            }
+                    String authType) throws CertificateException { }
 
             @Override
             public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException { }
@@ -95,7 +95,8 @@ public class RepositoryModule {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(Level.BODY);
 
-        client.connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
+        client.addNetworkInterceptor(new StethoInterceptor())
+                .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(tokenInterceptor)
                 .authenticator(tokenAuthenticator)

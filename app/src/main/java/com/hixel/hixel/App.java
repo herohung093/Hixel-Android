@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.facebook.stetho.Stetho;
 import com.hixel.hixel.di.component.DaggerAppComponent;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
@@ -26,6 +27,8 @@ public class App extends Application implements HasActivityInjector {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+
+        Stetho.initializeWithDefaults(this);
 
         DaggerAppComponent.builder().application(this).build().inject(this);
     }
