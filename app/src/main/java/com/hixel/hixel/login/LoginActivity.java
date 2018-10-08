@@ -4,13 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,12 +32,17 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     TextView signupLink;
     TextView forgotPasswordLink;
-    int REQUEST_SIGNUP = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (!sharedPreferences.getBoolean(Onboarding.COMPLETED_ONBOARDING_PREF_NAME, false)) {
+            startActivity(new Intent(this, Onboarding.class));
+        }
 
         emailText = findViewById(R.id.emailWrapper);
         passwordText = findViewById(R.id.passwordWrapper);
@@ -168,17 +172,4 @@ public class LoginActivity extends AppCompatActivity {
 
         return valid;
     }
-
-//Responds to enter
-/*    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_ENTER:
-                login();
-                return true;
-
-            default:
-                return super.onKeyUp(keyCode, event);
-        }
-    }*/
 }

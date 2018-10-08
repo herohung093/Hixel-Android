@@ -1,8 +1,10 @@
 package com.hixel.hixel.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity;
 import com.codemybrainsout.onboarder.AhoyOnboarderCard;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Onboarding extends AhoyOnboarderActivity {
+
+    static String COMPLETED_ONBOARDING_PREF_NAME = "onboarding_initiated";
     private List<Integer> colorList;
 
     @Override
@@ -38,6 +42,14 @@ public class Onboarding extends AhoyOnboarderActivity {
         setFinishButtonDrawableStyle(ContextCompat.getDrawable(this, R.drawable.onboarding_button_style));
 
         setOnboardPages(getOnBoardingCards());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        SharedPreferences.Editor sharedPreferencesEditor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        sharedPreferencesEditor.putBoolean(COMPLETED_ONBOARDING_PREF_NAME, true);
+        sharedPreferencesEditor.apply();
     }
 
     @Override
@@ -74,11 +86,7 @@ public class Onboarding extends AhoyOnboarderActivity {
             cards.get(i).setBackgroundColor(colorList.get(i));
         }
 
-        /*
-            card.setTitleTextSize(dpToPixels(10, this));
-            card1.setDescriptionTextSize(dpToPixels(8, this));
-            card1.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
-         */
+        // cards.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
 
         return cards;
     }

@@ -33,7 +33,7 @@ public class SignupActivity extends AppCompatActivity {
         firstNameText= findViewById(R.id.firstNameWrapper);
         lasNameText= findViewById(R.id.lastnameWrapper);
         loginText = findViewById(R.id.link_login);
-        signupButton= findViewById(R.id.btn_signup);
+        signupButton = findViewById(R.id.btn_signup);
 
         signupButton.setOnClickListener(view -> signup());
 
