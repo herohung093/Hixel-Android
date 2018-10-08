@@ -27,15 +27,14 @@ public class DashboardViewModel extends ViewModel {
     private static final String[] tickers = { "AAPL", "TSLA", "TWTR"};
 
     private LiveData<List<Company>> companies;
-    private CompanyRepository companyRepository;
+    private CompanyRepository repository;
 
     private PublishSubject<String> publishSubject = PublishSubject.create();
     private CompositeDisposable disposable = new CompositeDisposable();
 
-    // Tells Dagger to provide the CompanyRepository parameter
     @Inject
-    public DashboardViewModel(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
+    public DashboardViewModel(CompanyRepository repository) {
+        this.repository = repository;
     }
 
     public void init() {
@@ -43,7 +42,7 @@ public class DashboardViewModel extends ViewModel {
             return;
         }
 
-        companies = companyRepository.getCompanies(tickers);
+        companies = repository.getCompanies(tickers);
     }
 
     public LiveData<List<Company>> getCompanies() {

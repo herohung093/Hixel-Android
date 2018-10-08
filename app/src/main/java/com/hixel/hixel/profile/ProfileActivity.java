@@ -1,11 +1,14 @@
 package com.hixel.hixel.profile;
 
 import android.app.Dialog;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,17 +16,27 @@ import android.widget.ImageButton;
 import com.hixel.hixel.R;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
+import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.databinding.ActivityProfileBinding;
 import com.hixel.hixel.login.LoginActivity;
+import dagger.android.AndroidInjection;
+import javax.inject.Inject;
 
 public class ProfileActivity extends AppCompatActivity {
+
+    @SuppressWarnings("unused")
+    private static final String TAG = ProfileActivity.class.getSimpleName();
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private ProfileViewModel viewModel;
+    private ActivityProfileBinding binding;
 
     // TODO: Get data from db.
     String fullName = "John Smith";
     String email = "test@gmail.com";
     String password = "1234";
 
-    ActivityProfileBinding binding;
     Dialog dialog;
 
     @Override
@@ -31,27 +44,42 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
 
+        this.configureDagger();
+        this.configureViewModel();
+
         setupBottomNavigationView();
-        updateUI();
         setupEditButtons();
         setupLogout();
     }
 
-    public void updateUI() {
-        String userHeader = String.format("Hi, %s!", fullName);
+    private void configureDagger() {
+        AndroidInjection.inject(this);
+    }
 
-        binding.confirmEditNameButton.setVisibility(View.INVISIBLE);
-        binding.confirmEditEmailButton.setVisibility(View.INVISIBLE);
+    private void configureViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel.class);
+        viewModel.init();
+        viewModel.getUser().observe(this, this::updateUI);
+    }
 
 
-        binding.fullName.setText(userHeader);
-        binding.name.setText(fullName);
-        binding.email.setText(email);
-        binding.password.setText(password);
+    public void updateUI(User user) {
+        if (user != null) {
+            Log.d(TAG, "updateUI: HIT!");
+            String userHeader = String.format("Hi, %s!", user.getFirstName());
 
-        binding.name.setFocusable(false);
-        binding.email.setFocusable(false);
-        binding.password.setFocusable(false);
+            binding.confirmEditNameButton.setVisibility(View.INVISIBLE);
+            binding.confirmEditEmailButton.setVisibility(View.INVISIBLE);
+
+            binding.fullName.setText(userHeader);
+            binding.name.setText(user.getFirstName());
+            binding.email.setText(user.getEmail());
+            binding.password.setText(user.getPassword());
+
+            binding.name.setFocusable(false);
+            binding.email.setFocusable(false);
+            binding.password.setFocusable(false);
+        }
     }
 
     public void setupBottomNavigationView() {
@@ -80,7 +108,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             binding.confirmEditNameButton.setOnClickListener(view2 -> {
                 fullName = binding.name.getText().toString();
-                updateUI();
             });
         });
 
@@ -91,7 +118,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             binding.confirmEditEmailButton.setOnClickListener(view2 -> {
                 email = binding.email.getText().toString();
-                updateUI();
             });
         });
 

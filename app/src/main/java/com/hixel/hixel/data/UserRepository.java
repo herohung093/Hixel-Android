@@ -40,10 +40,16 @@ public class UserRepository {
         this.executor = executor;
     }
 
-    public LiveData<User> getUser(String userEmail, String userPassword, String firstName, String lastName) {
-        refreshUser(userEmail, userPassword, firstName, lastName);
+    public LiveData<User> getUser() {
+        // TODO: Think of a way to do refreshes for a user.
+        // refreshUser();
 
-        return userDao.getUser(userEmail, userPassword);
+        executor.execute(() -> {
+            User user = userDao.get();
+            Log.d(TAG, "getUser: " + user.getEmail());
+        });
+
+        return userDao.getUser();
     }
 
     public boolean verifyUser(String userEmail, String userPassword) {

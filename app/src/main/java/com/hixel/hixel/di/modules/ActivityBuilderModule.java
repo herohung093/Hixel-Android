@@ -5,6 +5,7 @@ import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.login.LoginActivity;
 import com.hixel.hixel.login.LoginViewModel;
+import com.hixel.hixel.profile.ProfileActivity;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -24,4 +25,7 @@ public abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract LoginActivity loginActivity();
+
+    @ContributesAndroidInjector
+    abstract ProfileActivity profileActivity();
 }

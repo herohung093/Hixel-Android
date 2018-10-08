@@ -15,12 +15,15 @@ public interface UserDao {
     @Insert(onConflict = REPLACE)
     void saveUser(User user);
 
-    @Query("SELECT * FROM user WHERE email = :userEmail AND password = :userPassword")
-    LiveData<User> getUser(String userEmail, String userPassword);
+    @Query("SELECT * FROM user")
+    LiveData<User> getUser();
+
+    @Query("SELECT * FROM user")
+    User get();
 
     @Query("SELECT * FROM user WHERE email = :userEmail AND lastRefresh > :lastRefreshMax")
     int hasUser(String userEmail, Date lastRefreshMax);
 
-    @Query("SELECT * FROM user WHERE lastRefresh > :lastRefreshMax")
+    @Query("SELECT * FROM user WHERE lastRefresh > :lastRefreshMax LIMIT 1")
     int isStaleUser(Date lastRefreshMax);
 }
