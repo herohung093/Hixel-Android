@@ -4,36 +4,32 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import com.chyrta.onboarder.OnboarderActivity;
-import com.chyrta.onboarder.OnboarderPage;
+import com.codemybrainsout.onboarder.AhoyOnboarderActivity;
 import com.codemybrainsout.onboarder.AhoyOnboarderCard;
 import com.hixel.hixel.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Onboarding extends OnboarderActivity {
+public class Onboarding extends AhoyOnboarderActivity {
+    private List<Integer> colorList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        List<Integer> colorList = new ArrayList<>();
+        colorList = new ArrayList<>();
         colorList.add(R.color.onboarding_green);
         colorList.add(R.color.onboarding_blue);
         colorList.add(R.color.onboarding_alt_orange);
-        // setColorBackground(colorList);
+        setColorBackground(colorList);
 
         // Available properties
-        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
         setFont(face);
 
         // Hide navigation controls
         showNavigationControls(false);
-
-        // Set pager indicator colors
-        // setInactiveIndicatorColor(R.color.grey);
-        // setActiveIndicatorColor(R.color.white);
 
         // Set finish button text
         setFinishButtonTitle("Get Started");
@@ -50,7 +46,7 @@ public class Onboarding extends OnboarderActivity {
         startActivity(moveToSignup);
     }
 
-    public List<OnboarderPage> getOnBoardingCards() {
+    public List<AhoyOnboarderCard> getOnBoardingCards() {
 
         List<AhoyOnboarderCard> cards = new ArrayList<>();
         cards.add(new AhoyOnboarderCard(
@@ -71,12 +67,16 @@ public class Onboarding extends OnboarderActivity {
                 R.drawable.onboarding_launch)
         );
 
+
+        for (int i = 0; i < cards.size(); i++) {
+            cards.get(i).setDescriptionColor(R.color.white);
+            cards.get(i).setTitleColor(R.color.white);
+            cards.get(i).setBackgroundColor(colorList.get(i));
+        }
+
         /*
             card.setTitleTextSize(dpToPixels(10, this));
             card1.setDescriptionTextSize(dpToPixels(8, this));
-            card1.setBackgroundColor(R.color.black_transparent);
-            card1.setTitleColor(R.color.white);
-            card1.setDescriptionColor(R.color.grey_200);
             card1.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
          */
 
