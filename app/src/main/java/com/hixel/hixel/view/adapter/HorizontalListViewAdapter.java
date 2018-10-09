@@ -10,19 +10,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.service.models.Company;
-import com.hixel.hixel.view.ui.GraphFragment;
+import com.hixel.hixel.viewmodel.GraphInterface;
 import java.util.ArrayList;
 
 public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> implements View.OnClickListener {
 
     ArrayList<String> ratios;
     ArrayList<Company> companies;
-    GraphFragment fragmentGraph;
+    GraphInterface fragmentGraph;
     static Context context;
     int rowIndex =0;
 
     public HorizontalListViewAdapter(Context context,ArrayList<String> ratios,
-        ArrayList<Company> companies, GraphFragment fragmentGraph) {
+        ArrayList<Company> companies, GraphInterface fragmentGraph) {
         this.context=context;
         this.ratios = ratios;
         this.companies = companies;
@@ -48,7 +48,10 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
         holder.tvSpecies.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                fragmentGraph.drawGraph(companies,ratios.get(position));
+                if(companies.size()>1){
+                     fragmentGraph.drawGraph(companies,ratios.get(position));
+                }else fragmentGraph.drawGraph(companies,ratios.get(position));
+
                 //setRowIndex(position);
                 notifyItemChanged(rowIndex);
                 rowIndex=position;

@@ -1,14 +1,20 @@
 package com.hixel.hixel.view.ui;
 
+
+
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.Menu;
 import android.view.View;
 import az.plainpie.PieView;
@@ -16,17 +22,19 @@ import az.plainpie.animation.PieAngleAnimation;
 import com.hixel.hixel.R;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import com.hixel.hixel.service.models.Company;
+import com.hixel.hixel.view.adapter.HorizontalListViewAdapter;
 import com.hixel.hixel.viewmodel.CompanyViewModel;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
-public class CompanyActivity extends AppCompatActivity {
+public class CompanyActivity extends FragmentActivity implements
+     CompanyGenericGraphFragment.OnFragmentInteractionListener {
 
     CompanyViewModel companyViewModel;
     FloatingActionButton fab;
     ActivityCompanyBinding binding;
-
+    CompanyGenericGraphFragment fragment;
+    ArrayList<String> ratios= new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +51,12 @@ public class CompanyActivity extends AppCompatActivity {
         companyViewModel.setCompany(company);
 
         ArrayList<Company> companies = (ArrayList<Company>) extras.getSerializable("PORTFOLIO");
-
+        fragment= (CompanyGenericGraphFragment) getFragmentManager().findFragmentById(R.id.fragment_generic_overtime);
+        ratios.add("returns");
+        ratios.add("performance");
+        ratios.add("health");
+        ratios.add("strength");
+        ratios.add("Safety");
 
         // Setup the toolbar
         String title = companyViewModel.getCompany().getValue().getIdentifiers().getName();
@@ -52,9 +65,9 @@ public class CompanyActivity extends AppCompatActivity {
 
         binding.toolbar.toolbar.setNavigationIcon(R.drawable.ic_close);
 
-        setSupportActionBar(binding.toolbar.toolbar);
+      /*  setSupportActionBar(binding.toolbar.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
 
 
         // Setup FAB
@@ -75,10 +88,10 @@ public class CompanyActivity extends AppCompatActivity {
         }
 
         companyChartSetup();
-        setupProgressPercentage();
+        visualizeGenericRatios();
     }
 
-    @Override
+
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
@@ -133,25 +146,26 @@ public class CompanyActivity extends AppCompatActivity {
         pieView.startAnimation(animation);
     }
 
-    private void setupProgressPercentage() {
+    private void visualizeGenericRatios() {
         companyViewModel.getCompany().observe(this, company -> {
-            binding.healthProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 15));
-            binding.healthProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 15)));
-
-            binding.performanceProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 25));
-            binding.performanceProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 25)));
-
-            binding.riskProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 5018531));
-            binding.riskProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 50)));
-
-            binding.strengthProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 75));
-            binding.strengthProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 75)));
-
-            binding.returnProgress.setProgress((int) (company.getRatio("Current Ratio", 2017) + 85));
-            binding.returnProgress.getProgressDrawable().setTint(getColorIndicator((int) (company.getRatio("Current Ratio", 2017) + 85)));
+            setupGenericChart(company);
         });
     }
+    public void setupGenericChart( Company company) {
+        RecyclerView mRecyclerView;
+        mRecyclerView = findViewById(R.id.ratios_list_view1);
+        mRecyclerView.setHasFixedSize(true);
+        LayoutManager mLayoutManager;
+        mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.Adapter mAdapter;
+        ArrayList<Company> companies = new ArrayList<>();
+        companies.add(company);
+        mAdapter = new HorizontalListViewAdapter(this,ratios,companies,fragment);
+        mRecyclerView.setAdapter(mAdapter);
 
+        fragment.drawGraph(company,ratios.get(0));
+    }
     private int getColorIndicator(int value) {
         if (value < 50) {
             return ContextCompat.getColor(this, R.color.bad);
@@ -162,4 +176,8 @@ public class CompanyActivity extends AppCompatActivity {
         return ContextCompat.getColor(this, R.color.average);
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

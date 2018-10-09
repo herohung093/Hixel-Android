@@ -1,9 +1,10 @@
 package com.hixel.hixel.view.ui;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,77 +23,61 @@ import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.FinancialData;
 import com.hixel.hixel.viewmodel.GraphInterface;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Random;
 
-public class GraphFragment extends Fragment implements GraphInterface {
+public class CompanyGenericGraphFragment extends Fragment implements GraphInterface {
 
     private CombinedChart mChart;
-    String[] years;
+    String[] years={"2017","2016","2015","2014","2013",};
     ArrayList<Integer> colors =new ArrayList<>();
     private OnFragmentInteractionListener mListener;
-    public GraphFragment() {
+
+
+    public CompanyGenericGraphFragment() {
         // Required empty public constructor
     }
-
-    // TODO: Rename and change types and number of parameters
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         colors.add(Color.rgb(255,218,185));
-        colors.add(Color.rgb(139,136,120));
-        colors.add(Color.rgb(208,32,144));
-        colors.add(Color.rgb(	193,205,193));
-        colors.add(Color.rgb(230,230,250));
-        colors.add(Color.rgb(	100,149,237));
-        colors.add(Color.rgb(	106,90,205));
-        colors.add(Color.rgb(0,255,127));
-        colors.add(Color.rgb(255,215,0));
-        colors.add(Color.rgb(	205,92,92));
-
     }
-
-
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_graph, container, false);
-        mChart =  view.findViewById(R.id.chart1);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_company_generic_graph, container, false);
+        mChart =  view.findViewById(R.id.chart11);
         return view;
     }
-    public LineDataSet lineChartDataSetup( String selectedRatio, Company company){
-        List <Entry> compEntry = new ArrayList<>();
-        List<FinancialData> financialData= company.getFinancialDataEntries();
-        checkYearNull(financialData);
 
-        createListOfYears(financialData);
+    public LineDataSet lineChartDataSetup( String selectedRatio, Company company){
+        List<Entry> compEntry = new ArrayList<>();
+        /*List<FinancialData> financialData= company.getFinancialDataEntries();
+        checkYearNull(financialData);
+*/
+        //createListOfYears(financialData);
+
         int j=4;
         for (int i=0;i<5;i++){
-            LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
+            //LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
             j--;
-            Entry compYearData = new Entry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
+            Random rand = new Random();
+            Entry compYearData = new Entry(i, Float.valueOf(rand.nextInt(5)+1));
             compEntry.add(compYearData);
         }
 
         return new LineDataSet(compEntry,company.getIdentifiers().getTicker());
     }
-
-
-    @Override
-    public void drawGraph(Company company, String selectedRatio) {
-
-    }
-
-    public void drawGraph(ArrayList<Company> companies,String selectedRatio){
+    public void drawGraph(Company company,String selectedRatio){
 
         LineData lineData = new LineData();
-       ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
-        for(int i=0;i<companies.size();i++){
-            LineDataSet setComp= lineChartDataSetup( selectedRatio, companies.get(i));
+        ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
+
+            LineDataSet setComp= lineChartDataSetup( selectedRatio, company);
+
             lineDataSets.add(setComp);
-        }
+
 
 
         setupDatasetStyle(lineDataSets);
@@ -112,6 +97,11 @@ public class GraphFragment extends Fragment implements GraphInterface {
         mChart.getDescription().setEnabled(false);
         mChart.setData(data);
         mChart.invalidate();
+
+    }
+
+    @Override
+    public void drawGraph(ArrayList<Company> companies, String selectedRatio) {
 
     }
 
@@ -179,7 +169,16 @@ public class GraphFragment extends Fragment implements GraphInterface {
             lineDataSets.get(i).setColor(colors.get(i));
         }
     }
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                + " must implement OnFragmentInteractionListener");
+        }
+    }
     public void setupLegend(Legend legend) {
 
         legend.setWordWrapEnabled(true);
@@ -202,24 +201,14 @@ public class GraphFragment extends Fragment implements GraphInterface {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
-    interface OnFragmentInteractionListener {
+    public interface OnFragmentInteractionListener {
+
         // TODO: Update argument type and name
-        // void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Uri uri);
     }
 }
