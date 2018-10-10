@@ -29,7 +29,7 @@ import java.util.Random;
 public class CompanyGenericGraphFragment extends Fragment implements GraphInterface {
 
     private CombinedChart mChart;
-    String[] years={"2017","2016","2015","2014","2013",};
+    String[] years={"2013","2014","2015","2016","2017",};
     ArrayList<Integer> colors =new ArrayList<>();
     private OnFragmentInteractionListener mListener;
 
