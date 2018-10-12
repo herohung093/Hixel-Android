@@ -30,17 +30,16 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout passwordText;
     Button loginButton;
     TextView signupLink, forgotPasswordLink;
-    int REQUEST_SIGNUP = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         emailText = (TextInputLayout) findViewById(R.id.emailWrapper);
-        passwordText= (TextInputLayout) findViewById(R.id.passwordWrapper);
-        loginButton= (Button) findViewById(R.id.btn_login);
+        passwordText = (TextInputLayout) findViewById(R.id.passwordWrapper);
+        loginButton = (Button) findViewById(R.id.btn_login);
         signupLink = (TextView) findViewById(R.id.link_signup);
-        forgotPasswordLink= findViewById(R.id.link_forgot_password);
+        forgotPasswordLink = findViewById(R.id.link_forgot_password);
         loginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,8 +62,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
-        Log.d(TAG, "Login");
-
         if (!validate()) {
             onLoginFailed("Invalid input");
             return;
@@ -82,8 +79,6 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailText.getEditText().getText().toString();
         String password = passwordText.getEditText().getText().toString();
 
-
-
         Call<Void> call = getClient()
                 .create(ServerInterface.class)
                 .login(new LoginData(email, password));
@@ -96,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                 switch (response.code()) {
                     case 200:
                         SharedPreferences preferences = MyApp.preferences();
-            Log.e("Successful OnResponse headers: ", response.headers().toString());
+
                         preferences.edit()
                                 .putString("AUTH_TOKEN", response.headers().get("Authorization"))
                                 .apply();

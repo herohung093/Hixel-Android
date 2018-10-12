@@ -6,6 +6,10 @@ public class ApplicationUser {
     private String email;
     private String password;
 
+    private Portfolio portfolio;
+
+    //Constructs a (partial) ApplicationUser to be sent to the server during registration
+    //All other usages of the object are fully populated and received from the server.
     public ApplicationUser(String firstName, String lastName,  String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,5 +47,13 @@ public class ApplicationUser {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
 }

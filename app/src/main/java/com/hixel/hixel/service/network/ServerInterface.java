@@ -27,6 +27,24 @@ public interface ServerInterface {
     @Headers("No-Authentication: true")
     Call<Void> signup(@Body ApplicationUser request);
 
+    @GET("/users/reset-email")
+    @Headers("No-Authentication: true")
+    Call<Void> resetEmail(@Query("email") String email);
+
+    @GET("/users/profile")
+    Call<ApplicationUser> userData();
+
+    @GET("/users/reset-code")
+    @Headers("No-Authentication: true")
+    Call<Void> resetCode(@Query("email") String email, @Query("code") String code);
+
+    @GET("/users/reset-password")
+    @Headers("No-Authentication: true")
+    Call<Void> resetPassword(@Query("email") String email, @Query("code") String code, @Query("password") String password);
+
+    @GET("/users/change-password")
+    Call<Void> changePassword(@Query("code") String oldPassword, @Query("password") String newPassword);
+
     @GET("/users/refresh")
     Call<Void> refreshAccessToken(@Header("Refresh") String Refresh);
 
@@ -36,6 +54,7 @@ public interface ServerInterface {
     @GET("/search")
     Single<List<SearchEntry>> doSearchQuery(@Query("query") String query);
 
+    //NOTE: Deprecated
     @GET("/meta/ratios")
     Call<ArrayList<String>> doMetaQuery();
 }

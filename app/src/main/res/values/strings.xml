@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Hixel</string>
+  <string name="app_name">CorpReport</string>
 
   <!-- Toolbar Titles-->
   <string name="dashboard">Dashboard</string>
@@ -26,7 +26,7 @@
   <string name="load_error_message">There was an error loading your portfolio</string>
   <!-- Forgot Password -->
   <string name="registered_email">Email ID</string>
-  <string name="hint_registered_email">Please enter your Registered Email ID below:</string>
+  <string name="hint_registered_email">Please enter your registered Email below:</string>
   <string name="back_to_login">Back</string>
   <string name="submit">Submit</string>
   <string name="update_password">Update Password</string>
@@ -55,12 +55,12 @@
   <string name="dashboard_companies">Companies from your Dashboard</string>
   <!--Login -->
   <string name="logo_description">Logo</string>
-  <string name="forgot_your_password">Forgot your password? Take it back</string>
+  <string name="forgot_your_password">Forgot your password?</string>
   <string name="login">Login</string>
-  <string name="no_account">No account yet? Create one</string>
+  <string name="no_account">Create Account</string>
 
   <!--Pin View -->
-  <string name="enter_pin">Please type the verification code sent to you</string>
+  <string name="enter_pin">Please enter your password reset pin:</string>
   <!--information popup window -->
 
   <string name="returns_explanatory">How much a company pays out in dividends each year relative to its share price. It measures how much \"bang for your buck\" you are getting from dividends.</string>

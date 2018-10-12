@@ -50,8 +50,8 @@ public class CompanyActivity extends FragmentActivity implements
         Company company = (Company) Objects.requireNonNull(extras).getSerializable("CURRENT_COMPANY");
         companyViewModel.setCompany(company);
 
-        ArrayList<Company> companies = (ArrayList<Company>) extras.getSerializable("PORTFOLIO");
-        fragment= (CompanyGenericGraphFragment) getFragmentManager().findFragmentById(R.id.fragment_generic_overtime);
+        ArrayList<Company> companies = (ArrayList<Company>) Objects.requireNonNull(extras).getSerializable("PORTFOLIO");
+        fragment = (CompanyGenericGraphFragment) getFragmentManager().findFragmentById(R.id.fragment_generic_overtime);
         ratios.add("returns");
         ratios.add("performance");
         ratios.add("health");
