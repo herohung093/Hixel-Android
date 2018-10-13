@@ -52,7 +52,7 @@ public class ComparisonViewModel extends ViewModel {
 
         Call<ArrayList<Company>> call = getClient()
             .create(ServerInterface.class)
-            .doGetCompanies(StringUtils.join(companies, ','), 1);
+            .doGetCompanies(StringUtils.join(companies, ','), 5);
 
         call.enqueue(new Callback<ArrayList<Company>>() {
             @Override

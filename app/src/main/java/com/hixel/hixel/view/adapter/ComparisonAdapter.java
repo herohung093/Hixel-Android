@@ -98,14 +98,21 @@ public class ComparisonAdapter extends RecyclerView.Adapter<ComparisonAdapter.Vi
         companies.add(position, company);
         notifyItemInserted(position);
     }
+    public Company getItem(int pos){
+        return this.getDataSet().get(pos);
+    }
 
     public void addItem(Company company) {
         this.companies.add(company);
         notifyDataSetChanged();
     }
     public void setCompanies(List<Company> companies){
-        this.companies=companies;
+        this.companies.addAll(companies);
+
         notifyDataSetChanged();
+    }
+    public List<Company> getDataSet(){
+        return companies;
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ConstraintLayout foreground;

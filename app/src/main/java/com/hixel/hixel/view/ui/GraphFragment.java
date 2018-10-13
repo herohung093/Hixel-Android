@@ -65,7 +65,7 @@ public class GraphFragment extends Fragment implements GraphInterface {
     public LineDataSet lineChartDataSetup( String selectedRatio, Company company){
         List <Entry> compEntry = new ArrayList<>();
         List<FinancialData> financialData= company.getFinancialDataEntries();
-        checkYearNull(financialData);
+        financialData=checkYearNull(financialData);
 
         createListOfYears(financialData);
         int j=4;
@@ -146,13 +146,14 @@ public class GraphFragment extends Fragment implements GraphInterface {
 
     };
 
-    private void checkYearNull(List<FinancialData> financial) {
+    private List<FinancialData>  checkYearNull(List<FinancialData> financial) {
         for (int i = 0; i < financial.size(); i++) {
             if (financial.get(i) == null) {
                 financial.get(i).setDefaultFinancialData(); //set all values equal to -0 for visualising purpose
                 financial.get(i).setYear(financial.get(i - 1).getYear() - 1);
             }
         }
+        return financial;
     }
 
     private void createListOfYears(List<FinancialData> financialDataCompA) {

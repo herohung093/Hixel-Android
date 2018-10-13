@@ -77,7 +77,7 @@
   <string name="strength_based_on">Interest coverage = earnings before interest and taxes (EBIT) / net interest expense</string>
   <string name="strength_Formula">Interest coverage = EBIT / net interest expense</string>
 
-  <string name="health_explanatory">Gauges a company\'s ability to pay short-term and long-term obligations. It\'s used to give an idea of a company's ability to pay back its liabilities (e.g. debt) with its assets.</string>
+  <string name="health_explanatory">Gauges a company\'s ability to pay short-term and long-term obligations. It\'s used to give an idea of a company\'s ability to pay back its liabilities (e.g. debt) with its assets.</string>
   <string name="health_based_on">Current ratio = Current Assets / Current Liabilities</string>
   <string name="health_Formula">Current ratio = AssetsCurrent / LiabilitiesCurrent</string>
 
