@@ -48,6 +48,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+/**
+ * DashboardActivity displays a list of companies in a users profile.
+ */
 public class DashboardActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
 
     @SuppressWarnings("unused")
@@ -96,6 +99,11 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         viewModel.getUser().observe(this, this::updateCompanies);
     }
 
+    /**
+     * Loads the companies via tickers provided by the User object
+     *
+     * @param user The current user
+     */
     public void updateCompanies(User user) {
         if (user != null) {
             List<String> tickers = user.getPortfolio().getCompanies();

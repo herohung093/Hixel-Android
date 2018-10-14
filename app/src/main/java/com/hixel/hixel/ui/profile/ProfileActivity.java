@@ -21,6 +21,10 @@ import com.hixel.hixel.ui.login.LoginActivity;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
+/**
+ * Activity displays the users profile information, and allows them to alter that
+ * information.
+ */
 public class ProfileActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
@@ -61,7 +65,10 @@ public class ProfileActivity extends AppCompatActivity {
         viewModel.getUser().observe(this, this::updateUI);
     }
 
-
+    /**
+     * Method takes in a User and sets up UI with the users information
+     * @param user The current user
+     */
     public void updateUI(User user) {
         if (user != null) {
 
@@ -121,6 +128,9 @@ public class ProfileActivity extends AppCompatActivity {
         binding.editPasswordButton.setOnClickListener(view -> setupChangePasswordPopup());
     }
 
+    /**
+     * Method logs user out of the application.
+     */
     public void setupLogout() {
         binding.logoutButton.setOnClickListener(view -> {
             Intent moveToLogin = new Intent(this, LoginActivity.class);
@@ -128,6 +138,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method sets up a dialog popup to allow the user to change their password.
+     */
     public void setupChangePasswordPopup() {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.change_password_popup);
@@ -143,6 +156,9 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Method updates the users password
+     */
     public void updatePassword() {
         if (isValidPassword()) {
             EditText newPassword = findViewById(R.id.retype_new_edit_text);
@@ -150,6 +166,10 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method validates the users password
+     * @return The boolean resulting from the validity of the password.
+     */
     // TODO: Better error handling and databinding.
     public boolean isValidPassword() {
         boolean isValid = false;
@@ -171,6 +191,10 @@ public class ProfileActivity extends AppCompatActivity {
         return isValid;
     }
 
+    /**
+     * Method displays a snackbar message to the UI
+     * @param message The message to display
+     */
     public void displaySnackbar(String message) {
         Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG);
     }
