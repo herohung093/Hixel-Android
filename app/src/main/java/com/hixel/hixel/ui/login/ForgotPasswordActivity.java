@@ -1,4 +1,4 @@
-package com.hixel.hixel.login;
+package com.hixel.hixel.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
-import com.hixel.hixel.ui.login.LoginActivity;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 

@@ -22,7 +22,6 @@ import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.models.LoginData;
 import com.hixel.hixel.databinding.ActivityLoginBinding;
-import com.hixel.hixel.login.ForgotPasswordActivity;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 import retrofit2.Call;

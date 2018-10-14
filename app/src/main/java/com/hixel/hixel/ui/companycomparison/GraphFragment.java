@@ -1,4 +1,4 @@
-package com.hixel.hixel.companycomparison;
+package com.hixel.hixel.ui.companycomparison;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -23,7 +23,6 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.entities.CompanyData;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class GraphFragment extends Fragment {

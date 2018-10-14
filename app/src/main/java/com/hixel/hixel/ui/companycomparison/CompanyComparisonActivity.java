@@ -1,4 +1,4 @@
-package com.hixel.hixel.companycomparison;
+package com.hixel.hixel.ui.companycomparison;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -26,7 +26,7 @@ import com.hixel.hixel.commonui.ComparisonAdapter;
 import com.hixel.hixel.commonui.ComparisonAdapter.ViewHolder;
 import com.hixel.hixel.commonui.SearchAdapter;
 import com.hixel.hixel.ui.dashboard.DashboardActivity;
-import com.hixel.hixel.profile.ProfileActivity;
+import com.hixel.hixel.ui.profile.ProfileActivity;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
 import java.io.Serializable;

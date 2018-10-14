@@ -1,4 +1,4 @@
-package com.hixel.hixel.companycomparison;
+package com.hixel.hixel.ui.companycomparison;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -14,10 +14,10 @@ import android.view.Gravity;
 import android.widget.ImageView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.commonui.HorizontalListViewAdapter;
-import com.hixel.hixel.companycomparison.GraphFragment.OnFragmentInteractionListener;
+import com.hixel.hixel.ui.companycomparison.GraphFragment.OnFragmentInteractionListener;
 import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.profile.ProfileActivity;
+import com.hixel.hixel.ui.profile.ProfileActivity;
 import java.util.ArrayList;
 
 public class GraphActivity extends FragmentActivity implements OnFragmentInteractionListener {

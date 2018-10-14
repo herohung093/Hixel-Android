@@ -25,13 +25,13 @@
     <activity android:name=".ui.companydetail.CompanyDetailActivity" />
 
     <activity
-      android:name=".companycomparison.CompanyComparisonActivity"
+      android:name=".ui.companycomparison.CompanyComparisonActivity"
       android:windowSoftInputMode="stateHidden">
     </activity>
 
     <!-- suppress AndroidDomInspection -->
     <!-- <activity android:name=".comparisonGraph.MainActivity"/> -->
-    <activity android:name=".companycomparison.GraphActivity"
+    <activity android:name=".ui.companycomparison.GraphActivity"
       android:windowSoftInputMode="adjustNothing" />
 
     <!-- suppress AndroidDomInspection -->
@@ -55,13 +55,13 @@
 
     <activity android:name=".ui.login.Onboarding" />
 
-    <activity android:name=".login.ForgotPasswordActivity"/>
+    <activity android:name=".ui.login.ForgotPasswordActivity"/>
 
-    <activity android:name=".profile.ProfileActivity" />
+    <activity android:name=".ui.profile.ProfileActivity" />
 
-    <activity android:name=".login.PinInputActivity" />
+    <activity android:name=".ui.login.PinInputActivity" />
 
-    <activity android:name=".login.UpdatePasswordActivity" />
+    <activity android:name=".ui.login.UpdatePasswordActivity" />
 
   </application>
 </manifest>

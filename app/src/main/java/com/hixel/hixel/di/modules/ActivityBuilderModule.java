@@ -1,10 +1,10 @@
 package com.hixel.hixel.di.modules;
 
-import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
+import com.hixel.hixel.ui.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.ui.login.LoginActivity;
-import com.hixel.hixel.profile.ProfileActivity;
+import com.hixel.hixel.ui.profile.ProfileActivity;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 

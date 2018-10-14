@@ -1,4 +1,4 @@
-package com.hixel.hixel.profile;
+package com.hixel.hixel.ui.profile;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;

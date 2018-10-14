@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.hixel.hixel.R;
-import com.hixel.hixel.companycomparison.GraphFragment;
+import com.hixel.hixel.ui.companycomparison.GraphFragment;
 import com.hixel.hixel.data.entities.Company;
 import java.util.ArrayList;
 
