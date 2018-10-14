@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -37,8 +35,6 @@ import com.hixel.hixel.data.models.MainBarChartRenderer;
 import com.hixel.hixel.data.models.MainBarDataSet;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.R;
-
-
 import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.commonui.DashboardAdapter;
 import com.hixel.hixel.commonui.SearchAdapter;
@@ -110,7 +106,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         }
     }
 
-    private void updateUI(@Nullable List<Company> companies) {
+    private void updateUI(List<Company> companies) {
         if (companies != null) {
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
@@ -240,17 +236,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         dashboardAdapter.addItem(company);
     }
 
-    //TODO: Move the following functions into a an ActivityWithSearch base class.
-    public void showSearchResults(List<SearchEntry> searchResults) {
-        SearchAdapter adapter = new SearchAdapter(this, searchResults);
-        searchAutoComplete.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
-        if (!searchResults.isEmpty()) {
-            searchAutoComplete.showDropDown();
-        }
-    }
-
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {
         return new DisposableObserver<List<SearchEntry>>() {
             @Override
@@ -264,6 +249,17 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             @Override
             public void onComplete() { }
         };
+    }
+
+    //TODO: Move the following functions into a an ActivityWithSearch base class.
+    public void showSearchResults(List<SearchEntry> searchResults) {
+        SearchAdapter adapter = new SearchAdapter(this, searchResults);
+        searchAutoComplete.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        if (!searchResults.isEmpty()) {
+            searchAutoComplete.showDropDown();
+        }
     }
 
     private void updateChart(List<Company> companies) {

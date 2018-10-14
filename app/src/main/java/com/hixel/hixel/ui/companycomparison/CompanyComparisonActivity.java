@@ -12,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Button;
@@ -30,10 +31,8 @@ import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.ui.profile.ProfileActivity;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 public class CompanyComparisonActivity extends AppCompatActivity {
@@ -46,26 +45,27 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     private CompanyComparisonViewModel viewModel;
 
     private ActivityComparisonBinding binding;
-    private ComparisonAdapter comparisonCompaniesAdapter;
-    private RecyclerView userCompaniesRecyclerView;
-    private RecyclerView comparisonCompaniesRecyclerView;
-    private Button compareButton;
 
-    RecyclerView dashboardCompanyRecycleView;
-    SearchView search;
-    SearchView.SearchAutoComplete searchAutoComplete;
+    private RecyclerView comparisonCompaniesRecyclerView;
+    private RecyclerView dashboardCompaniesRecyclerView;
+    private HorizontalCompanyListAdapter horizontalCompanyListAdapter;
+    private Button compareButton;
+    private SearchAutoComplete searchAutoComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_comparison);
 
-        userCompaniesRecyclerView = binding.dashboardCompRecyclerView;
         comparisonCompaniesRecyclerView = binding.comparisonRecyclerView;
+        dashboardCompaniesRecyclerView = binding.dashboardCompRecyclerView;
+
         compareButton = binding.compareButton;
 
         this.configureDagger();
         this.configureViewModel();
+
+        viewModel.setupSearch(getSearchObserver());
 
         setupComparisonAdapter();
         dragDownToAdd();
@@ -94,15 +94,17 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     }
 
     private void setupDashboardCompanyListAdapter(List<Company> companies) {
+        if (companies != null) {
+            HorizontalCompanyListAdapter horizontalCompanyListAdapter = new HorizontalCompanyListAdapter(companies);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
 
-        HorizontalCompanyListAdapter userCompaniesAdapter = new HorizontalCompanyListAdapter(companies);
-        userCompaniesRecyclerView.setAdapter(userCompaniesAdapter);
+            dashboardCompaniesRecyclerView.setAdapter(horizontalCompanyListAdapter);
+            dashboardCompaniesRecyclerView.setLayoutManager(layoutManager);
+            dashboardCompaniesRecyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
-        userCompaniesRecyclerView.setLayoutManager(layoutManager);
-        // userCompaniesRecyclerView.setHasFixedSize(true);
-
-        userCompaniesAdapter.addItems(companies);
+            horizontalCompanyListAdapter.setCompanies(companies);
+            horizontalCompanyListAdapter.notifyDataSetChanged();
+        }
     }
 
     public void setupBottomNavigationView() {
@@ -124,7 +126,8 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     }
 
     private void setupComparisonAdapter() {
-        comparisonCompaniesAdapter = new ComparisonAdapter(this, new ArrayList<>());
+        ComparisonAdapter comparisonCompaniesAdapter = new ComparisonAdapter(this,
+                new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         comparisonCompaniesRecyclerView.setLayoutManager(layoutManager);
@@ -186,63 +189,20 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
         // attaching the touch helper to recycler view
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
-        mItemTouchHelper.attachToRecyclerView(dashboardCompanyRecycleView);
+        mItemTouchHelper.attachToRecyclerView(dashboardCompaniesRecyclerView);
     }
 
     private void setupButtons() {
         compareButton.setOnClickListener((View view) -> {
             Intent moveToGraph = new Intent(this, GraphActivity.class);
-            ArrayList<Company> companies = viewModel.getCompanies().getValue();
-            List<Company> deDupStringList3 = companies.stream().distinct().collect(Collectors.toList());
+            // ArrayList<Company> companies = viewModel.getCompanies().getValue();
+            // List<Company> deDupStringList3 = companies.stream().distinct().collect(Collectors.toList());
 
             // TODO: Some if-statement to make this show only if the user has not selected two companies
             Toast.makeText(getApplicationContext(), "Select at least 2 companies!", Toast.LENGTH_LONG).show();
 
-            moveToGraph.putExtra("COMPARISON_COMPANIES", (Serializable) deDupStringList3);
+            // moveToGraph.putExtra("COMPARISON_COMPANIES", (Serializable) deDupStringList3);
             startActivity(moveToGraph);
-        });
-    }
-
-
-    private void setupSearchView() {
-        search = binding.searchView;
-
-        search.setQueryHint("Add companies...");
-        search.setFocusable(true);
-        search.requestFocus();
-        search.requestFocusFromTouch();
-        search.setIconified(false);
-
-        searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-
-        // Styling the search bar
-        searchAutoComplete.setHintTextColor(Color.GRAY);
-        searchAutoComplete.setTextColor(Color.GRAY);
-
-        searchAutoComplete.setOnItemClickListener((adapterView, view, i, l) -> {
-            SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(i);
-            String ticker = entry.getTicker();
-            searchAutoComplete.setText("");
-
-            ArrayList<Company> companies = viewModel.getCompanies().getValue();
-            int size = (companies == null) ? 0 : companies.size();
-
-            if (size < 10) {
-                // viewModel.addToCompare(ticker);
-            }
-        });
-
-        this.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                viewModel.loadSearchResults(newText);
-                return false;
-            }
         });
     }
 
@@ -266,7 +226,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // Row is swiped from recycler view remove it from adapter
-                comparisonCompaniesAdapter.removeItem(viewHolder.getAdapterPosition());
+                // comparisonCompaniesAdapter.removeItem(viewHolder.getAdapterPosition());
             }
             @Override
              public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
@@ -292,14 +252,46 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         mItemTouchHelper.attachToRecyclerView(comparisonCompaniesRecyclerView);
     }
 
-    public void showSearchResults(List<SearchEntry> searchResults) {
-        SearchAdapter adapter = new SearchAdapter(this, searchResults);
-        searchAutoComplete.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+    private void setupSearchView() {
+        SearchView search = binding.searchView;
 
-        if (!searchResults.isEmpty()) {
-            searchAutoComplete.showDropDown();
-        }
+        search.setQueryHint("Add companies...");
+        search.setFocusable(true);
+        search.requestFocus();
+        search.requestFocusFromTouch();
+        search.setIconified(false);
+
+        searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+
+        // Styling the search bar
+        searchAutoComplete.setHintTextColor(Color.GRAY);
+        searchAutoComplete.setTextColor(Color.GRAY);
+
+        searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
+            SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(itemIndex);
+            String ticker = entry.getTicker();
+            // searchAutoComplete.setText("");
+
+            // ArrayList<Company> companies = viewModel.getCompanies().getValue();
+            // int size = (companies == null) ? 0 : companies.size();
+
+            // if (size < 10) {
+            // viewModel.addToCompare(ticker);
+            //}
+        });
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                viewModel.loadSearchResults(newText);
+                return false;
+            }
+        });
     }
 
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {
@@ -315,5 +307,15 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             @Override
             public void onComplete() { }
         };
+    }
+
+    public void showSearchResults(List<SearchEntry> searchResults) {
+        SearchAdapter adapter = new SearchAdapter(this, searchResults);
+        searchAutoComplete.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        if (!searchResults.isEmpty()) {
+            searchAutoComplete.showDropDown();
+        }
     }
 }

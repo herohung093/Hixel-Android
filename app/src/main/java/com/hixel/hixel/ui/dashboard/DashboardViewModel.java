@@ -49,20 +49,20 @@ public class DashboardViewModel extends ViewModel {
         user = userRepository.getUser();
     }
 
-    public LiveData<User> getUser() {
-        return user;
-    }
-
-    public LiveData<List<Company>> getCompanies() {
-        return this.companies;
-    }
-
     void loadCompanies(List<String> tickers) {
         if (this.companies != null) {
             return;
         }
 
         companies = companyRepository.getCompanies(tickers);
+    }
+
+    public LiveData<User> getUser() {
+        return user;
+    }
+
+    public LiveData<List<Company>> getCompanies() {
+        return this.companies;
     }
 
     void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
