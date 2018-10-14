@@ -17,7 +17,7 @@ public class CompanyDetailViewModel extends ViewModel {
         this.companyRepository = companyRepository;
     }
 
-    public void loadCompany(String ticker) {
+    void loadCompany(String ticker) {
         company = companyRepository.getCompany(ticker);
     }
 
@@ -25,11 +25,11 @@ public class CompanyDetailViewModel extends ViewModel {
         return this.company;
     }
 
-    public void saveCompany() {
+    void saveCompany() {
         companyRepository.saveCompany(company.getValue());
     }
 
-    public boolean companyIsInPortfolio() {
+    boolean companyIsInPortfolio() {
         return true;
     }
 }

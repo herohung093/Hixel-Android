@@ -2,11 +2,12 @@ package com.hixel.hixel.data;
 
 
 
+import android.arch.lifecycle.LiveData;
 import android.databinding.ObservableBoolean;
-import android.util.Log;
+import android.support.annotation.NonNull;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.database.UserDao;
-import com.hixel.hixel.data.models.LoginData;
+import com.hixel.hixel.data.entities.User;
 import java.util.concurrent.Executor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -34,6 +35,29 @@ public class UserRepository {
         this.serverInterface = serverInterface;
         this.userDao = userDao;
         this.executor = executor;
+    }
+
+    public LiveData<User> getUser() {
+        saveUser();
+
+        return userDao.getUser();
+    }
+
+    private void saveUser() {
+        serverInterface.userData().enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                executor.execute(() -> {
+                    User user = response.body();
+                    userDao.saveUser(user);
+                });
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 
 }

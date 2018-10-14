@@ -8,7 +8,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +28,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-    private ProfileViewModel viewModel;
     private ActivityProfileBinding binding;
 
     // TODO: Get data from db.
@@ -57,24 +55,23 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void configureViewModel() {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel.class);
+        ProfileViewModel viewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(ProfileViewModel.class);
         viewModel.init();
-        viewModel.getUser().observe(this, this::updateUI);
+        // viewModel.getUser().observe(this, this::updateUI);
     }
 
 
     public void updateUI(User user) {
         if (user != null) {
-            Log.d(TAG, "updateUI: HIT!");
-            String userHeader = String.format("Hi, %s!", user.getFirstName());
 
             binding.confirmEditNameButton.setVisibility(View.INVISIBLE);
             binding.confirmEditEmailButton.setVisibility(View.INVISIBLE);
 
-            binding.fullName.setText(userHeader);
-            binding.name.setText(user.getFirstName());
-            binding.email.setText(user.getEmail());
-            binding.password.setText(user.getPassword());
+            binding.fullName.setText(fullName);
+            binding.name.setText(fullName);
+            binding.email.setText(email);
+            binding.password.setText(password);
 
             binding.name.setFocusable(false);
             binding.email.setFocusable(false);
@@ -106,9 +103,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             binding.confirmEditNameButton.setVisibility(View.VISIBLE);
 
-            binding.confirmEditNameButton.setOnClickListener(view2 -> {
-                fullName = binding.name.getText().toString();
-            });
+            binding.confirmEditNameButton.setOnClickListener(view2 -> fullName = binding.name.getText().toString());
         });
 
         binding.editEmailButton.setOnClickListener(view -> {
@@ -116,9 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             binding.confirmEditEmailButton.setVisibility(View.VISIBLE);
 
-            binding.confirmEditEmailButton.setOnClickListener(view2 -> {
-                email = binding.email.getText().toString();
-            });
+            binding.confirmEditEmailButton.setOnClickListener(view2 -> email = binding.email.getText().toString());
         });
 
         binding.editPasswordButton.setOnClickListener(view -> setupChangePasswordPopup());
