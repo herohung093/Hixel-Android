@@ -1,6 +1,7 @@
 package com.hixel.hixel.ui.login;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.widget.Toast;
 import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.entities.User;
 import javax.inject.Inject;
@@ -53,5 +54,9 @@ public class LoginViewModel extends ViewModel {
 
     boolean isValidName(String name) {
         return name.isEmpty();
+    }
+
+    boolean validatePasswordUpdate(String firstPassword, String reenteredPassword) {
+        return firstPassword.compareTo(reenteredPassword) != 0;
     }
 }

@@ -5,9 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.databinding.ActivityUpdatePasswordBinding;
@@ -22,20 +20,16 @@ public class UpdatePasswordActivity extends AppCompatActivity {
 
     ActivityUpdatePasswordBinding binding;
 
-    TextInputLayout newPassTV, confirmPassTV;
-    Button changePassButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_update_password);
 
-        changePassButton= findViewById(R.id.changePassButton);
-        newPassTV= findViewById(R.id.forgotView_PassWrapper);
-        confirmPassTV= findViewById(R.id.forgotView_ConfirmPassWrapper);
+        String first = binding.forgotViewPassWrapper.getEditText().getText().toString();
+        String second = binding.forgotViewConfirmPassWrapper.getEditText().getText().toString();
 
-        changePassButton.setOnClickListener(event->{
-            if (validate()) {
+        binding.changePassButton.setOnClickListener(event->{
+            if (validate(first, second)) {
                 Toast.makeText(getBaseContext(), "Your password has been updated",
                     Toast.LENGTH_LONG + 1).show();
                 Intent moveToLogin = new Intent(getApplicationContext(), LoginActivity.class);
@@ -53,17 +47,17 @@ public class UpdatePasswordActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
     }
 
-    public boolean validate() {
+    public boolean validate(String first, String second) {
         boolean valid = true;
 
-        if (newPassTV.getEditText().getText().toString().compareTo(confirmPassTV.getEditText().getText().toString())!=0){
-            valid=false;
+        if (viewModel.validatePasswordUpdate(first, second)){
+            valid = false;
             Toast.makeText(getBaseContext(), "Your passwords do not match", Toast.LENGTH_LONG).show();
         }
 
-        if (newPassTV.getEditText().getText().toString().length()<4){
-            valid=false;
-            newPassTV.setError("Must contain at least 4 characters");
+        if (viewModel.isValidPassword(first)){
+            valid = false;
+            binding.forgotViewPassWrapper.setError("Must contain at least 4 characters");
         }
 
         return valid;
