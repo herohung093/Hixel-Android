@@ -6,21 +6,28 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableBoolean;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Button;
 import android.widget.Toast;
+import com.hixel.hixel.App;
 import com.hixel.hixel.R;
 import com.hixel.hixel.dashboard.DashboardActivity;
+import com.hixel.hixel.data.api.Client;
+import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.data.models.LoginData;
 import com.hixel.hixel.databinding.ActivityLoginBinding;
 import com.hixel.hixel.login.ForgotPasswordActivity;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -62,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
     private void configureViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         viewModel.init();
-
         setupUI();
     }
 
@@ -87,7 +93,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
-
         if (!validate()) {
             onLoginFailed("Invalid input");
             return;
@@ -95,23 +100,54 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton.setEnabled(false);
 
-        // final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        // progressDialog.getWindow().setGravity(Gravity.CENTER);
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.getWindow().setGravity(Gravity.CENTER);
 
-        // progressDialog.setIndeterminate(true);
-        // progressDialog.setMessage("Authenticating...");
-        // progressDialog.show();
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.show();
 
+        String email = emailText.getEditText().getText().toString();
+        String password = passwordText.getEditText().getText().toString();
 
-        String email = emailText.getEditText().getText().toString().trim();
-        String password = passwordText.getEditText().getText().toString().trim();
-        viewModel.verifyUser(email, password);
+        Call<Void> call = Client.getClient()
+                .create(ServerInterface.class)
+                .login(new LoginData(email, password));
 
-        if (viewModel.getIsValidUser()) {
-            onLoginSuccess();
-        } else {
-            onLoginFailed("TODO");
-        }
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call,
+                    @NonNull Response<Void> response) {
+                progressDialog.dismiss();
+                switch (response.code()) {
+                    case 200:
+                        SharedPreferences preferences = App.preferences();
+
+                        preferences.edit()
+                                .putString("AUTH_TOKEN", response.headers().get("Authorization"))
+                                .apply();
+
+                        preferences.edit()
+                                .putString("REFRESH_TOKEN", response.headers().get("Refresh"))
+                                .apply();
+
+                        onLoginSuccess();
+                        break;
+                    case 401:
+                        onLoginFailed("Wrong username or password");
+                        break;
+                    default:
+                        onLoginFailed("Unknown error");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                progressDialog.dismiss();
+                onLoginFailed("Couldn't connect to server!");
+            }
+        });
     }
 
     @Override
