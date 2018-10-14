@@ -1,47 +1,58 @@
 package com.hixel.hixel.ui.login;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.models.ApplicationUser;
+import com.hixel.hixel.databinding.ActivitySignupBinding;
+import dagger.android.AndroidInjection;
+import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity {
 
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private LoginViewModel viewModel;
+
+    ActivitySignupBinding binding;
+
     TextInputLayout emailText,passwordText,firstNameText,lasNameText;
-    TextView loginText;
     Button signupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
-
-        emailText = findViewById(R.id.signup_EmailWrapper);
-        passwordText=findViewById(R.id.signup_PassWrapper);
-        firstNameText= findViewById(R.id.firstNameWrapper);
-        lasNameText= findViewById(R.id.lastnameWrapper);
-        loginText = findViewById(R.id.link_login);
-        signupButton = findViewById(R.id.btn_signup);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
 
         signupButton.setOnClickListener(view -> signup());
 
-        loginText.setOnClickListener(view -> {
+        binding.linkLogin.setOnClickListener(view -> {
             Intent moveToLogin= new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(moveToLogin);
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });
+    }
+
+    private void configureDagger() {
+        AndroidInjection.inject(this);
+    }
+
+    private void configureViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
     }
 
     private void signup() {
@@ -56,10 +67,10 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String firstName = firstNameText.getEditText().getText().toString().trim();
-        String lastName = lasNameText.getEditText().getText().toString().trim();
-        String email = emailText.getEditText().getText().toString().trim();
-        String password = passwordText.getEditText().getText().toString().trim();
+        String firstName = binding.firstNameWrapper.getEditText().getText().toString().trim();
+        String lastName = binding.lastnameWrapper.getEditText().getText().toString().trim();
+        String email = binding.signupEmailWrapper.getEditText().getText().toString().trim();
+        String password = binding.signupPassWrapper.getEditText().getText().toString().trim();
 
         Call<Void> call = Client.getClient()
                 .create(ServerInterface.class)
@@ -111,32 +122,19 @@ public class SignupActivity extends AppCompatActivity {
         String email = emailText.getEditText().getText().toString();
         String password = passwordText.getEditText().toString();
 
-        if (firstName.isEmpty()) {
+        if (!viewModel.isValidName(firstName) && !viewModel.isValidName(lastName)) {
             firstNameText.setError("Name can't be empty!");
             valid = false;
-        } else {
-            firstNameText.setError(null);
         }
 
-        if (lastName.isEmpty()) {
-            lasNameText.setError("Name can't be empty!");
-            valid = false;
-        } else {
-            lasNameText.setError(null);
-        }
-
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (viewModel.isValidEmail(email)) {
             emailText.setError("Invalid email address");
             valid = false;
-        } else {
-            emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 ) {
+        if (viewModel.isValidPassword(password)) {
             passwordText.setError("Must contain at least 4 characters");
             valid = false;
-        } else {
-            passwordText.setError(null);
         }
 
         return valid;

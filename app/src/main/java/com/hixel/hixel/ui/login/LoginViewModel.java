@@ -50,4 +50,8 @@ public class LoginViewModel extends ViewModel {
 
         return isValid;
     }
+
+    boolean isValidName(String name) {
+        return name.isEmpty();
+    }
 }
