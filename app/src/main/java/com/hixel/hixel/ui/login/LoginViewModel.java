@@ -5,6 +5,10 @@ import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.entities.User;
 import javax.inject.Inject;
 
+/**
+ *  ViewModel for Login related activities, manages saving User to the db and validating
+ *  user information.
+ */
 public class LoginViewModel extends ViewModel {
 
     private LiveData<User> user;

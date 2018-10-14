@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
-import com.hixel.hixel.ui.login.LoginActivity;
 
 public class UpdatePasswordActivity extends AppCompatActivity {
     TextInputLayout newPassTV, confirmPassTV;

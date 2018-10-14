@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.api.ServerInterface;
-import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.data.models.ApplicationUser;
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -9,11 +9,13 @@ import android.support.v4.content.ContextCompat;
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity;
 import com.codemybrainsout.onboarder.AhoyOnboarderCard;
 import com.hixel.hixel.R;
-
-import com.hixel.hixel.ui.login.SignupActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Onboarding Activity extends AhoyOnboarderActivity
+ * Displays UI for the Onboarding.
+ */
 public class Onboarding extends AhoyOnboarderActivity {
 
     static String COMPLETED_ONBOARDING_PREF_NAME = "onboarding_initiated";
@@ -59,6 +61,11 @@ public class Onboarding extends AhoyOnboarderActivity {
         startActivity(moveToSignup);
     }
 
+    /**
+     * Method constructs a list of onboarding cards.
+     *
+     * @return A list of Onboarding cards
+     */
     public List<AhoyOnboarderCard> getOnBoardingCards() {
 
         List<AhoyOnboarderCard> cards = new ArrayList<>();
