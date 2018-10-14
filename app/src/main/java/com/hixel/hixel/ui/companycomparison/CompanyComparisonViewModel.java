@@ -2,6 +2,7 @@ package com.hixel.hixel.ui.companycomparison;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.UserRepository;
@@ -17,9 +18,13 @@ import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CompanyComparisonViewModel extends ViewModel {
 
@@ -34,6 +39,8 @@ public class CompanyComparisonViewModel extends ViewModel {
 
     private PublishSubject<String> publishSubject = PublishSubject.create();
     private CompositeDisposable disposable = new CompositeDisposable();
+
+    private ArrayList<Company> comparisonCompanies = new ArrayList<>();
 
     @Inject
     CompanyComparisonViewModel(CompanyRepository companyRepository, UserRepository userRepository) {
@@ -61,12 +68,15 @@ public class CompanyComparisonViewModel extends ViewModel {
         return user;
     }
 
-    public LiveData<List<Company>> getDashboardCompanies() {
+    LiveData<List<Company>> getDashboardCompanies() {
         return dashboardCompanies;
     }
 
+    public ArrayList<Company> getComparisonCompanies() {
+        return comparisonCompanies;
+    }
 
-    public void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
+    void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
         Log.d(TAG, "setupSearch: HERE");
         disposable.add(publishSubject
                 .debounce(300, TimeUnit.MILLISECONDS)
@@ -80,9 +90,25 @@ public class CompanyComparisonViewModel extends ViewModel {
                 .subscribeWith(observer));
     }
 
-    public void loadSearchResults(String query) {
+    void loadSearchResults(String query) {
         Log.d(TAG, "loadSearchResults: " + query);
         publishSubject.onNext(query);
+    }
+
+    void addToComparisonCompanies(String ticker) {
+        Client.getClient().create(ServerInterface.class)
+                .doGetCompanies(ticker, 5)
+                .enqueue(new Callback<ArrayList<Company>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ArrayList<Company>> call,
+                            @NonNull Response<ArrayList<Company>> response) {
+                        ArrayList<Company> temp = response.body();
+                        comparisonCompanies.addAll(temp);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) { }
+                });
     }
 }
 

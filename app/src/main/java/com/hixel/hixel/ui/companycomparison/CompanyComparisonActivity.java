@@ -48,6 +48,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
     private RecyclerView comparisonCompaniesRecyclerView;
     private RecyclerView dashboardCompaniesRecyclerView;
+    private ComparisonAdapter comparisonCompaniesAdapter;
     private HorizontalCompanyListAdapter horizontalCompanyListAdapter;
     private Button compareButton;
     private SearchAutoComplete searchAutoComplete;
@@ -107,6 +108,22 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         }
     }
 
+    private void updateComparisonCompanies() {
+        comparisonCompaniesAdapter.setCompanies(viewModel.getComparisonCompanies());
+    }
+
+    private void setupComparisonAdapter() {
+        comparisonCompaniesAdapter = new ComparisonAdapter(this, new ArrayList<>());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        comparisonCompaniesRecyclerView.setLayoutManager(layoutManager);
+        comparisonCompaniesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        comparisonCompaniesRecyclerView.setAdapter(comparisonCompaniesAdapter);
+
+        // setup swiping left or right to delete item
+        setUpItemTouchHelper();
+    }
+
     public void setupBottomNavigationView() {
         binding.bottomNavigation.bottomNavigation.setSelectedItemId(R.id.compare_button);
         binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
@@ -123,19 +140,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
             return true;
         });
-    }
-
-    private void setupComparisonAdapter() {
-        ComparisonAdapter comparisonCompaniesAdapter = new ComparisonAdapter(this,
-                new ArrayList<>());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
-        comparisonCompaniesRecyclerView.setLayoutManager(layoutManager);
-        comparisonCompaniesRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        comparisonCompaniesRecyclerView.setAdapter(comparisonCompaniesAdapter);
-
-        // setup swiping left or right to delete item
-        setUpItemTouchHelper();
     }
 
     private void dragDownToAdd(){
@@ -270,14 +274,10 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
             SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
-            // searchAutoComplete.setText("");
+            searchAutoComplete.setText("");
 
-            // ArrayList<Company> companies = viewModel.getCompanies().getValue();
-            // int size = (companies == null) ? 0 : companies.size();
-
-            // if (size < 10) {
-            // viewModel.addToCompare(ticker);
-            //}
+            viewModel.addToComparisonCompanies(ticker);
+            updateComparisonCompanies();
         });
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
