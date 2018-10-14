@@ -74,7 +74,6 @@ public class LoginActivity extends AppCompatActivity {
     private void configureViewModel() {
         LoginViewModel viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(LoginViewModel.class);
-        viewModel.init();
         setupUI();
     }
 

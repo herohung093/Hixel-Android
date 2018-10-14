@@ -7,19 +7,22 @@ import javax.inject.Inject;
 
 public class LoginViewModel extends ViewModel {
 
-    private static final String TAG = LoginViewModel.class.getSimpleName();
-
     private LiveData<User> user;
     private UserRepository repository;
 
-
+    /**
+     * Instantiates the LoginViewModel and injects the UserRepository
+     *
+     * @param repository The UserRepository
+     */
     @Inject
     LoginViewModel(UserRepository repository) {
         this.repository = repository;
     }
 
-    void init() { }
-
+    /**
+     * Method saves the User to the db via the UserRepository
+     */
     void saveUser() {
         repository.saveUser();
     }
