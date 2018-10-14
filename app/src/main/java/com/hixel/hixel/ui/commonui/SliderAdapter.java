@@ -1,4 +1,4 @@
-package com.hixel.hixel.commonui;
+package com.hixel.hixel.ui.commonui;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 

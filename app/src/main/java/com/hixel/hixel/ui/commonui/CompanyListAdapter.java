@@ -1,4 +1,4 @@
-package com.hixel.hixel.commonui;
+package com.hixel.hixel.ui.commonui;
 
 import android.content.Context;
 import android.content.Intent;

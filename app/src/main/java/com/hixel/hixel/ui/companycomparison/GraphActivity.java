@@ -13,7 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.widget.ImageView;
 import com.hixel.hixel.R;
-import com.hixel.hixel.commonui.HorizontalListViewAdapter;
+import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
 import com.hixel.hixel.ui.companycomparison.GraphFragment.OnFragmentInteractionListener;
 import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.data.entities.Company;

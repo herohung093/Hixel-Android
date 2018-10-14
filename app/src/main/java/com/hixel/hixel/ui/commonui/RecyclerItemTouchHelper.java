@@ -1,10 +1,10 @@
-package com.hixel.hixel.commonui;
+package com.hixel.hixel.ui.commonui;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import com.hixel.hixel.commonui.CompanyListAdapter.ViewHolder;
+import com.hixel.hixel.ui.commonui.CompanyListAdapter.ViewHolder;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
