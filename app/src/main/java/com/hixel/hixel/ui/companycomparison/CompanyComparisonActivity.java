@@ -18,14 +18,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
+import com.hixel.hixel.commonui.DashboardAdapter;
+import com.hixel.hixel.commonui.DashboardAdapter.ViewHolder;
 import com.hixel.hixel.commonui.HorizontalCompanyListAdapter;
 import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.databinding.ActivityComparisonBinding;
 import com.hixel.hixel.data.models.SearchEntry;
-import com.hixel.hixel.commonui.ComparisonAdapter;
-import com.hixel.hixel.commonui.ComparisonAdapter.ViewHolder;
 import com.hixel.hixel.commonui.SearchAdapter;
 import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.ui.profile.ProfileActivity;
@@ -48,7 +48,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
     private RecyclerView comparisonCompaniesRecyclerView;
     private RecyclerView dashboardCompaniesRecyclerView;
-    private ComparisonAdapter comparisonCompaniesAdapter;
+    private DashboardAdapter comparisonCompaniesAdapter;
     private HorizontalCompanyListAdapter horizontalCompanyListAdapter;
     private Button compareButton;
     private SearchAutoComplete searchAutoComplete;
@@ -68,11 +68,11 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
         viewModel.setupSearch(getSearchObserver());
 
-        setupComparisonAdapter();
         dragDownToAdd();
         setupButtons();
         setupSearchView();
         setupBottomNavigationView();
+        setupComparisonAdapter();
     }
 
     private void configureDagger() {
@@ -83,6 +83,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CompanyComparisonViewModel.class);
         viewModel.init();
         viewModel.getUser().observe(this, this::updateDashboardCompanies);
+        viewModel.getComparisonCompanies().observe(this, this::updateComparisonCompanies);
     }
 
     public void updateDashboardCompanies(User user) {
@@ -91,6 +92,12 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
             viewModel.loadDashboardCompanies(tickers);
             viewModel.getDashboardCompanies().observe(this, this::setupDashboardCompanyListAdapter);
+        }
+    }
+
+    public void updateComparisonCompanies(List<Company> companies) {
+        if (companies != null && companies.get(0) != null) {
+            comparisonCompaniesAdapter.addCompanies(companies);
         }
     }
 
@@ -108,12 +115,8 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         }
     }
 
-    private void updateComparisonCompanies() {
-        comparisonCompaniesAdapter.setCompanies(viewModel.getComparisonCompanies());
-    }
-
     private void setupComparisonAdapter() {
-        comparisonCompaniesAdapter = new ComparisonAdapter(this, new ArrayList<>());
+        comparisonCompaniesAdapter = new DashboardAdapter(this, new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         comparisonCompaniesRecyclerView.setLayoutManager(layoutManager);
@@ -165,7 +168,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
                     // TODO: Restore functionality
                     // Row is swiped from recycler view remove it from adapter
                     // final Company temp = (viewModel.getPortfolio().getValue().get(viewHolder.getAdapterPosition()));
-
                     // selectedCompany.add(temp);
                     // userCompaniesAdapter.removeItem(viewHolder.getAdapterPosition());
                     // comparisonCompaniesAdapter.addItem(temp);
@@ -222,7 +224,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             @Override
             public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
                 if(viewHolder != null) {
-                    final View foreground = ((ComparisonAdapter.ViewHolder) viewHolder).foreground;
+                    final View foreground = ((DashboardAdapter.ViewHolder) viewHolder).getForeground();
                     getDefaultUIUtil().onSelected(foreground);
                 }
             }
@@ -234,14 +236,14 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             }
             @Override
              public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                final View foreground = ((ViewHolder) viewHolder).foreground;
+                final View foreground = ((ViewHolder) viewHolder).getForeground();
                 getDefaultUIUtil().clearView(foreground);
             }
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView,
                 RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                final View foreground = ((ViewHolder) viewHolder).foreground;
+                final View foreground = ((ViewHolder) viewHolder).getForeground();
                 getDefaultUIUtil().onDraw(c, recyclerView, foreground, dX, dY, actionState, isCurrentlyActive);
             }
 
@@ -277,7 +279,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             searchAutoComplete.setText("");
 
             viewModel.addToComparisonCompanies(ticker);
-            updateComparisonCompanies();
         });
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -91,12 +92,26 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         notifyItemInserted(getItemCount());
     }
 
+    public void addCompanies(List<Company> companies) {
+        this.companies.addAll(companies);
+    }
+
+    public void setCompanies(List<Company> companies){
+        this.companies = companies;
+        notifyDataSetChanged();
+    }
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final RowBinding binding;
 
         ViewHolder(final RowBinding itemBinding) {
             super(itemBinding.getRoot());
             this.binding = itemBinding;
+        }
+
+        public ConstraintLayout getForeground() {
+            return binding.foreground;
         }
     }
 }

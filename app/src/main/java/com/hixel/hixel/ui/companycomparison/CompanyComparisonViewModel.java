@@ -1,6 +1,7 @@
 package com.hixel.hixel.ui.companycomparison;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -40,7 +41,7 @@ public class CompanyComparisonViewModel extends ViewModel {
     private PublishSubject<String> publishSubject = PublishSubject.create();
     private CompositeDisposable disposable = new CompositeDisposable();
 
-    private ArrayList<Company> comparisonCompanies = new ArrayList<>();
+    private MutableLiveData<List<Company>> comparisonCompanies = new MutableLiveData<>();
 
     @Inject
     CompanyComparisonViewModel(CompanyRepository companyRepository, UserRepository userRepository) {
@@ -72,7 +73,7 @@ public class CompanyComparisonViewModel extends ViewModel {
         return dashboardCompanies;
     }
 
-    public ArrayList<Company> getComparisonCompanies() {
+    LiveData<List<Company>> getComparisonCompanies() {
         return comparisonCompanies;
     }
 
@@ -97,13 +98,13 @@ public class CompanyComparisonViewModel extends ViewModel {
 
     void addToComparisonCompanies(String ticker) {
         Client.getClient().create(ServerInterface.class)
-                .doGetCompanies(ticker, 5)
+                .doGetCompanies(ticker, 1)
                 .enqueue(new Callback<ArrayList<Company>>() {
                     @Override
                     public void onResponse(@NonNull Call<ArrayList<Company>> call,
                             @NonNull Response<ArrayList<Company>> response) {
-                        ArrayList<Company> temp = response.body();
-                        comparisonCompanies.addAll(temp);
+                        List<Company> temp = response.body();
+                        comparisonCompanies.setValue(temp);
                     }
 
                     @Override

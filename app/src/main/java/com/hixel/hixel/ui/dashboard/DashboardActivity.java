@@ -31,8 +31,8 @@ import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.ui.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.models.MainBarChartRenderer;
-import com.hixel.hixel.data.models.MainBarDataSet;
+import com.hixel.hixel.data.models.charts.MainBarChartRenderer;
+import com.hixel.hixel.data.models.charts.MainBarDataSet;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.models.SearchEntry;
@@ -94,7 +94,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
         viewModel.init();
         viewModel.getUser().observe(this, this::updateCompanies);
-
     }
 
     public void updateCompanies(User user) {
