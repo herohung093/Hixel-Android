@@ -19,6 +19,8 @@ public class CompanyDetailViewModel extends ViewModel {
     private MutableLiveData<Company> company;
     private LiveData<User> user;
 
+    private boolean isInPortfolio;
+
     @Inject
     CompanyDetailViewModel(CompanyRepository companyRepository, UserRepository userRepository) {
         this.companyRepository = companyRepository;
@@ -47,8 +49,20 @@ public class CompanyDetailViewModel extends ViewModel {
         return this.company;
     }
 
-    void saveCompany(Company savedCompany) {
+    void saveCompany(Company savedCompany, User updatedUser) {
+        userRepository.updateUser(updatedUser);
         companyRepository.saveCompany(savedCompany);
     }
 
+    void setIsInPortfolio(List<String> tickers, String ticker) {
+        for (String t : tickers) {
+            if (t.equals(ticker)) {
+                isInPortfolio = true;
+            }
+        }
+    }
+
+    boolean getIsInPortfolio() {
+        return isInPortfolio;
+    }
 }

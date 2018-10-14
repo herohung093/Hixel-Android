@@ -64,4 +64,8 @@ public class UserRepository {
     public List<String> getUserTickers() {
         return userDao.getTickers();
     }
+
+    public void updateUser(User user) {
+        executor.execute(() -> userDao.updateUser(user));
+    }
 }

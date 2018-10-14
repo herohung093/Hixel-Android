@@ -17,4 +17,8 @@ public class Portfolio {
     public void setCompanies(List<String> companies) {
         this.companies = companies;
     }
+
+    public void addCompany(String ticker) {
+        this.companies.add(ticker);
+    }
 }

@@ -57,22 +57,22 @@ public class CompanyDetailActivity extends AppCompatActivity {
 
     private void configureViewModel(String ticker) {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CompanyDetailViewModel.class);
-        viewModel.loadCompany(ticker);
 
-        if (viewModel.getCompany() != null) {
-            viewModel.getCompany().observe(this, this::updateUI);
-        }
+        viewModel.init();
+        viewModel.getUser().observe(this, (user) -> updateCompany(user, ticker));
+
     }
 
     private void updateCompany(User user, String ticker) {
         if (user != null) {
             List<String> tickers = user.getPortfolio().getCompanies();
+            viewModel.setIsInPortfolio(tickers, ticker);
             viewModel.loadCompany(ticker);
-            viewModel.getCompany().observe(this, this::updateUI);
+            viewModel.getCompany().observe(this, (company) -> updateUI(company, user));
         }
     }
 
-    private void updateUI(Company company) {
+    private void updateUI(Company company, User user) {
         if (company != null) {
 
             // Set the toolbar title to the company name
@@ -82,12 +82,13 @@ public class CompanyDetailActivity extends AppCompatActivity {
             // Setup FAB
             binding.fab.setOnClickListener(v -> {
                 Intent backIntent = getIntent();
-                viewModel.saveCompany(company);
+                user.getPortfolio().addCompany(company.getTicker());
+                viewModel.saveCompany(company, user);
                 setResult(RESULT_OK, backIntent);
                 finish();
             });
 
-            if (false) {
+            if (viewModel.getIsInPortfolio()) {
                 binding.fab.setVisibility(View.INVISIBLE);
             }
 
