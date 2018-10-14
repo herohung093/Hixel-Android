@@ -198,12 +198,12 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailText.getEditText().getText().toString().trim();
         String password = passwordText.getEditText().getText().toString().trim();
 
-        if (viewModel.isValidEmail(email)) {
+        if (!viewModel.isValidEmail(email)) {
             emailText.setError("Invalid email address");
             valid = false;
         }
 
-        if (viewModel.isValidPassword(password)) {
+        if (!viewModel.isValidPassword(password)) {
             passwordText.setError("Must contain at least 4 characters");
             valid = false;
         }

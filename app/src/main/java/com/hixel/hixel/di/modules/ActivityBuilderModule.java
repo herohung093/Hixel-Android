@@ -3,7 +3,11 @@ package com.hixel.hixel.di.modules;
 import com.hixel.hixel.ui.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.ui.dashboard.DashboardActivity;
+import com.hixel.hixel.ui.login.ForgotPasswordActivity;
 import com.hixel.hixel.ui.login.LoginActivity;
+import com.hixel.hixel.ui.login.PinInputActivity;
+import com.hixel.hixel.ui.login.SignupActivity;
+import com.hixel.hixel.ui.login.UpdatePasswordActivity;
 import com.hixel.hixel.ui.profile.ProfileActivity;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -24,6 +28,18 @@ public abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract LoginActivity loginActivity();
+
+    @ContributesAndroidInjector
+    abstract ForgotPasswordActivity forgotPasswordActivity();
+
+    @ContributesAndroidInjector
+    abstract PinInputActivity pinInputActivity();
+
+    @ContributesAndroidInjector
+    abstract SignupActivity signupActivity();
+
+    @ContributesAndroidInjector
+    abstract UpdatePasswordActivity updatePasswordActivity();
 
     @ContributesAndroidInjector
     abstract ProfileActivity profileActivity();

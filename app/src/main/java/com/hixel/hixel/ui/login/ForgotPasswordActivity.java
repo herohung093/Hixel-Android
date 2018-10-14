@@ -1,41 +1,45 @@
 package com.hixel.hixel.ui.login;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
+import com.hixel.hixel.databinding.ActivityForgotPasswordBinding;
+import dagger.android.AndroidInjection;
+import javax.inject.Inject;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
-    TextInputLayout emailIdText;
-    Button backButton;
-    Button submitButton;
-    TextView hint_TV;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private LoginViewModel viewModel;
+
+    private TextInputLayout emailIdText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
-        emailIdText = findViewById(R.id.registerEmailWrapper);
-        backButton = findViewById(R.id.btn_backToLogin);
-        submitButton= findViewById(R.id.btn_submit);
-        hint_TV = findViewById(R.id.textView4);
+        ActivityForgotPasswordBinding binding = DataBindingUtil
+                .setContentView(this, R.layout.activity_forgot_password);
 
-        backButton.setOnClickListener(event -> {
+        emailIdText = binding.registerEmailWrapper;
+
+        binding.btnBackToLogin.setOnClickListener(event -> {
             Intent moveToLogin= new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(moveToLogin);
             overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
         });
 
-        submitButton.setOnClickListener(event -> {
-            //TODO: show notification and get respond from server here
+        binding.btnSubmit.setOnClickListener(event -> {
+            // TODO: show notification and get respond from server here
             if(!validate()){
                 Toast.makeText(getBaseContext(), "Invalid email address! Try again", Toast.LENGTH_LONG).show();
-            }else {
+            } else {
                 Toast.makeText(getBaseContext(), "check your email for further information",
                     Toast.LENGTH_LONG + 3).show();
                 onSendCodeSuccess();
@@ -43,18 +47,21 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
     }
 
+    private void configureDagger() { AndroidInjection.inject(this); }
+
+    private void configureViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+    }
+
     private boolean validate() {
-        boolean valid = true;
         String email = emailIdText.getEditText().getText().toString().trim();
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!viewModel.isValidEmail(email)) {
             emailIdText.setError("Invalid email address");
-            valid = false;
-        } else {
-            emailIdText.setError(null);
+            return false;
         }
 
-        return valid;
+        return true;
     }
 
     public void onSendCodeSuccess() {
