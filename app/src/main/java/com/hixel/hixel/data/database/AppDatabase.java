@@ -10,7 +10,7 @@ import com.hixel.hixel.data.entities.User;
  * Application database store the companies and the user data
  */
 // TODO: schema and migration handling
-@Database(entities = {Company.class, User.class}, version = 18, exportSchema = false)
+@Database(entities = {Company.class, User.class}, version = 19, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 

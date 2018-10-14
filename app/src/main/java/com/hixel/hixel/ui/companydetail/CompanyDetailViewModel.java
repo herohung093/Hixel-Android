@@ -1,4 +1,4 @@
-package com.hixel.hixel.companydetail;
+package com.hixel.hixel.ui.companydetail;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;

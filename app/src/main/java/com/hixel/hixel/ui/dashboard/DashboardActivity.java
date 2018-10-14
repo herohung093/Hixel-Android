@@ -1,4 +1,4 @@
-package com.hixel.hixel.dashboard;
+package com.hixel.hixel.ui.dashboard;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -30,7 +30,7 @@ import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
-import com.hixel.hixel.companydetail.CompanyDetailActivity;
+import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.MainBarChartRenderer;
 import com.hixel.hixel.data.models.MainBarDataSet;

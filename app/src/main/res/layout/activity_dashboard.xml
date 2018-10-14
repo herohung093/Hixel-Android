@@ -10,14 +10,14 @@
 
     <variable
       name="viewModel"
-      type="com.hixel.hixel.dashboard.DashboardViewModel" />
+      type="com.hixel.hixel.ui.dashboard.DashboardViewModel" />
   </data>
 
   <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_background"
-    tools:context=".dashboard.DashboardActivity">
+    tools:context=".ui.dashboard.DashboardActivity">
 
     <include
       android:id="@+id/toolbar"

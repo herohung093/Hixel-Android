@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.hixel.hixel.R;
-import com.hixel.hixel.companydetail.CompanyDetailActivity;
+import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
 import java.util.List;
 

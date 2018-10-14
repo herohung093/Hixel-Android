@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.App;
 import com.hixel.hixel.R;
-import com.hixel.hixel.dashboard.DashboardActivity;
+import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.models.LoginData;

@@ -18,11 +18,11 @@
     android:theme="@style/AppTheme">
 
     <activity
-      android:name=".dashboard.DashboardActivity"
+      android:name=".ui.dashboard.DashboardActivity"
       android:windowSoftInputMode="adjustNothing">
     </activity>
 
-    <activity android:name=".companydetail.CompanyDetailActivity" />
+    <activity android:name=".ui.companydetail.CompanyDetailActivity" />
 
     <activity
       android:name=".companycomparison.CompanyComparisonActivity"

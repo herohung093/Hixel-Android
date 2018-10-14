@@ -11,7 +11,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 import android.support.test.rule.ActivityTestRule;
-import com.hixel.hixel.dashboard.DashboardActivity;
+import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import org.junit.Rule;
 import org.junit.Test;
 

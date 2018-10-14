@@ -7,6 +7,12 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Immutable Company Entity
+ *
+ * Returns:         Dividend Yield = Annual Dividends per share/Price per share ***
+ * Performance:     Return on equity = NetIncome(Loss) / Equity
+ * Strength:        Interest coverage = EBIT / net interest expense
+ * Health:          Current ratio = AssetsCurrent / LiabilitiesCurrent
+ * Security/Safety: Current Debt/Equity (D/E) Ratio = LiabilitiesCurrent/ Equity
  */
 @Entity(tableName = "companies")
 public class Company {
@@ -27,24 +33,30 @@ public class Company {
     @SerializedName("Debt-to-Equity Ratio")
     private double debtToEquity;
 
+    @SerializedName("Current Debt-to-Equity Ratio")
+    private double currentDebtToEquity;
+
     @SerializedName("Return-on-Equity Ratio")
     private double returnOnEquity;
 
     @SerializedName("Return-on-Assets Ratio")
     private double returnOnAssets;
 
-    @SerializedName("Profit-Margin Ratio")
-    private double profitMargin;
+    @SerializedName("Interest Coverage")
+    private double interestCoverage;
 
-    public Company(@NonNull String cik, String name, String ticker, double currentRatio, double debtToEquity, double returnOnEquity, double returnOnAssets, double profitMargin) {
+    public Company(@NonNull String cik, String name, String ticker,
+            double currentRatio, double debtToEquity, double currentDebtToEquity,
+            double returnOnEquity, double returnOnAssets, double interestCoverage) {
         this.cik = cik;
         this.name = name;
         this.ticker = ticker;
         this.currentRatio = currentRatio;
         this.debtToEquity = debtToEquity;
+        this.currentDebtToEquity = currentDebtToEquity;
         this.returnOnEquity = returnOnEquity;
         this.returnOnAssets = returnOnAssets;
-        this.profitMargin = profitMargin;
+        this.interestCoverage = interestCoverage;
     }
 
     @NonNull
@@ -64,21 +76,21 @@ public class Company {
         return debtToEquity;
     }
 
-    public double getReturnOnAssets() {
-        return returnOnAssets;
-    }
-
-    public double getProfitMargin() {
-        return profitMargin;
-    }
-
     public double getReturnOnEquity() {
         return returnOnEquity;
     }
 
+    public double getReturnOnAssets() {
+        return returnOnAssets;
+    }
+
+    public double getCurrentDebtToEquity() { return currentDebtToEquity; }
+
     public double getCurrentRatio() {
         return currentRatio;
     }
+
+    public double getInterestCoverage() { return interestCoverage; }
 
     // TODO: Do this in a nicer way, and test against a bunch of companies.
     // TODO: Get a better way of checking for null object.
@@ -102,7 +114,7 @@ public class Company {
     }
 
     public int getReturnsScore() {
-        // TODO: Make this dividend yield.
+        // TODO: Need to use dividend yield.
         return generateScore(this.returnOnAssets);
     }
 
@@ -110,17 +122,14 @@ public class Company {
         return generateScore(this.returnOnEquity);
     }
 
-    public int getStrengthScore() {
-        // TODO: Make this interest coverage
-        return generateScore(this.profitMargin);
-    }
+    public int getStrengthScore() { return generateScore(this.interestCoverage); }
 
     public int getHealthScore() {
         return generateScore(this.currentRatio);
     }
 
     public int getSafetyScore() {
-        return generateScore(this.debtToEquity);
+        return generateScore(this.currentDebtToEquity);
     }
 
     private int generateScore(double ratio) {

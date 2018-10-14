@@ -1,4 +1,4 @@
-package com.hixel.hixel.companydetail;
+package com.hixel.hixel.ui.companydetail;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;

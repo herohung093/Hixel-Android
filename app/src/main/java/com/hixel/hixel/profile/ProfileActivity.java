@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import com.hixel.hixel.R;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
-import com.hixel.hixel.dashboard.DashboardActivity;
+import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.databinding.ActivityProfileBinding;
 import com.hixel.hixel.ui.login.LoginActivity;
