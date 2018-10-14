@@ -59,6 +59,10 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
         notifyDataSetChanged();
     }
 
+    public Company getCompany(int position) {
+        return companies.get(position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView companyNameTV;

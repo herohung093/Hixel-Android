@@ -18,16 +18,16 @@ import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.databinding.RowBinding;
 import java.util.List;
 
-public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
+public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.ViewHolder> {
 
     @SuppressWarnings("unused")
-    private static final String TAG = DashboardAdapter.class.getSimpleName();
+    private static final String TAG = CompanyListAdapter.class.getSimpleName();
 
     private LayoutInflater layoutInflater;
     private Context context;
     private List<Company> companies;
 
-    public DashboardAdapter(Context context, List<Company> companies) {
+    public CompanyListAdapter(Context context, List<Company> companies) {
         this.context = context;
         this.companies = companies;
     }

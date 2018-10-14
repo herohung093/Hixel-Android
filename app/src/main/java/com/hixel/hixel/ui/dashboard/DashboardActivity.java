@@ -36,7 +36,7 @@ import com.hixel.hixel.data.models.charts.MainBarDataSet;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.models.SearchEntry;
-import com.hixel.hixel.commonui.DashboardAdapter;
+import com.hixel.hixel.commonui.CompanyListAdapter;
 import com.hixel.hixel.commonui.SearchAdapter;
 import com.hixel.hixel.commonui.RecyclerItemTouchHelper;
 import com.hixel.hixel.commonui.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
@@ -59,7 +59,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
     private ActivityDashboardBinding binding;
     private SearchAutoComplete searchAutoComplete;
-    private DashboardAdapter dashboardAdapter;
+    private CompanyListAdapter companyListAdapter;
 
     private BarChart chart;
     private MainBarDataSet dataSet;
@@ -146,8 +146,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
-        dashboardAdapter = new DashboardAdapter(this, companies);
-        recyclerView.setAdapter(dashboardAdapter);
+        companyListAdapter = new CompanyListAdapter(this, companies);
+        recyclerView.setAdapter(companyListAdapter);
     }
 
     @Override
@@ -198,7 +198,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
 
-        if (viewHolder instanceof DashboardAdapter.ViewHolder) {
+        if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
             String name = viewModel.getCompanies().getValue().get(viewHolder.getAdapterPosition()).getName();
 
@@ -208,12 +208,13 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
                                                     .get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
 
-            dashboardAdapter.removeItem(viewHolder.getAdapterPosition());
+            companyListAdapter.removeItem(viewHolder.getAdapterPosition());
 
             // Remove Company from RecyclerView
             Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio", Snackbar.LENGTH_LONG);
 
-            snackbar.setAction("UNDO", view -> dashboardAdapter.restoreItem(deletedCompany, deletedIndex));
+            snackbar.setAction("UNDO", view -> companyListAdapter
+                    .restoreItem(deletedCompany, deletedIndex));
             snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.warning));
             snackbar.show();
        }
@@ -232,7 +233,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     }
 
     public void addItem(Company company) {
-        dashboardAdapter.addItem(company);
+        companyListAdapter.addItem(company);
     }
 
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {

@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import com.hixel.hixel.commonui.DashboardAdapter.ViewHolder;
+import com.hixel.hixel.commonui.CompanyListAdapter.ViewHolder;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 

@@ -14,12 +14,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
-import com.hixel.hixel.commonui.DashboardAdapter;
-import com.hixel.hixel.commonui.DashboardAdapter.ViewHolder;
+import com.hixel.hixel.commonui.CompanyListAdapter;
+import com.hixel.hixel.commonui.CompanyListAdapter.ViewHolder;
 import com.hixel.hixel.commonui.HorizontalCompanyListAdapter;
 import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
@@ -48,10 +49,11 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
     private RecyclerView comparisonCompaniesRecyclerView;
     private RecyclerView dashboardCompaniesRecyclerView;
-    private DashboardAdapter comparisonCompaniesAdapter;
+    private CompanyListAdapter comparisonCompaniesAdapter;
     private HorizontalCompanyListAdapter horizontalCompanyListAdapter;
     private Button compareButton;
     private SearchAutoComplete searchAutoComplete;
+    List<Company> dashboardCompanies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +70,11 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
         viewModel.setupSearch(getSearchObserver());
 
+        setupComparisonAdapter();
         dragDownToAdd();
         setupButtons();
         setupSearchView();
         setupBottomNavigationView();
-        setupComparisonAdapter();
     }
 
     private void configureDagger() {
@@ -112,11 +114,13 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
             horizontalCompanyListAdapter.setCompanies(companies);
             horizontalCompanyListAdapter.notifyDataSetChanged();
+
+            dashboardCompanies = companies;
         }
     }
 
     private void setupComparisonAdapter() {
-        comparisonCompaniesAdapter = new DashboardAdapter(this, new ArrayList<>());
+        comparisonCompaniesAdapter = new CompanyListAdapter(this, new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         comparisonCompaniesRecyclerView.setLayoutManager(layoutManager);
@@ -147,7 +151,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
     private void dragDownToAdd(){
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.DOWN) {
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.DOWN) {
 
                 @Override
                 public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
@@ -165,13 +169,8 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                    // TODO: Restore functionality
-                    // Row is swiped from recycler view remove it from adapter
-                    // final Company temp = (viewModel.getPortfolio().getValue().get(viewHolder.getAdapterPosition()));
-                    // selectedCompany.add(temp);
-                    // userCompaniesAdapter.removeItem(viewHolder.getAdapterPosition());
-                    // comparisonCompaniesAdapter.addItem(temp);
-                    // viewModel.addToCompare(temp.getCompanyIdentifiers().getTicker());
+                    int position = viewHolder.getAdapterPosition();
+                    viewModel.addToComparisonCompanies(dashboardCompanies.get(position).getTicker());
                 }
 
                 @Override
@@ -224,7 +223,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             @Override
             public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
                 if(viewHolder != null) {
-                    final View foreground = ((DashboardAdapter.ViewHolder) viewHolder).getForeground();
+                    final View foreground = ((CompanyListAdapter.ViewHolder) viewHolder).getForeground();
                     getDefaultUIUtil().onSelected(foreground);
                 }
             }
