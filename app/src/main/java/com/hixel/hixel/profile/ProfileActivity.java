@@ -58,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
         ProfileViewModel viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ProfileViewModel.class);
         viewModel.init();
-        // viewModel.getUser().observe(this, this::updateUI);
+        viewModel.getUser().observe(this, this::updateUI);
     }
 
 
@@ -68,10 +68,14 @@ public class ProfileActivity extends AppCompatActivity {
             binding.confirmEditNameButton.setVisibility(View.INVISIBLE);
             binding.confirmEditEmailButton.setVisibility(View.INVISIBLE);
 
-            binding.fullName.setText(fullName);
-            binding.name.setText(fullName);
-            binding.email.setText(email);
-            binding.password.setText(password);
+            String header = String.format("Hi, %s %s!", user.getFirstName(), user.getLastName());
+            binding.fullName.setText(header);
+
+            binding.name.setText(user.getFirstName());
+            binding.email.setText(user.getEmail());
+
+            String passwordDummy = "12345";
+            binding.password.setText(passwordDummy);
 
             binding.name.setFocusable(false);
             binding.email.setFocusable(false);
