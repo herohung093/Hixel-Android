@@ -34,6 +34,8 @@ public class CompanyRepository {
     private MutableLiveData<Company> company = new MutableLiveData<>();
     private String[] userTickers;
 
+    private List<String> tickers = new ArrayList<>();
+
     @Inject
     public CompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, Executor executor) {
         this.serverInterface = serverInterface;

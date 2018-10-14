@@ -43,7 +43,7 @@ public class UserRepository {
         return userDao.getUser();
     }
 
-    private void saveUser() {
+    public void saveUser() {
         serverInterface.userData().enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {

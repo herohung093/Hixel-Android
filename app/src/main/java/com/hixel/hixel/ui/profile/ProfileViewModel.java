@@ -30,5 +30,4 @@ public class ProfileViewModel extends ViewModel {
     public LiveData<User> getUser() {
         return user;
     }
-
 }

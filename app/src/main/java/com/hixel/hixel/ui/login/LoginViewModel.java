@@ -20,6 +20,7 @@ public class LoginViewModel extends ViewModel {
 
     void init() { }
 
-    void getUser() {
+    void saveUser() {
+        repository.saveUser();
     }
 }
