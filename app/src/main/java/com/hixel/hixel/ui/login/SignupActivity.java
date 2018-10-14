@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.api.Client;
@@ -30,15 +28,12 @@ public class SignupActivity extends AppCompatActivity {
 
     ActivitySignupBinding binding;
 
-    TextInputLayout emailText,passwordText,firstNameText,lasNameText;
-    Button signupButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
 
-        signupButton.setOnClickListener(view -> signup());
+        binding.btnSignup.setOnClickListener(view -> signup());
 
         binding.linkLogin.setOnClickListener(view -> {
             Intent moveToLogin= new Intent(getApplicationContext(), LoginActivity.class);
@@ -56,21 +51,21 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void signup() {
-        if (!validate()) {
-            onSignupFailed("Invalid input");
-            return;
-        }
-
-        signupButton.setEnabled(false);
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
-        progressDialog.show();
-
         String firstName = binding.firstNameWrapper.getEditText().getText().toString().trim();
         String lastName = binding.lastnameWrapper.getEditText().getText().toString().trim();
         String email = binding.signupEmailWrapper.getEditText().getText().toString().trim();
         String password = binding.signupPassWrapper.getEditText().getText().toString().trim();
+
+        if (!validate(firstName, lastName, email, password)) {
+            onSignupFailed("Invalid input");
+            return;
+        }
+
+        binding.btnSignup.setEnabled(false);
+        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Creating Account...");
+        progressDialog.show();
 
         Call<Void> call = Client.getClient()
                 .create(ServerInterface.class)
@@ -106,34 +101,34 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupFailed(String reason) {
         Toast.makeText(getBaseContext(), "Signup failed: " + reason, Toast.LENGTH_LONG).show();
-        signupButton.setEnabled(true);
+        binding.btnSignup.setEnabled(true);
     }
 
     public void onSignupSuccess() {
-        signupButton.setEnabled(true);
+        binding.btnSignup.setEnabled(true);
         finish();
     }
 
-    public boolean validate() {
+    public boolean validate(String firstName, String lastName, String email, String password) {
         boolean valid = true;
 
-        String firstName = firstNameText.getEditText().getText().toString();
-        String lastName = lasNameText.getEditText().getText().toString();
-        String email = emailText.getEditText().getText().toString();
-        String password = passwordText.getEditText().toString();
-
-        if (!viewModel.isValidName(firstName) && !viewModel.isValidName(lastName)) {
-            firstNameText.setError("Name can't be empty!");
+        if (!viewModel.isValidName(firstName)) {
+            binding.firstNameWrapper.setError("Name can't be empty!");
             valid = false;
         }
 
+        if (!viewModel.isValidName(lastName)) {
+            binding.lastnameWrapper.setError("Name can't be empty!");
+        }
+
+
         if (viewModel.isValidEmail(email)) {
-            emailText.setError("Invalid email address");
+            binding.signupEmailWrapper.setError("Invalid email address");
             valid = false;
         }
 
         if (viewModel.isValidPassword(password)) {
-            passwordText.setError("Must contain at least 4 characters");
+            binding.signupPassWrapper.setError("Must contain at least 4 characters");
             valid = false;
         }
 
