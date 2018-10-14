@@ -175,9 +175,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                binding.progressBar.setVisibility(View.VISIBLE);
-                viewModel.loadSearchResults(searchAutoComplete.getText().toString());
-                binding.progressBar.setVisibility(View.INVISIBLE);
                 viewModel.loadSearchResults(newText);
                 return false;
             }

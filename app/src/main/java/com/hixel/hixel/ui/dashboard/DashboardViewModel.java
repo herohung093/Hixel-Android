@@ -2,7 +2,6 @@ package com.hixel.hixel.ui.dashboard;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.models.SearchEntry;
@@ -29,15 +28,13 @@ public class DashboardViewModel extends ViewModel {
 
     private LiveData<List<Company>> companies;
     private CompanyRepository companyRepository;
-    private UserRepository userRepository;
 
     private PublishSubject<String> publishSubject = PublishSubject.create();
     private CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
-    public DashboardViewModel(CompanyRepository companyRepository, UserRepository userRepository) {
+    public DashboardViewModel(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
-        this.userRepository = userRepository;
     }
 
     void init() {
@@ -66,7 +63,7 @@ public class DashboardViewModel extends ViewModel {
                 .subscribeWith(observer));
     }
 
-    public void loadSearchResults(String query) {
+    void loadSearchResults(String query) {
         publishSubject.onNext(query);
     }
 }
