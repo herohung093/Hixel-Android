@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
@@ -62,20 +63,12 @@ public class LoginActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         viewModel.init();
 
-        // TODO: Fix up the Room query because this doesn't make sense.
-        if (!viewModel.getIsUserStale()) {
-            setupUI();
-        } else {
-            Log.d(TAG, "configureViewModel: user ain't stale");
-            Intent moveToDashboard = new Intent(getApplicationContext(), DashboardActivity.class);
-            startActivity(moveToDashboard);
-        }
+        setupUI();
     }
 
     private void setupUI() {
 
         loginButton.setOnClickListener(view -> {
-            Log.d(TAG, "setupUI: login button clicked");
             login();
         });
 
@@ -94,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
-        Log.d(TAG, "login: HERE!");
+
         if (!validate()) {
             onLoginFailed("Invalid input");
             return;
@@ -102,22 +95,22 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.getWindow().setGravity(Gravity.CENTER);
+        // final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        // progressDialog.getWindow().setGravity(Gravity.CENTER);
 
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
+        // progressDialog.setIndeterminate(true);
+        // progressDialog.setMessage("Authenticating...");
+        // progressDialog.show();
 
 
         String email = emailText.getEditText().getText().toString().trim();
         String password = passwordText.getEditText().getText().toString().trim();
+        viewModel.verifyUser(email, password);
 
-        if (viewModel.login(email, password)) {
-            Log.d(TAG, "login: LOGIN SUCCESS!");
+        if (viewModel.getIsValidUser()) {
             onLoginSuccess();
         } else {
-            onLoginFailed("TODO: GET THIS FUNCTIONALITY BACK!");
+            onLoginFailed("TODO");
         }
     }
 

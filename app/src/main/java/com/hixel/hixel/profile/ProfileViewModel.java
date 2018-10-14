@@ -25,7 +25,7 @@ public class ProfileViewModel extends ViewModel {
             return;
         }
 
-        user = repository.getUser();
+        // user = repository.getUser();
     }
 
     public LiveData<User> getUser() {

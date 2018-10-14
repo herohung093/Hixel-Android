@@ -20,14 +20,12 @@ public class User {
     private String firstName;
     private String lastName;
 
-    private Date lastRefresh;
 
-    public User(@NonNull String email, String password, String firstName, String lastName, Date lastRefresh) {
+    public User(@NonNull String email, String password, String firstName, String lastName) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.lastRefresh = lastRefresh;
     }
 
     @NonNull
@@ -45,14 +43,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Date getLastRefresh() {
-        return lastRefresh;
-    }
-
-    public void setLastRefresh(Date lastRefresh) {
-        this.lastRefresh = lastRefresh;
     }
 
     public String getFirstName() {

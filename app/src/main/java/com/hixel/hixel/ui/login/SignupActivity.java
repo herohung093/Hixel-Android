@@ -3,12 +3,20 @@ package com.hixel.hixel.ui.login;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
+import com.hixel.hixel.data.api.Client;
+import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.data.entities.User;
+import com.hixel.hixel.data.models.ApplicationUser;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -53,10 +61,10 @@ public class SignupActivity extends AppCompatActivity {
         String lastName = lasNameText.getEditText().getText().toString().trim();
         String email = emailText.getEditText().getText().toString().trim();
         String password = passwordText.getEditText().getText().toString().trim();
-/*
+
         Call<Void> call = Client.getClient()
                 .create(ServerInterface.class)
-                .signup(new User(firstName, lastName, email, password));
+                .signup(new ApplicationUser(firstName, lastName, email, password));
 
         call.enqueue(new Callback<Void>() {
             @Override
@@ -83,7 +91,7 @@ public class SignupActivity extends AppCompatActivity {
                 onSignupFailed("Couldn't connect to server!");
                 progressDialog.dismiss();
             }
-        });*/
+        });
     }
 
     public void onSignupFailed(String reason) {
