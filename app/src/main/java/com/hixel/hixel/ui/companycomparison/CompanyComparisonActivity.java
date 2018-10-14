@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.commonui.HorizontalCompanyListAdapter;
+import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.databinding.ActivityComparisonBinding;
@@ -73,12 +74,35 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         setupBottomNavigationView();
     }
 
-    private void configureDagger() { AndroidInjection.inject(this); }
+    private void configureDagger() {
+        AndroidInjection.inject(this);
+    }
 
     private void configureViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CompanyComparisonViewModel.class);
         viewModel.init();
-        viewModel.getCompanies().observe(this, this::setupDashboardCompanyListAdapter);
+        viewModel.getUser().observe(this, this::updateDashboardCompanies);
+    }
+
+    public void updateDashboardCompanies(User user) {
+        if (user != null) {
+            List<String> tickers = user.getPortfolio().getCompanies();
+
+            viewModel.loadDashboardCompanies(tickers);
+            viewModel.getDashboardCompanies().observe(this, this::setupDashboardCompanyListAdapter);
+        }
+    }
+
+    private void setupDashboardCompanyListAdapter(List<Company> companies) {
+
+        HorizontalCompanyListAdapter userCompaniesAdapter = new HorizontalCompanyListAdapter(companies);
+        userCompaniesRecyclerView.setAdapter(userCompaniesAdapter);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+        userCompaniesRecyclerView.setLayoutManager(layoutManager);
+        // userCompaniesRecyclerView.setHasFixedSize(true);
+
+        userCompaniesAdapter.addItems(companies);
     }
 
     public void setupBottomNavigationView() {
@@ -97,18 +121,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
             return true;
         });
-    }
-
-    private void setupDashboardCompanyListAdapter(List<Company> companies) {
-
-        HorizontalCompanyListAdapter userCompaniesAdapter = new HorizontalCompanyListAdapter(companies);
-        userCompaniesRecyclerView.setAdapter(userCompaniesAdapter);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
-        userCompaniesRecyclerView.setLayoutManager(layoutManager);
-        // userCompaniesRecyclerView.setHasFixedSize(true);
-
-        userCompaniesAdapter.addItems(companies);
     }
 
     private void setupComparisonAdapter() {
@@ -216,7 +228,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             int size = (companies == null) ? 0 : companies.size();
 
             if (size < 10) {
-                viewModel.addToCompare(ticker);
+                // viewModel.addToCompare(ticker);
             }
         });
 
