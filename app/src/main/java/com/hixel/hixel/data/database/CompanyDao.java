@@ -2,7 +2,6 @@ package com.hixel.hixel.data.database;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
@@ -26,6 +25,9 @@ public interface CompanyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveCompany(Company company);
+
+    @Query("SELECT * FROM companies WHERE ticker = :ticker LIMIT 1")
+    LiveData<Company> hasCompany(String ticker);
 
     @Query("DELETE FROM companies")
     void deleteAll();

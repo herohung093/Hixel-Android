@@ -28,24 +28,25 @@ public class CompanyRepository {
     private ServerInterface serverInterface;
     private final CompanyDao companyDao;
     private final Executor executor;
+    private final UserRepository userRepository;
 
     // TODO: Find a way to not use these vars
     // NOTE: THESE VARIABLES ARE TEMPORARY WORKAROUNDS
     private MutableLiveData<Company> company = new MutableLiveData<>();
-    private String[] userTickers;
-
-    private List<String> tickers = new ArrayList<>();
 
     @Inject
-    public CompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, Executor executor) {
+    public CompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, UserRepository userRepository, Executor executor) {
         this.serverInterface = serverInterface;
         this.companyDao = companyDao;
+        this.userRepository = userRepository;
         this.executor = executor;
     }
 
-    public LiveData<List<Company>> getCompanies(String[] tickers) {
-        userTickers = tickers;
-        refreshCompanies(tickers); // try to refresh from the server if possible.
+    public LiveData<List<Company>> getCompanies(List<String> tickers) {
+        // userTickers = tickers;
+
+        String[] tickersArray = new String[tickers.size()];
+        refreshCompanies(tickers.toArray(tickersArray)); // try to refresh from the server if possible.
 
         return companyDao.load(); // return LiveData from the db.
     }
@@ -91,9 +92,5 @@ public class CompanyRepository {
                         @Override
                         public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) { }
                     }));
-    }
-
-    public String[] getTickers() {
-        return userTickers;
     }
 }

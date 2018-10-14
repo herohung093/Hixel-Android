@@ -36,6 +36,13 @@ public class CompanyDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_company);
 
+        // General setup
+        setupBottomNavigationView();
+        binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
+        binding.toolbar.toolbar.setNavigationIcon(R.drawable.ic_close);
+        setSupportActionBar(binding.toolbar.toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         String ticker = getIntent().getStringExtra("COMPANY_TICKER");
 
         this.configureDagger();
@@ -56,20 +63,11 @@ public class CompanyDetailActivity extends AppCompatActivity {
     }
 
     private void updateUI(Company company) {
-
         if (company != null) {
-            setupBottomNavigationView();
 
-            // Setup the toolbar
-            String title = ""; //company.getCompanyIdentifiers().getName();
+            // Set the toolbar title to the company name
+            String title = company.getFormattedName();
             binding.toolbar.toolbar.setTitle(title);
-            binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
-
-            binding.toolbar.toolbar.setNavigationIcon(R.drawable.ic_close);
-
-            setSupportActionBar(binding.toolbar.toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
             // Setup FAB
             binding.fab.setOnClickListener(v -> {
@@ -79,7 +77,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 finish();
             });
 
-            if (viewModel.companyIsInPortfolio()) {
+            if (viewModel.companyIsInPortfolio(company.getTicker())) {
                 binding.fab.setVisibility(View.INVISIBLE);
             }
 
@@ -87,8 +85,6 @@ public class CompanyDetailActivity extends AppCompatActivity {
             // setupProgressPercentage();
         }
     }
-
-
 
     @Override
     public boolean onSupportNavigateUp() {

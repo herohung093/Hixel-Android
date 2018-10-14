@@ -41,7 +41,7 @@ public class CompanyComparisonViewModel extends ViewModel {
         }
 
         Log.d(TAG, "init: HIT!");
-        dashboardCompanies = repository.getCompanies(repository.getTickers());
+        // dashboardCompanies = repository.getCompanies(repository.getTickers());
     }
 
 

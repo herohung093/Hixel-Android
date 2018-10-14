@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.database.UserDao;
 import com.hixel.hixel.data.entities.User;
+import java.util.List;
 import java.util.concurrent.Executor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -60,4 +61,7 @@ public class UserRepository {
         });
     }
 
+    public List<String> getUserTickers() {
+        return userDao.getTickers();
+    }
 }

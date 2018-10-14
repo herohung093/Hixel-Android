@@ -8,6 +8,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import com.hixel.hixel.data.entities.User;
 import java.util.Date;
+import java.util.List;
 
 @Dao
 public interface UserDao {
@@ -20,4 +21,7 @@ public interface UserDao {
 
     @Query("SELECT * FROM user")
     User get();
+
+    @Query("SELECT companies FROM user")
+    List<String> getTickers();
 }

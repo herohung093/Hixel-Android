@@ -29,6 +29,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
+import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.ui.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
@@ -96,7 +97,29 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     private void configureViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
         viewModel.init();
-        viewModel.getCompanies().observe(this, this::updateUI);
+        viewModel.getUser().observe(this, this::updateCompanies);
+
+    }
+
+    public void updateCompanies(User user) {
+        if (user != null) {
+            List<String> tickers = user.getPortfolio().getCompanies();
+
+            viewModel.loadCompanies(tickers);
+            viewModel.getCompanies().observe(this, this::updateUI);
+        }
+    }
+
+    private void updateUI(@Nullable List<Company> companies) {
+        if (companies != null) {
+            binding.progressBar.setVisibility(View.INVISIBLE);
+            setupDashboardAdapter(companies);
+            updateChart(companies);
+        } else {
+            // Show Loading indicator
+            Log.d(TAG, "updateUI: Loading");
+            binding.progressBar.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setupBottomNavigationView() {
@@ -115,18 +138,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
 
             return true;
         });
-    }
-
-    private void updateUI(@Nullable List<Company> companies) {
-        if (companies != null) {
-            binding.progressBar.setVisibility(View.INVISIBLE);
-            setupDashboardAdapter(companies);
-            updateChart(companies);
-        } else {
-            // Show Loading indicator
-            Log.d(TAG, "updateUI: Loading");
-            binding.progressBar.setVisibility(View.VISIBLE);
-        }
     }
 
     public void setupDashboardAdapter(List<Company> companies) {
