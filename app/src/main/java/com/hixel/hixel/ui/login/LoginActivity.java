@@ -11,7 +11,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.Button;
 import android.widget.Toast;
@@ -28,19 +27,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Activity for logging into the application. User enters their email and password
+ * which is passed to the server and verified.
+ */
 public class LoginActivity extends AppCompatActivity {
-
-    @SuppressWarnings("unused")
-    private static final String TAG = LoginActivity.class.getSimpleName();
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-    private LoginViewModel viewModel;
 
     private ActivityLoginBinding binding;
-    TextInputLayout emailText;
-    TextInputLayout passwordText;
-    Button loginButton;
+    private TextInputLayout emailText;
+    private TextInputLayout passwordText;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        // Checks to see if Onboarding should be launched.
         if (!sharedPreferences.getBoolean(Onboarding.COMPLETED_ONBOARDING_PREF_NAME, false)) {
             startActivity(new Intent(this, Onboarding.class));
         }
@@ -61,18 +61,27 @@ public class LoginActivity extends AppCompatActivity {
         this.configureViewModel();
     }
 
+    /**
+     * Method configures dependency injection for the class
+     */
     private void configureDagger() {
         AndroidInjection.inject(this);
     }
 
+    /**
+     * Method instantiates the ViewModel and begins UI setup.
+     */
     private void configureViewModel() {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+        LoginViewModel viewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(LoginViewModel.class);
         viewModel.init();
         setupUI();
     }
 
+    /**
+     * Method sets up UI elements
+     */
     private void setupUI() {
-
         loginButton.setOnClickListener(view -> login());
 
         binding.linkSignup.setOnClickListener(view -> {
@@ -89,6 +98,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method takes the users email and password, validates the strings and if valid
+     * verifies that the user exists on the server
+     */
     private void login() {
         if (!validate()) {
             onLoginFailed("Invalid input");
@@ -147,12 +160,17 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method disables the ability to return to the previous Activity.
+     */
     @Override
     public void onBackPressed() {
-        // Disable going back to the MainActivity
         moveTaskToBack(true);
     }
 
+    /**
+     * Method moves to the DashboardActivity.class and destroys the LoginActivity.class
+     */
     private void onLoginSuccess() {
         loginButton.setEnabled(true);
         Intent moveToDashboard = new Intent(getApplicationContext(),DashboardActivity.class);
@@ -160,19 +178,27 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Method displays a Toast informing the user as to why the login failed.
+     *
+     * @param reason String to input into Toast
+     */
     private void onLoginFailed(String reason) {
         Toast.makeText(getBaseContext(), "Login failed: " + reason, Toast.LENGTH_LONG).show();
         loginButton.setEnabled(true);
     }
 
+    /**
+     * Method validates whether the user entered email and password are valid
+     *
+     * @return a boolean indicating if the email and password are valid.
+     */
     private boolean validate() {
         boolean valid = true;
 
         // TODO: Get rid of these null pointer errors.
         String email = emailText.getEditText().getText().toString().trim();
         String password = passwordText.getEditText().getText().toString().trim();
-
-        Log.d(TAG, "validate: " + email);
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError("Invalid email address");
