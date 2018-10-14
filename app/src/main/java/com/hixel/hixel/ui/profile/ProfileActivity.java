@@ -32,14 +32,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+    private ProfileViewModel viewModel;
+
     private ActivityProfileBinding binding;
 
-    // TODO: Get data from db.
-    String fullName = "John Smith";
-    String email = "test@gmail.com";
-    String password = "1234";
-
-    Dialog dialog;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void configureViewModel() {
-        ProfileViewModel viewModel = ViewModelProviders.of(this, viewModelFactory)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ProfileViewModel.class);
         viewModel.init();
         viewModel.getUser().observe(this, this::updateUI);
@@ -114,7 +111,10 @@ public class ProfileActivity extends AppCompatActivity {
 
             binding.confirmEditNameButton.setVisibility(View.VISIBLE);
 
-            binding.confirmEditNameButton.setOnClickListener(view2 -> fullName = binding.name.getText().toString());
+            binding.confirmEditNameButton.setOnClickListener(view2 -> {
+                String name = binding.name.getText().toString();
+                viewModel.setFirstName(name);
+            });
         });
 
         binding.editEmailButton.setOnClickListener(view -> {
@@ -122,7 +122,10 @@ public class ProfileActivity extends AppCompatActivity {
 
             binding.confirmEditEmailButton.setVisibility(View.VISIBLE);
 
-            binding.confirmEditEmailButton.setOnClickListener(view2 -> email = binding.email.getText().toString());
+            binding.confirmEditEmailButton.setOnClickListener(view2 -> {
+                String email = binding.email.getText().toString();
+                viewModel.setSecondName(email);
+            });
         });
 
         binding.editPasswordButton.setOnClickListener(view -> setupChangePasswordPopup());
@@ -160,35 +163,17 @@ public class ProfileActivity extends AppCompatActivity {
      * Method updates the users password
      */
     public void updatePassword() {
-        if (isValidPassword()) {
-            EditText newPassword = findViewById(R.id.retype_new_edit_text);
-            password = newPassword.getText().toString();
-        }
-    }
-
-    /**
-     * Method validates the users password
-     * @return The boolean resulting from the validity of the password.
-     */
-    // TODO: Better error handling and databinding.
-    public boolean isValidPassword() {
-        boolean isValid = false;
-
-        EditText oldPassword = findViewById(R.id.old_password_edit_text);
         EditText newPassword = findViewById(R.id.new_password_edit_text);
         EditText retypedPassword = findViewById(R.id.retype_new_edit_text);
 
-        if (oldPassword.getText().toString().equals(password)) {
-            if (newPassword.getText().toString().equals(retypedPassword.getText().toString())) {
-                isValid = true;
-            } else {
-                displaySnackbar("New Passwords do not match");
-            }
-        } else {
-            displaySnackbar("Current password is incorrect");
-        }
+        String first = newPassword.getText().toString();
+        String second = retypedPassword.getText().toString();
 
-        return isValid;
+        if (viewModel.isValidPassword(first, second)) {
+            viewModel.setPassword(first);
+        } else {
+            displaySnackbar("Error with passwords. Try again.");
+        }
     }
 
     /**

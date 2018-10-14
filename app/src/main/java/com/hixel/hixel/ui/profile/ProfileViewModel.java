@@ -41,4 +41,16 @@ public class ProfileViewModel extends ViewModel {
     public LiveData<User> getUser() {
         return user;
     }
+
+    /**
+     * Method validates the users password
+     * @return The boolean resulting from the validity of the password.
+     */
+    boolean isValidPassword(String first, String second) {
+        return first.equals(second) && first.length() < 4;
+    }
+
+    void updateUser(String email, String firstName, String secondName, String password) {
+
+    }
 }
