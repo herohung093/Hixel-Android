@@ -30,4 +30,24 @@ public class LoginViewModel extends ViewModel {
     void saveUser() {
         repository.saveUser();
     }
+
+    boolean isValidEmail(String email) {
+        boolean isValid = true;
+
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    boolean isValidPassword(String password) {
+        boolean isValid = true;
+
+        if (password.isEmpty() || password.length() < 4) {
+            isValid = false;
+        }
+
+        return isValid;
+    }
 }

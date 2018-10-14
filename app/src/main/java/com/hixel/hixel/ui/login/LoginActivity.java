@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+    private LoginViewModel viewModel;
 
     private ActivityLoginBinding binding;
     private TextInputLayout emailText;
@@ -72,8 +73,7 @@ public class LoginActivity extends AppCompatActivity {
      * Method instantiates the ViewModel and begins UI setup.
      */
     private void configureViewModel() {
-        LoginViewModel viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(LoginViewModel.class);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         setupUI();
     }
 
@@ -195,22 +195,17 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validate() {
         boolean valid = true;
 
-        // TODO: Get rid of these null pointer errors.
         String email = emailText.getEditText().getText().toString().trim();
         String password = passwordText.getEditText().getText().toString().trim();
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (viewModel.isValidEmail(email)) {
             emailText.setError("Invalid email address");
             valid = false;
-        } else {
-            emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4) {
+        if (viewModel.isValidPassword(password)) {
             passwordText.setError("Must contain at least 4 characters");
             valid = false;
-        } else {
-            passwordText.setError(null);
         }
 
         return valid;
