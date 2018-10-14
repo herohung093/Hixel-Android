@@ -23,9 +23,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.models.MainBarChartRenderer;
+import com.hixel.hixel.data.models.MainBarDataSet;
 import com.hixel.hixel.databinding.ActivityDashboardBinding;
 import com.hixel.hixel.R;
 
@@ -38,6 +46,7 @@ import com.hixel.hixel.commonui.RecyclerItemTouchHelper.RecyclerItemTouchHelperL
 import com.hixel.hixel.profile.ProfileActivity;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -55,6 +64,11 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     private SearchAutoComplete searchAutoComplete;
     private DashboardAdapter dashboardAdapter;
 
+    private BarChart chart;
+    private MainBarDataSet dataSet;
+    List<BarEntry> entries;
+    BarData data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +78,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         binding.toolbar.toolbar.setTitle(R.string.dashboard);
         binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(binding.toolbar.toolbar);
+
+        setupChart();
 
         this.configureDagger();
         this.configureViewModel();
@@ -105,7 +121,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         if (companies != null) {
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
-            // updateChart(companies);
+            updateChart(companies);
         } else {
             // Show Loading indicator
             Log.d(TAG, "updateUI: Loading");
@@ -240,5 +256,98 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             @Override
             public void onComplete() { }
         };
+    }
+
+    private void updateChart(List<Company> companies) {
+        float returnsScore = 0.01f;
+        float performanceScore = 0.01f;
+        float strengthScore = 0.01f;
+        float healthScore = 0.01f;
+        float safetyScore = 0.01f;
+        int size = companies.size();
+
+        for (Company c : companies) {
+            returnsScore += c.getReturnsScore();
+            performanceScore += c.getPerformanceScore();
+            strengthScore += c.getStrengthScore();
+            healthScore += c.getHealthScore();
+            safetyScore += c.getSafetyScore();
+        }
+
+
+        returnsScore /= size;
+        performanceScore /= size;
+        strengthScore /= size;
+        healthScore /= size;
+        safetyScore /= size;
+
+        dataSet.addEntry(new BarEntry(0, returnsScore));
+        dataSet.addEntry(new BarEntry(1, performanceScore));
+        dataSet.addEntry(new BarEntry(2, strengthScore));
+        dataSet.addEntry(new BarEntry(3, healthScore));
+        dataSet.addEntry(new BarEntry(4, safetyScore));
+
+        data.notifyDataChanged();
+        chart.notifyDataSetChanged();
+        chart.invalidate();
+    }
+
+    private void setupChart() {
+        chart = binding.chart;
+
+        entries = new ArrayList<>();
+        dataSet = new MainBarDataSet(entries, "");
+
+        chart.setRenderer(new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
+        chart.getLegend().setEnabled(false);
+        chart.getDescription().setEnabled(false);
+        chart.setDrawValueAboveBar(false);
+        chart.setDrawBarShadow(false);
+
+        ArrayList<String> labels = new ArrayList<>();
+        labels.add("Health");
+        labels.add("Performance");
+        labels.add("Return");
+        labels.add("Safety");
+        labels.add("Strength");
+
+        int[] colours = {
+                ContextCompat.getColor(this, R.color.good),
+                ContextCompat.getColor(this, R.color.average),
+                ContextCompat.getColor(this, R.color.bad)
+        };
+
+        dataSet.setColors(colours);
+
+        data = new BarData(dataSet);
+        data.setBarWidth(0.2f);
+        data.setDrawValues(false);
+
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setTextColor(ContextCompat.getColor(this, R.color.text_secondary_dark));
+        xAxis.setTextSize(12);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(5);
+        xAxis.setValueFormatter((value, axis) -> labels.get((int) value));
+
+        YAxis yAxisLeft = chart.getAxisLeft();
+        yAxisLeft.setTextColor(ContextCompat.getColor(this, R.color.text_secondary_dark));
+        yAxisLeft.setPosition(YAxisLabelPosition.OUTSIDE_CHART);
+        yAxisLeft.setDrawGridLines(true);
+        yAxisLeft.setTextSize(12);
+        yAxisLeft.setAxisMaximum(5.0f);
+        yAxisLeft.setAxisMinimum(0.0f);
+        yAxisLeft.setGranularity(1f); // set interval
+        yAxisLeft.setDrawLabels(true);
+        yAxisLeft.setDrawAxisLine(false);
+        YAxis yAxisRight = chart.getAxisRight();
+        yAxisRight.setEnabled(false);
+
+        chart.setData(data);
+        chart.invalidate();
     }
 }

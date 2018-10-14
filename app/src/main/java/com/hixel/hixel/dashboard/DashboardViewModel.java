@@ -37,7 +37,7 @@ public class DashboardViewModel extends ViewModel {
         this.repository = repository;
     }
 
-    public void init() {
+    void init() {
         if (this.companies != null) {
             return;
         }
@@ -49,7 +49,8 @@ public class DashboardViewModel extends ViewModel {
         return this.companies;
     }
 
-    public void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
+
+    void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
         disposable.add(publishSubject
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()

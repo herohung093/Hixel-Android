@@ -1,5 +1,7 @@
 package com.hixel.hixel.dashboard;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -15,15 +17,23 @@ import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.R;
+import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.MainBarChartRenderer;
 import com.hixel.hixel.data.models.MainBarDataSet;
+import dagger.android.support.AndroidSupportInjection;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 
 public class BarChartFragment extends Fragment {
 
     private BarChart chart;
+    MainBarDataSet dataSet;
+
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     public BarChartFragment() { }
 
@@ -41,19 +51,52 @@ public class BarChartFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         setupChart();
-        updateChart();
     }
 
-    private void updateChart() {
+    private void configureDagger() {
+        AndroidSupportInjection.inject(this);
+    }
+
+    private void configureViewModel() {
+        DashboardViewModel viewModel = ViewModelProviders.of(this, viewModelFactory)
+                .get(DashboardViewModel.class);
+        viewModel.init();
+        viewModel.getCompanies().observe(this, this::updateChart);
+    }
+
+
+    private void updateChart(List<Company> companies) {
+        int returnsScore = 0;
+        int performanceScore = 0;
+        int strengthScore = 0;
+        int healthScore = 0;
+        int safetyScore = 0;
+
+        for (Company c : companies) {
+            returnsScore += c.getReturnsScore();
+            performanceScore += c.getPerformanceScore();
+            strengthScore += c.getStrengthScore();
+            healthScore += c.getHealthScore();
+            safetyScore += c.getSafetyScore();
+        }
+
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0, returnsScore));
+        entries.add(new BarEntry(0, performanceScore));
+        entries.add(new BarEntry(0, strengthScore));
+        entries.add(new BarEntry(0, healthScore));
+        entries.add(new BarEntry(0, safetyScore));
+
+        dataSet = new MainBarDataSet(entries, "");
+
         chart.notifyDataSetChanged();
         chart.invalidate();
     }
 
     private void setupChart() {
         List<BarEntry> entries = new ArrayList<>();
-        MainBarDataSet dataSet = new MainBarDataSet(entries, "");
+        dataSet = new MainBarDataSet(entries, "");
 
         chart.setRenderer(new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
         chart.getLegend().setEnabled(false);

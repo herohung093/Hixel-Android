@@ -74,9 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupUI() {
 
-        loginButton.setOnClickListener(view -> {
-            login();
-        });
+        loginButton.setOnClickListener(view -> login());
 
         binding.linkSignup.setOnClickListener(view -> {
             Intent moveToSignup = new Intent(getApplicationContext(),SignupActivity.class);
