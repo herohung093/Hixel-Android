@@ -1,21 +1,14 @@
-package com.hixel.hixel.login;
+package com.hixel.hixel.ui.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.R;
-import com.hixel.hixel.data.api.Client;
-import com.hixel.hixel.data.entities.User;
-import com.hixel.hixel.data.api.ServerInterface;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity {
 

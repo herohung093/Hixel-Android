@@ -7,7 +7,7 @@ import com.hixel.hixel.companydetail.CompanyDetailViewModel;
 import com.hixel.hixel.companycomparison.CompanyComparisonViewModel;
 import com.hixel.hixel.dashboard.DashboardViewModel;
 import com.hixel.hixel.ViewModelFactory;
-import com.hixel.hixel.login.LoginViewModel;
+import com.hixel.hixel.ui.login.LoginViewModel;
 import com.hixel.hixel.profile.ProfileViewModel;
 import dagger.Binds;
 import dagger.Module;

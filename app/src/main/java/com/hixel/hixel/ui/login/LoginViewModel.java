@@ -1,4 +1,4 @@
-package com.hixel.hixel.login;
+package com.hixel.hixel.ui.login;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;

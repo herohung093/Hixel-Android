@@ -1,4 +1,4 @@
-package com.hixel.hixel.login;
+package com.hixel.hixel.ui.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +10,7 @@ import com.codemybrainsout.onboarder.AhoyOnboarderActivity;
 import com.codemybrainsout.onboarder.AhoyOnboarderCard;
 import com.hixel.hixel.R;
 
+import com.hixel.hixel.ui.login.SignupActivity;
 import java.util.ArrayList;
 import java.util.List;
 

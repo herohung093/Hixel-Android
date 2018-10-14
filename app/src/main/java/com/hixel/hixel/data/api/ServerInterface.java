@@ -27,6 +27,9 @@ public interface ServerInterface {
     @Headers("No-Authentication: true")
     Call<Void> signup(@Body User request);
 
+    @GET("/users/profile")
+    Call<User> userData();
+
     @GET("/users/refresh")
     Call<Void> refreshAccessToken(@Header("Refresh") String Refresh);
 
@@ -39,6 +42,7 @@ public interface ServerInterface {
     @GET("/search")
     Single<List<SearchEntry>> doSearchQuery(@Query("query") String query);
 
+    // TODO: Method is deprecated, remove it from codebase.
     @GET("/meta/ratios")
     Call<ArrayList<String>> doMetaQuery();
 }

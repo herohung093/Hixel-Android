@@ -18,7 +18,7 @@ import com.hixel.hixel.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.databinding.ActivityProfileBinding;
-import com.hixel.hixel.login.LoginActivity;
+import com.hixel.hixel.ui.login.LoginActivity;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 

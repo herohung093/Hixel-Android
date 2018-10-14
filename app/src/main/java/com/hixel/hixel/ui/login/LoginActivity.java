@@ -1,4 +1,4 @@
-package com.hixel.hixel.login;
+package com.hixel.hixel.ui.login;
 
 import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProvider;
@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.dashboard.DashboardActivity;
 import com.hixel.hixel.databinding.ActivityLoginBinding;
+import com.hixel.hixel.login.ForgotPasswordActivity;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
