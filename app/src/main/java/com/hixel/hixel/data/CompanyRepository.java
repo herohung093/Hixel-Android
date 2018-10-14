@@ -43,8 +43,6 @@ public class CompanyRepository {
     }
 
     public LiveData<List<Company>> getCompanies(List<String> tickers) {
-        // userTickers = tickers;
-
         String[] tickersArray = new String[tickers.size()];
         refreshCompanies(tickers.toArray(tickersArray)); // try to refresh from the server if possible.
 
@@ -73,7 +71,7 @@ public class CompanyRepository {
     }
 
     public void saveCompany(Company company) {
-        companyDao.saveCompany(company);
+        executor.execute(() -> companyDao.saveCompany(company));
     }
 
     private void refreshCompanies(final String[] tickers) {

@@ -6,18 +6,18 @@ import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.CompanyRepository;
+import com.hixel.hixel.data.entities.User;
 import java.util.List;
 import javax.inject.Inject;
 
 
 public class CompanyDetailViewModel extends ViewModel {
 
-    private MutableLiveData<Company> company;
-
     private CompanyRepository companyRepository;
     private UserRepository userRepository;
 
-    private boolean isInPortfolio = false;
+    private MutableLiveData<Company> company;
+    private LiveData<User> user;
 
     @Inject
     CompanyDetailViewModel(CompanyRepository companyRepository, UserRepository userRepository) {
@@ -25,34 +25,30 @@ public class CompanyDetailViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    void init(String ticker) {
+    void init() {
+        if (this.user != null) {
+            return;
+        }
+
+        user = userRepository.getUser();
+    }
+
+    void loadCompany(String ticker) {
         if (this.company != null) {
             return;
         }
 
-        List<String> tickers = userRepository.getUserTickers();
-
-        if (tickers.contains(ticker)) {
-            isInPortfolio = true;
-        }
-
         company = companyRepository.getCompany(ticker);
     }
 
-
-    void loadCompany(String ticker) {
-        company = companyRepository.getCompany(ticker);
-    }
+    public LiveData<User> getUser() { return user; }
 
     public MutableLiveData<Company> getCompany() {
         return this.company;
     }
 
-    void saveCompany() {
-        companyRepository.saveCompany(company.getValue());
+    void saveCompany(Company savedCompany) {
+        companyRepository.saveCompany(savedCompany);
     }
 
-    boolean companyIsInPortfolio(String ticker) {
-        return isInPortfolio;
-    }
 }

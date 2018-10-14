@@ -49,8 +49,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    CompanyRepository provideCompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, Executor executor) {
-        return new CompanyRepository(serverInterface, companyDao, executor);
+    CompanyRepository provideCompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, UserRepository userRepository, Executor executor) {
+        return new CompanyRepository(serverInterface, companyDao, userRepository, executor);
     }
 
     @Provides

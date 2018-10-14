@@ -15,8 +15,10 @@ import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import dagger.android.AndroidInjection;
+import java.util.List;
 import javax.inject.Inject;
 
 public class CompanyDetailActivity extends AppCompatActivity {
@@ -62,6 +64,14 @@ public class CompanyDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void updateCompany(User user, String ticker) {
+        if (user != null) {
+            List<String> tickers = user.getPortfolio().getCompanies();
+            viewModel.loadCompany(ticker);
+            viewModel.getCompany().observe(this, this::updateUI);
+        }
+    }
+
     private void updateUI(Company company) {
         if (company != null) {
 
@@ -72,12 +82,12 @@ public class CompanyDetailActivity extends AppCompatActivity {
             // Setup FAB
             binding.fab.setOnClickListener(v -> {
                 Intent backIntent = getIntent();
-                viewModel.saveCompany();
+                viewModel.saveCompany(company);
                 setResult(RESULT_OK, backIntent);
                 finish();
             });
 
-            if (viewModel.companyIsInPortfolio(company.getTicker())) {
+            if (false) {
                 binding.fab.setVisibility(View.INVISIBLE);
             }
 
