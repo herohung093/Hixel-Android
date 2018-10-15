@@ -69,6 +69,7 @@
       <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <!--
         <fragment
           android:id="@+id/fragment_bar_char"
           android:layout_width="match_parent"
@@ -76,6 +77,7 @@
           android:layout_alignParentBottom="true"
           android:layout_alignParentStart="true"
           android:name="com.hixel.hixel.ui.companycomparison.GraphFragment"/>
+          -->
       </android.support.v7.widget.CardView>
       <View
         android:id="@+id/divider6"
@@ -117,13 +119,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true">
+        <!--
         <fragment
           android:id="@+id/fragment_radar_chart"
           android:layout_width="match_parent"
           android:layout_height="320dp"
           android:name="com.hixel.hixel.ui.companycomparison.GenericChartFragment"/>
+          -->
       </android.support.v7.widget.CardView>
-
+  <!--
     <fragment
       android:id="@+id/graphFragment"
       android:layout_width="371dp"
@@ -136,6 +140,8 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/spinner_Container"/>
+      -->
+
     <android.support.design.widget.BottomNavigationView
       android:id="@+id/navigator"
       android:layout_width="379dp"
@@ -152,6 +158,7 @@
       app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
   </ScrollView>
+
   <android.support.design.widget.BottomNavigationView
     android:id="@+id/graph_generic_navigator"
     android:layout_width="match_parent"

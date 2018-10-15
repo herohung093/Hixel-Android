@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.api.Client;
@@ -78,7 +77,6 @@ public class CompanyComparisonViewModel extends ViewModel {
     }
 
     void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
-        Log.d(TAG, "setupSearch: HERE");
         disposable.add(publishSubject
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
@@ -92,7 +90,6 @@ public class CompanyComparisonViewModel extends ViewModel {
     }
 
     void loadSearchResults(String query) {
-        Log.d(TAG, "loadSearchResults: " + query);
         publishSubject.onNext(query);
     }
 

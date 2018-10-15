@@ -1,32 +1,38 @@
 package com.hixel.hixel.ui.companycomparison;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.util.Log;
-import com.hixel.hixel.data.api.Client;
-import com.hixel.hixel.data.api.ServerInterface;
-import android.support.annotation.NonNull;
+import android.arch.lifecycle.ViewModel;
+import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.entities.Company;
-import java.util.ArrayList;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.List;
+import javax.inject.Inject;
 
-public class GraphViewModel extends AndroidViewModel {
+public class GraphViewModel extends ViewModel {
 
     @SuppressWarnings("unused")
-    private final String TAG = getClass().getSimpleName();
+    private final String TAG = GraphViewModel.class.getSimpleName();
 
-    private MutableLiveData<ArrayList<Company>> companies;
-    private LiveData<ArrayList<String>> ratios;
+    private CompanyRepository companyRepository;
+    private LiveData<List<Company>> companies;
 
-    public GraphViewModel(@NonNull Application application) {
-        super(application);
-        loadRatios();
+    @Inject
+    GraphViewModel(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
     }
 
+    void init(List<String> tickers) {
+        if (this.companies != null) {
+            return;
+        }
+
+        companies = companyRepository.getCompanies(tickers);
+    }
+
+    LiveData<List<Company>> getCompanies() {
+        return companies;
+    }
+
+    /*
     private void loadRatios(){
         ratios = doMeta();
     }
@@ -56,7 +62,7 @@ public class GraphViewModel extends AndroidViewModel {
         return companies;
     }
 
-    public LiveData<ArrayList<String>> getRatios() {
+    LiveData<ArrayList<String>> getRatios() {
         return ratios;
-    }
+    }*/
 }

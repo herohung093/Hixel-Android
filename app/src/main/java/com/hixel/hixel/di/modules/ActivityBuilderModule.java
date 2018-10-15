@@ -1,6 +1,7 @@
 package com.hixel.hixel.di.modules;
 
 import com.hixel.hixel.ui.companycomparison.CompanyComparisonActivity;
+import com.hixel.hixel.ui.companycomparison.GraphActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.ui.login.ForgotPasswordActivity;
@@ -25,6 +26,9 @@ public abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract CompanyComparisonActivity comparisonComparisonActivity();
+
+    @ContributesAndroidInjector
+    abstract GraphActivity graphActivity();
 
     @ContributesAndroidInjector
     abstract LoginActivity loginActivity();

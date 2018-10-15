@@ -3,6 +3,7 @@ package com.hixel.hixel.di.modules;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import com.hixel.hixel.di.ViewModelKey;
+import com.hixel.hixel.ui.companycomparison.GraphViewModel;
 import com.hixel.hixel.ui.companydetail.CompanyDetailViewModel;
 import com.hixel.hixel.ui.companycomparison.CompanyComparisonViewModel;
 import com.hixel.hixel.ui.dashboard.DashboardViewModel;
@@ -44,6 +45,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ProfileViewModel.class)
     abstract ViewModel bindProfileViewModel(ProfileViewModel profileViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GraphViewModel.class)
+    abstract ViewModel bindGraphViewModel(GraphViewModel graphViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
