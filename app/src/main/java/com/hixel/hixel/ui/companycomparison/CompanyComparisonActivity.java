@@ -35,6 +35,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
+/**
+ * Entry point for comparing companies. User adds companies to the comparison
+ * list and then moves onto the comparison view.
+ */
 public class CompanyComparisonActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
@@ -49,7 +53,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     private RecyclerView comparisonCompaniesRecyclerView;
     private RecyclerView dashboardCompaniesRecyclerView;
     private CompanyListAdapter comparisonCompaniesAdapter;
-    private HorizontalCompanyListAdapter horizontalCompanyListAdapter;
     private Button compareButton;
     private SearchAutoComplete searchAutoComplete;
 
@@ -89,6 +92,10 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         viewModel.getComparisonCompanies().observe(this, this::updateComparisonCompanies);
     }
 
+    /**
+     * Gets the current companies in the users portfolio
+     * @param user The current user
+     */
     public void updateDashboardCompanies(User user) {
         if (user != null) {
             List<String> tickers = user.getPortfolio().getCompanies();
@@ -98,6 +105,11 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Updates the companies in the comparison recycler view and the comparisonCompanies
+     * variable.
+     * @param companies The list of companies for the comparison recyclerView
+     */
     public void updateComparisonCompanies(List<Company> companies) {
         if (companies != null && companies.get(0) != null) {
             comparisonCompaniesAdapter.addCompanies(companies);
@@ -105,6 +117,10 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets up the list of companies currently in the users portfolio.
+     * @param companies The companies in the users portfolio
+     */
     private void setupDashboardCompanyListAdapter(List<Company> companies) {
         if (companies != null) {
             HorizontalCompanyListAdapter horizontalCompanyListAdapter = new HorizontalCompanyListAdapter(companies);
@@ -121,6 +137,9 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method sets up the adapter layout and swiping interactions.
+     */
     private void setupComparisonAdapter() {
         comparisonCompaniesAdapter = new CompanyListAdapter(this, new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -133,6 +152,9 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         setUpItemTouchHelper();
     }
 
+    /**
+     * Method sets up the bottom navigation view
+     */
     public void setupBottomNavigationView() {
         binding.bottomNavigation.bottomNavigation.setSelectedItemId(R.id.compare_button);
         binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
@@ -151,6 +173,10 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method enables dragging companies from the dashboard recycler view onto
+     * the list of companies to compare
+     */
     private void dragDownToAdd(){
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
                 new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.DOWN) {
@@ -199,6 +225,9 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         mItemTouchHelper.attachToRecyclerView(dashboardCompaniesRecyclerView);
     }
 
+    /**
+     * Method adds an onClickListener to the compare button to move to the compare charts
+     */
     private void setupButtons() {
         compareButton.setOnClickListener((View view) -> {
             Intent moveToGraph = new Intent(this, GraphActivity.class);
@@ -216,6 +245,9 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method handles swiping to delete on the Comparison recycler view
+     */
     private void setUpItemTouchHelper() {
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -262,6 +294,9 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         mItemTouchHelper.attachToRecyclerView(comparisonCompaniesRecyclerView);
     }
 
+    /**
+     * Method sets up the main search view
+     */
     private void setupSearchView() {
         SearchView search = binding.searchView;
 
@@ -299,6 +334,10 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method used to provide an Observer for searching companies
+     * @return DisposableObserver List of Search Entries
+     */
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {
         return new DisposableObserver<List<SearchEntry>>() {
             @Override
@@ -314,6 +353,10 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * Method displays the search results in the dropdown of the search view
+     * @param searchResults The list of search results
+     */
     public void showSearchResults(List<SearchEntry> searchResults) {
         SearchAdapter adapter = new SearchAdapter(this, searchResults);
         searchAutoComplete.setAdapter(adapter);

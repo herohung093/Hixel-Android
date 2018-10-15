@@ -26,10 +26,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * ViewModel for interacting with the ComparisonActivity, pulls data from the
+ * User and Company repositories to display to the user.
+ *
+ * NOTE: No data should be saved into a DAO.
+ */
 public class CompanyComparisonViewModel extends ViewModel {
-
-    @SuppressWarnings("unused")
-    private final String TAG = CompanyComparisonViewModel.class.getSimpleName();
 
     private CompanyRepository companyRepository;
     private UserRepository userRepository;
@@ -48,6 +51,10 @@ public class CompanyComparisonViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Method to be called after instantiation, checks to see if a user object exists
+     * if not it fetches the user from the repository.
+     */
     void init() {
         if (this.user != null) {
             return;
@@ -56,6 +63,11 @@ public class CompanyComparisonViewModel extends ViewModel {
         user = userRepository.getUser();
     }
 
+    /**
+     * Method checks if the dashboard companies object exists, if not it fetches the
+     * data from the repository.
+     * @param tickers The list of dashboard companies to be fetched
+     */
     void loadDashboardCompanies(List<String> tickers) {
         if (this.dashboardCompanies != null) {
             return;
@@ -64,18 +76,34 @@ public class CompanyComparisonViewModel extends ViewModel {
         dashboardCompanies = companyRepository.getCompanies(tickers);
     }
 
+    /**
+     * Method to get a live data User
+     * @return A Live Data User to observe any changes to the User
+     */
     public LiveData<User> getUser() {
         return user;
     }
 
+    /**
+     * Method to get a List of Live Data Companies from the dashbaord list.
+     * @return A list of Live Data Companies
+     */
     LiveData<List<Company>> getDashboardCompanies() {
         return dashboardCompanies;
     }
 
+    /**
+     * Method to return a List of Live data Companies from the comparison list.
+     * @return A list of Live Data Companies
+     */
     LiveData<List<Company>> getComparisonCompanies() {
         return comparisonCompanies;
     }
 
+    /**
+     * Method sets up the search for the Activity
+     * @param observer A list of search entries wrapped in a DisposableObserver
+     */
     void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
         disposable.add(publishSubject
                 .debounce(300, TimeUnit.MILLISECONDS)
@@ -88,6 +116,7 @@ public class CompanyComparisonViewModel extends ViewModel {
                         .observeOn(AndroidSchedulers.mainThread()))
                 .subscribeWith(observer));
     }
+
 
     void loadSearchResults(String query) {
         publishSubject.onNext(query);

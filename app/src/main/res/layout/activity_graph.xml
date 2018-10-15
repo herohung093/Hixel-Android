@@ -124,35 +124,6 @@
           android:layout_height="320dp"
           android:name="com.hixel.hixel.ui.companycomparison.GenericChartFragment"/>
       </android.support.v7.widget.CardView>
-  <!--
-    <fragment
-      android:id="@+id/graphFragment"
-      android:layout_width="371dp"
-      android:layout_height="485dp"
-      android:layout_marginBottom="8dp"
-      android:layout_marginStart="8dp"
-      android:layout_marginEnd="8dp"
-      android:name="com.hixel.hixel.ui.companycomparison.GraphFragment"
-      app:layout_constraintBottom_toTopOf="@+id/navigator"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/spinner_Container"/>
-      -->
-
-    <android.support.design.widget.BottomNavigationView
-      android:id="@+id/navigator"
-      android:layout_width="379dp"
-      android:layout_height="40dp"
-      android:layout_marginTop="8dp"
-      android:layout_marginStart="8dp"
-      android:layout_marginEnd="8dp"
-      android:layout_alignParentBottom="true"
-      android:background="@android:color/background_light"
-      android:visibility="visible"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.333"
-      app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
   </ScrollView>
 
