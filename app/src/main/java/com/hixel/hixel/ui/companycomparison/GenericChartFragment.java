@@ -21,6 +21,7 @@ import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class GenericChartFragment extends Fragment {
@@ -44,7 +45,7 @@ public class GenericChartFragment extends Fragment {
         return view;
     }
 
-    public void drawGraph(ArrayList<Company> companies){
+    public void drawGraph(List<Company> companies){
 
         ArrayList<RadarEntry> entries1= new ArrayList<>();
 

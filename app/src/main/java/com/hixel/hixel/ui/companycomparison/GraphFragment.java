@@ -12,8 +12,6 @@ import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -22,6 +20,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.entities.CompanyData;
+import com.hixel.hixel.ui.companycomparison.GenericChartFragment.OnFragmentInteractionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,6 @@ public class GraphFragment extends Fragment {
     private CombinedChart mChart;
     String[] years;
     ArrayList<Integer> colors = new ArrayList<>();
-    private OnFragmentInteractionListener listener;
 
     public GraphFragment() { }
 
@@ -55,85 +53,39 @@ public class GraphFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
         mChart =  view.findViewById(R.id.chart1);
+
         return view;
     }
 
-    public LineDataSet lineChartDataSetup( String selectedRatio, Company company){
-        List <Entry> compEntry = new ArrayList<>();
-        List<CompanyData> companyData = null; //company.getFinancialDataEntries();
-        checkYearNull(companyData);
+    // TODO: Make this display 5 years of data
+    public LineDataSet lineChartDataSetup(String selectedRatio, Company company){
+        List<Entry> compEntry = new ArrayList<>();
 
-        createListOfYears(companyData);
-        int j = 4;
-        for (int i=0;i<5;i++) {
-         //   LinkedHashMap<String, Double> DataCompAYear1 = companyData.get(j).getCurrentRatio();
-            j--;
-         //   Entry compYearData = new Entry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
-         //   compEntry.add(compYearData);
+        // checkYearNull(companyData);
+        createListOfYears();
+
+        for (int i = 0; i < 5; i++) {
+            compEntry.add(new Entry(i, (float) company.getCurrentRatio()));
         }
 
-
-        return null; //new LineDataSet(compEntry,company.getIdentifiers().getTicker());
+        return new LineDataSet(compEntry, company.getTicker());
     }
 
-    public BarDataSet barChartDataSetup(String selectedRatio, Company company){
-        List<BarEntry> compEntry = new ArrayList<>();
-      //  List<CompanyData> financialData = company.getFinancialDataEntries();
-      //  checkYearNull(financialData);
-      //  createListOfYears(financialData);
-        int j=4;
-        for (int i=0;i<5;i++){
-        //    LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
-            j--;
-        //    BarEntry compYearData = new BarEntry(i, Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
-        //    compEntry.add(compYearData);
-        }
-        return null; // new BarDataSet(compEntry,company.getIdentifiers().getTicker());
-    }
-    public void colorIndicator(Company company, String selectedRatio, ArrayList<Integer> colors){
-        ArrayList<Float> rawData= new ArrayList<>();
-        ArrayList<Float> sortedData= new ArrayList<>();
-       // List<CompanyData> financialData= company.getFinancialDataEntries();
-       // checkYearNull(financialData);
-
-        int j=4;
-        for (int i=0; i < 5; i++){
-        //    LinkedHashMap<String, Double> DataCompAYear1 = financialData.get(j).getRatios();
-            j--;
-        //    rawData.add(Float.valueOf(DataCompAYear1.get(selectedRatio).toString()));
-            colors.add(0);
-        }
-        sortedData.addAll(rawData);
-
-       // Collections.sort(sortedData);
-        for(int i=1;i<rawData.size();i++){
-            if(rawData.get(i)==sortedData.get(0))
-                colors.add(i-1,getResources().getColor(R.color.bad));
-            else
-            if(rawData.get(i)>rawData.get(i-1)){
-                colors.add(i-1,getResources().getColor(R.color.good));
-            }else
-            if (rawData.get(i)<rawData.get(i-1)){
-                colors.add(i-1,getResources().getColor(R.color.bad));
-            }else colors.add(i-1,getResources().getColor(R.color.average));
-        }
-
-    }
-
-    public void drawGraph(ArrayList<Company> companies,String selectedRatio){
+    public void drawGraph(List<Company> companies,String selectedRatio){
 
         LineData lineData = new LineData();
-       ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
-        for(int i=0;i<companies.size();i++){
+        ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
+
+        for(int i = 0; i < companies.size(); i++){
             LineDataSet setComp= lineChartDataSetup( selectedRatio, companies.get(i));
             lineDataSets.add(setComp);
         }
 
-
         setupDatasetStyle(lineDataSets);
-        for(int i=0;i<lineDataSets.size();i++){
+        for(int i = 0; i < lineDataSets.size();i++){
             lineData.addDataSet(lineDataSets.get(i));
         }
+
         //draw graph
         mChart.setDrawOrder(new CombinedChart.DrawOrder[]{
             CombinedChart.DrawOrder.BAR,  CombinedChart.DrawOrder.LINE
@@ -143,12 +95,13 @@ public class GraphFragment extends Fragment {
         CombinedData data = new CombinedData();
 
         data.setData( lineData);
-        //data.setData(barData);
+
         mChart.getDescription().setEnabled(false);
         mChart.setData(data);
         mChart.invalidate();
 
     }
+
 
     public void decorLineChart(CombinedChart chart){
 
@@ -156,7 +109,7 @@ public class GraphFragment extends Fragment {
         chart.setDrawGridBackground(false);
         XAxis xAxis = chart.getXAxis();
         xAxis.setValueFormatter((value, axis) -> {
-            if(value ==0) {
+            if(value == 0) {
                 return "N/A";
             } else {
                 return String.valueOf(value);
@@ -188,18 +141,14 @@ public class GraphFragment extends Fragment {
         }
     }
 
-    private void createListOfYears(List<CompanyData> companyDataCompA) {
-        List<String> toConvertYears = new ArrayList<>();
+    private void createListOfYears() {
+        String[] y = {"1", "2", "3", "4", "5"};
 
-        for (int i = companyDataCompA.size() - 1; i >= 0; i--) {
-           // toConvertYears.add(String.valueOf(companyDataCompA.get(i).getYear()));
-        }
-
-        years = toConvertYears.toArray(new String[toConvertYears.size()]);
+        years = y;// toConvertYears.toArray(new String[toConvertYears.size()]);
     }
 
     public void setupDatasetStyle(ArrayList<LineDataSet> lineDataSets) {
-        for (int i=0; i < lineDataSets.size(); i++){
+        for (int i = 0; i < lineDataSets.size(); i++){
             lineDataSets.get(i).setDrawCircleHole(true);
             lineDataSets.get(i).setValueTextSize(12);
             lineDataSets.get(i).setValueTextColor(colors.get(i));
@@ -245,21 +194,23 @@ public class GraphFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+/*
         if (context instanceof OnFragmentInteractionListener) {
             listener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        listener = null;
+        OnFragmentInteractionListener listener = null;
     }
 
+    /*
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         // void onFragmentInteraction(Uri uri);
-    }
+    }*/
 }
