@@ -26,7 +26,6 @@ import java.util.List;
 
 public class GenericChartFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
     private RadarChart radarChart;
 
     public GenericChartFragment() { }
@@ -45,7 +44,7 @@ public class GenericChartFragment extends Fragment {
         return view;
     }
 
-    public void drawGraph(List<Company> companies){
+    public void drawGraph(List<Company> companies) {
 
         ArrayList<RadarEntry> entries1= new ArrayList<>();
 
@@ -62,8 +61,8 @@ public class GenericChartFragment extends Fragment {
         entries2.add(new RadarEntry(3f, 4));
         entries2.add(new RadarEntry(4f, 5));
 
-        RadarDataSet dataSet_compA= null; //new RadarDataSet(entries1,companies.get(0).getIdentifiers().getName());
-        RadarDataSet dataSet_compB= null; //new RadarDataSet(entries2,companies.get(1).getIdentifiers().getName());
+        RadarDataSet dataSet_compA = new RadarDataSet(entries1,companies.get(0).getName());
+        RadarDataSet dataSet_compB = new RadarDataSet(entries2,companies.get(1).getName());
 
         //set color
         dataSet_compA.setDrawFilled(true);
@@ -84,7 +83,7 @@ public class GenericChartFragment extends Fragment {
         dataSet_compB.setDrawHighlightIndicators(false);
         dataSet_compB.setValueTextColor(Color.rgb(60, 220, 78));
 
-        ArrayList<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
+        ArrayList<IRadarDataSet> sets = new ArrayList<>();
         sets.add(dataSet_compA);
         sets.add(dataSet_compB);
 
@@ -145,17 +144,18 @@ public class GenericChartFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        /*
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        OnFragmentInteractionListener mListener = null;
     }
 
     interface OnFragmentInteractionListener { }

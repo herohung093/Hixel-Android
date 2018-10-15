@@ -74,7 +74,7 @@ public class GraphActivity extends FragmentActivity {
             int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
             int height = (int)(getResources().getDisplayMetrics().heightPixels*0.90);
             dialog.getWindow().setLayout(width,height);
-            ImageView close_ib =dialog.findViewById(R.id.popup_ib_close);
+            ImageView close_ib = dialog.findViewById(R.id.popup_ib_close);
 
             close_ib.setOnClickListener(dialogView -> dialog.dismiss());
             dialog.show();
@@ -128,8 +128,8 @@ public class GraphActivity extends FragmentActivity {
         checkUpFinancialEntry(spinnerList);
         fragmentA.drawGraph(companies,spinnerList.get(0));
 
-        // GenericChartFragment fragmentB = (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
-        // fragmentB.drawGraph(companies);
+        GenericChartFragment fragmentB = (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
+        fragmentB.drawGraph(companies);
     }
 
 
