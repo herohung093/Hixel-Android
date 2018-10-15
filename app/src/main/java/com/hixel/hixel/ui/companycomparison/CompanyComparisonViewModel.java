@@ -49,7 +49,7 @@ public class CompanyComparisonViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    public void init() {
+    void init() {
         if (this.user != null) {
             return;
         }

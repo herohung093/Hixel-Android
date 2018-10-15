@@ -2,6 +2,11 @@ package com.hixel.hixel.data.entities;
 
 import com.google.gson.annotations.SerializedName;
 
+
+/**
+ * Immutable CompanyData Entity to interact with company information
+ * and store it within the RoomDB
+ */
 public class CompanyData {
     @SerializedName("Current Ratio")
     private double currentRatio;

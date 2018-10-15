@@ -36,6 +36,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     private ActivityProfileBinding binding;
 
+    private String firstName;
+    private String lastName;
+    private String password;
+
     private Dialog dialog;
 
     @Override
@@ -113,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             binding.confirmEditNameButton.setOnClickListener(view2 -> {
                 String name = binding.name.getText().toString();
-                viewModel.setFirstName(name);
+
             });
         });
 
@@ -124,7 +128,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             binding.confirmEditEmailButton.setOnClickListener(view2 -> {
                 String email = binding.email.getText().toString();
-                viewModel.setSecondName(email);
+
             });
         });
 
@@ -170,7 +174,7 @@ public class ProfileActivity extends AppCompatActivity {
         String second = retypedPassword.getText().toString();
 
         if (viewModel.isValidPassword(first, second)) {
-            viewModel.setPassword(first);
+
         } else {
             displaySnackbar("Error with passwords. Try again.");
         }

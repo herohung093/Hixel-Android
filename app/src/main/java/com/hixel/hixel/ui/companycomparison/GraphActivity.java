@@ -2,6 +2,7 @@ package com.hixel.hixel.ui.companycomparison;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -19,11 +20,13 @@ import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.ui.profile.ProfileActivity;
 import java.util.ArrayList;
+import javax.inject.Inject;
 
 public class GraphActivity extends FragmentActivity implements OnFragmentInteractionListener {
 
-    @SuppressWarnings("unused")
-    private final String TAG = getClass().getSimpleName();
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private GraphViewModel viewModel;
 
     ArrayList<String> ratios = new ArrayList<>();
     RecyclerView mRecyclerView, companyRecycleView;
@@ -32,6 +35,7 @@ public class GraphActivity extends FragmentActivity implements OnFragmentInterac
     Intent intentReceiver;
     GraphFragment fragmentA;
     ProgressDialog progressDialog;
+
     ArrayList<Company> receivedCompanies;
     GraphViewModel graphViewModel;
     ImageView infoButton;
@@ -41,6 +45,7 @@ public class GraphActivity extends FragmentActivity implements OnFragmentInterac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
+
         progressDialog = new ProgressDialog(this);
         progressDialog.getWindow().setGravity(Gravity.CENTER);
 
@@ -64,8 +69,8 @@ public class GraphActivity extends FragmentActivity implements OnFragmentInterac
         progressDialog.dismiss();
 
         infoButton = findViewById(R.id.imageView3);
-        infoButton.setOnClickListener(view -> {
 
+        infoButton.setOnClickListener(view -> {
             final Dialog dialog= new Dialog(context);
             dialog.setContentView(R.layout.information_popup_window);
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

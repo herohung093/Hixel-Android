@@ -7,6 +7,9 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Converts between String a List of Strings for company tickers
+ */
 public class PortfolioTypeConverter {
     private static Gson gson = new Gson();
 

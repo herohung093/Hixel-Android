@@ -13,6 +13,9 @@ import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+/**
+ * Custom class for rendering BarCharts
+ */
 public class MainBarChartRenderer extends BarChartRenderer{
 
     @SuppressWarnings("unused")

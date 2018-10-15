@@ -4,6 +4,9 @@ import android.arch.persistence.room.TypeConverters;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
+/**
+ * Portfolio object used to interact with list of tickers
+ */
 public class Portfolio {
 
     @SerializedName("companies")

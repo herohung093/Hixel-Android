@@ -18,6 +18,9 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
+/**
+ * All calls needed to interact with the API
+ */
 public interface ServerInterface {
 
     @POST("/login")

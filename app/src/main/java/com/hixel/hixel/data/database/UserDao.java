@@ -8,9 +8,12 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 import com.hixel.hixel.data.entities.User;
-import java.util.Date;
 import java.util.List;
 
+/**
+ * Data Access Object for the users table.
+ * This uses LiveData so we can notify observers when the data changes.
+ */
 @Dao
 public interface UserDao {
 

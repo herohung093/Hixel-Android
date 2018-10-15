@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Immutable User object.
+ * User Entity, used to read in from the API and store in RoomDB
  */
 // TODO: Need a string of tickers from the user.
 @Entity(tableName = "user")

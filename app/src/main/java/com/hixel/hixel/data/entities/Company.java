@@ -2,8 +2,11 @@ package com.hixel.hixel.data.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 /**
  * Immutable Company Entity
@@ -94,6 +97,13 @@ public class Company {
 
     // TODO: Do this in a nicer way, and test against a bunch of companies.
     // TODO: Get a better way of checking for null object.
+
+    /**
+     * Method formats the companies name, ensures all companies
+     * names look alike
+     *
+     * @return The formatted name
+     */
     public String getFormattedName() {
         try {
             return (this.getName()
@@ -105,6 +115,12 @@ public class Company {
         }
     }
 
+    /**
+     * Method formats the companies ticker, ensures all tickers
+     * look alike.
+     *
+     * @return The formatted ticker
+     */
     public String getFormattedTicker() {
         try {
             return String.format("NASDAQ: %s", getTicker());
@@ -113,25 +129,50 @@ public class Company {
         }
     }
 
+    /**
+     * Method returns the returns score of the company out of 5
+     * @return The returns score out of 5
+     */
     public int getReturnsScore() {
         // TODO: Need to use dividend yield.
         return generateScore(this.returnOnAssets);
     }
 
+    /**
+     * Method returns the performance score of the company out of 5
+     * @return The performance score out of 5
+     */
     public int getPerformanceScore() {
         return generateScore(this.returnOnEquity);
     }
 
+    /**
+     * Method returns the strength score of the company out of 5
+     * @return The strength score out of 5
+     */
     public int getStrengthScore() { return generateScore(this.interestCoverage); }
 
+    /**
+     * Method returns the health score of the company out of 5
+     * @return The health score out of 5
+     */
     public int getHealthScore() {
         return generateScore(this.currentRatio);
     }
 
+    /**
+     * Method returns the safety score of the company out of 5
+     * @return The sagety score out of 5
+     */
     public int getSafetyScore() {
         return generateScore(this.currentDebtToEquity);
     }
 
+    /**
+     * Method generates a score based upon the input ratio
+     * @param ratio
+     * @return The score for the corresponding ratio
+     */
     private int generateScore(double ratio) {
         int score = 1;
 

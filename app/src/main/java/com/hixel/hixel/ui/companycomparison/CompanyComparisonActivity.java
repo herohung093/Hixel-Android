@@ -52,7 +52,9 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     private HorizontalCompanyListAdapter horizontalCompanyListAdapter;
     private Button compareButton;
     private SearchAutoComplete searchAutoComplete;
+
     List<Company> dashboardCompanies;
+    List<Company> comparisonCompanies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +101,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     public void updateComparisonCompanies(List<Company> companies) {
         if (companies != null && companies.get(0) != null) {
             comparisonCompaniesAdapter.addCompanies(companies);
+            comparisonCompanies = companies;
         }
     }
 
@@ -199,13 +202,16 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     private void setupButtons() {
         compareButton.setOnClickListener((View view) -> {
             Intent moveToGraph = new Intent(this, GraphActivity.class);
-            // ArrayList<Company> companies = viewModel.getCompanies().getValue();
-            // List<Company> deDupStringList3 = companies.stream().distinct().collect(Collectors.toList());
 
             // TODO: Some if-statement to make this show only if the user has not selected two companies
             Toast.makeText(getApplicationContext(), "Select at least 2 companies!", Toast.LENGTH_LONG).show();
 
-            // moveToGraph.putExtra("COMPARISON_COMPANIES", (Serializable) deDupStringList3);
+            ArrayList<String> comparisonCompanyTickers = new ArrayList<>();
+            for (Company c : comparisonCompanies) {
+                comparisonCompanyTickers.add(c.getTicker());
+            }
+
+            moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES", comparisonCompanyTickers);
             startActivity(moveToGraph);
         });
     }

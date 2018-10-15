@@ -16,11 +16,18 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Provides a Retrofit client to interface with the api
+ */
 public class Client {
 
     private static Retrofit retrofit = null;
     private static OkHttpClient okHttpClient;
 
+    /**
+     * Initialises a retrofit instance
+     * @return The retrofit instance
+     */
     public static synchronized Retrofit getClient() {
 
         if (okHttpClient == null) {
@@ -44,6 +51,9 @@ public class Client {
         return retrofit;
     }
 
+    /**
+     * Method initialises an OkHttp instance
+     */
     private static void initOkHttp() {
         OkHttpClient.Builder httpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
