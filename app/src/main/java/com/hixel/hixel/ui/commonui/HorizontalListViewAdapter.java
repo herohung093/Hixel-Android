@@ -14,22 +14,23 @@ import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.ui.GraphInterface;
 import java.util.List;
 
-public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> implements View.OnClickListener {
+public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> {
 
     private List<Company> companies;
     private GraphInterface fragmentGraph;
     private Context context;
     private int rowIndex = 0;
 
-    // TODO: XML or Const file?
-    private static final String[] ratios = {
-            "Returns", "Current Ratio", "Performance", "Strength", "Health", "Safety"
-    };
+    private HorizontalListViewOnClickListener listener;
 
-    public HorizontalListViewAdapter(Context context, List<Company> companies, GraphInterface fragmentGraph) {
+    // TODO: XML or Const file?
+    private static final String[] ratios = {"Returns", "Performance", "Strength", "Health", "Safety"};
+
+    public HorizontalListViewAdapter(Context context, List<Company> companies, GraphInterface fragmentGraph, HorizontalListViewOnClickListener listener) {
         this.context = context;
         this.companies = companies;
         this.fragmentGraph = fragmentGraph;
+        this.listener = listener;
     }
 
     @NonNull
@@ -75,11 +76,14 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
 
         holder.tvSpecies.setText(ratios[position]);
 
+        // TODO: This is messy.
         holder.tvSpecies.setOnClickListener(view -> {
             //fragmentGraph.drawGraph(companies,ratios.get(position));
             notifyItemChanged(rowIndex);
             rowIndex = position;
             notifyItemChanged(rowIndex);
+
+            listener.onClick(ratios[position]);
         });
     }
 
@@ -88,12 +92,7 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
         return ratios.length;
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder  {
         public CardView cardView;
         TextView tvSpecies;
 

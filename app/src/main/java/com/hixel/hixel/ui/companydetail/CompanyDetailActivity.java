@@ -82,7 +82,6 @@ public class CompanyDetailActivity extends AppCompatActivity
 
         viewModel.init();
         viewModel.getUser().observe(this, (user) -> updateCompany(user, ticker));
-
     }
 
     /**
@@ -177,8 +176,8 @@ public class CompanyDetailActivity extends AppCompatActivity
         List<Company> companies = new ArrayList<>();
         companies.add(company);
 
-        RecyclerView.Adapter adapter = new HorizontalListViewAdapter(this, companies, fragment);
-        recyclerView.setAdapter(adapter);
+        // RecyclerView.Adapter adapter = new HorizontalListViewAdapter(this, companies, fragment);
+        // recyclerView.setAdapter(adapter);
 
         fragment.drawGraph(company, ratios.get(0));
     }

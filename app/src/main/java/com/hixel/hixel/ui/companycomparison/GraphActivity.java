@@ -10,6 +10,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageView;
 
@@ -18,6 +19,7 @@ import com.hixel.hixel.ui.GraphInterface;
 import com.hixel.hixel.ui.commonui.CompanyScoreListAdapter;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
+import com.hixel.hixel.ui.commonui.HorizontalListViewOnClickListener;
 import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.ui.profile.ProfileActivity;
 
@@ -33,7 +35,11 @@ import javax.inject.Inject;
 // TODO: Change to AppCompat not FragmentActivity
 // TODO: Databinding
 public class GraphActivity extends FragmentActivity implements
-        GenericChartFragment.OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener {
+        GenericChartFragment.OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener,
+        HorizontalListViewOnClickListener {
+
+    @SuppressWarnings("unused")
+    private static final String TAG = GraphActivity.class.getSimpleName();
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -45,6 +51,11 @@ public class GraphActivity extends FragmentActivity implements
 
     GraphInterface fragmentA;
     ProgressDialog progressDialog;
+
+    // Ratio that the user has selected from the horizontal list of ratios.
+    private String selectedRatio = "Returns";
+
+    List<Company> companies;
 
 
     // TODO: Large method, see if it can be refactored sensibly.
@@ -137,14 +148,6 @@ public class GraphActivity extends FragmentActivity implements
      * @param companies Companies being compared.
      */
     public void setupListOfRatios(List<Company> companies) {
-        // TODO: This should be done in an xml file.
-        ArrayList<String> spinnerList = new ArrayList<>();
-        spinnerList.add("Returns");
-        spinnerList.add("Current Ratio");
-        spinnerList.add("Performance");
-        spinnerList.add("Strength");
-        spinnerList.add("Health");
-        spinnerList.add("Safety");
 
         mRecyclerView = findViewById(R.id.ratios_list_view);
         mRecyclerView.setHasFixedSize(true);
@@ -152,10 +155,12 @@ public class GraphActivity extends FragmentActivity implements
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new HorizontalListViewAdapter(this, companies, fragmentA);
+        mAdapter = new HorizontalListViewAdapter(this, companies, fragmentA, this);
         mRecyclerView.setAdapter(mAdapter);
 
-        fragmentA.drawGraph(companies, spinnerList.get(0));
+
+        fragmentA.drawGraph(companies, selectedRatio);
+        this.companies = companies;
 
         GenericChartFragment fragmentB = (GenericChartFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
@@ -163,6 +168,7 @@ public class GraphActivity extends FragmentActivity implements
         fragmentB.drawGraph(companies);
     }
 
+    // TODO: Move to base activity.
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
         bottomNavigationView.setSelectedItemId(R.id.compare_button);
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
@@ -186,5 +192,11 @@ public class GraphActivity extends FragmentActivity implements
 
             return true;
         });
+    }
+
+    @Override
+    public void onClick(String ratio) {
+        selectedRatio = ratio;
+        fragmentA.drawGraph(companies, selectedRatio);
     }
 }

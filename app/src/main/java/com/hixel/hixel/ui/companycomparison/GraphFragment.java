@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,10 @@ import java.util.List;
  */
 // TODO: This class is extremely similar the the one in the companydetail, can they be merged?
 public class GraphFragment extends Fragment implements GraphInterface {
+    @SuppressWarnings("unused")
+    private static final String TAG = GraphFragment.class.getSimpleName();
+
+    private List<Company> companies;
 
     private CombinedChart chart;
     String[] years;
@@ -65,6 +70,38 @@ public class GraphFragment extends Fragment implements GraphInterface {
         return view;
     }
 
+    @Override
+    public void drawGraph(List<Company> companies, String selectedRatio) {
+        this.companies = companies;
+
+        LineData lineData = new LineData();
+        ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
+
+        for(int i = 0; i < companies.size(); i++){
+            LineDataSet setComp = lineChartDataSetup(selectedRatio, companies.get(i));
+            lineDataSets.add(setComp);
+        }
+
+        setupDatasetStyle(lineDataSets);
+
+        for(int i = 0; i < lineDataSets.size();i++){
+            lineData.addDataSet(lineDataSets.get(i));
+        }
+
+        chart.setDrawOrder(new CombinedChart.DrawOrder[]{
+                CombinedChart.DrawOrder.BAR,  CombinedChart.DrawOrder.LINE
+        });
+
+        decorLineChart(chart);
+
+        CombinedData data = new CombinedData();
+        data.setData(lineData);
+
+        chart.getDescription().setEnabled(false);
+        chart.setData(data);
+        chart.invalidate();
+    }
+
     /**
      * Sets up the LineDataSet for each company being compared.
      *
@@ -80,24 +117,45 @@ public class GraphFragment extends Fragment implements GraphInterface {
         createListOfYears();
 
         for (int i = 0; i < 5; i++) {
-            compEntry.add(new Entry(i, (float) company.getCurrentRatio()));
+            compEntry.add(getCompanyEntry(i, selectedRatio, company));
         }
 
         return new LineDataSet(compEntry, company.getTicker());
     }
 
-    @Override
-    public void drawGraph(Company company, String selectedRatio) {
-        // TODO: Why is this here?
+    private Entry getCompanyEntry(int index, String selectedRatio, Company company) {
+        Entry entry;
+
+        switch (selectedRatio) {
+            case "Returns":
+                entry = new Entry(index, (float) company.getReturnsScore());
+                break;
+            case "Performance":
+                entry = new Entry(index, (float) company.getPerformanceScore());
+                break;
+            case "Strength":
+                entry = new Entry(index, (float) company.getStrengthScore());
+                break;
+            case "Health":
+                entry = new Entry(index, (float) company.getHealthScore());
+                break;
+            case "Safety":
+                entry = new Entry(index, (float) company.getSafetyScore());
+                break;
+            default:
+                entry = new Entry(index, (float) company.getCurrentRatio());
+        }
+
+        return entry;
     }
 
-    @Override
-    public void drawGraph(List<Company> companies,String selectedRatio){
+    public void updateChart(String selectedRatio) {
+
         LineData lineData = new LineData();
         ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
 
         for(int i = 0; i < companies.size(); i++){
-            LineDataSet setComp = lineChartDataSetup( selectedRatio, companies.get(i));
+            LineDataSet setComp = lineChartDataSetup(selectedRatio, companies.get(i));
             lineDataSets.add(setComp);
         }
 
@@ -107,19 +165,16 @@ public class GraphFragment extends Fragment implements GraphInterface {
             lineData.addDataSet(lineDataSets.get(i));
         }
 
-        //draw graph
-        chart.setDrawOrder(new CombinedChart.DrawOrder[]{
-            CombinedChart.DrawOrder.BAR,  CombinedChart.DrawOrder.LINE
-        });
-
-        decorLineChart(chart);
-
         CombinedData data = new CombinedData();
-        data.setData( lineData);
+        data.setData(lineData);
 
-        chart.getDescription().setEnabled(false);
         chart.setData(data);
         chart.invalidate();
+    }
+
+    @Override
+    public void drawGraph(Company company, String selectedRatio) {
+        // TODO: Why is this here?
     }
 
     /**
