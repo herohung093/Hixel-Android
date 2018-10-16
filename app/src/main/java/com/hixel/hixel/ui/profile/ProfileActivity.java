@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,9 +29,6 @@ import javax.inject.Inject;
  */
 // TODO: Rename SecondName to LastName
 public class ProfileActivity extends AppCompatActivity {
-
-    @SuppressWarnings("unused")
-    private static final String TAG = ProfileActivity.class.getSimpleName();
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -176,7 +172,6 @@ public class ProfileActivity extends AppCompatActivity {
      * Method updates the users password
      */
     public void updatePassword() {
-        Log.d(TAG, "updatePassword: HIT");
         EditText oldPassword = dialog.findViewById(R.id.old_password_edit_text);
         EditText newPassword = dialog.findViewById(R.id.new_password_edit_text);
         EditText retypedPassword = dialog.findViewById(R.id.retype_new_edit_text);
