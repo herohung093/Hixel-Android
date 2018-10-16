@@ -102,26 +102,17 @@ public class CompanyComparisonViewModel extends ViewModel {
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .filter(text -> !text.isEmpty())
-                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm -> Client.getClient()
-                        .create(ServerInterface.class)
-                        .doSearchQuery(searchTerm)
+                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm ->
+                        companyRepository.search(searchTerm)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread()))
                 .subscribeWith(observer));
     }
 
-    /**
-     *
-     * @param query
-     */
     void loadSearchResults(String query) {
         publishSubject.onNext(query);
     }
 
-    /**
-     *
-     * @param tickersList
-     */
     void addToComparisonCompanies(List<String> tickersList) {
         String[] tickers = new String[tickersList.size()];
         tickers = tickersList.toArray(tickers);
