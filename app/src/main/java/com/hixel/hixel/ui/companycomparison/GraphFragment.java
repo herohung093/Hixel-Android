@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.CombinedChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -33,7 +32,8 @@ public class GraphFragment extends Fragment implements GraphInterface {
     private static final String TAG = GraphFragment.class.getSimpleName();
 
     private CombinedChart chart;
-    String[] years;
+    // TODO: This needs to be done in a model.
+    private String[] years = {"2014", "2015", "2016", "2017", "2018"};
     ArrayList<Integer> colors = new ArrayList<>();
 
     // TODO: Not used.
@@ -107,9 +107,6 @@ public class GraphFragment extends Fragment implements GraphInterface {
     public LineDataSet lineChartDataSetup(String selectedRatio, Company company){
         List<Entry> compEntry = new ArrayList<>();
 
-        // checkYearNull(companyData);
-        createListOfYears();
-
         for (int i = 0; i < 5; i++) {
             compEntry.add(getCompanyEntry(i, selectedRatio, company));
         }
@@ -117,6 +114,7 @@ public class GraphFragment extends Fragment implements GraphInterface {
         return new LineDataSet(compEntry, company.getTicker());
     }
 
+    // TODO: Needs to be done in a cleaner way or moved out of the fragment.
     private Entry getCompanyEntry(int index, String selectedRatio, Company company) {
         Entry entry;
 
@@ -173,19 +171,6 @@ public class GraphFragment extends Fragment implements GraphInterface {
     }
 
 
-    IAxisValueFormatter formatter = new IAxisValueFormatter() {
-        @Override
-        public String getFormattedValue(float value, AxisBase axis) {
-            return years[(int) value];
-        }
-    };
-
-    private void createListOfYears() {
-        String[] y = {"1", "2", "3", "4", "5"};
-
-        years = y; // toConvertYears.toArray(new String[toConvertYears.size()]);
-    }
-
     public void setupDatasetStyle(ArrayList<LineDataSet> lineDataSets) {
         for (int i = 0; i < lineDataSets.size(); i++){
             lineDataSets.get(i).setDrawCircleHole(true);
@@ -209,7 +194,10 @@ public class GraphFragment extends Fragment implements GraphInterface {
     public void setupAxis(XAxis xAxis, YAxis yAxis) {
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
         xAxis.setAxisMinimum(0.0f);
+
+        IAxisValueFormatter formatter = (value, axis) -> years[(int) value];
         xAxis.setValueFormatter(formatter);
+
         xAxis.setTextSize(12f);
         xAxis.setTextColor(Color.BLACK);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
