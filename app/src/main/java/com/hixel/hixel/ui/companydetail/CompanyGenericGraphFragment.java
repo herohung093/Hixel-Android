@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.CombinedChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -26,17 +25,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Displays a line chart of the historical performance of the Companies ratios.
+ */
 public class CompanyGenericGraphFragment extends Fragment implements GraphInterface {
 
-    private CombinedChart mChart;
-    String[] years={"2013","2014","2015","2016","2017",};
-    ArrayList<Integer> colors =new ArrayList<>();
+    private CombinedChart chart;
+    String[] years={"2013","2014","2015","2016","2017"};
+    ArrayList<Integer> colors = new ArrayList<>();
+    // TODO: Remove this field, it is not being used.
     private OnFragmentInteractionListener mListener;
 
-
-    public CompanyGenericGraphFragment() {
-        // Required empty public constructor
-    }
+    public CompanyGenericGraphFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,11 +48,19 @@ public class CompanyGenericGraphFragment extends Fragment implements GraphInterf
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company_generic_graph, container, false);
-        mChart =  view.findViewById(R.id.chart11);
+        chart =  view.findViewById(R.id.chart11);
         return view;
     }
 
-    public LineDataSet lineChartDataSetup( String selectedRatio, Company company){
+    /**
+     * Creates the LineDataSet for the chart using the ratio currently selected by the user and
+     * the Company.
+     *
+     * @param selectedRatio The currently selected ratio.
+     * @param company The company.
+     * @return LineDataSet for the chart.
+     */
+    public LineDataSet lineChartDataSetup(String selectedRatio, Company company){
         List<Entry> compEntry = new ArrayList<>();
         /*List<FinancialData> financialData= company.getFinancialDataEntries();
         checkYearNull(financialData);
@@ -72,73 +80,70 @@ public class CompanyGenericGraphFragment extends Fragment implements GraphInterf
     }
 
     @Override
-    public void drawGraph(Company company,String selectedRatio){
-
+    public void drawGraph(Company company, String selectedRatio){
         LineData lineData = new LineData();
         ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
 
-        LineDataSet setComp= lineChartDataSetup( selectedRatio, company);
-
+        LineDataSet setComp = lineChartDataSetup( selectedRatio, company);
         lineDataSets.add(setComp);
-
-
 
         setupDatasetStyle(lineDataSets);
         for(int i=0;i<lineDataSets.size();i++){
             lineData.addDataSet(lineDataSets.get(i));
         }
+
         //draw graph
-        mChart.setDrawOrder(new CombinedChart.DrawOrder[]{
+        chart.setDrawOrder(new CombinedChart.DrawOrder[] {
                 CombinedChart.DrawOrder.BAR,  CombinedChart.DrawOrder.LINE
         });
-        decorLineChart(mChart);
+
+        decorLineChart(chart);
 
         CombinedData data = new CombinedData();
 
-        data.setData( lineData);
+        data.setData(lineData);
+        // TODO: This is not being used, can it be removed?
         //data.setData(barData);
-        mChart.getDescription().setEnabled(false);
-        mChart.setData(data);
-        mChart.invalidate();
+        chart.getDescription().setEnabled(false);
+        chart.setData(data);
+        chart.invalidate();
 
     }
 
     @Override
-    public void drawGraph(List<Company> companies, String selectedRatio) {
+    public void drawGraph(List<Company> companies, String selectedRatio) { }
 
-    }
+    /**
+     * Styles the line chart.
+     * @param chart The companies chart.
+     */
+    public void decorLineChart(CombinedChart chart){
+        chart.animateXY(1000, 1000);
+        chart.setDrawGridBackground(false);
 
-    public void decorLineChart(CombinedChart mchart){
-
-        mchart.animateXY(1000, 1000);
-        mchart.setDrawGridBackground(false);
-        XAxis xAxis = mchart.getXAxis();
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                if(value ==0)
-                    return "N/A";
-                else return String.valueOf(value);
+        XAxis xAxis = chart.getXAxis();
+        // TODO: Change to ternary
+        xAxis.setValueFormatter((value, axis) -> {
+            if(value == 0)
+                return "N/A";
+            else {
+                return String.valueOf(value);
             }
         });
-        YAxis yAxis = mchart.getAxisLeft();
 
+        YAxis yAxis = chart.getAxisLeft();
         setupAxis(xAxis, yAxis);
 
-        Legend legend = mchart.getLegend();
+        Legend legend = chart.getLegend();
         setupLegend(legend);
     }
 
 
-    IAxisValueFormatter formatter = new IAxisValueFormatter() {
-
-        @Override
-        public String getFormattedValue(float value, AxisBase axis) {
-            return years[(int) value];
-        }
-
-    };
-
+    /**
+     * Sets an null data to the amount of the previous year
+     * @param financial The companies performance data.
+     */
+    // TODO: Better documentation.
     private void checkYearNull(List<CompanyData> financial) {
         /*
         for (int i = 0; i < financial.size(); i++) {
@@ -149,6 +154,10 @@ public class CompanyGenericGraphFragment extends Fragment implements GraphInterf
         }*/
     }
 
+    /**
+     * Converts the CompanyData year (int) into a String to be read by the formatter.
+     * @param financialDataCompA The companies financial data.
+     */
     private void createListOfYears(List<CompanyData> financialDataCompA) {
         /*
         List<String> toConvertYears = new ArrayList<>();
@@ -161,10 +170,12 @@ public class CompanyGenericGraphFragment extends Fragment implements GraphInterf
         */
     }
 
-    public void setupDatasetStyle(ArrayList<LineDataSet> lineDataSets/*, LineDataSet setCompA, LineDataSet setCompB*/) {
-
-
-        for (int i=0;i<lineDataSets.size();i++ ){
+    /**
+     * Styles the line of the chart.
+     * @param lineDataSets The lines for the chart.
+     */
+    public void setupDatasetStyle(ArrayList<LineDataSet> lineDataSets) {
+        for (int i = 0; i < lineDataSets.size(); i++ ){
             lineDataSets.get(i).setDrawCircleHole(true);
             lineDataSets.get(i).setValueTextSize(12);
             lineDataSets.get(i).setValueTextColor(colors.get(i));
@@ -174,6 +185,36 @@ public class CompanyGenericGraphFragment extends Fragment implements GraphInterf
             lineDataSets.get(i).setAxisDependency(YAxis.AxisDependency.LEFT);
             lineDataSets.get(i).setColor(colors.get(i));
         }
+    }
+
+    /**
+     * Styles the legend of the chart.
+     * @param legend The legend of the chart.
+     */
+    public void setupLegend(Legend legend) {
+        legend.setWordWrapEnabled(true);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+    }
+
+    /**
+     * Styles the axis of the chart.
+     * @param xAxis X-axis of the chart.
+     * @param yAxis Y-axis of the chart.
+     */
+    public void setupAxis(XAxis xAxis, YAxis yAxis) {
+        IAxisValueFormatter formatter = (value, axis) -> years[(int) value];
+
+        xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
+        xAxis.setAxisMinimum(0f);
+        xAxis.setValueFormatter(formatter);
+        xAxis.setTextSize(12f);
+        xAxis.setTextColor(Color.BLACK);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        yAxis.setTextSize(12f);
+        yAxis.setTextColor(Color.BLACK);
     }
 
     @Override
@@ -187,27 +228,6 @@ public class CompanyGenericGraphFragment extends Fragment implements GraphInterf
         }
     }
 
-    public void setupLegend(Legend legend) {
-
-        legend.setWordWrapEnabled(true);
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-    }
-
-    public void setupAxis(XAxis xAxis, YAxis yAxis) {
-        xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
-        xAxis.setAxisMinimum(0f);
-        xAxis.setValueFormatter(formatter);
-        xAxis.setTextSize(12f);
-        xAxis.setTextColor(Color.BLACK);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
-        yAxis.setTextSize(12f);
-        yAxis.setTextColor(Color.BLACK);
-
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -215,7 +235,7 @@ public class CompanyGenericGraphFragment extends Fragment implements GraphInterf
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+        // TODO: Not being used.
         void onFragmentInteraction(Uri uri);
     }
 }

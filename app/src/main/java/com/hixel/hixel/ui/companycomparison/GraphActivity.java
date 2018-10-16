@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageView;
+
 import com.hixel.hixel.R;
 import com.hixel.hixel.ui.GraphInterface;
 import com.hixel.hixel.ui.commonui.CompanyScoreListAdapter;
@@ -20,16 +21,18 @@ import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
 import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.ui.profile.ProfileActivity;
+
 import dagger.android.AndroidInjection;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
+/**
+ *
+ */
 public class GraphActivity extends FragmentActivity implements
         GenericChartFragment.OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener {
-
-    @SuppressWarnings("unused")
-    private static final String TAG = GraphActivity.class.getSimpleName();
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
