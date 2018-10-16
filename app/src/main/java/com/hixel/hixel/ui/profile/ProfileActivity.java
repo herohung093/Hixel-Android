@@ -4,11 +4,9 @@ import android.app.Dialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import com.hixel.hixel.R;
-import com.hixel.hixel.ui.companycomparison.CompanyComparisonActivity;
-import com.hixel.hixel.ui.dashboard.DashboardActivity;
+import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.databinding.ActivityProfileBinding;
 import com.hixel.hixel.ui.login.LoginActivity;
@@ -28,20 +25,18 @@ import javax.inject.Inject;
  * Displays the users profile information, and allows them to alter that information.
  */
 // TODO: Rename SecondName to LastName
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity<ActivityProfileBinding>  {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private ProfileViewModel viewModel;
-
-    private ActivityProfileBinding binding;
 
     private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
+        bindView(R.layout.activity_profile);
 
         binding.toolbar.toolbar.setTitle(R.string.profile);
         binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
@@ -51,7 +46,8 @@ public class ProfileActivity extends AppCompatActivity {
         this.configureDagger();
         this.configureViewModel();
 
-        setupBottomNavigationView();
+        setupBottomNavigationView(R.id.profile_button);
+
         setupEditButtons();
         setupLogout();
     }
@@ -90,25 +86,6 @@ public class ProfileActivity extends AppCompatActivity {
             binding.secondName.setFocusable(false);
             binding.password.setFocusable(false);
         }
-    }
-
-    public void setupBottomNavigationView() {
-        /*
-        binding.bottomNavigation.bottomNavigation.setSelectedItemId(R.id.profile_button);
-        binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.home_button:
-                    Intent moveToHome = new Intent(this, DashboardActivity.class);
-                    startActivity(moveToHome);
-                    break;
-                case R.id.compare_button:
-                    Intent moveToCompare = new Intent(this, CompanyComparisonActivity.class);
-                    startActivity(moveToCompare);
-                    break;
-            }
-
-            return true;
-        });*/
     }
 
     // TODO: Need API endpoints to update user first and last name.

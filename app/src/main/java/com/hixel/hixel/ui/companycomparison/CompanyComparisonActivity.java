@@ -3,11 +3,9 @@ package com.hixel.hixel.ui.companycomparison;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,15 +16,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
+import com.hixel.hixel.databinding.ActivityComparisonBinding;
+import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.commonui.CompanyListAdapter;
 import com.hixel.hixel.ui.commonui.CompanyListAdapter.ViewHolder;
 import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.databinding.ActivityComparisonBinding;
 import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.ui.commonui.SearchAdapter;
-import com.hixel.hixel.ui.dashboard.DashboardActivity;
-import com.hixel.hixel.ui.profile.ProfileActivity;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
@@ -37,13 +34,11 @@ import javax.inject.Inject;
  * Entry point for comparing companies. User adds companies to the comparison
  * list and then moves onto the comparison view.
  */
-public class CompanyComparisonActivity extends AppCompatActivity {
+public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBinding> {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private CompanyComparisonViewModel viewModel;
-
-    private ActivityComparisonBinding binding;
 
     private RecyclerView comparisonCompaniesRecyclerView;
     private RecyclerView dashboardCompaniesRecyclerView;
@@ -59,7 +54,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_comparison);
+        bindView(R.layout.activity_comparison);
 
         comparisonCompaniesRecyclerView = binding.comparisonRecyclerView;
         dashboardCompaniesRecyclerView = binding.dashboardCompRecyclerView;
@@ -75,7 +70,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         dragDownToAdd();
         setupButtons();
         setupSearchView();
-        setupBottomNavigationView();
+        setupBottomNavigationView(R.id.compare_button);
     }
 
     private void configureDagger() {
@@ -168,29 +163,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             }
         });
     }
-
-    /**
-     * Method sets up the bottom navigation view
-     */
-    public void setupBottomNavigationView() {
-        /*
-        binding.bottomNavigation.bottomNavigation.setSelectedItemId(R.id.compare_button);
-        binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.home_button:
-                    Intent moveToHome = new Intent(this, DashboardActivity.class);
-                    startActivity(moveToHome);
-                    break;
-                case R.id.profile_button:
-                    Intent moveToCompare = new Intent(this, ProfileActivity.class);
-                    startActivity(moveToCompare);
-                    break;
-            }
-
-            return true;
-        });*/
-    }
-
     /**
      * Method enables dragging companies from the dashboard recycler view onto
      * the list of companies to compare
@@ -298,7 +270,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
      */
     private void setupSearchView() {
         // TODO: Figure out how to use databinding for search
-        SearchView search = binding.searchView;
+        SearchView search = (SearchView) binding.searchView;
 
         search.setQueryHint("Add companies...");
         search.setIconifiedByDefault(false);

@@ -85,10 +85,6 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/password"/>
 
-    <include
-      android:id="@+id/bottom_navigation"
-      layout="@layout/bottom_navigation" />
-
     <EditText
       android:id="@+id/first_name"
       android:layout_width="wrap_content"
@@ -188,5 +184,9 @@
       app:layout_constraintStart_toEndOf="@+id/second_name"
       app:layout_constraintTop_toTopOf="@+id/second_name"
       app:srcCompat="@drawable/check_image"/>
+
+    <include
+      android:id="@+id/bottom_navigation"
+      layout="@layout/bottom_navigation" />
   </android.support.constraint.ConstraintLayout>
 </layout>

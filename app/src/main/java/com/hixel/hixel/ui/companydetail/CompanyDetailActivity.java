@@ -3,11 +3,9 @@ package com.hixel.hixel.ui.companydetail;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
@@ -22,12 +20,10 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
+import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
 import com.hixel.hixel.ui.commonui.HorizontalListViewOnClickListener;
-import com.hixel.hixel.ui.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.ui.companycomparison.GraphFragment;
-import com.hixel.hixel.ui.dashboard.DashboardActivity;
-import com.hixel.hixel.ui.profile.ProfileActivity;
 
 import dagger.android.AndroidInjection;
 
@@ -37,16 +33,15 @@ import javax.inject.Inject;
 /**
  *  CompanyDetailActivity displays the UI for the details of one company
  *
- * @author Hixel
  */
-public class CompanyDetailActivity extends AppCompatActivity implements HorizontalListViewOnClickListener {
+public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
+        implements HorizontalListViewOnClickListener {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
     private CompanyDetailViewModel viewModel;
     private GraphFragment fragment;
-    private ActivityCompanyBinding binding;
 
     private String selectedRatio = "Returns";
     private Company company;
@@ -54,16 +49,14 @@ public class CompanyDetailActivity extends AppCompatActivity implements Horizont
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_company);
+        bindView(R.layout.activity_company);
 
         // General setup
-        setupBottomNavigationView();
         binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
         binding.toolbar.toolbar.setNavigationIcon(R.drawable.ic_close);
-
-        // TODO: Toolbar needs to be put into a separate file.
         setSupportActionBar(binding.toolbar.toolbar);
-        // getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setupBottomNavigationView(R.id.home_button);
+
 
         String ticker = getIntent().getStringExtra("COMPANY_TICKER");
 
@@ -204,33 +197,6 @@ public class CompanyDetailActivity extends AppCompatActivity implements Horizont
         searchView.setVisible(false);
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    // TODO: This needs to be in its own file
-    /**
-     * UI and Logic for the bottom Navigation view
-     */
-    public void setupBottomNavigationView() {
-        /*
-        binding.bottomNav.bottomNavigation.setOnNavigationItemSelectedListener((item) -> {
-            switch (item.getItemId()) {
-                case R.id.home_button:
-                    Intent moveToDashBoard =
-                            new Intent(this, DashboardActivity.class);
-                    startActivity(moveToDashBoard);
-                    break;
-                case R.id.compare_button:
-                    Intent moveToCompare =
-                            new Intent(this, CompanyComparisonActivity.class);
-                    startActivity(moveToCompare);
-                    break;
-                case R.id.profile_button:
-                    Intent moveToProfile = new Intent(this, ProfileActivity.class);
-                    startActivity(moveToProfile);
-                    break;
-            }
-            return true;
-        });*/
     }
 
     @Override
