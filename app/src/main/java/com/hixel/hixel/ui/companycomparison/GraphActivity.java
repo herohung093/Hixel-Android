@@ -4,10 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -15,10 +12,10 @@ import android.widget.ImageView;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.databinding.ActivityGraphBinding;
+import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
 import com.hixel.hixel.ui.commonui.HorizontalListViewOnClickListener;
-import com.hixel.hixel.ui.dashboard.DashboardActivity;
-import com.hixel.hixel.ui.profile.ProfileActivity;
 
 import dagger.android.AndroidInjection;
 
@@ -31,10 +28,8 @@ import javax.inject.Inject;
  */
 // TODO: Change to AppCompat not FragmentActivity
 // TODO: Databinding
-public class GraphActivity extends FragmentActivity implements HorizontalListViewOnClickListener {
-
-    @SuppressWarnings("unused")
-    private static final String TAG = GraphActivity.class.getSimpleName();
+public class GraphActivity extends BaseActivity<ActivityGraphBinding>
+        implements HorizontalListViewOnClickListener {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -51,12 +46,11 @@ public class GraphActivity extends FragmentActivity implements HorizontalListVie
     private String selectedRatio = "Returns";
     List<Company> companies;
 
-
     // TODO: Large method, see if it can be refactored sensibly.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
+        bindView(R.layout.activity_graph);
 
         progressDialog = new ProgressDialog(this);
 
@@ -71,10 +65,6 @@ public class GraphActivity extends FragmentActivity implements HorizontalListVie
 
         this.configureDagger();
         this.configureViewModel(tickers);
-
-        // Setup bottom navigation
-        BottomNavigationView bottomNavigationView = findViewById(R.id.graph_generic_navigator);
-        setupBottomNavigationView(bottomNavigationView);
 
         fragmentA = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_bar_chart);
 
@@ -160,32 +150,6 @@ public class GraphActivity extends FragmentActivity implements HorizontalListVie
                 getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
 
         fragmentB.drawGraph(companies);
-    }
-
-    // TODO: Move to base activity.
-    public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
-        bottomNavigationView.setSelectedItemId(R.id.compare_button);
-        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
-            switch (item.getItemId()) {
-                case R.id.home_button:
-                    Intent moveToDashBoard = new Intent(this, DashboardActivity.class);
-                    startActivity(moveToDashBoard);
-                    break;
-
-                case R.id.compare_button:
-                    Intent moveToCompare = new Intent(this,
-                            CompanyComparisonActivity.class);
-                    startActivity(moveToCompare);
-                    break;
-
-                case R.id.profile_button:
-                    Intent moveToProfile = new Intent(this,ProfileActivity.class);
-                    startActivity(moveToProfile);
-                    break;
-            }
-
-            return true;
-        });
     }
 
     @Override

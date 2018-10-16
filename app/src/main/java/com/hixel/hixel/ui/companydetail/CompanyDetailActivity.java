@@ -39,10 +39,9 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-
     private CompanyDetailViewModel viewModel;
-    private GraphFragment fragment;
 
+    private GraphFragment fragment;
     private String selectedRatio = "Returns";
     private Company company;
 
