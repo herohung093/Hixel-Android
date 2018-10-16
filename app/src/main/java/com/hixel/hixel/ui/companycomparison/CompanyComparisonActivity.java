@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -23,7 +22,6 @@ import com.hixel.hixel.ui.commonui.CompanyListAdapter;
 import com.hixel.hixel.ui.commonui.CompanyListAdapter.ViewHolder;
 import com.hixel.hixel.ui.commonui.HorizontalCompanyListAdapter;
 import com.hixel.hixel.data.entities.User;
-import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.databinding.ActivityComparisonBinding;
 import com.hixel.hixel.data.models.SearchEntry;
@@ -41,9 +39,6 @@ import javax.inject.Inject;
  * list and then moves onto the comparison view.
  */
 public class CompanyComparisonActivity extends AppCompatActivity {
-
-    @SuppressWarnings("unused")
-    private static final String TAG = CompanyDetailActivity.class.getSimpleName();
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -168,7 +163,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             // TODO: Some if-statement to make this show only if the user has not selected two companies
             Toast.makeText(getApplicationContext(), "Select at least 2 companies!", Toast.LENGTH_LONG).show();
 
-            Log.d(TAG, "setupButtons: " + tickers.get(0));
             moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES", tickers);
             startActivity(moveToGraph);
         });
@@ -304,14 +298,19 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         SearchView search = binding.searchView;
 
         search.setQueryHint("Add companies...");
-        search.setFocusable(true);
-        search.requestFocus();
-        search.requestFocusFromTouch();
+        // TODO: Don't think these are needed.
+        // search.setFocusable(true);
+        // search.requestFocus();
+        // search.requestFocusFromTouch();
+        //search.setFocusable(false);
+        search.setIconifiedByDefault(false);
         search.setIconified(false);
+        search.clearFocus();
 
         searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         // Styling the search bar
+        // TODO: Use
         searchAutoComplete.setHintTextColor(Color.GRAY);
         searchAutoComplete.setTextColor(Color.GRAY);
 
@@ -340,8 +339,9 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     }
 
     /**
-     * Method used to provide an Observer for searching companies
-     * @return DisposableObserver List of Search Entries
+     * Method used to provide an Observer for searching companies.
+     *
+     * @return DisposableObserver List of Search Entries.
      */
     private DisposableObserver<List<SearchEntry>> getSearchObserver() {
         return new DisposableObserver<List<SearchEntry>>() {

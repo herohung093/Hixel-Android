@@ -26,7 +26,7 @@
 
     <activity
       android:name=".ui.companycomparison.CompanyComparisonActivity"
-      android:windowSoftInputMode="stateHidden">
+      android:windowSoftInputMode="adjustNothing|stateHidden">
     </activity>
 
     <!-- suppress AndroidDomInspection -->

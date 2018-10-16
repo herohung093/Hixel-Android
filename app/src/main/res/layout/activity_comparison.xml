@@ -36,15 +36,13 @@
       android:layout_width="match_parent"
       android:layout_height="49dp"
       android:background="@color/secondary_background"
+      android:icon="@drawable/ic_baseline_search_24"
       android:clickable="true"
       android:focusable="true"
-      android:contextClickable="true"
-      android:icon="@drawable/ic_baseline_search_24"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/divider10"
-      app:showAsAction="collapseActionView"/>
+      app:layout_constraintTop_toBottomOf="@+id/divider10"/>
 
     <include
       android:id="@+id/bottom_navigation"
