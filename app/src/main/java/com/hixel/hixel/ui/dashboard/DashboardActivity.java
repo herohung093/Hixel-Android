@@ -3,12 +3,10 @@ package com.hixel.hixel.ui.dashboard;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +25,7 @@ import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
 import com.hixel.hixel.data.entities.User;
-import com.hixel.hixel.ui.companycomparison.CompanyComparisonActivity;
+import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.charts.MainBarChartRenderer;
@@ -38,7 +36,6 @@ import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.ui.commonui.CompanyListAdapter;
 import com.hixel.hixel.ui.commonui.SearchAdapter;
 import com.hixel.hixel.ui.dashboard.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
-import com.hixel.hixel.ui.profile.ProfileActivity;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
@@ -49,16 +46,15 @@ import javax.inject.Inject;
 /**
  * DashboardActivity displays a list of companies in a users profile.
  */
-public class DashboardActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
+public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
+        implements RecyclerItemTouchHelperListener {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private DashboardViewModel viewModel;
 
-    private ActivityDashboardBinding binding;
     private SearchAutoComplete searchAutoComplete;
     private CompanyListAdapter companyListAdapter;
-
     private BarChart chart;
     private MainBarDataSet dataSet;
     List<BarEntry> entries;
@@ -67,12 +63,14 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard);
+        bindView(R.layout.activity_dashboard);
 
         // Setup the toolbar
         binding.toolbar.toolbar.setTitle(R.string.dashboard);
         binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(binding.toolbar.toolbar);
+
+        setupBottomNavigationView(R.id.home_button);
 
         setupChart();
 
@@ -80,8 +78,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         this.configureViewModel();
 
         viewModel.setupSearch(getSearchObserver());
-
-        setupBottomNavigationView();
     }
 
     private void configureDagger() {
@@ -116,24 +112,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         } else {
             binding.progressBar.setVisibility(View.VISIBLE);
         }
-    }
-
-    public void setupBottomNavigationView() {
-        binding.bottomNavigation.bottomNavigation.setSelectedItemId(R.id.home_button);
-        binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.compare_button:
-                    Intent moveToCompare = new Intent(this, CompanyComparisonActivity.class);
-                    startActivity(moveToCompare);
-                    break;
-                case R.id.profile_button:
-                    Intent moveToProfile = new Intent(this, ProfileActivity.class);
-                    startActivity(moveToProfile);
-                    break;
-            }
-
-            return true;
-        });
     }
 
     public void setupDashboardAdapter(List<Company> companies) {

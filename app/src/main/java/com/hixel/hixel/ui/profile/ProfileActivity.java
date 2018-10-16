@@ -93,6 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void setupBottomNavigationView() {
+        /*
         binding.bottomNavigation.bottomNavigation.setSelectedItemId(R.id.profile_button);
         binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -107,7 +108,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             return true;
-        });
+        });*/
     }
 
     // TODO: Need API endpoints to update user first and last name.

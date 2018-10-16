@@ -173,6 +173,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
      * Method sets up the bottom navigation view
      */
     public void setupBottomNavigationView() {
+        /*
         binding.bottomNavigation.bottomNavigation.setSelectedItemId(R.id.compare_button);
         binding.bottomNavigation.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -187,7 +188,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             }
 
             return true;
-        });
+        });*/
     }
 
     /**

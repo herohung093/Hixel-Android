@@ -211,6 +211,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements Horizont
      * UI and Logic for the bottom Navigation view
      */
     public void setupBottomNavigationView() {
+        /*
         binding.bottomNav.bottomNavigation.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
                 case R.id.home_button:
@@ -229,7 +230,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements Horizont
                     break;
             }
             return true;
-        });
+        });*/
     }
 
     @Override
