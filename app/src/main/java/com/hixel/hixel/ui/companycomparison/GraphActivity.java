@@ -14,7 +14,6 @@ import android.view.Gravity;
 import android.widget.ImageView;
 
 import com.hixel.hixel.R;
-import com.hixel.hixel.ui.GraphInterface;
 import com.hixel.hixel.ui.commonui.CompanyScoreListAdapter;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
@@ -46,7 +45,7 @@ public class GraphActivity extends FragmentActivity implements HorizontalListVie
     RecyclerView.Adapter mAdapter, companyListAdapter;
     RecyclerView.LayoutManager mLayoutManager;
 
-    GraphInterface fragmentA;
+    GraphFragment fragmentA;
     ProgressDialog progressDialog;
 
     // Ratio that the user has selected from the horizontal list of ratios.
@@ -78,7 +77,7 @@ public class GraphActivity extends FragmentActivity implements HorizontalListVie
         BottomNavigationView bottomNavigationView = findViewById(R.id.graph_generic_navigator);
         setupBottomNavigationView(bottomNavigationView);
 
-        fragmentA = (GraphInterface) getFragmentManager().findFragmentById(R.id.fragment_bar_chart);
+        fragmentA = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_bar_chart);
 
         progressDialog.dismiss();
 

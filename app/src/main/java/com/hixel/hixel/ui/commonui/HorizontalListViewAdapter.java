@@ -10,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.hixel.hixel.R;
-import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.ui.GraphInterface;
-import java.util.List;
 
 public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> {
 
