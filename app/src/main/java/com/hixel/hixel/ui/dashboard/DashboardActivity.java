@@ -317,11 +317,12 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         chart.setDrawBarShadow(false);
 
         ArrayList<String> labels = new ArrayList<>();
-        labels.add("Health");
+        labels.add("Returns");
         labels.add("Performance");
-        labels.add("Return");
-        labels.add("Safety");
         labels.add("Strength");
+        labels.add("Health");
+        labels.add("Safety");
+
 
         int[] colours = {
                 ContextCompat.getColor(this, R.color.good),

@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.entities.CompanyData;
 import com.hixel.hixel.ui.GraphInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +31,6 @@ import java.util.List;
 public class GraphFragment extends Fragment implements GraphInterface {
     @SuppressWarnings("unused")
     private static final String TAG = GraphFragment.class.getSimpleName();
-
-    private List<Company> companies;
 
     private CombinedChart chart;
     String[] years;
@@ -72,8 +68,6 @@ public class GraphFragment extends Fragment implements GraphInterface {
 
     @Override
     public void drawGraph(List<Company> companies, String selectedRatio) {
-        this.companies = companies;
-
         LineData lineData = new LineData();
         ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
 
@@ -149,33 +143,9 @@ public class GraphFragment extends Fragment implements GraphInterface {
         return entry;
     }
 
-    public void updateChart(String selectedRatio) {
-
-        LineData lineData = new LineData();
-        ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
-
-        for(int i = 0; i < companies.size(); i++){
-            LineDataSet setComp = lineChartDataSetup(selectedRatio, companies.get(i));
-            lineDataSets.add(setComp);
-        }
-
-        setupDatasetStyle(lineDataSets);
-
-        for(int i = 0; i < lineDataSets.size();i++){
-            lineData.addDataSet(lineDataSets.get(i));
-        }
-
-        CombinedData data = new CombinedData();
-        data.setData(lineData);
-
-        chart.setData(data);
-        chart.invalidate();
-    }
-
+    // TODO: Never used, do we need an interface?
     @Override
-    public void drawGraph(Company company, String selectedRatio) {
-        // TODO: Why is this here?
-    }
+    public void drawGraph(Company company, String selectedRatio) { }
 
     /**
      * Styling for the line chart.
@@ -210,19 +180,10 @@ public class GraphFragment extends Fragment implements GraphInterface {
         }
     };
 
-    private void checkYearNull(List<CompanyData> financial) {
-        for (int i = 0; i < financial.size(); i++) {
-            if (financial.get(i) == null) {
-               // financial.get(i).setDefaultFinancialData(); //set all values equal to -0 for visualising purpose
-               // financial.get(i).setYear(financial.get(i - 1).getYear() - 1);
-            }
-        }
-    }
-
     private void createListOfYears() {
         String[] y = {"1", "2", "3", "4", "5"};
 
-        years = y;// toConvertYears.toArray(new String[toConvertYears.size()]);
+        years = y; // toConvertYears.toArray(new String[toConvertYears.size()]);
     }
 
     public void setupDatasetStyle(ArrayList<LineDataSet> lineDataSets) {
@@ -247,7 +208,7 @@ public class GraphFragment extends Fragment implements GraphInterface {
 
     public void setupAxis(XAxis xAxis, YAxis yAxis) {
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
-        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisMinimum(0.0f);
         xAxis.setValueFormatter(formatter);
         xAxis.setTextSize(12f);
         xAxis.setTextColor(Color.BLACK);
@@ -255,6 +216,14 @@ public class GraphFragment extends Fragment implements GraphInterface {
 
         yAxis.setTextSize(12f);
         yAxis.setTextColor(Color.BLACK);
+
+        yAxis.setAxisMinimum(0.0f);
+        yAxis.setAxisMaximum(5.0f);
+        yAxis.setGranularity(1f);
+
+        chart.getAxisRight().setAxisMinimum(0.0f);
+        chart.getAxisRight().setAxisMaximum(5.0f);
+        chart.getAxisRight().setGranularity(1f);
     }
 
     @Override
