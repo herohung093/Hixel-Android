@@ -20,10 +20,6 @@ import java.util.List;
 
 public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.ViewHolder> {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = CompanyListAdapter.class.getSimpleName();
-
-    private LayoutInflater layoutInflater;
     private Context context;
     private List<Company> companies;
 
@@ -35,39 +31,38 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // TODO: See if it is worthwhile doing a null check.
-        if (layoutInflater == null) {
-            layoutInflater = LayoutInflater.from(parent.getContext());
-        }
-
-        RowBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.row, parent,false);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        RowBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.row, parent, false);
 
         return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        double currentRatio = companies.get(position).getCurrentRatio();
+        double companyScore = companies.get(position).getCurrentRatio();
 
         holder.binding.companyName.setText(companies.get(position).getFormattedName());
         holder.binding.companyTicker.setText(companies.get(position).getFormattedTicker());
 
-        // TODO: Work out something with the indicator image
         // Set the indicator based upon the current ratio
-        if (currentRatio < 1.0) {
-            holder.binding.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.bad));
-        } else if (currentRatio >= 1.0 && currentRatio <= 1.2) {
-            holder.binding.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.average));
+        if (companyScore < 1.0) {
+            holder.binding.indicator
+                    .setBackgroundColor(ContextCompat.getColor(context, R.color.bad));
+        } else if (companyScore >= 1.0 && companyScore <= 1.2) {
+            holder.binding.indicator
+                    .setBackgroundColor(ContextCompat.getColor(context, R.color.average));
         } else {
-            holder.binding.indicator.setBackgroundColor(ContextCompat.getColor(context, R.color.good));
+            holder.binding.indicator
+                    .setBackgroundColor(ContextCompat.getColor(context, R.color.good));
         }
 
         holder.binding.foreground.setOnClickListener((View view) -> {
-            // TODO: Reimplement so that the Company view knows this was from the portfolio.
             String ticker = companies.get(position).getTicker();
 
             Intent intent = new Intent(context, CompanyDetailActivity.class);
             intent.putExtra("COMPANY_TICKER", ticker);
+            intent.putExtra("FROM_PORTFOLIO", true);
+
             context.startActivity(intent);
         });
     }
@@ -92,15 +87,10 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
         notifyItemInserted(getItemCount());
     }
 
-    public void addCompanies(List<Company> companies) {
-        this.companies.addAll(companies);
-    }
-
     public void setCompanies(List<Company> companies){
         this.companies = companies;
         notifyDataSetChanged();
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final RowBinding binding;
