@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import az.plainpie.PieView;
@@ -63,7 +64,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements Horizont
 
         // TODO: Toolbar needs to be put into a separate file.
         setSupportActionBar(binding.toolbar.toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        // getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         String ticker = getIntent().getStringExtra("COMPANY_TICKER");
 
@@ -204,6 +205,10 @@ public class CompanyDetailActivity extends AppCompatActivity implements Horizont
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+
+        MenuItem searchView = menu.findItem(R.id.action_search);
+        searchView.setVisible(false);
+
         return super.onCreateOptionsMenu(menu);
     }
 
