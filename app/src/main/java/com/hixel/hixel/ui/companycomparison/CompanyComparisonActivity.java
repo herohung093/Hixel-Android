@@ -159,13 +159,14 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     // TODO: Better name.
     private void setupButtons() {
         compareButton.setOnClickListener((View view) -> {
-            Intent moveToGraph = new Intent(this, GraphActivity.class);
-
-            // TODO: Some if-statement to make this show only if the user has not selected two companies
-            Toast.makeText(getApplicationContext(), "Select at least 2 companies!", Toast.LENGTH_LONG).show();
-
-            moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES", tickers);
-            startActivity(moveToGraph);
+            if (tickers.size() < 2) {
+                Toast.makeText(getApplicationContext(),
+                        "Select at least 2 companies!", Toast.LENGTH_LONG).show();
+            } else {
+                Intent moveToGraph = new Intent(this, GraphActivity.class);
+                moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES", tickers);
+                startActivity(moveToGraph);
+            }
         });
     }
 
