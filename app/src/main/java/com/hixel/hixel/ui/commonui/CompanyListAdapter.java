@@ -18,6 +18,9 @@ import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.databinding.RowBinding;
 import java.util.List;
 
+/**
+ * Displays the Name, Ticker, and score of a companies.
+ */
 public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.ViewHolder> {
 
     private Context context;
@@ -72,26 +75,47 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
         return companies.size();
     }
 
+    /**
+     * Removes a company from the list.
+     * @param position Position of the company to be removed.
+     */
     public void removeItem(int position) {
         companies.remove(position);
         notifyItemRemoved(position);
     }
 
+    /**
+     * Restores a company to its position in the list.
+     * @param company The company to be restored.
+     * @param position The position of the company in the list before its removal.
+     */
     public void restoreItem(Company company, int position) {
         companies.add(position, company);
         notifyItemInserted(position);
     }
 
+    /**
+     * Adds a company to the list.
+     * @param company The company to be inserted.
+     */
     public void addItem(Company company) {
         companies.add(getItemCount(), company);
         notifyItemInserted(getItemCount());
     }
 
+    /**
+     * Sets a list of companies to the list, this should only be used to initialize the list
+     * as it is more expensive than addItem(Company company).
+     * @param companies The companies to be added.
+     */
     public void setCompanies(List<Company> companies){
         this.companies = companies;
         notifyDataSetChanged();
     }
 
+    /**
+     * Displays an individual Company in a row.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final RowBinding binding;
 
@@ -100,6 +124,10 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
             this.binding = itemBinding;
         }
 
+        /**
+         * Retrieves the Foreground ConstraintLayout from the UI.
+         * @return The Foreground ConstraintLayout of the row.
+         */
         public ConstraintLayout getForeground() {
             return binding.foreground;
         }
