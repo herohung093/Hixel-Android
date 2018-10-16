@@ -108,4 +108,14 @@
   <string name="home">Home</string>
   <string name="compare">Compare</string>
   <string name="profile">Profile</string>
+
+  <!-- Ratios Array -->
+  <string-array name="ratios_array">
+    <item>Returns</item>
+    <item>Current Ratio</item>
+    <item>Performance</item>
+    <item>Strength</item>
+    <item>Health</item>
+    <item>Safety</item>
+  </string-array>
 </resources>

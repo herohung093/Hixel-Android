@@ -16,15 +16,18 @@ import java.util.List;
 
 public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> implements View.OnClickListener {
 
-    private List<String> ratios;
     private List<Company> companies;
     private GraphInterface fragmentGraph;
     private Context context;
     private int rowIndex = 0;
 
-    public HorizontalListViewAdapter(Context context, List<String> ratios, List<Company> companies, GraphInterface fragmentGraph) {
+    // TODO: XML or Const file?
+    private static final String[] ratios = {
+            "Returns", "Current Ratio", "Performance", "Strength", "Health", "Safety"
+    };
+
+    public HorizontalListViewAdapter(Context context, List<Company> companies, GraphInterface fragmentGraph) {
         this.context = context;
-        this.ratios = ratios;
         this.companies = companies;
         this.fragmentGraph = fragmentGraph;
     }
@@ -32,7 +35,8 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
     @NonNull
     @Override
     public HorizontalListViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ratios_list_horizontal_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.ratios_list_horizontal_layout, parent, false);
 
         return new HorizontalListViewAdapter.ViewHolder(view);
     }
@@ -69,7 +73,7 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
                     context.getResources().getColor(R.color.colorPrimary));
         }
 
-        holder.tvSpecies.setText(ratios.get(position));
+        holder.tvSpecies.setText(ratios[position]);
 
         holder.tvSpecies.setOnClickListener(view -> {
             //fragmentGraph.drawGraph(companies,ratios.get(position));
@@ -81,7 +85,7 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
 
     @Override
     public int getItemCount() {
-        return ratios.size();
+        return ratios.length;
     }
 
     @Override
@@ -91,7 +95,7 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         public CardView cardView;
-        public TextView tvSpecies;
+        TextView tvSpecies;
 
         ViewHolder(View itemView) {
             super(itemView);

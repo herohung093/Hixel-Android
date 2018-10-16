@@ -152,7 +152,7 @@ public class GraphActivity extends FragmentActivity implements
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new HorizontalListViewAdapter(this, spinnerList, companies, fragmentA);
+        mAdapter = new HorizontalListViewAdapter(this, companies, fragmentA);
         mRecyclerView.setAdapter(mAdapter);
 
         fragmentA.drawGraph(companies, spinnerList.get(0));
