@@ -43,7 +43,7 @@ public class ProfileViewModel extends ViewModel {
         return first.equals(second) && first.length() < 4;
     }
 
-    void updateUser(String email, String firstName, String secondName, String password) {
-
+    void updateUserPassword(String oldPassword, String newPassword) {
+        repository.updateUserPassword(oldPassword, newPassword);
     }
 }

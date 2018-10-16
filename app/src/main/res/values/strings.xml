@@ -109,6 +109,9 @@
   <string name="compare">Compare</string>
   <string name="profile">Profile</string>
 
+  <string name="first_name">First Name</string>
+  <string name="second_name">Second Name</string>
+
   <!-- Ratios Array -->
   <string-array name="ratios_array">
     <item>Returns</item>

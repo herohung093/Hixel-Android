@@ -1,6 +1,5 @@
 package com.hixel.hixel.data.api;
 
-import android.arch.lifecycle.LiveData;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.ApplicationUser;
 import com.hixel.hixel.data.models.LoginData;
@@ -56,13 +55,6 @@ public interface ServerInterface {
     @GET("/companydata")
     Call<ArrayList<Company>> getCompanies(@Query("tickers") String tickers, @Query("years") int years);
 
-    @GET("/companydata")
-    Call<LiveData<ArrayList<Company>>> getLiveCompanies(@Query("tickers") String tickers, @Query("years") int years);
-
     @GET("/search")
     Single<List<SearchEntry>> doSearchQuery(@Query("query") String query);
-
-    // TODO: Method is deprecated, remove it from codebase.
-    @GET("/meta/ratios")
-    Call<ArrayList<String>> doMetaQuery();
 }

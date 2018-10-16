@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import javax.inject.Inject;
 /**
  * Displays the users profile information, and allows them to alter that information.
  */
+// TODO: Rename SecondName to LastName
 public class ProfileActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
@@ -76,20 +78,20 @@ public class ProfileActivity extends AppCompatActivity {
     public void updateUI(User user) {
         if (user != null) {
 
-            binding.confirmEditNameButton.setVisibility(View.INVISIBLE);
-            binding.confirmEditEmailButton.setVisibility(View.INVISIBLE);
+            binding.confirmEditFirstNameButton.setVisibility(View.INVISIBLE);
+            binding.confirmEditSecondNameButton.setVisibility(View.INVISIBLE);
 
             String header = String.format("Hi, %s %s!", user.getFirstName(), user.getLastName());
             binding.fullName.setText(header);
 
-            binding.name.setText(user.getFirstName());
-            binding.email.setText(user.getEmail());
+            binding.firstName.setText(user.getFirstName());
+            binding.secondName.setText(user.getLastName());
 
             String passwordDummy = "12345";
             binding.password.setText(passwordDummy);
 
-            binding.name.setFocusable(false);
-            binding.email.setFocusable(false);
+            binding.firstName.setFocusable(false);
+            binding.secondName.setFocusable(false);
             binding.password.setFocusable(false);
         }
     }
@@ -112,24 +114,31 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    // TODO: Need API endpoints to update user first and last name.
     public void setupEditButtons() {
-        binding.editNameButton.setOnClickListener(view -> {
-            binding.name.setFocusableInTouchMode(true);
+        binding.editFirstNameButton.setOnClickListener(view -> {
+            binding.firstName.setFocusableInTouchMode(true);
 
-            binding.confirmEditNameButton.setVisibility(View.VISIBLE);
+            binding.editFirstNameButton.setVisibility(View.INVISIBLE);
+            binding.confirmEditFirstNameButton.setVisibility(View.VISIBLE);
 
-            binding.confirmEditNameButton.setOnClickListener(view2 -> {
-                String name = binding.name.getText().toString();
+            binding.confirmEditFirstNameButton.setOnClickListener(view2 -> {
+                // viewModel.updateUserFirstName(binding.firstName.getText().toString());
+                binding.editFirstNameButton.setVisibility(View.VISIBLE);
+                binding.confirmEditFirstNameButton.setVisibility(View.INVISIBLE);
             });
         });
 
-        binding.editEmailButton.setOnClickListener(view -> {
-            binding.email.setFocusableInTouchMode(true);
+        binding.editSecondNameButton.setOnClickListener(view -> {
+            binding.secondName.setFocusableInTouchMode(true);
 
-            binding.confirmEditEmailButton.setVisibility(View.VISIBLE);
+            binding.editSecondNameButton.setVisibility(View.INVISIBLE);
+            binding.confirmEditSecondNameButton.setVisibility(View.VISIBLE);
 
-            binding.confirmEditEmailButton.setOnClickListener(view2 -> {
-                String email = binding.email.getText().toString();
+            binding.confirmEditSecondNameButton.setOnClickListener(view2 -> {
+                // viewModel.updateUserSecondName(binding.secondName.getText().toString());
+                binding.editSecondNameButton.setVisibility(View.VISIBLE);
+                binding.confirmEditSecondNameButton.setVisibility(View.INVISIBLE);
             });
         });
 
@@ -167,14 +176,17 @@ public class ProfileActivity extends AppCompatActivity {
      * Method updates the users password
      */
     public void updatePassword() {
-        EditText newPassword = findViewById(R.id.new_password_edit_text);
-        EditText retypedPassword = findViewById(R.id.retype_new_edit_text);
+        Log.d(TAG, "updatePassword: HIT");
+        EditText oldPassword = dialog.findViewById(R.id.old_password_edit_text);
+        EditText newPassword = dialog.findViewById(R.id.new_password_edit_text);
+        EditText retypedPassword = dialog.findViewById(R.id.retype_new_edit_text);
 
+        String old = oldPassword.getText().toString();
         String first = newPassword.getText().toString();
         String second = retypedPassword.getText().toString();
 
         if (viewModel.isValidPassword(first, second)) {
-
+            viewModel.updateUserPassword(old, first);
         } else {
             displaySnackbar("Error with passwords. Try again.");
         }
