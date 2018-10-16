@@ -112,7 +112,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
      */
     public void updateComparisonCompanies(List<Company> companies) {
         if (companies != null && companies.size() >= 1) {
-            comparisonCompaniesAdapter.addCompanies(companies);
+            comparisonCompaniesAdapter.setCompanies(companies);
 
             comparisonCompanies = viewModel.getCompCompanies();
         }
@@ -298,11 +298,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         SearchView search = binding.searchView;
 
         search.setQueryHint("Add companies...");
-        // TODO: Don't think these are needed.
-        // search.setFocusable(true);
-        // search.requestFocus();
-        // search.requestFocusFromTouch();
-        //search.setFocusable(false);
         search.setIconifiedByDefault(false);
         search.setIconified(false);
         search.clearFocus();
