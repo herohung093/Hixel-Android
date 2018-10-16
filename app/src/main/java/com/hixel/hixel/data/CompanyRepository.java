@@ -3,7 +3,6 @@ package com.hixel.hixel.data;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
-import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.database.CompanyDao;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.entities.Company;
@@ -31,7 +30,6 @@ public class CompanyRepository {
     private ServerInterface serverInterface;
     private final CompanyDao companyDao;
     private final Executor executor;
-    private final UserRepository userRepository;
 
     // TODO: Find a way to not use these vars
     // NOTE: THESE VARIABLES ARE TEMPORARY WORKAROUNDS
@@ -39,10 +37,9 @@ public class CompanyRepository {
     private MutableLiveData<List<Company>> comparisonCompanies = new MutableLiveData<>();
 
     @Inject
-    public CompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, UserRepository userRepository, Executor executor) {
+    public CompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, Executor executor) {
         this.serverInterface = serverInterface;
         this.companyDao = companyDao;
-        this.userRepository = userRepository;
         this.executor = executor;
     }
 
@@ -68,7 +65,8 @@ public class CompanyRepository {
                         }
 
                     @Override
-                    public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) { }
+                    public void onFailure(@NonNull Call<ArrayList<Company>> call,
+                            @NonNull Throwable t) { }
                 });
 
         return company;
@@ -79,12 +77,11 @@ public class CompanyRepository {
         String[] tickers = new String[inputTickers.size()];
         tickers = inputTickers.toArray(tickers);
 
-        Client.getClient().create(ServerInterface.class)
-                .getCompanies(StringUtils.join(tickers, ','), 1)
+        serverInterface.getCompanies(StringUtils.join(tickers, ','), 1)
                 .enqueue(new Callback<ArrayList<Company>>() {
                     @Override
-                    public void onResponse(Call<ArrayList<Company>> call,
-                            Response<ArrayList<Company>> response) {
+                    public void onResponse(@NonNull Call<ArrayList<Company>> call,
+                            @NonNull Response<ArrayList<Company>> response) {
                         ArrayList<Company> companies = response.body();
 
                         if (companies != null) {
@@ -93,9 +90,8 @@ public class CompanyRepository {
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<Company>> call, Throwable t) {
-
-                    }
+                    public void onFailure(@NonNull Call<ArrayList<Company>> call,
+                            @NonNull Throwable t) { }
                 });
         return comparisonCompanies;
     }
@@ -118,7 +114,8 @@ public class CompanyRepository {
                             });
                         }
                         @Override
-                        public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) { }
+                        public void onFailure(@NonNull Call<ArrayList<Company>> call,
+                                @NonNull Throwable t) { }
                     }));
     }
 
