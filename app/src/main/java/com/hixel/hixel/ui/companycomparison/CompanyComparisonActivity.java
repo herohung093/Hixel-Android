@@ -87,7 +87,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CompanyComparisonViewModel.class);
         viewModel.init();
         viewModel.getUser().observe(this, this::updateDashboardCompanies);
-        // viewModel.getComparisonCompanies().observe(this, this::updateComparisonCompanies);
+
         updateComparisonCompanies(viewModel.getCompCompanies());
     }
 
@@ -156,6 +156,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     /**
      * Method adds an onClickListener to the compare button to move to the compare charts
      */
+    // TODO: Better name.
     private void setupButtons() {
         compareButton.setOnClickListener((View view) -> {
             Intent moveToGraph = new Intent(this, GraphActivity.class);
@@ -295,6 +296,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
      * Method sets up the main search view
      */
     private void setupSearchView() {
+        // TODO: Figure out how to use databinding for search
         SearchView search = binding.searchView;
 
         search.setQueryHint("Add companies...");
@@ -305,18 +307,18 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         // Styling the search bar
-        // TODO: Use
+        // TODO: Use Hixel styles.
         searchAutoComplete.setHintTextColor(Color.GRAY);
         searchAutoComplete.setTextColor(Color.GRAY);
 
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
             SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
+
             searchAutoComplete.setText("");
-
             tickers.add(ticker);
-
             viewModel.addToComparisonCompanies(tickers);
+            search.clearFocus();
         });
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
