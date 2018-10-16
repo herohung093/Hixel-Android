@@ -23,7 +23,9 @@ import javax.inject.Singleton;
 @Module(includes = {AndroidInjectionModule.class, ViewModelModule.class})
 public class AppModule {
 
-    // --- DATABASE INJECTION ---
+    // ***************************************
+    // Database Injections
+    // **************************************
     @Provides
     @Singleton
     AppDatabase provideDatabase(Application context) {
@@ -41,7 +43,9 @@ public class AppModule {
     @Singleton
     UserDao provideUserDao(AppDatabase database) { return database.userDao(); }
 
-    // --- REPOSITORY INJECTION ---
+    // ***************************************
+    // Repository Injections
+    // **************************************
     @Provides
     Executor provideExecutor() {
         return Executors.newSingleThreadExecutor();
@@ -49,13 +53,15 @@ public class AppModule {
 
     @Provides
     @Singleton
-    CompanyRepository provideCompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, Executor executor) {
+    CompanyRepository provideCompanyRepository(ServerInterface serverInterface,
+            CompanyDao companyDao, Executor executor) {
         return new CompanyRepository(serverInterface, companyDao, executor);
     }
 
     @Provides
     @Singleton
-    UserRepository provideUserRepository(ServerInterface serverInterface, UserDao userDao, Executor executor) {
+    UserRepository provideUserRepository(ServerInterface serverInterface,
+            UserDao userDao, Executor executor) {
         return new UserRepository(serverInterface, userDao, executor);
     }
 }

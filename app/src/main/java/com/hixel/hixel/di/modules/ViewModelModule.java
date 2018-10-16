@@ -15,7 +15,11 @@ import dagger.Module;
 import dagger.multibindings.IntoMap;
 
 /**
- * Module information for each ViewModel
+ * Binds and Maps each of our ViewModels to a (k,v), and provides a ViewModel.
+ * <p>
+ * key: ViewModel Class constant.
+ * value: ViewModel Instance.
+ * </p>
  */
 
 @Module

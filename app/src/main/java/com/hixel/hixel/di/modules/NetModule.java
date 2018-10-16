@@ -26,10 +26,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * TODO: Explanation
+ * Provides networking components required for the application.
  */
 @Module
-public class RepositoryModule {
+public class NetModule {
 
     private static final String BASE_URL = "https://game.bones-underground.org:8443";
     private static final int REQUEST_TIMEOUT = 60;
@@ -64,10 +64,12 @@ public class RepositoryModule {
         // Create a trust manager that does not validate certificate chains
         final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
             @Override
-            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException { }
+            public void checkClientTrusted(java.security.cert.X509Certificate[] chain,
+                    String authType) throws CertificateException { }
 
             @Override
-            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException { }
+            public void checkServerTrusted(java.security.cert.X509Certificate[] chain,
+                    String authType) throws CertificateException { }
 
             @Override
             public java.security.cert.X509Certificate[] getAcceptedIssuers() {
@@ -92,7 +94,8 @@ public class RepositoryModule {
                 .addInterceptor(tokenInterceptor)
                 .authenticator(tokenAuthenticator)
                 .sslSocketFactory(sslSocketFactory)
-                .hostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+                .hostnameVerifier(
+                        org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
         client.addInterceptor(chain -> {
             Request original = chain.request();
@@ -120,13 +123,11 @@ public class RepositoryModule {
         retroBuilder.client(client.build());
 
         //create retrofit - only this instance would be used in the entire application
-        Retrofit retrofit = retroBuilder.build();
-        return retrofit;
-
+        return retroBuilder.build();
     }
 
     /**
-     * TODO: explanation
+     * Provides an instance of the ServerInterface
      */
     @Provides
     @Singleton

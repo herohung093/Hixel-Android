@@ -14,7 +14,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 /**
- * Lets Dagger know our Views at compile time
+ * Lets Dagger2 know our Views at compile time
  */
 @Module
 public abstract class ActivityBuilderModule {
