@@ -11,9 +11,6 @@ import javax.inject.Inject;
  */
 public class ProfileViewModel extends ViewModel {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = ProfileViewModel.class.getSimpleName();
-
     private LiveData<User> user;
     private UserRepository repository;
 
@@ -34,10 +31,6 @@ public class ProfileViewModel extends ViewModel {
         user = repository.getUser();
     }
 
-    /**
-     * Method returns a LiveData User.
-     * @return A LiveData User
-     */
     public LiveData<User> getUser() {
         return user;
     }

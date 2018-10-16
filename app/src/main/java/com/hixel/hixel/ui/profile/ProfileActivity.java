@@ -22,8 +22,7 @@ import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
 /**
- * Activity displays the users profile information, and allows them to alter that
- * information.
+ * Displays the users profile information, and allows them to alter that information.
  */
 public class ProfileActivity extends AppCompatActivity {
 
@@ -35,10 +34,6 @@ public class ProfileActivity extends AppCompatActivity {
     private ProfileViewModel viewModel;
 
     private ActivityProfileBinding binding;
-
-    private String firstName;
-    private String lastName;
-    private String password;
 
     private Dialog dialog;
 
@@ -117,7 +112,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             binding.confirmEditNameButton.setOnClickListener(view2 -> {
                 String name = binding.name.getText().toString();
-
             });
         });
 
@@ -128,7 +122,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             binding.confirmEditEmailButton.setOnClickListener(view2 -> {
                 String email = binding.email.getText().toString();
-
             });
         });
 
@@ -161,7 +154,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         dialog.show();
     }
-
 
     /**
      * Method updates the users password
