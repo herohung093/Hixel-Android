@@ -31,6 +31,7 @@ import javax.inject.Inject;
  * Displays the Line and Radar charts for the companies being compared.
  */
 // TODO: Change to AppCompat not FragmentActivity
+// TODO: Databinding
 public class GraphActivity extends FragmentActivity implements
         GenericChartFragment.OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener {
 
@@ -46,7 +47,7 @@ public class GraphActivity extends FragmentActivity implements
     ProgressDialog progressDialog;
 
 
-
+    // TODO: Large method, see if it can be refactored sensibly.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,12 +110,7 @@ public class GraphActivity extends FragmentActivity implements
     private void updateUI(List<Company> companies) {
         if (companies != null) {
             setupListOfCompanies(companies);
-
-            // TODO: All ratios need to be present.
-            ArrayList<String> ratios = new ArrayList<>();
-            ratios.add("Current Ratio");
-
-            setupListOfRatios(ratios, companies);
+            setupListOfRatios(companies);
         }
     }
 
@@ -138,10 +134,18 @@ public class GraphActivity extends FragmentActivity implements
     /**
      * Sets up a list of ratios for the user to select.
      *
-     * @param spinnerList Names of the ratios.
      * @param companies Companies being compared.
      */
-    public void setupListOfRatios(ArrayList<String> spinnerList, List<Company> companies) {
+    public void setupListOfRatios(List<Company> companies) {
+        // TODO: This should be done in an xml file.
+        ArrayList<String> spinnerList = new ArrayList<>();
+        spinnerList.add("Returns");
+        spinnerList.add("Current Ratio");
+        spinnerList.add("Performance");
+        spinnerList.add("Strength");
+        spinnerList.add("Health");
+        spinnerList.add("Safety");
+
         mRecyclerView = findViewById(R.id.ratios_list_view);
         mRecyclerView.setHasFixedSize(true);
 
@@ -151,29 +155,12 @@ public class GraphActivity extends FragmentActivity implements
         mAdapter = new HorizontalListViewAdapter(this, spinnerList, companies, fragmentA);
         mRecyclerView.setAdapter(mAdapter);
 
-        checkUpFinancialEntry(spinnerList);
         fragmentA.drawGraph(companies, spinnerList.get(0));
 
-        GenericChartFragment fragmentB = (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
+        GenericChartFragment fragmentB = (GenericChartFragment)
+                getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
+
         fragmentB.drawGraph(companies);
-    }
-
-
-    // TODO: This is O(n^3), has to be a better way. Also what is this even doing.
-    public void checkUpFinancialEntry(ArrayList<String> toBeCheckRatios) {
-        /*
-        for (Company c : receivedCompanies) {
-            for (int i = 0; i<c.getFinancialDataEntries().size(); i++) {
-                LinkedHashMap<String, Double> ratiosData = c.getFinancialDataEntries().get(i).getRatios();
-
-                for (String k : toBeCheckRatios) {
-                    if (ratiosData.get(k) == null) {
-                        Log.d(String.valueOf(c.getFinancialDataEntries().get(i).getYear()) + k + ": ", "NULL***");
-                        c.getFinancialDataEntries().get(i).getRatios().put(k,0.0);
-                    }
-                }
-            }
-        }*/
     }
 
     public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
