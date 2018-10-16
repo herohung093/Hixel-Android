@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.ui.commonui.CompanyListAdapter;
 import com.hixel.hixel.ui.commonui.CompanyListAdapter.ViewHolder;
-import com.hixel.hixel.ui.commonui.HorizontalCompanyListAdapter;
 import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.databinding.ActivityComparisonBinding;

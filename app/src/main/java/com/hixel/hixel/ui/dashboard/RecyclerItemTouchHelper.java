@@ -1,4 +1,4 @@
-package com.hixel.hixel.ui.commonui;
+package com.hixel.hixel.ui.dashboard;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     private RecyclerItemTouchHelperListener listener;
 
-    public RecyclerItemTouchHelper(int dragDirs, int swipeDirs,RecyclerItemTouchHelperListener listener) {
+    RecyclerItemTouchHelper(int dragDirs, int swipeDirs,RecyclerItemTouchHelperListener listener) {
         super(dragDirs, swipeDirs);
         this.listener = listener;
     }

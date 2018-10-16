@@ -19,7 +19,7 @@ import com.hixel.hixel.databinding.RowBinding;
 import java.util.List;
 
 /**
- * Displays the Name, Ticker, and score of a companies.
+ * RecyclerView to display a list of companies.
  */
 public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.ViewHolder> {
 

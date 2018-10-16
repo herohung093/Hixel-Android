@@ -1,4 +1,4 @@
-package com.hixel.hixel.ui.commonui;
+package com.hixel.hixel.ui.companycomparison;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
