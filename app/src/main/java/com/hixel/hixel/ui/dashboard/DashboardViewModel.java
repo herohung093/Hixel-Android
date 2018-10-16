@@ -20,11 +20,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
-
+/**
+ * Exposes the list of companies in the users portfolio to the dashboard screen.
+ */
 public class DashboardViewModel extends ViewModel {
-
-    @SuppressWarnings("unused")
-    private static final String TAG = DashboardViewModel.class.getSimpleName();
 
     private CompanyRepository companyRepository;
     private UserRepository userRepository;
