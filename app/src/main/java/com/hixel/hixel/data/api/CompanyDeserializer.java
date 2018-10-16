@@ -18,11 +18,15 @@ public class CompanyDeserializer<T> implements JsonDeserializer<T> {
             JsonDeserializationContext jdc) throws JsonParseException {
 
         String identifiers = jsonElement.getAsJsonObject().get("identifiers").toString();
-        String financialDataEntries = jsonElement.getAsJsonObject().get("financialDataEntries").toString();
+        String financialDataEntries =
+                jsonElement.getAsJsonObject().get("financialDataEntries").toString();
 
         String formattedResp1 = identifiers.substring(0, identifiers.length() - 1);
-        String formattedResp2 = "," + financialDataEntries.substring(2, financialDataEntries.length() - 2) + "}";
-        String formattedResp3 = "{" + formattedResp2.substring(1, formattedResp2.length() - 2) + "}}";
+        String formattedResp2 =
+                "," + financialDataEntries.substring(2, financialDataEntries.length() - 2) + "}";
+
+        String formattedResp3 =
+                "{" + formattedResp2.substring(1, formattedResp2.length() - 2) + "}}";
 
         JsonParser jp = new JsonParser();
         JsonElement je = jp.parse(formattedResp3);
