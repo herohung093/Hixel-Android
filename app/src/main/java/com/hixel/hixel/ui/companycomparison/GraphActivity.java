@@ -10,7 +10,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageView;
 
@@ -29,8 +28,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- *
+ * Displays the Line and Radar charts for the companies being compared.
  */
+// TODO: Change to AppCompat not FragmentActivity
 public class GraphActivity extends FragmentActivity implements
         GenericChartFragment.OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener {
 
@@ -53,6 +53,8 @@ public class GraphActivity extends FragmentActivity implements
         setContentView(R.layout.activity_graph);
 
         progressDialog = new ProgressDialog(this);
+
+        // TODO: Get rid of warning.
         progressDialog.getWindow().setGravity(Gravity.CENTER);
 
         progressDialog.setIndeterminate(true);
@@ -78,6 +80,8 @@ public class GraphActivity extends FragmentActivity implements
         infoButton.setOnClickListener(view -> {
             final Dialog dialog= new Dialog(this);
             dialog.setContentView(R.layout.information_popup_window);
+
+            // TODO: Get rid of warning.
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             dialog.setTitle("Title...");
             int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
@@ -106,6 +110,7 @@ public class GraphActivity extends FragmentActivity implements
         if (companies != null) {
             setupListOfCompanies(companies);
 
+            // TODO: All ratios need to be present.
             ArrayList<String> ratios = new ArrayList<>();
             ratios.add("Current Ratio");
 
@@ -113,6 +118,11 @@ public class GraphActivity extends FragmentActivity implements
         }
     }
 
+    /**
+     * Creates a list of companies
+     *
+     * @param companies The list of companies being compared.
+     */
     private void setupListOfCompanies(List<Company> companies) {
         companyRecyclerView = findViewById(R.id.company_list);
         companyRecyclerView.setHasFixedSize(true);
@@ -125,7 +135,12 @@ public class GraphActivity extends FragmentActivity implements
         companyRecyclerView.setAdapter(companyListAdapter);
     }
 
-
+    /**
+     * Sets up a list of ratios for the user to select.
+     *
+     * @param spinnerList Names of the ratios.
+     * @param companies Companies being compared.
+     */
     public void setupListOfRatios(ArrayList<String> spinnerList, List<Company> companies) {
         mRecyclerView = findViewById(R.id.ratios_list_view);
         mRecyclerView.setHasFixedSize(true);
@@ -139,13 +154,12 @@ public class GraphActivity extends FragmentActivity implements
         checkUpFinancialEntry(spinnerList);
         fragmentA.drawGraph(companies, spinnerList.get(0));
 
-        Log.d(TAG, "setupListOfRatios: Company Size" + companies.size());
         GenericChartFragment fragmentB = (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
         fragmentB.drawGraph(companies);
     }
 
 
-    // TODO: This is O(n^3), has to be a better way.
+    // TODO: This is O(n^3), has to be a better way. Also what is this even doing.
     public void checkUpFinancialEntry(ArrayList<String> toBeCheckRatios) {
         /*
         for (Company c : receivedCompanies) {
@@ -172,7 +186,8 @@ public class GraphActivity extends FragmentActivity implements
                     break;
 
                 case R.id.compare_button:
-                    Intent moveToCompare = new Intent(this, CompanyComparisonActivity.class);
+                    Intent moveToCompare = new Intent(this,
+                            CompanyComparisonActivity.class);
                     startActivity(moveToCompare);
                     break;
 
