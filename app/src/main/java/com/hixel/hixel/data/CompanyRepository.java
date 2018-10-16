@@ -7,6 +7,8 @@ import com.hixel.hixel.data.api.Client;
 import com.hixel.hixel.data.database.CompanyDao;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.models.SearchEntry;
+import io.reactivex.Single;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -120,5 +122,8 @@ public class CompanyRepository {
                     }));
     }
 
-
+    // TODO: Move this out into its own class.
+    public Single<List<SearchEntry>> search(String searchTerm) {
+        return serverInterface.doSearchQuery(searchTerm);
+    }
 }

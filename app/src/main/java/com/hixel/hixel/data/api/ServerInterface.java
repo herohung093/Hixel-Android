@@ -57,4 +57,5 @@ public interface ServerInterface {
 
     @GET("/search")
     Single<List<SearchEntry>> doSearchQuery(@Query("query") String query);
+
 }

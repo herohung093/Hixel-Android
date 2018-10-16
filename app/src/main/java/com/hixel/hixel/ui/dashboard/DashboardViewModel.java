@@ -7,8 +7,6 @@ import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.data.models.SearchEntry;
-import com.hixel.hixel.data.api.Client;
-import com.hixel.hixel.data.api.ServerInterface;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -69,9 +67,8 @@ public class DashboardViewModel extends ViewModel {
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .filter(text -> !text.isEmpty())
-                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm -> Client.getClient()
-                        .create(ServerInterface.class)
-                        .doSearchQuery(searchTerm)
+                .switchMapSingle((Function<String, Single<List<SearchEntry>>>) searchTerm ->
+                        companyRepository.search(searchTerm)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread()))
                 .subscribeWith(observer));
