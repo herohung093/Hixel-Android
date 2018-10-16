@@ -28,16 +28,11 @@ import java.util.List;
  */
 // TODO: This class is extremely similar the the one in the companydetail, can they be merged?
 public class GraphFragment extends Fragment implements GraphInterface {
-    @SuppressWarnings("unused")
-    private static final String TAG = GraphFragment.class.getSimpleName();
 
     private CombinedChart chart;
     // TODO: This needs to be done in a model.
     private String[] years = {"2014", "2015", "2016", "2017", "2018"};
     ArrayList<Integer> colors = new ArrayList<>();
-
-    // TODO: Not used.
-    private OnFragmentInteractionListener listener;
 
     public GraphFragment() { }
 
@@ -217,23 +212,10 @@ public class GraphFragment extends Fragment implements GraphInterface {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        if (context instanceof OnFragmentInteractionListener) {
-            listener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        listener = null;
-    }
-
-
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        // void onFragmentInteraction(Uri uri);
     }
 }

@@ -35,8 +35,7 @@ import javax.inject.Inject;
 // TODO: Change to AppCompat not FragmentActivity
 // TODO: Databinding
 public class GraphActivity extends FragmentActivity implements
-        GenericChartFragment.OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener,
-        HorizontalListViewOnClickListener {
+        GenericChartFragment.OnFragmentInteractionListener, HorizontalListViewOnClickListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = GraphActivity.class.getSimpleName();

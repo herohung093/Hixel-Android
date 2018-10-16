@@ -13,10 +13,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnCloseListener;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,9 +52,6 @@ import javax.inject.Inject;
  * DashboardActivity displays a list of companies in a users profile.
  */
 public class DashboardActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
-
-    @SuppressWarnings("unused")
-    private static final String TAG = DashboardActivity.class.getSimpleName();
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -119,8 +116,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             setupDashboardAdapter(companies);
             updateChart(companies);
         } else {
-            // Show Loading indicator
-            Log.d(TAG, "updateUI: Loading");
             binding.progressBar.setVisibility(View.VISIBLE);
         }
     }
@@ -179,6 +174,8 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             String ticker = entry.getTicker();
 
             goToCompanyView(ticker);
+            search.clearFocus();
+            binding.toolbar.toolbar.collapseActionView();
         });
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
