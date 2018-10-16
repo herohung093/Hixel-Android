@@ -10,7 +10,13 @@ import com.hixel.hixel.data.entities.User;
 import java.util.List;
 import javax.inject.Inject;
 
-
+/**
+ * ViewModel for the CompanyDetail screen.
+ * <p>
+ * The ViewModel exposes both User and Company data to the screen. Allows a user to save the
+ * Company to their portfolio.
+ * </p>
+ */
 public class CompanyDetailViewModel extends ViewModel {
 
     private CompanyRepository companyRepository;
@@ -18,7 +24,6 @@ public class CompanyDetailViewModel extends ViewModel {
 
     private MutableLiveData<Company> company;
     private LiveData<User> user;
-
     private boolean isInPortfolio;
 
     @Inject
@@ -27,6 +32,9 @@ public class CompanyDetailViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Calls the UserRepository if no User exists, otherwise it returns nothing.
+     */
     void init() {
         if (this.user != null) {
             return;
@@ -35,6 +43,10 @@ public class CompanyDetailViewModel extends ViewModel {
         user = userRepository.getUser();
     }
 
+    /**
+     * Calls the CompanyRepository if no Company exists, otherwise it returns nothing.
+     * @param ticker The ticker of the Company
+     */
     void loadCompany(String ticker) {
         if (this.company != null) {
             return;
@@ -45,18 +57,26 @@ public class CompanyDetailViewModel extends ViewModel {
 
     public LiveData<User> getUser() { return user; }
 
-    public MutableLiveData<Company> getCompany() {
-        return this.company;
-    }
+    public MutableLiveData<Company> getCompany() { return this.company; }
 
+    /**
+     * Saves the company to the users portfolio and company database.
+     * @param savedCompany Company the user wants to save.
+     * @param updatedUser The updated user object.
+     */
     void saveCompany(Company savedCompany, User updatedUser) {
         userRepository.updateUser(updatedUser);
         companyRepository.saveCompany(savedCompany);
     }
 
-    void setIsInPortfolio(List<String> tickers, String ticker) {
-        for (String t : tickers) {
-            if (t.equals(ticker)) {
+    /**
+     * Checks whether the Company is in the users portfolio.
+     * @param usersTickers Users tickers.
+     * @param companyTicker Current companies ticker.
+     */
+    void setIsInPortfolio(List<String> usersTickers, String companyTicker) {
+        for (String t : usersTickers) {
+            if (t.equals(companyTicker)) {
                 isInPortfolio = true;
             }
         }
