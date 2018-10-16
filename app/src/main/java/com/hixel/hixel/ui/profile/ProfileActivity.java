@@ -5,9 +5,12 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +44,11 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
+
+        binding.toolbar.toolbar.setTitle(R.string.profile);
+        binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
+        binding.toolbar.toolbar.setNavigationIcon(R.drawable.ic_close);
+        setSupportActionBar(binding.toolbar.toolbar);
 
         this.configureDagger();
         this.configureViewModel();
@@ -178,5 +186,21 @@ public class ProfileActivity extends AppCompatActivity {
      */
     public void displaySnackbar(String message) {
         Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+
+        MenuItem searchView = menu.findItem(R.id.action_search);
+        searchView.setVisible(false);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

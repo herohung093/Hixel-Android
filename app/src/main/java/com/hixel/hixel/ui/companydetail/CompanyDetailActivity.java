@@ -31,7 +31,6 @@ import com.hixel.hixel.ui.profile.ProfileActivity;
 
 import dagger.android.AndroidInjection;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -167,10 +166,6 @@ public class CompanyDetailActivity extends AppCompatActivity implements Horizont
 
         recyclerView.setLayoutManager(layoutManager);
 
-        // TODO: We are putting our single company into an List, needs to change.
-        List<Company> companies = new ArrayList<>();
-        companies.add(company);
-
         RecyclerView.Adapter adapter = new HorizontalListViewAdapter(this,  this);
         recyclerView.setAdapter(adapter);
 
@@ -180,7 +175,6 @@ public class CompanyDetailActivity extends AppCompatActivity implements Horizont
     }
 
     // TODO: Breakpoints need to be in line with confluence ratio proposal
-
     /**
      * Returns the color based upon the inputted value
      * @param value The 'score' of the Company
