@@ -13,7 +13,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnCloseListener;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
@@ -283,13 +282,13 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
             safetyScore += c.getSafetyScore();
         }
 
-
         returnsScore /= size;
         performanceScore /= size;
         strengthScore /= size;
         healthScore /= size;
         safetyScore /= size;
 
+        dataSet.clear();
         dataSet.addEntry(new BarEntry(0, returnsScore));
         dataSet.addEntry(new BarEntry(1, performanceScore));
         dataSet.addEntry(new BarEntry(2, strengthScore));
@@ -332,7 +331,6 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerItem
         data = new BarData(dataSet);
         data.setBarWidth(0.2f);
         data.setDrawValues(false);
-
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
