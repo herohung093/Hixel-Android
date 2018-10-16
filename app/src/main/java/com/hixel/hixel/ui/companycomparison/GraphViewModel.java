@@ -7,13 +7,12 @@ import com.hixel.hixel.data.entities.Company;
 import java.util.List;
 import javax.inject.Inject;
 
+/**
+ * Exposes the Companies the user wishes to compare.
+ */
 public class GraphViewModel extends ViewModel {
 
-    @SuppressWarnings("unused")
-    private final String TAG = GraphViewModel.class.getSimpleName();
-
     private CompanyRepository repository;
-    // TODO: Change to List
     private MutableLiveData<List<Company>> companies;
 
     @Inject
@@ -21,6 +20,10 @@ public class GraphViewModel extends ViewModel {
         this.repository = repository;
     }
 
+    /**
+     * Checks if the companies exist, if not fetches them from the repository.
+     * @param tickers The list of tickers for the companies to be compared.
+     */
     void init(List<String> tickers) {
         if (this.companies != null) {
             return;
