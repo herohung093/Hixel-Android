@@ -10,7 +10,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageView;
 
@@ -34,8 +33,7 @@ import javax.inject.Inject;
  */
 // TODO: Change to AppCompat not FragmentActivity
 // TODO: Databinding
-public class GraphActivity extends FragmentActivity implements
-        GenericChartFragment.OnFragmentInteractionListener, HorizontalListViewOnClickListener {
+public class GraphActivity extends FragmentActivity implements HorizontalListViewOnClickListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = GraphActivity.class.getSimpleName();
@@ -53,7 +51,6 @@ public class GraphActivity extends FragmentActivity implements
 
     // Ratio that the user has selected from the horizontal list of ratios.
     private String selectedRatio = "Returns";
-
     List<Company> companies;
 
 
@@ -154,7 +151,7 @@ public class GraphActivity extends FragmentActivity implements
         mLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new HorizontalListViewAdapter(this, companies, fragmentA, this);
+        mAdapter = new HorizontalListViewAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
 

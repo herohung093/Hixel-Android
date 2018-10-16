@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +22,9 @@ import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
+import com.hixel.hixel.ui.commonui.HorizontalListViewOnClickListener;
 import com.hixel.hixel.ui.companycomparison.CompanyComparisonActivity;
+import com.hixel.hixel.ui.companycomparison.GraphFragment;
 import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.ui.profile.ProfileActivity;
 
@@ -38,15 +39,17 @@ import javax.inject.Inject;
  *
  * @author Hixel
  */
-public class CompanyDetailActivity extends AppCompatActivity
-        implements CompanyGenericGraphFragment.OnFragmentInteractionListener {
+public class CompanyDetailActivity extends AppCompatActivity implements HorizontalListViewOnClickListener {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
     private CompanyDetailViewModel viewModel;
-    private CompanyGenericGraphFragment fragment;
+    private GraphFragment fragment;
     private ActivityCompanyBinding binding;
+
+    private String selectedRatio = "Returns";
+    private Company company;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +71,7 @@ public class CompanyDetailActivity extends AppCompatActivity
         this.configureViewModel(ticker);
 
         // TODO: Correct way to do this?
-        fragment = (CompanyGenericGraphFragment)
-                getFragmentManager().findFragmentById(R.id.fragment_generic_overtime);
+        fragment = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_generic_overtime);
     }
 
     private void configureDagger() {
@@ -164,22 +166,16 @@ public class CompanyDetailActivity extends AppCompatActivity
 
         recyclerView.setLayoutManager(layoutManager);
 
-        // TODO: Better way of implementing this
-        ArrayList<String> ratios = new ArrayList<>();
-        ratios.add("returns");
-        ratios.add("performance");
-        ratios.add("health");
-        ratios.add("strength");
-        ratios.add("Safety");
-
         // TODO: We are putting our single company into an List, needs to change.
         List<Company> companies = new ArrayList<>();
         companies.add(company);
 
-        // RecyclerView.Adapter adapter = new HorizontalListViewAdapter(this, companies, fragment);
-        // recyclerView.setAdapter(adapter);
+        RecyclerView.Adapter adapter = new HorizontalListViewAdapter(this,  this);
+        recyclerView.setAdapter(adapter);
 
-        fragment.drawGraph(company, ratios.get(0));
+        fragment.drawGraph(company, selectedRatio);
+
+        this.company = company;
     }
 
     // TODO: Breakpoints need to be in line with confluence ratio proposal
@@ -208,12 +204,10 @@ public class CompanyDetailActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
     // TODO: This needs to be in its own file
-
     /**
      * UI and Logic for the bottom Navigation view
      */
@@ -240,5 +234,8 @@ public class CompanyDetailActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) { }
+    public void onClick(String ratio) {
+        selectedRatio = ratio;
+        fragment.drawGraph(company, selectedRatio);
+    }
 }

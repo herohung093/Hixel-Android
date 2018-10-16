@@ -16,8 +16,6 @@ import java.util.List;
 
 public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> {
 
-    private List<Company> companies;
-    private GraphInterface fragmentGraph;
     private Context context;
     private int rowIndex = 0;
 
@@ -26,10 +24,8 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
     // TODO: XML or Const file?
     private static final String[] ratios = {"Returns", "Performance", "Strength", "Health", "Safety"};
 
-    public HorizontalListViewAdapter(Context context, List<Company> companies, GraphInterface fragmentGraph, HorizontalListViewOnClickListener listener) {
+    public HorizontalListViewAdapter(Context context, HorizontalListViewOnClickListener listener) {
         this.context = context;
-        this.companies = companies;
-        this.fragmentGraph = fragmentGraph;
         this.listener = listener;
     }
 
@@ -44,28 +40,6 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
 
     @Override
     public void onBindViewHolder(@NonNull HorizontalListViewAdapter.ViewHolder holder, int position) {
-        /*
-        holder.setSelectedItem(holder.getAdapterPosition()==rowIndex);
-        holder.tvSpecies.setText(ratios.get(position));
-
-        holder.tvSpecies.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-
-                if(companies.size() > 1){
-                    fragmentGraph.drawGraph(companies,ratios.get(position));
-                } else {
-                    fragmentGraph.drawGraph(companies,ratios.get(position));
-                }
-
-                // setRowIndex(position);
-                notifyItemChanged(rowIndex);
-                rowIndex=position;
-                notifyItemChanged(rowIndex);
-            }
-        });*/
-
-
         if (position == rowIndex) {
             holder.cardView.setCardBackgroundColor(
                     context.getResources().getColor(R.color.colorPrimaryDark));
@@ -100,15 +74,6 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
             super(itemView);
             tvSpecies =  itemView.findViewById(R.id.tv_species);
             cardView =  itemView.findViewById(R.id.ratio_item_cardView);
-        }
-
-        public void setSelectedItem(boolean selected) {
-            if(selected)
-                // Color primary dark
-                cardView.setCardBackgroundColor(Color.parseColor("#303F9F"));
-            else
-                // Color primary
-                cardView.setCardBackgroundColor(Color.parseColor("#172B4D"));
         }
     }
 }

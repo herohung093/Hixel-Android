@@ -18,7 +18,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.ui.GraphInterface;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ import java.util.List;
  * Displays a line chart of the historical performance of the companies
  */
 // TODO: This class is extremely similar the the one in the companydetail, can they be merged?
-public class GraphFragment extends Fragment implements GraphInterface {
+public class GraphFragment extends Fragment {
 
     private CombinedChart chart;
     // TODO: This needs to be done in a model.
@@ -61,7 +60,33 @@ public class GraphFragment extends Fragment implements GraphInterface {
         return view;
     }
 
-    @Override
+    public void drawGraph(Company company, String selectedRatio) {
+        LineData lineData = new LineData();
+        ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
+
+        LineDataSet setComp = lineChartDataSetup(selectedRatio, company);
+        lineDataSets.add(setComp);
+
+        setupDatasetStyle(lineDataSets);
+
+        for(int i = 0; i < lineDataSets.size();i++){
+            lineData.addDataSet(lineDataSets.get(i));
+        }
+
+        chart.setDrawOrder(new CombinedChart.DrawOrder[]{
+                CombinedChart.DrawOrder.BAR,  CombinedChart.DrawOrder.LINE
+        });
+
+        decorLineChart(chart);
+
+        CombinedData data = new CombinedData();
+        data.setData(lineData);
+
+        chart.getDescription().setEnabled(false);
+        chart.setData(data);
+        chart.invalidate();
+    }
+
     public void drawGraph(List<Company> companies, String selectedRatio) {
         LineData lineData = new LineData();
         ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
@@ -135,10 +160,6 @@ public class GraphFragment extends Fragment implements GraphInterface {
 
         return entry;
     }
-
-    // TODO: Never used, do we need an interface?
-    @Override
-    public void drawGraph(Company company, String selectedRatio) { }
 
     /**
      * Styling for the line chart.
