@@ -14,7 +14,6 @@ import android.view.Gravity;
 import android.widget.ImageView;
 
 import com.hixel.hixel.R;
-import com.hixel.hixel.ui.commonui.CompanyScoreListAdapter;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
 import com.hixel.hixel.ui.commonui.HorizontalListViewOnClickListener;

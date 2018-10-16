@@ -1,4 +1,4 @@
-package com.hixel.hixel.ui.commonui;
+package com.hixel.hixel.ui.companycomparison;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
