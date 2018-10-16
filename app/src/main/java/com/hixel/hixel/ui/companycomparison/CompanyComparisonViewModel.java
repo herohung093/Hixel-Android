@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.api.Client;
@@ -35,8 +34,6 @@ import retrofit2.Response;
  * NOTE: No data should be saved into a DAO.
  */
 public class CompanyComparisonViewModel extends ViewModel {
-
-    private static final String TAG = CompanyComparisonViewModel.class.getSimpleName();
 
     private CompanyRepository companyRepository;
     private UserRepository userRepository;
@@ -82,26 +79,14 @@ public class CompanyComparisonViewModel extends ViewModel {
         dashboardCompanies = companyRepository.getCompanies(tickers);
     }
 
-    /**
-     * Method to get a live data User
-     * @return A Live Data User to observe any changes to the User
-     */
     public LiveData<User> getUser() {
         return user;
     }
 
-    /**
-     * Method to get a List of Live Data Companies from the dashboard list.
-     * @return A list of Live Data Companies
-     */
     LiveData<List<Company>> getDashboardCompanies() {
         return dashboardCompanies;
     }
 
-    /**
-     * Method to return a List of Live data Companies from the comparison list.
-     * @return A list of Live Data Companies
-     */
     LiveData<List<Company>> getComparisonCompanies() {
         return comparisonCompanies;
     }
@@ -125,11 +110,18 @@ public class CompanyComparisonViewModel extends ViewModel {
                 .subscribeWith(observer));
     }
 
-
+    /**
+     *
+     * @param query
+     */
     void loadSearchResults(String query) {
         publishSubject.onNext(query);
     }
 
+    /**
+     *
+     * @param tickersList
+     */
     void addToComparisonCompanies(List<String> tickersList) {
         String[] tickers = new String[tickersList.size()];
         tickers = tickersList.toArray(tickers);

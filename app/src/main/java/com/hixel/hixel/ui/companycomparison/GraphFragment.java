@@ -21,15 +21,21 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.entities.CompanyData;
 import com.hixel.hixel.ui.GraphInterface;
-import com.hixel.hixel.ui.companycomparison.GenericChartFragment.OnFragmentInteractionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Displays a line chart of the historical performance of the companies
+ */
+// TODO: This class is extremely similar the the one in the companydetail, can they be merged?
 public class GraphFragment extends Fragment implements GraphInterface {
 
     private CombinedChart chart;
     String[] years;
     ArrayList<Integer> colors = new ArrayList<>();
+
+    // TODO: Not used.
     private OnFragmentInteractionListener listener;
 
     public GraphFragment() { }
@@ -59,6 +65,13 @@ public class GraphFragment extends Fragment implements GraphInterface {
         return view;
     }
 
+    /**
+     * Sets up the LineDataSet for each company being compared.
+     *
+     * @param selectedRatio The ratio to be displayed
+     * @param company The company to display.
+     * @return The LineDataSet of the company.
+     */
     // TODO: Make this display 5 years of data
     public LineDataSet lineChartDataSetup(String selectedRatio, Company company){
         List<Entry> compEntry = new ArrayList<>();
@@ -80,7 +93,6 @@ public class GraphFragment extends Fragment implements GraphInterface {
 
     @Override
     public void drawGraph(List<Company> companies,String selectedRatio){
-
         LineData lineData = new LineData();
         ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
 
@@ -110,6 +122,10 @@ public class GraphFragment extends Fragment implements GraphInterface {
         chart.invalidate();
     }
 
+    /**
+     * Styling for the line chart.
+     * @param chart The line chart.
+     */
     public void decorLineChart(CombinedChart chart){
         chart.animateXY(1000, 1000);
         chart.setDrawGridBackground(false);
