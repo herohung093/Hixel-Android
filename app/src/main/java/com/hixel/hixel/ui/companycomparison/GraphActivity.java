@@ -10,9 +10,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageView;
 import com.hixel.hixel.R;
+import com.hixel.hixel.ui.GraphInterface;
 import com.hixel.hixel.ui.commonui.CompanyScoreListAdapter;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
@@ -23,20 +25,24 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-public class GraphActivity extends FragmentActivity {
+public class GraphActivity extends FragmentActivity implements
+        GenericChartFragment.OnFragmentInteractionListener, GraphFragment.OnFragmentInteractionListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = GraphActivity.class.getSimpleName();
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+    GraphViewModel viewModel;
 
     RecyclerView mRecyclerView, companyRecyclerView;
     RecyclerView.Adapter mAdapter, companyListAdapter;
     RecyclerView.LayoutManager mLayoutManager;
 
-    GraphFragment fragmentA;
+    GraphInterface fragmentA;
     ProgressDialog progressDialog;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +65,7 @@ public class GraphActivity extends FragmentActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.graph_generic_navigator);
         setupBottomNavigationView(bottomNavigationView);
 
-        fragmentA = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_bar_chart);
+        fragmentA = (GraphInterface) getFragmentManager().findFragmentById(R.id.fragment_bar_chart);
 
         progressDialog.dismiss();
 
@@ -87,19 +93,21 @@ public class GraphActivity extends FragmentActivity {
     }
 
     private void configureViewModel(List<String> tickers) {
-        GraphViewModel viewModel = ViewModelProviders.of(this, viewModelFactory)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(GraphViewModel.class);
         viewModel.init(tickers);
         viewModel.getCompanies().observe(this, this::updateUI);
     }
 
     private void updateUI(List<Company> companies) {
-        setupListOfCompanies(companies);
+        if (companies != null) {
+            setupListOfCompanies(companies);
 
-        ArrayList<String> ratios = new ArrayList<>();
-        ratios.add("Current Ratio");
+            ArrayList<String> ratios = new ArrayList<>();
+            ratios.add("Current Ratio");
 
-        setupListOfRatios(ratios, companies);
+            setupListOfRatios(ratios, companies);
+        }
     }
 
     private void setupListOfCompanies(List<Company> companies) {
@@ -126,8 +134,9 @@ public class GraphActivity extends FragmentActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         checkUpFinancialEntry(spinnerList);
-        fragmentA.drawGraph(companies,spinnerList.get(0));
+        fragmentA.drawGraph(companies, spinnerList.get(0));
 
+        Log.d(TAG, "setupListOfRatios: Company Size" + companies.size());
         GenericChartFragment fragmentB = (GenericChartFragment) getFragmentManager().findFragmentById(R.id.fragment_radar_chart);
         fragmentB.drawGraph(companies);
     }

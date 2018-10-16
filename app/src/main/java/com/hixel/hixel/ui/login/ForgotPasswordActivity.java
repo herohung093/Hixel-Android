@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.EditText;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.databinding.ActivityForgotPasswordBinding;
@@ -75,4 +76,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
     }
+
+    /* TODO: Check if this is needed
+    public String getEmail() {
+        EditText editText = emailIdText.getEditText();
+
+        if (editText == null)
+            return "";
+
+        return editText.getText().toString().trim();
+    }*/
 }

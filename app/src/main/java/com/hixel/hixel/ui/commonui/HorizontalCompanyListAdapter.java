@@ -13,9 +13,6 @@ import java.util.List;
 
 public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<HorizontalCompanyListAdapter.ViewHolder>{
 
-    private static final String TAG = HorizontalCompanyListAdapter.class.getSimpleName();
-
-
     private List<Company> companies;
 
     public HorizontalCompanyListAdapter(List<Company> companies) {

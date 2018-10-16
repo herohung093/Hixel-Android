@@ -1,5 +1,6 @@
 package com.hixel.hixel.data.api;
 
+import android.arch.lifecycle.LiveData;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.ApplicationUser;
 import com.hixel.hixel.data.models.LoginData;
@@ -53,10 +54,10 @@ public interface ServerInterface {
     Call<Void> refreshAccessToken(@Header("Refresh") String Refresh);
 
     @GET("/companydata")
-    Call<ArrayList<Company>> doGetCompanies(@Query("tickers") String tickers, @Query("years") int years);
+    Call<ArrayList<Company>> getCompanies(@Query("tickers") String tickers, @Query("years") int years);
 
     @GET("/companydata")
-    Call<ArrayList<Company>> getCompanies(@Query("tickers") String tickers, @Query("years") int years);
+    Call<LiveData<ArrayList<Company>>> getLiveCompanies(@Query("tickers") String tickers, @Query("years") int years);
 
     @GET("/search")
     Single<List<SearchEntry>> doSearchQuery(@Query("query") String query);

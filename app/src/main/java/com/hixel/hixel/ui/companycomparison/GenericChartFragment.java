@@ -26,6 +26,7 @@ import java.util.List;
 
 public class GenericChartFragment extends Fragment {
 
+    private OnFragmentInteractionListener listener;
     private RadarChart radarChart;
 
     public GenericChartFragment() { }
@@ -39,7 +40,7 @@ public class GenericChartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_generic_chart, container, false);
-        radarChart= view.findViewById(R.id.radarChart);
+        radarChart = view.findViewById(R.id.radarChart);
 
         return view;
     }
@@ -144,19 +145,25 @@ public class GenericChartFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            listener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        OnFragmentInteractionListener mListener = null;
+        listener = null;
     }
 
+    /**
+     * This interface must be implemented by activities that contain this fragment to allow an
+     * interaction in this fragment to be communicated to the activity and potentially other
+     * fragments contained in that activity. <p> See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html" >Communicating
+     * with Other Fragments</a> for more information.
+     */
     interface OnFragmentInteractionListener { }
 }

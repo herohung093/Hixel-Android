@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.api.Client;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +36,8 @@ import retrofit2.Response;
  */
 public class CompanyComparisonViewModel extends ViewModel {
 
+    private static final String TAG = CompanyComparisonViewModel.class.getSimpleName();
+
     private CompanyRepository companyRepository;
     private UserRepository userRepository;
 
@@ -44,6 +48,8 @@ public class CompanyComparisonViewModel extends ViewModel {
     private CompositeDisposable disposable = new CompositeDisposable();
 
     private MutableLiveData<List<Company>> comparisonCompanies = new MutableLiveData<>();
+
+    private List<Company> compCompanies = new ArrayList<>();
 
     @Inject
     CompanyComparisonViewModel(CompanyRepository companyRepository, UserRepository userRepository) {
@@ -85,7 +91,7 @@ public class CompanyComparisonViewModel extends ViewModel {
     }
 
     /**
-     * Method to get a List of Live Data Companies from the dashbaord list.
+     * Method to get a List of Live Data Companies from the dashboard list.
      * @return A list of Live Data Companies
      */
     LiveData<List<Company>> getDashboardCompanies() {
@@ -99,6 +105,8 @@ public class CompanyComparisonViewModel extends ViewModel {
     LiveData<List<Company>> getComparisonCompanies() {
         return comparisonCompanies;
     }
+
+    List<Company> getCompCompanies() { return compCompanies; }
 
     /**
      * Method sets up the search for the Activity
@@ -122,15 +130,20 @@ public class CompanyComparisonViewModel extends ViewModel {
         publishSubject.onNext(query);
     }
 
-    void addToComparisonCompanies(String ticker) {
+    void addToComparisonCompanies(List<String> tickersList) {
+        String[] tickers = new String[tickersList.size()];
+        tickers = tickersList.toArray(tickers);
+
         Client.getClient().create(ServerInterface.class)
-                .doGetCompanies(ticker, 1)
+                .getCompanies(StringUtils.join(tickers, ','), 1)
                 .enqueue(new Callback<ArrayList<Company>>() {
                     @Override
                     public void onResponse(@NonNull Call<ArrayList<Company>> call,
                             @NonNull Response<ArrayList<Company>> response) {
                         List<Company> temp = response.body();
                         comparisonCompanies.setValue(temp);
+
+                        compCompanies = response.body();
                     }
 
                     @Override

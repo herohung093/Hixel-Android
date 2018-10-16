@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -56,6 +57,8 @@ public class CompanyComparisonActivity extends AppCompatActivity {
     private Button compareButton;
     private SearchAutoComplete searchAutoComplete;
 
+    // TODO: Change to List
+    ArrayList<String> tickers = new ArrayList<>();
     List<Company> dashboardCompanies;
     List<Company> comparisonCompanies;
 
@@ -89,7 +92,8 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CompanyComparisonViewModel.class);
         viewModel.init();
         viewModel.getUser().observe(this, this::updateDashboardCompanies);
-        viewModel.getComparisonCompanies().observe(this, this::updateComparisonCompanies);
+        // viewModel.getComparisonCompanies().observe(this, this::updateComparisonCompanies);
+        updateComparisonCompanies(viewModel.getCompCompanies());
     }
 
     /**
@@ -102,6 +106,7 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
             viewModel.loadDashboardCompanies(tickers);
             viewModel.getDashboardCompanies().observe(this, this::setupDashboardCompanyListAdapter);
+            viewModel.getComparisonCompanies().observe(this, this::updateComparisonCompanies);
         }
     }
 
@@ -111,9 +116,10 @@ public class CompanyComparisonActivity extends AppCompatActivity {
      * @param companies The list of companies for the comparison recyclerView
      */
     public void updateComparisonCompanies(List<Company> companies) {
-        if (companies != null && companies.get(0) != null) {
+        if (companies != null && companies.size() >= 1) {
             comparisonCompaniesAdapter.addCompanies(companies);
-            comparisonCompanies = companies;
+
+            comparisonCompanies = viewModel.getCompCompanies();
         }
     }
 
@@ -150,6 +156,22 @@ public class CompanyComparisonActivity extends AppCompatActivity {
 
         // setup swiping left or right to delete item
         setUpItemTouchHelper();
+    }
+
+    /**
+     * Method adds an onClickListener to the compare button to move to the compare charts
+     */
+    private void setupButtons() {
+        compareButton.setOnClickListener((View view) -> {
+            Intent moveToGraph = new Intent(this, GraphActivity.class);
+
+            // TODO: Some if-statement to make this show only if the user has not selected two companies
+            Toast.makeText(getApplicationContext(), "Select at least 2 companies!", Toast.LENGTH_LONG).show();
+
+            Log.d(TAG, "setupButtons: " + tickers.get(0));
+            moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES", tickers);
+            startActivity(moveToGraph);
+        });
     }
 
     /**
@@ -198,7 +220,8 @@ public class CompanyComparisonActivity extends AppCompatActivity {
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                     int position = viewHolder.getAdapterPosition();
-                    viewModel.addToComparisonCompanies(dashboardCompanies.get(position).getTicker());
+                    tickers.add(dashboardCompanies.get(position).getTicker());
+                    viewModel.addToComparisonCompanies(tickers);
                 }
 
                 @Override
@@ -223,26 +246,6 @@ public class CompanyComparisonActivity extends AppCompatActivity {
         // attaching the touch helper to recycler view
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         mItemTouchHelper.attachToRecyclerView(dashboardCompaniesRecyclerView);
-    }
-
-    /**
-     * Method adds an onClickListener to the compare button to move to the compare charts
-     */
-    private void setupButtons() {
-        compareButton.setOnClickListener((View view) -> {
-            Intent moveToGraph = new Intent(this, GraphActivity.class);
-
-            // TODO: Some if-statement to make this show only if the user has not selected two companies
-            Toast.makeText(getApplicationContext(), "Select at least 2 companies!", Toast.LENGTH_LONG).show();
-
-            ArrayList<String> comparisonCompanyTickers = new ArrayList<>();
-            for (Company c : comparisonCompanies) {
-                comparisonCompanyTickers.add(c.getTicker());
-            }
-
-            moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES", comparisonCompanyTickers);
-            startActivity(moveToGraph);
-        });
     }
 
     /**
@@ -317,7 +320,9 @@ public class CompanyComparisonActivity extends AppCompatActivity {
             String ticker = entry.getTicker();
             searchAutoComplete.setText("");
 
-            viewModel.addToComparisonCompanies(ticker);
+            tickers.add(ticker);
+
+            viewModel.addToComparisonCompanies(tickers);
         });
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

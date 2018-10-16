@@ -1,5 +1,6 @@
 <resources>
   <!-- Common -->
+  <!-- TODO: Change app_name to CorpReport -->
   <string name="app_name">Hixel</string>
   <string name="default_text">Default</string>
   <string name="long_default_text">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</string>
@@ -38,7 +39,7 @@
 
   <!-- Forgot Password -->
   <string name="registered_email">Email ID</string>
-  <string name="hint_registered_email">Please enter your Registered Email ID below:</string>
+  <string name="hint_registered_email">Please enter your registered Email below:</string>
   <string name="back_to_login">Back</string>
   <string name="submit">Submit</string>
   <string name="update_password">Update Password</string>
@@ -69,12 +70,12 @@
 
   <!--Login -->
   <string name="logo_description">Logo</string>
-  <string name="forgot_your_password">Forgot your password? Take it back</string>
+  <string name="forgot_your_password">Forgot your password?</string>
   <string name="login">Login</string>
-  <string name="no_account">No account yet? Create one</string>
+  <string name="no_account">Create Account</string>
 
   <!--Pin View -->
-  <string name="enter_pin">Please type the verification code sent to you</string>
+  <string name="enter_pin">Please enter your password reset pin:</string>
 
   <!-- Onboarding -->
   <string name="dot">&#xb7;</string>
