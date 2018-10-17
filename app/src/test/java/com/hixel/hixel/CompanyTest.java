@@ -4,7 +4,6 @@ import static junit.framework.Assert.assertEquals;
 
 import com.hixel.hixel.service.models.Company;
 import com.hixel.hixel.service.models.CompanyIdentifiers;
-import com.hixel.hixel.data.entities.CompanyData;
 import java.util.ArrayList;
 import org.junit.Test;
 

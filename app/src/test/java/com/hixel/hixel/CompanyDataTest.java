@@ -2,7 +2,6 @@ package com.hixel.hixel;
 
 import static junit.framework.Assert.assertEquals;
 
-import com.hixel.hixel.data.entities.CompanyData;
 import java.util.LinkedHashMap;
 import org.junit.Test;
 
