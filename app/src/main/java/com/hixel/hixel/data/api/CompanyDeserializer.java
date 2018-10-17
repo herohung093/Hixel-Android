@@ -9,7 +9,8 @@ import com.google.gson.JsonParser;
 import java.lang.reflect.Type;
 
 /**
- *  Unwraps the JSON received from the server to be used by the Company Entity
+ *  Unwraps the JSON received from the server to be used by the Company Entity,
+ *  removing unnecessary info so less data is stored in the RoomDB.
  */
 public class CompanyDeserializer<T> implements JsonDeserializer<T> {
 

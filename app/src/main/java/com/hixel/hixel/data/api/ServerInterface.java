@@ -19,7 +19,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
- * Endpoints for CorpReport API
+ * Endpoints for CorpReport API, contains User, Company, and Authentication related endpoints.
  */
 public interface ServerInterface {
 

@@ -11,8 +11,8 @@ import com.hixel.hixel.data.entities.User;
 import java.util.List;
 
 /**
- * Data Access Object for the users table.
- * This uses LiveData so we can notify observers when the data changes.
+ * Data Access Object for interacting with the companies table. Return LiveData so we
+ * can notify observers when the data changes, and the UI will update.
  */
 @Dao
 public interface UserDao {

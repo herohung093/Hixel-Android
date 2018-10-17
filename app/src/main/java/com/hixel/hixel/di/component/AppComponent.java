@@ -12,9 +12,9 @@ import dagger.android.AndroidInjector;
 import javax.inject.Singleton;
 
 /**
- * Provides a graph to all of the modules we are using
+ * Provides a graph to all of the modules we are using at compile time to allow for
+ * dependency injection.
  */
-
 @Singleton
 @Component(modules = {
         AndroidInjectionModule.class,

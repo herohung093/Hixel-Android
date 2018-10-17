@@ -127,8 +127,7 @@ public class LoginActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(@NonNull Call<Void> call,
-                    @NonNull Response<Void> response) {
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 progressDialog.dismiss();
                 switch (response.code()) {
                     case 200:

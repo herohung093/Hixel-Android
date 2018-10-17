@@ -14,7 +14,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 /**
- * Lets Dagger2 know our Views at compile time
+ * Provides a graph of all activities that require DI at compile time.
  */
 @Module
 public abstract class ActivityBuilderModule {

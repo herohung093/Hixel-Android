@@ -26,7 +26,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Provides networking components required for the application.
+ * Provides networking components required for the application, as well as handles authentication.
  */
 @Module
 public class NetModule {

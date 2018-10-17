@@ -7,7 +7,8 @@ import com.hixel.hixel.data.entities.User;
 import javax.inject.Inject;
 
 /**
- * ViewModel for interacting between the UserRepository and ProfileActivity
+ * ViewModel for interacting between the UserRepository and ProfileActivity, exposes the User
+ * data to the UI and updates any changes made by the user via the UserRepository.
  */
 public class ProfileViewModel extends ViewModel {
 
@@ -43,6 +44,12 @@ public class ProfileViewModel extends ViewModel {
         return first.equals(second) && first.length() < 4;
     }
 
+    /**
+     * Takes the old and new password and updates to the new password.
+     *
+     * @param oldPassword The users password before the change.
+     * @param newPassword The users new password after the change.
+     */
     void updateUserPassword(String oldPassword, String newPassword) {
         repository.updateUserPassword(oldPassword, newPassword);
     }

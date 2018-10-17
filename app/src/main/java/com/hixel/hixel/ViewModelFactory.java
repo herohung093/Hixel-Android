@@ -10,11 +10,16 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 /**
- * Provides all the dependencies required for ViewModels
+ * Provides all the dependencies required for ViewModels.
+ *
+ * NOTE: This class should not need to be altered.
  */
 @Singleton
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
+    /**
+     * A (k,v) to provide for DI
+     */
     private final Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
 
     @Inject

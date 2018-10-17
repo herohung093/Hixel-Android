@@ -13,6 +13,9 @@ import com.hixel.hixel.databinding.ActivityForgotPasswordBinding;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
+/**
+ * Presents the UI for a user to request a new password.
+ */
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     @Inject

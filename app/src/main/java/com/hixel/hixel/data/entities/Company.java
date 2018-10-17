@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Immutable Company Entity
+ * Immutable Company Entity containing all relevant ratios to be stored.
  *
  * Returns:         Dividend Yield = Annual Dividends per share/Price per share ***
  * Performance:     Return on equity = NetIncome(Loss) / Equity

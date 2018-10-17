@@ -17,7 +17,7 @@ import retrofit2.Call;
 import static com.hixel.hixel.data.api.Const.NO_AUTHENTICATION;
 
 /**
- *  Handles authentication from server
+ *  Handles authentication from server. Calls the Server if Authorisation credentials are required.
  */
 public class TokenAuthenticator implements Authenticator {
     @SuppressLint("ApplySharedPref")
@@ -34,7 +34,7 @@ public class TokenAuthenticator implements Authenticator {
                     .create(ServerInterface.class)
                     .refreshAccessToken(refreshToken);
 
-            //NOTE: This is purposely a synchronous call.
+            // NOTE: This is purposely a synchronous call.
             retrofit2.Response<Void> refreshResponse = refreshCall.execute();
 
             if (refreshResponse != null && refreshResponse.code() == 200) {

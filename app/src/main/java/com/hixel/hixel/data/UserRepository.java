@@ -12,6 +12,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Exposes User data to the ViewModels and saves necessary information in the AppDatabase.
+ */
 @Singleton
 public class UserRepository {
 
@@ -32,6 +35,9 @@ public class UserRepository {
         return userDao.getUser();
     }
 
+    /**
+     * Calls the server for user data information, if successful  returns a boy.
+     */
     public void saveUser() {
         serverInterface.userData().enqueue(new Callback<User>() {
             @Override
@@ -49,6 +55,12 @@ public class UserRepository {
         });
     }
 
+    /**
+     * Updates the user object, we have to pass the entire object to Room as single updates
+     * become more expensive.
+     *
+     * @param user The updates user object.
+     */
     public void updateUser(User user) {
         executor.execute(() -> userDao.updateUser(user));
     }

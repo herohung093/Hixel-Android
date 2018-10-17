@@ -5,7 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Portfolio object used to interact with list of tickers
+ * Simple Portfolio model with a TypeConverter so that Room can directly read in the List
+ * of company tickers without needing to manually deserialize.
  */
 public class Portfolio {
 

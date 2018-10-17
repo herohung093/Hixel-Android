@@ -12,7 +12,8 @@ import dagger.android.HasActivityInjector;
 import javax.inject.Inject;
 
 /**
- * Entry point for the application
+ * Entry point for the application, creates the ActivityInjector for every subsequent activity,
+ * and enables Dagger, and Stetho.
  */
 public class App extends Application implements HasActivityInjector {
 

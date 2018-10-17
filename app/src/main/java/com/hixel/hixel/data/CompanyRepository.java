@@ -19,16 +19,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- *  Gets data from the server if the timeout has not occurred, otherwise gets it from the database.
+ * Handles calls relating to CompanyData, stores Dashboard calls in the DAO to retrieve without
+ * requiring a network call. All return values are either LiveData or Observable so that updates
+ * to the data will be reflected in the views.
  */
 @Singleton
 public class CompanyRepository {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = CompanyRepository.class.getSimpleName();
-
     private ServerInterface serverInterface;
     private final CompanyDao companyDao;
+    /**
+     * Used to interact with Room so that the UI thread is not effected.
+     */
     private final Executor executor;
 
     // TODO: Find a way to not use these vars
@@ -101,6 +103,10 @@ public class CompanyRepository {
         executor.execute(() -> companyDao.saveCompany(company));
     }
 
+    /**
+     * Requests a List of companies from the server.
+     * @param tickers The tickers for which companies we need from the server.
+     */
     private void refreshCompanies(final String[] tickers) {
         // Access room off the main thread
         executor.execute(() ->
@@ -120,6 +126,12 @@ public class CompanyRepository {
                     }));
     }
 
+    /**
+     * Makes a call to grab a List of SearchEntries relating to the search term.
+     *
+     * @param searchTerm The user entered search term.
+     * @return An observable List of Search entries;
+     */
     // TODO: Move this out into its own class.
     public Single<List<SearchEntry>> search(String searchTerm) {
         return serverInterface.doSearchQuery(searchTerm);

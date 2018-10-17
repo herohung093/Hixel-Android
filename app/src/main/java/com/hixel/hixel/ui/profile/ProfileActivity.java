@@ -84,6 +84,9 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding>  {
         }
     }
 
+    /**
+     * Initializes onClickListeners for buttons in the view.
+     */
     // TODO: Need API endpoints to update user first and last name.
     public void setupEditButtons() {
         binding.editFirstNameButton.setOnClickListener(view -> {

@@ -19,6 +19,8 @@ import javax.inject.Singleton;
  * Use this to bind our Application class as a Context in the AppComponent.
  * This puts the Application & Activities into the graph. No need to pass the
  * Application instance to modules.
+ *
+ * The class also provides the RoomDB and Repositories to the application.
  */
 @Module(includes = {AndroidInjectionModule.class, ViewModelModule.class})
 public class AppModule {

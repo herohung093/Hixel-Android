@@ -12,6 +12,12 @@ public class MainBarDataSet extends BarDataSet {
         super(yVals, label);
     }
 
+    /**
+     * Takes in the value and generates a corresponding color.
+     *
+     * @param index which graph we are coloring.
+     * @return returns a color.
+     */
     @Override
     public int getColor(int index) {
         // NOTE: Leave this as is, will be adding gradients later.

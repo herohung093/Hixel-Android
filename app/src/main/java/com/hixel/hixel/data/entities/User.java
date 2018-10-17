@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * User Entity, used to read in from the API and store in RoomDB
+ * User Entity, stores pertinent data from the server in the application
  */
 // TODO: Need a string of tickers from the user.
 @Entity(tableName = "user")
@@ -24,9 +24,20 @@ public class User {
     @SerializedName("lastName")
     private String lastName;
 
+    /**
+     * Allows storing the List of tickers in the db.
+     */
     @Embedded
     private Portfolio portfolio;
 
+
+    /**
+     * Minimal User constructor to lower db overhead.
+     *
+     * @param email email of the user - used as a PK
+     * @param firstName First Name of the user
+     * @param lastName Last Name of the user
+     */
     public User(@NonNull String email, String firstName, String lastName) {
         this.email = email;
         this.firstName = firstName;

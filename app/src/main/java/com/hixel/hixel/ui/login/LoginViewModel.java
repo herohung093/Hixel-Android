@@ -29,6 +29,12 @@ public class LoginViewModel extends ViewModel {
         repository.saveUser();
     }
 
+    /**
+     * Performs logic checks to esnure the user entered email is valid.
+     *
+     * @param email The email entered in y the user.
+     * @return A boolean indicating whether the password is valid.
+     */
     boolean isValidEmail(String email) {
         boolean isValid = true;
 
@@ -39,6 +45,12 @@ public class LoginViewModel extends ViewModel {
         return isValid;
     }
 
+    /**
+     * Performs logic checks to ensure the user entered the email correctly.
+     *
+     * @param password The user entered password.
+     * @return A boolean indicating whether the password is valid.
+     */
     boolean isValidPassword(String password) {
         boolean isValid = true;
 
@@ -49,9 +61,16 @@ public class LoginViewModel extends ViewModel {
         return isValid;
     }
 
+    /**
+     * Ensures the name meets criteria
+     *
+     * @param name The user entered name.
+     * @return A boolean indicating whether the user enter name is valid
+     */
     boolean isValidName(String name) {
         return !name.isEmpty();
     }
+
 
     boolean validatePasswordUpdate(String firstPassword, String reenteredPassword) {
         return firstPassword.compareTo(reenteredPassword) != 0;

@@ -8,7 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Converts between String a List of Strings for company tickers
+ * Converts between String and List of Strings for company tickers, this is used to convert the
+ * Type of data when entering and leaving the RoomDB.
  */
 public class PortfolioTypeConverter {
     private static Gson gson = new Gson();

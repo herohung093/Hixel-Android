@@ -14,18 +14,34 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
- * Custom class for rendering BarCharts with our color palette
+ * Custom class for rendering BarCharts with our color palette. This class is highly extensible
+ * and removes boilerplate from other views.
  */
 public class MainBarChartRenderer extends BarChartRenderer {
 
+    /**
+     * Constructor to generate the chart
+     *
+     * @param chart The current BarChart.
+     * @param animator To handle animations of the chart.
+     * @param viewPortHandler The current View the chart is sitting in.
+     */
     public MainBarChartRenderer(BarDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
         super(chart, animator, viewPortHandler);
     }
 
-
+    /**
+     * Create a rectangle for the bar chart shadow.
+     */
     private RectF barShadowRectBuffer = new RectF();
 
+    /**
+     *
+     * @param c The Canvas to draw the graph upon.
+     * @param dataSet The values for the grpah.
+     * @param index The current value needing to be drawn.
+     */
     protected void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
@@ -76,7 +92,7 @@ public class MainBarChartRenderer extends BarChartRenderer {
             }
         }
 
-        // initialize the buffer
+        // Initialize the buffer
         BarBuffer buffer = mBarBuffers[index];
         buffer.setPhases(phaseX, phaseY);
         buffer.setDataSet(index);
