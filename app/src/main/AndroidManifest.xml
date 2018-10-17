@@ -10,6 +10,7 @@
 
   <application
     android:allowBackup="true"
+    android:fullBackupContent="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
     android:name=".App"
@@ -17,25 +18,6 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
 
-    <activity
-      android:name=".ui.dashboard.DashboardActivity"
-      android:windowSoftInputMode="adjustNothing|stateHidden">
-    </activity>
-
-    <activity android:name=".ui.companydetail.CompanyDetailActivity" />
-
-    <activity
-      android:name=".ui.companycomparison.CompanyComparisonActivity"
-      android:windowSoftInputMode="adjustNothing|stateHidden">
-    </activity>
-
-    <!-- suppress AndroidDomInspection -->
-    <!-- <activity android:name=".comparisonGraph.MainActivity"/> -->
-    <activity android:name=".ui.companycomparison.GraphActivity"
-      android:windowSoftInputMode="adjustNothing" />
-
-    <!-- suppress AndroidDomInspection -->
-    <!-- <activity android:name=".comparisonGraph.MainActivity"/> -->
     <meta-data
       android:name="preloaded_fonts"
       android:resource="@array/preloaded_fonts"/>
@@ -56,8 +38,7 @@
       </intent-filter>
     </activity>
 
-    <activity
-      android:name=".ui.login.SignupActivity"
+    <activity android:name=".ui.login.SignupActivity"
       android:windowSoftInputMode="stateHidden" />
 
     <activity android:name=".ui.login.Onboarding" />
@@ -69,6 +50,21 @@
     <activity android:name=".ui.login.PinInputActivity" />
 
     <activity android:name=".ui.login.UpdatePasswordActivity" />
+
+    <activity
+      android:name=".ui.dashboard.DashboardActivity"
+      android:windowSoftInputMode="adjustNothing|stateHidden">
+    </activity>
+
+    <activity android:name=".ui.companydetail.CompanyDetailActivity" />
+
+    <activity
+      android:name=".ui.companycomparison.CompanyComparisonActivity"
+      android:windowSoftInputMode="adjustNothing|stateHidden">
+    </activity>
+
+    <activity android:name=".ui.companycomparison.GraphActivity"
+      android:windowSoftInputMode="adjustNothing" />
 
   </application>
 </manifest>
