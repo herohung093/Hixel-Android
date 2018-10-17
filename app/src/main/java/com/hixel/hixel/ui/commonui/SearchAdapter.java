@@ -57,9 +57,9 @@ public class SearchAdapter extends ArrayAdapter<SearchEntry> {
                     String query = constraint.toString().toLowerCase();
                     List<SearchEntry> filtered = new ArrayList<>();
 
-                    for (SearchEntry entry : searchEntries){
+                    for (SearchEntry entry : searchEntries) {
                         if (entry.getTicker().toLowerCase().contains(query)
-                         || entry.getName().toLowerCase().contains(query)) {
+                                || entry.getName().toLowerCase().contains(query)) {
                             filtered.add(entry);
                         }
                     }
@@ -74,8 +74,7 @@ public class SearchAdapter extends ArrayAdapter<SearchEntry> {
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.count > 0) {
                     notifyDataSetChanged();
-                }
-                else {
+                } else {
                     notifyDataSetInvalidated();
                 }
             }

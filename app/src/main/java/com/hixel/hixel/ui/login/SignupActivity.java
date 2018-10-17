@@ -112,12 +112,12 @@ public class SignupActivity extends AppCompatActivity {
     public boolean validate(String firstName, String lastName, String email, String password) {
         boolean valid = true;
 
-        if (!viewModel.isValidName(firstName)) {
+        if (viewModel.isValidName(firstName)) {
             binding.firstNameWrapper.setError("Name can't be empty!");
             valid = false;
         }
 
-        if (!viewModel.isValidName(lastName)) {
+        if (viewModel.isValidName(lastName)) {
             binding.lastnameWrapper.setError("Name can't be empty!");
         }
 

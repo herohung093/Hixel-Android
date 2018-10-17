@@ -108,7 +108,7 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
      * as it is more expensive than addItem(Company company).
      * @param companies The companies to be added.
      */
-    public void setCompanies(List<Company> companies){
+    public void setCompanies(List<Company> companies) {
         this.companies = companies;
         notifyDataSetChanged();
     }

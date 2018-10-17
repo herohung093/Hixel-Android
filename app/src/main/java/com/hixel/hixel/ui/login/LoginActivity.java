@@ -89,8 +89,10 @@ public class LoginActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });
 
-        binding.linkForgotPassword.setOnClickListener(event-> {
-            Intent moveToForgotView = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
+        binding.linkForgotPassword.setOnClickListener(event -> {
+            Intent moveToForgotView =
+                    new Intent(getApplicationContext(), ForgotPasswordActivity.class);
+
             startActivity(moveToForgotView);
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });

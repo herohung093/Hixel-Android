@@ -1,7 +1,6 @@
 package com.hixel.hixel.ui.commonui;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.hixel.hixel.R;
 
-public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> {
+public class HorizontalListViewAdapter
+        extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> {
 
     private Context context;
     private int rowIndex = 0;
@@ -19,7 +19,8 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
     private HorizontalListViewOnClickListener listener;
 
     // TODO: XML or Const file?
-    private static final String[] ratios = {"Returns", "Performance", "Strength", "Health", "Safety"};
+    private static final String[] ratios =
+            {"Returns", "Performance", "Strength", "Health", "Safety"};
 
     public HorizontalListViewAdapter(Context context, HorizontalListViewOnClickListener listener) {
         this.context = context;
@@ -28,7 +29,8 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
 
     @NonNull
     @Override
-    public HorizontalListViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HorizontalListViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+            int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.ratios_list_horizontal_layout, parent, false);
 
@@ -36,7 +38,8 @@ public class HorizontalListViewAdapter extends RecyclerView.Adapter<HorizontalLi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HorizontalListViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HorizontalListViewAdapter.ViewHolder holder,
+            int position) {
         if (position == rowIndex) {
             holder.cardView.setCardBackgroundColor(
                     context.getResources().getColor(R.color.colorPrimaryDark));

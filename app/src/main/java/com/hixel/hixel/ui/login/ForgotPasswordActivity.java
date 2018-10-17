@@ -7,7 +7,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.EditText;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.databinding.ActivityForgotPasswordBinding;
@@ -31,15 +30,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         emailIdText = binding.registerEmailWrapper;
 
         binding.btnBackToLogin.setOnClickListener(event -> {
-            Intent moveToLogin= new Intent(getApplicationContext(), LoginActivity.class);
+            Intent moveToLogin = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(moveToLogin);
             overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
         });
 
         binding.btnSubmit.setOnClickListener(event -> {
             // TODO: show notification and get respond from server here
-            if(!validate()){
-                Toast.makeText(getBaseContext(), "Invalid email address! Try again", Toast.LENGTH_LONG).show();
+            if (!validate()) {
+                Toast.makeText(getBaseContext(),
+                        "Invalid email address! Try again", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getBaseContext(), "check your email for further information",
                     Toast.LENGTH_LONG + 3).show();
@@ -48,7 +48,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
     }
 
-    private void configureDagger() { AndroidInjection.inject(this); }
+    private void configureDagger() {
+        AndroidInjection.inject(this);
+    }
 
     private void configureViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
