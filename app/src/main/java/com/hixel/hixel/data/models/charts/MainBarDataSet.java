@@ -3,6 +3,9 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import java.util.List;
 
+/**
+ * Generates a custom BarDataSet with colors from our palette.
+ */
 public class MainBarDataSet extends BarDataSet {
 
     public MainBarDataSet(List<BarEntry> yVals, String label) {

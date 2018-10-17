@@ -14,7 +14,7 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
- * Custom class for rendering BarCharts
+ * Custom class for rendering BarCharts with our color palette
  */
 public class MainBarChartRenderer extends BarChartRenderer {
 

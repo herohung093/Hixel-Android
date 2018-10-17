@@ -25,8 +25,9 @@ public class Client {
     private static OkHttpClient okHttpClient;
 
     /**
-     * Initialises a retrofit instance
-     * @return The retrofit instance
+     * Initialises a retrofit instance.
+     *
+     * @return The retrofit instance.
      */
     public static synchronized Retrofit getClient() {
 

@@ -1,5 +1,9 @@
 package com.hixel.hixel.data.models;
 
+/**
+ * Temporary model that sends data to the server, note that this should not be used with Room
+ * as we don't want to store passwords.
+ */
 public class ApplicationUser {
     private String firstName;
     private String lastName;

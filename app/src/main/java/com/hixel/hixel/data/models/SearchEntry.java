@@ -1,5 +1,8 @@
 package com.hixel.hixel.data.models;
 
+/**
+ * Simple model to read in search results from the server.
+ */
 public class SearchEntry {
     private String ticker;
     private String name;

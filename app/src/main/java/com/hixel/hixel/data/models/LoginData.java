@@ -1,5 +1,8 @@
 package com.hixel.hixel.data.models;
 
+/**
+ * Simple model to send data to server.
+ */
 public class LoginData {
     private String email;
     private String password;
