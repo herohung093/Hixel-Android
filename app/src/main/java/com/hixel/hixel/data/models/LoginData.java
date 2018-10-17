@@ -8,6 +8,12 @@ public class LoginData {
     private String email;
     private String password;
 
+    /**
+     * Constructor for minimal login data
+     *
+     * @param email the users email
+     * @param password the users password
+     */
     public LoginData(String email, String password) {
         this.email = email;
         this.password = password;

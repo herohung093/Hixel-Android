@@ -8,6 +8,13 @@ public class SearchEntry {
     private String name;
     private String exchange;
 
+    /**
+     * Constructor for a SearchEntry object
+     *
+     * @param ticker the ticker of the company
+     * @param name the name of the company
+     * @param exchange the exchange the company is listed on
+     */
     public SearchEntry(String ticker, String name, String exchange) {
         this.ticker = ticker;
         this.name = name;

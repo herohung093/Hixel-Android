@@ -38,6 +38,14 @@ public class CompanyRepository {
     private MutableLiveData<Company> company = new MutableLiveData<>();
     private MutableLiveData<List<Company>> comparisonCompanies = new MutableLiveData<>();
 
+    /**
+     * Constructor for the repository, creates an instance of the server, company dao, and an
+     * executor to perform operations off the main UI thread.
+     *
+     * @param serverInterface an instance of the server interface
+     * @param companyDao an instance of the company dao
+     * @param executor an instance of an executor
+     */
     @Inject
     public CompanyRepository(ServerInterface serverInterface,
             CompanyDao companyDao, Executor executor) {
@@ -46,6 +54,13 @@ public class CompanyRepository {
         this.executor = executor;
     }
 
+    /**
+     * Calls the server to refresh the companies and save them to the dao and then retrieve them
+     * from the dao. Subsequent calls simply retrieve from the dao.
+     *
+     * @param tickers the tickers for the companies we want to retrieve.
+     * @return A list of companies that can be observer for changes.
+     */
     public LiveData<List<Company>> getCompanies(List<String> tickers) {
         String[] tickersArray = new String[tickers.size()];
         refreshCompanies(tickers.toArray(tickersArray)); // try to refresh from the server.
@@ -53,6 +68,12 @@ public class CompanyRepository {
         return companyDao.load(); // return LiveData from the db.
     }
 
+    /**
+     * Retrieves a single company from the server, does not save it to the database.
+     *
+     * @param ticker the ticker of the company
+     * @return A company object that can be observer for changes
+     */
     public MutableLiveData<Company> getCompany(String ticker) {
         serverInterface.getCompanies(StringUtils.join(ticker, ','), 1)
                 .enqueue(new Callback<ArrayList<Company>>() {
@@ -75,6 +96,12 @@ public class CompanyRepository {
         return company;
     }
 
+    /**
+     * Retrieves a list of companies from the server, does not save them to the database.
+     *
+     * @param inputTickers the tickers to be retrieved from the server
+     * @return A list of companies that can be observed for changes.
+     */
     // TODO: Change to 'historical' companies
     public MutableLiveData<List<Company>> getComparisonCompanies(List<String> inputTickers) {
         String[] tickers = new String[inputTickers.size()];
@@ -99,6 +126,11 @@ public class CompanyRepository {
         return comparisonCompanies;
     }
 
+    /**
+     * Sends a Company to the company dao to be saved into the database.
+     *
+     * @param company the company to be inserted
+     */
     public void saveCompany(Company company) {
         executor.execute(() -> companyDao.saveCompany(company));
     }

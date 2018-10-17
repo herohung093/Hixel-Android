@@ -6,7 +6,13 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Immutable Company Entity containing all relevant ratios to be stored.
+ * Immutable Company Entity containing all relevant ratios to be stored, as well as the
+ * identifying information for a company.
+ *
+ * <p>
+ * NOTE: that we only store the most recent financial data in order to keep the RoomDB as
+ * small as possible.
+ * </p>
  *
  * Returns:         Dividend Yield = Annual Dividends per share/Price per share ***
  * Performance:     Return on equity = NetIncome(Loss) / Equity

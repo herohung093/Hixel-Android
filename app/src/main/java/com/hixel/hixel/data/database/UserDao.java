@@ -16,18 +16,46 @@ import java.util.List;
  */
 @Dao
 public interface UserDao {
+
+    /**
+     * Inserts a user into the database, replacing any user that has the same primary key.
+     *
+     * @param user the user to be inserted
+     */
     @Insert(onConflict = REPLACE)
     void saveUser(User user);
 
+    /**
+     * Retrieves all users from the application database, however, there should only ever be 1
+     * active user in the database.
+     *
+     * @return a LiveData user
+     */
     @Query("SELECT * FROM user")
     LiveData<User> getUser();
 
+    /**
+     * Retrieves a user from the application database, however, there should only ever be 1
+     * active user in the database.
+     *
+     * @return a User object
+     */
     @Query("SELECT * FROM user")
     User get();
 
+    /**
+     * Retrieves all the tickers a user has in their portfolio.
+     *
+     * @return A list of tickers
+     */
     @Query("SELECT companies FROM user")
     List<String> getTickers();
 
+    /**
+     * Updates the currently active user.
+     *
+     * @param user the updated user object.
+     */
     @Update
     void updateUser(User user);
 }

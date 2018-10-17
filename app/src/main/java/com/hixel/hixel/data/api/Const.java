@@ -1,7 +1,7 @@
 package com.hixel.hixel.data.api;
 
 /**
- * Constants required for interacting with API
+ * Constants for interacting with the REST API.
  */
 class Const {
 

@@ -17,7 +17,8 @@ import retrofit2.Call;
 import static com.hixel.hixel.data.api.Const.NO_AUTHENTICATION;
 
 /**
- *  Handles authentication from server. Calls the Server if Authorisation credentials are required.
+ *  Handles authentication challenges from the server, returns a request that includes an
+ *  authorisation header.
  */
 public class TokenAuthenticator implements Authenticator {
     @SuppressLint("ApplySharedPref")

@@ -37,9 +37,10 @@ public class MainBarChartRenderer extends BarChartRenderer {
     private RectF barShadowRectBuffer = new RectF();
 
     /**
+     * Method to draw the data set onto the canvas
      *
      * @param c The Canvas to draw the graph upon.
-     * @param dataSet The values for the grpah.
+     * @param dataSet The values for the graph
      * @param index The current value needing to be drawn.
      */
     protected void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {

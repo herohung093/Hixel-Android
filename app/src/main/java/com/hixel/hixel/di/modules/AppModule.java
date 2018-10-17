@@ -28,6 +28,13 @@ public class AppModule {
     // ***************************************
     // Database Injections
     // **************************************
+
+    /**
+     * Provides an instance of the application database.
+     *
+     * @param context the Application context
+     * @return the application database
+     */
     @Provides
     @Singleton
     AppDatabase provideDatabase(Application context) {
@@ -37,12 +44,25 @@ public class AppModule {
                 .build();
     }
 
+
+    /**
+     * Provides an instance of the company dao
+     *
+     * @param database the application database
+     * @return company dao
+     */
     @Provides
     @Singleton
     CompanyDao provideCompanyDao(AppDatabase database) {
         return database.companyDao();
     }
 
+    /**
+     * Provides and instance of the user dao
+     *
+     * @param database the application database
+     * @return the user dao
+     */
     @Provides
     @Singleton
     UserDao provideUserDao(AppDatabase database) {
@@ -52,11 +72,26 @@ public class AppModule {
     // ***************************************
     // Repository Injections
     // **************************************
+
+    /**
+     * Provides an instance of an executor to perform operations off the main UI thread.
+     *
+     * @return an executor
+     */
     @Provides
     Executor provideExecutor() {
         return Executors.newSingleThreadExecutor();
     }
 
+    /**
+     * Returns an instance of the company repository which acts as a single source for interacting
+     * with Company data.
+     *
+     * @param serverInterface for api calls
+     * @param companyDao the company dao for database operations
+     * @param executor executor for off UI thread operations
+     * @return the company repository
+     */
     @Provides
     @Singleton
     CompanyRepository provideCompanyRepository(ServerInterface serverInterface,
@@ -64,6 +99,15 @@ public class AppModule {
         return new CompanyRepository(serverInterface, companyDao, executor);
     }
 
+    /**
+     * Returns an instance of the user repository which acts as a single source for interacting
+     * with the User data.
+     *
+     * @param serverInterface for api calls
+     * @param userDao for database operations
+     * @param executor for executing off the main UI thread
+     * @return the user repository.
+     */
     @Provides
     @Singleton
     UserRepository provideUserRepository(ServerInterface serverInterface,

@@ -8,6 +8,11 @@ import java.util.List;
  */
 public class MainBarDataSet extends BarDataSet {
 
+    /**
+     * Constructor - only calls to super
+     * @param yVals the values for the y-axis of the bar chart
+     * @param label the label for the dataset
+     */
     public MainBarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
     }

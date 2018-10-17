@@ -22,6 +22,14 @@ public class UserRepository {
     private final UserDao userDao;
     private final Executor executor;
 
+    /**
+     * Constructor that gets an instance of the server for api calls, user dao to store user data,
+     * and executor to perform operations off the main UI thread.
+     *
+     * @param serverInterface to make api calls
+     * @param userDao to save data to Room
+     * @param executor to perform operations off the main UI thread.
+     */
     @Inject
     public UserRepository(ServerInterface serverInterface, UserDao userDao, Executor executor) {
         this.serverInterface = serverInterface;
@@ -65,6 +73,13 @@ public class UserRepository {
         executor.execute(() -> userDao.updateUser(user));
     }
 
+    /**
+     * Updates the users password, note that this does not involve a database operation as we
+     * don't want to store password information.
+     *
+     * @param oldPassword the users old password
+     * @param newPassword the users new password
+     */
     public void updateUserPassword(String oldPassword, String newPassword) {
         executor.execute(() -> serverInterface.changePassword(oldPassword, newPassword)
                 .enqueue(new Callback<Void>() {

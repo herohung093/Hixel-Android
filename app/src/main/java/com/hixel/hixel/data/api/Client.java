@@ -17,7 +17,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Provides a Retrofit client to interface with the api
+ * Provides a Retrofit client to interface with the api, authorisation, deserialization etc. are
+ * handled by other helper classes.
  */
 public class Client {
 

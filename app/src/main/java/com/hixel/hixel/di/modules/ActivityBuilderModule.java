@@ -14,7 +14,8 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 /**
- * Provides a graph of all activities that require DI at compile time.
+ * Provides a graph of all activities that require DI at compile time, an activity must be listed
+ * here for DI to work.
  */
 @Module
 public abstract class ActivityBuilderModule {

@@ -36,5 +36,10 @@ public interface AppComponent extends AndroidInjector<App> {
         AppComponent build();
     }
 
+    /**
+     * Inject an instance of the application.
+     *
+     * @param app the Application entry point
+     */
     void inject(App app);
 }

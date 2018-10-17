@@ -16,7 +16,7 @@ import okhttp3.Response;
 import static com.hixel.hixel.data.api.Const.NO_AUTHENTICATION;
 
 /**
- *  Intercepts requests to the server, adds authorisation.
+ *  Intercepts http calls being made so that we can view the server responses in Logcat.
  */
 @Singleton
 public class TokenInterceptor implements Interceptor {

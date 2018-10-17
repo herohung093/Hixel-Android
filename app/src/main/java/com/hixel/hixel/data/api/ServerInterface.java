@@ -19,45 +19,111 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
- * Endpoints for CorpReport API, contains User, Company, and Authentication related endpoints.
+ * List of endpoints for consuming REST API, these calls relate to User data, Company data,
+ * and authorisation.
  */
 public interface ServerInterface {
 
+    /**
+     * Sends user login data to API, if the user exists returns a 200 response.
+     *
+     * @param request the LoginData
+     * @return void - however use the response code to gauge success
+     */
     @POST("/login")
     @Headers("No-Authentication: true")
     Call<Void> login(@Body LoginData request);
 
+    /**
+     * Sends the ApplicationUser data for a new user to the API, if the user is created
+     * successfully a 200 response code is returned.
+     *
+     * @param request the ApplicationUser data
+     * @return void - however use the response code to gauge success
+     */
     @POST("/users/sign-up")
     @Headers("No-Authentication: true")
     Call<Void> signup(@Body ApplicationUser request);
 
+    /**
+     * Send a new email string to the API to update the users email.
+     *
+     * @param email the users new email
+     * @return void - however use the response code to gauge success
+     */
     @GET("/users/reset-email")
     @Headers("No-Authentication: true")
     Call<Void> resetEmail(@Query("email") String email);
 
+    /**
+     * Retrieves the userData for the currently active user.
+     *
+     * @return a User object for the currently active user.
+     */
     @GET("/users/profile")
     Call<User> userData();
 
+    /**
+     * Sends a reset code and users email
+     *
+     * @param email the email of the currently active user
+     * @param code the code the user has received
+     * @return void
+     */
     @GET("/users/reset-code")
     @Headers("No-Authentication: true")
     Call<Void> resetCode(@Query("email") String email, @Query("code") String code);
 
+    /**
+     * Reset the users password with a reset code as authentication.
+     *
+     * @param email the email of the currently active user
+     * @param code the code the user has received
+     * @param password the new password
+     * @return void
+     */
     @GET("/users/reset-password")
     @Headers("No-Authentication: true")
     Call<Void> resetPassword(@Query("email") String email,
             @Query("code") String code, @Query("password") String password);
 
+    /**
+     * API call to change the currently active users password.
+     *
+     * @param oldPassword the users old password
+     * @param newPassword the new password
+     * @return void
+     */
     @GET("/users/change-password")
     Call<Void> changePassword(@Query("code") String oldPassword,
             @Query("password") String newPassword);
 
+    /**
+     * API call to refresh the access token
+     *
+     * @param refresh refresh token
+     * @return void
+     */
     @GET("/users/refresh")
     Call<Void> refreshAccessToken(@Header("Refresh") String refresh);
 
+    /**
+     * API call to receive an ArrayList of Company objects based upon the sent tickers.
+     *
+     * @param tickers the tickers of the companies requireed
+     * @param years the number of years of data for each company
+     * @return an ArrayList of Company objects
+     */
     @GET("/companydata")
     Call<ArrayList<Company>> getCompanies(@Query("tickers") String tickers,
             @Query("years") int years);
 
+    /**
+     * API call to query the server for tickers related to a users query
+     *
+     * @param query the query of the user
+     * @return the results of the query
+     */
     @GET("/search")
     Single<List<SearchEntry>> doSearchQuery(@Query("query") String query);
 
