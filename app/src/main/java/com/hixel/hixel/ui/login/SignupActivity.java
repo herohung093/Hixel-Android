@@ -36,7 +36,7 @@ public class SignupActivity extends AppCompatActivity {
         binding.btnSignup.setOnClickListener(view -> signup());
 
         binding.linkLogin.setOnClickListener(view -> {
-            Intent moveToLogin= new Intent(getApplicationContext(), LoginActivity.class);
+            Intent moveToLogin = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(moveToLogin);
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });

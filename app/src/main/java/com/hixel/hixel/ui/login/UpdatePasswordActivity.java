@@ -28,7 +28,7 @@ public class UpdatePasswordActivity extends AppCompatActivity {
         String first = binding.forgotViewPassWrapper.getEditText().getText().toString();
         String second = binding.forgotViewConfirmPassWrapper.getEditText().getText().toString();
 
-        binding.changePassButton.setOnClickListener(event->{
+        binding.changePassButton.setOnClickListener(event -> {
             if (validate(first, second)) {
                 Toast.makeText(getBaseContext(), "Your password has been updated",
                     Toast.LENGTH_LONG + 1).show();
@@ -50,12 +50,13 @@ public class UpdatePasswordActivity extends AppCompatActivity {
     public boolean validate(String first, String second) {
         boolean valid = true;
 
-        if (viewModel.validatePasswordUpdate(first, second)){
+        if (viewModel.validatePasswordUpdate(first, second)) {
             valid = false;
-            Toast.makeText(getBaseContext(), "Your passwords do not match", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(),
+                    "Your passwords do not match", Toast.LENGTH_LONG).show();
         }
 
-        if (viewModel.isValidPassword(first)){
+        if (viewModel.isValidPassword(first)) {
             valid = false;
             binding.forgotViewPassWrapper.setError("Must contain at least 4 characters");
         }

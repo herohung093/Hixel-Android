@@ -58,7 +58,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Portfolio getPortfolio() { return portfolio; }
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
 
-    public void setPortfolio(Portfolio portfolio) { this.portfolio = portfolio; }
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
+    }
 }

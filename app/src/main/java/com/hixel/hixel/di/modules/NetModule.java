@@ -83,7 +83,9 @@ public class NetModule {
             sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, trustAllCerts,
                     new java.security.SecureRandom());
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+            // TODO: Exception handling
+        }
 
         // Create an ssl socket factory with our all-trusting manager
         final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
@@ -115,7 +117,7 @@ public class NetModule {
                 .create();
 
         //add retro builder
-        Retrofit.Builder retroBuilder= new Retrofit.Builder()
+        Retrofit.Builder retroBuilder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson));

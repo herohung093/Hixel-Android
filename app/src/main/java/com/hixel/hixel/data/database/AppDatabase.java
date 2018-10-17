@@ -7,7 +7,7 @@ import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.entities.User;
 
 /**
- * Application database store the companies and the user data
+ * Application database stores the companies and the user data.
  */
 // TODO: schema and migration handling
 @Database(entities = {Company.class, User.class}, version = 20, exportSchema = false)

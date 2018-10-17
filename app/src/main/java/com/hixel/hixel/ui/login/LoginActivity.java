@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(view -> login());
 
         binding.linkSignup.setOnClickListener(view -> {
-            Intent moveToSignup = new Intent(getApplicationContext(),SignupActivity.class);
+            Intent moveToSignup = new Intent(getApplicationContext(), SignupActivity.class);
             startActivity(moveToSignup);
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });
@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void onLoginSuccess() {
         loginButton.setEnabled(true);
-        Intent moveToDashboard = new Intent(getApplicationContext(),DashboardActivity.class);
+        Intent moveToDashboard = new Intent(getApplicationContext(), DashboardActivity.class);
         startActivity(moveToDashboard);
         finish();
     }

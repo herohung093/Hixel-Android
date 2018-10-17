@@ -16,10 +16,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 /**
  * Custom class for rendering BarCharts
  */
-public class MainBarChartRenderer extends BarChartRenderer{
-
-    @SuppressWarnings("unused")
-    private final String TAG = "MainBarChartRenderer";
+public class MainBarChartRenderer extends BarChartRenderer {
 
     public MainBarChartRenderer(BarDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
@@ -27,7 +24,7 @@ public class MainBarChartRenderer extends BarChartRenderer{
     }
 
 
-    private RectF mBarShadowRectBuffer = new RectF();
+    private RectF barShadowRectBuffer = new RectF();
 
     protected void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
 
@@ -51,7 +48,9 @@ public class MainBarChartRenderer extends BarChartRenderer{
             final float barWidthHalf = barWidth / 2.0f;
             float x;
 
-            for (int i = 0, count = Math.min((int)(Math.ceil((float)(dataSet.getEntryCount()) * phaseX)), dataSet.getEntryCount());
+            for (int i = 0, count =
+                    Math.min((int) (Math.ceil((float) (dataSet.getEntryCount()) * phaseX)),
+                    dataSet.getEntryCount());
                     i < count;
                     i++) {
 
@@ -59,21 +58,21 @@ public class MainBarChartRenderer extends BarChartRenderer{
 
                 x = e.getX();
 
-                mBarShadowRectBuffer.left = x - barWidthHalf;
-                mBarShadowRectBuffer.right = x + barWidthHalf;
+                barShadowRectBuffer.left = x - barWidthHalf;
+                barShadowRectBuffer.right = x + barWidthHalf;
 
-                trans.rectValueToPixel(mBarShadowRectBuffer);
+                trans.rectValueToPixel(barShadowRectBuffer);
 
-                if (!mViewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right))
+                if (!mViewPortHandler.isInBoundsLeft(barShadowRectBuffer.right))
                     continue;
 
-                if (!mViewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left))
+                if (!mViewPortHandler.isInBoundsRight(barShadowRectBuffer.left))
                     break;
 
-                mBarShadowRectBuffer.top = mViewPortHandler.contentTop();
-                mBarShadowRectBuffer.bottom = mViewPortHandler.contentBottom();
+                barShadowRectBuffer.top = mViewPortHandler.contentTop();
+                barShadowRectBuffer.bottom = mViewPortHandler.contentBottom();
 
-                c.drawRect(mBarShadowRectBuffer, mShadowPaint);
+                c.drawRect(barShadowRectBuffer, mShadowPaint);
             }
         }
 
@@ -112,8 +111,13 @@ public class MainBarChartRenderer extends BarChartRenderer{
                     buffer.buffer[j + 3]), 8, 8, mRenderPaint);
 
             if (drawBorder) {
-                c.drawRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3]), 8, 8, mBarBorderPaint);
+                c.drawRoundRect(new RectF(buffer.buffer[j],
+                        buffer.buffer[j + 1],
+                        buffer.buffer[j + 2],
+                        buffer.buffer[j + 3]),
+                        8,
+                        8,
+                        mBarBorderPaint);
             }
         }
     }

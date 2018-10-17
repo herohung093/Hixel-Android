@@ -70,14 +70,15 @@ public class UserRepository {
     }
 
     public void updateUserPassword(String oldPassword, String newPassword) {
-        executor.execute(() ->
-            serverInterface.changePassword(oldPassword, newPassword).enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) { }
+        executor.execute(() -> serverInterface.changePassword(oldPassword, newPassword)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Void> call,
+                            @NonNull Response<Void> response) { }
 
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) { }
-            })
+                    @Override
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) { }
+                })
         );
     }
 }

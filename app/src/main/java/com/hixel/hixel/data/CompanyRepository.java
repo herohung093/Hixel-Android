@@ -37,7 +37,8 @@ public class CompanyRepository {
     private MutableLiveData<List<Company>> comparisonCompanies = new MutableLiveData<>();
 
     @Inject
-    public CompanyRepository(ServerInterface serverInterface, CompanyDao companyDao, Executor executor) {
+    public CompanyRepository(ServerInterface serverInterface,
+            CompanyDao companyDao, Executor executor) {
         this.serverInterface = serverInterface;
         this.companyDao = companyDao;
         this.executor = executor;
@@ -45,7 +46,7 @@ public class CompanyRepository {
 
     public LiveData<List<Company>> getCompanies(List<String> tickers) {
         String[] tickersArray = new String[tickers.size()];
-        refreshCompanies(tickers.toArray(tickersArray)); // try to refresh from the server if possible.
+        refreshCompanies(tickers.toArray(tickersArray)); // try to refresh from the server.
 
         return companyDao.load(); // return LiveData from the db.
     }

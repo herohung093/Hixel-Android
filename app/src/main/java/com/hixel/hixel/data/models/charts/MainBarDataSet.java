@@ -3,7 +3,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import java.util.List;
 
-public class MainBarDataSet extends BarDataSet{
+public class MainBarDataSet extends BarDataSet {
 
     public MainBarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);

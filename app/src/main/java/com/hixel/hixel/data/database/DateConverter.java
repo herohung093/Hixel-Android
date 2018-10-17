@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * Converts between Date object and Long, used for using Dates
- * in Application DB
+ * in Application DB.
  */
 public class DateConverter {
     @TypeConverter

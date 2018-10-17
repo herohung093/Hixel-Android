@@ -42,7 +42,8 @@ public class Onboarding extends AhoyOnboarderActivity {
         setFinishButtonTitle("Get Started");
 
         // Set the finish button style
-        setFinishButtonDrawableStyle(ContextCompat.getDrawable(this, R.drawable.onboarding_button_style));
+        setFinishButtonDrawableStyle(
+                ContextCompat.getDrawable(this, R.drawable.onboarding_button_style));
 
         setOnboardPages(getOnBoardingCards());
     }
@@ -50,7 +51,8 @@ public class Onboarding extends AhoyOnboarderActivity {
     @Override
     public void onStop() {
         super.onStop();
-        SharedPreferences.Editor sharedPreferencesEditor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        SharedPreferences.Editor sharedPreferencesEditor =
+                PreferenceManager.getDefaultSharedPreferences(this).edit();
         sharedPreferencesEditor.putBoolean(COMPLETED_ONBOARDING_PREF_NAME, true);
         sharedPreferencesEditor.apply();
     }
@@ -93,8 +95,6 @@ public class Onboarding extends AhoyOnboarderActivity {
             cards.get(i).setTitleColor(R.color.white);
             cards.get(i).setBackgroundColor(colorList.get(i));
         }
-
-        // cards.setIconLayoutParams(iconWidth, iconHeight, marginTop, marginLeft, marginRight, marginBottom);
 
         return cards;
     }

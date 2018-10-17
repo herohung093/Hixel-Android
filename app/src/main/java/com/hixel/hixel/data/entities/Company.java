@@ -2,11 +2,8 @@ package com.hixel.hixel.data.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
-import java.io.Serializable;
 
 /**
  * Immutable Company Entity
@@ -87,13 +84,17 @@ public class Company {
         return returnOnAssets;
     }
 
-    public double getCurrentDebtToEquity() { return currentDebtToEquity; }
+    public double getCurrentDebtToEquity() {
+        return currentDebtToEquity;
+    }
 
     public double getCurrentRatio() {
         return currentRatio;
     }
 
-    public double getInterestCoverage() { return interestCoverage; }
+    public double getInterestCoverage() {
+        return interestCoverage;
+    }
 
     // TODO: Do this in a nicer way, and test against a bunch of companies.
     // TODO: Get a better way of checking for null object.
@@ -150,7 +151,9 @@ public class Company {
      * Method returns the strength score of the company out of 5
      * @return The strength score out of 5
      */
-    public int getStrengthScore() { return generateScore(this.interestCoverage); }
+    public int getStrengthScore() {
+        return generateScore(this.interestCoverage);
+    }
 
     /**
      * Method returns the health score of the company out of 5
@@ -169,9 +172,10 @@ public class Company {
     }
 
     /**
-     * Method generates a score based upon the input ratio
-     * @param ratio
-     * @return The score for the corresponding ratio
+     * Method generates a score based upon the input ratio.
+     *
+     * @param ratio The ratio for generating a score.
+     * @return The score for the corresponding ratio.
      */
     private int generateScore(double ratio) {
         int score = 1;

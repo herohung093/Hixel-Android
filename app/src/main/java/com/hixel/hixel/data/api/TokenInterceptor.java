@@ -15,6 +15,9 @@ import okhttp3.Response;
 
 import static com.hixel.hixel.data.api.Const.NO_AUTHENTICATION;
 
+/**
+ *  Used to monitor calls and log them
+ */
 @Singleton
 public class TokenInterceptor implements Interceptor {
 

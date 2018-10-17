@@ -37,11 +37,15 @@ public class AppModule {
 
     @Provides
     @Singleton
-    CompanyDao provideCompanyDao(AppDatabase database) { return database.companyDao(); }
+    CompanyDao provideCompanyDao(AppDatabase database) {
+        return database.companyDao();
+    }
 
     @Provides
     @Singleton
-    UserDao provideUserDao(AppDatabase database) { return database.userDao(); }
+    UserDao provideUserDao(AppDatabase database) {
+        return database.userDao();
+    }
 
     // ***************************************
     // Repository Injections

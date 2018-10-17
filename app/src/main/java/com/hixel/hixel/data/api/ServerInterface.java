@@ -19,7 +19,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
- * All calls needed to interact with the API
+ * Endpoints for CorpReport API
  */
 public interface ServerInterface {
 
@@ -44,16 +44,19 @@ public interface ServerInterface {
 
     @GET("/users/reset-password")
     @Headers("No-Authentication: true")
-    Call<Void> resetPassword(@Query("email") String email, @Query("code") String code, @Query("password") String password);
+    Call<Void> resetPassword(@Query("email") String email,
+            @Query("code") String code, @Query("password") String password);
 
     @GET("/users/change-password")
-    Call<Void> changePassword(@Query("code") String oldPassword, @Query("password") String newPassword);
+    Call<Void> changePassword(@Query("code") String oldPassword,
+            @Query("password") String newPassword);
 
     @GET("/users/refresh")
-    Call<Void> refreshAccessToken(@Header("Refresh") String Refresh);
+    Call<Void> refreshAccessToken(@Header("Refresh") String refresh);
 
     @GET("/companydata")
-    Call<ArrayList<Company>> getCompanies(@Query("tickers") String tickers, @Query("years") int years);
+    Call<ArrayList<Company>> getCompanies(@Query("tickers") String tickers,
+            @Query("years") int years);
 
     @GET("/search")
     Single<List<SearchEntry>> doSearchQuery(@Query("query") String query);

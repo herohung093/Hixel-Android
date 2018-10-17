@@ -9,7 +9,7 @@ import com.google.gson.JsonParser;
 import java.lang.reflect.Type;
 
 /**
- *  Unwraps the JSON received from the server to be used by the Company POJO.
+ *  Unwraps the JSON received from the server to be used by the Company Entity
  */
 public class CompanyDeserializer<T> implements JsonDeserializer<T> {
 
@@ -34,7 +34,6 @@ public class CompanyDeserializer<T> implements JsonDeserializer<T> {
         String ratios = je.getAsJsonObject().get("ratios").toString();
         String formattedResp5 = "," + ratios.substring(1, ratios.length());
         String combined = formattedResp1 + formattedResp5;
-
 
         return new Gson().fromJson(combined, type);
     }

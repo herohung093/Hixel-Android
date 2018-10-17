@@ -38,7 +38,8 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(CompanyComparisonViewModel.class)
-    abstract ViewModel bindCompanyComparisonViewModel(CompanyComparisonViewModel companyComparisonViewModel);
+    abstract ViewModel bindCompanyComparisonViewModel(
+            CompanyComparisonViewModel companyComparisonViewModel);
 
     @Binds
     @IntoMap

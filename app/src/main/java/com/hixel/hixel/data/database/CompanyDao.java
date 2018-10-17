@@ -12,11 +12,8 @@ import java.util.List;
  * Data Access Object for the companies table.
  * This uses LiveData so we can notify observers when the data changes.
  */
-
-// TODO: Needs more methods for all activities.
 @Dao
 public interface CompanyDao {
-
     @Query("SELECT * FROM companies")
     LiveData<List<Company>> load();
 
@@ -25,10 +22,4 @@ public interface CompanyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveCompany(Company company);
-
-    @Query("SELECT * FROM companies WHERE ticker = :ticker LIMIT 1")
-    LiveData<Company> hasCompany(String ticker);
-
-    @Query("DELETE FROM companies")
-    void deleteAll();
 }

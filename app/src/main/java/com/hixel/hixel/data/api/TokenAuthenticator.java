@@ -16,10 +16,14 @@ import retrofit2.Call;
 
 import static com.hixel.hixel.data.api.Const.NO_AUTHENTICATION;
 
+/**
+ *  Handles authentication from server
+ */
 public class TokenAuthenticator implements Authenticator {
     @SuppressLint("ApplySharedPref")
     @Override
-    public Request authenticate(@NonNull Route route, @NonNull Response response) throws IOException {
+    public Request authenticate(@NonNull Route route, @NonNull Response response)
+            throws IOException {
         boolean needsCredentials = response.request().header(NO_AUTHENTICATION) == null;
 
         if (response.code() == 401 && needsCredentials) {

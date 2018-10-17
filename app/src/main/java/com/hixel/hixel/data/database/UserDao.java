@@ -16,7 +16,6 @@ import java.util.List;
  */
 @Dao
 public interface UserDao {
-
     @Insert(onConflict = REPLACE)
     void saveUser(User user);
 
