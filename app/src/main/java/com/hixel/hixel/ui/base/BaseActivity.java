@@ -55,7 +55,6 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         toolbar.setTitle(title);
     }
 
-
     /**
      * Controls the logic for the BottomNavigationView.
      * @param currentItem The item to be highlighted in the Menu.
