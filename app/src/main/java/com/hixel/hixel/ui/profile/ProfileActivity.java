@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
@@ -38,10 +37,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding>  {
         super.onCreate(savedInstanceState);
         bindView(R.layout.activity_profile);
 
-        binding.toolbar.toolbar.setTitle(R.string.profile);
-        binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
-        binding.toolbar.toolbar.setNavigationIcon(R.drawable.ic_close);
-        setSupportActionBar(binding.toolbar.toolbar);
+        setupToolbar(R.string.profile, true, false);
 
         this.configureDagger();
         this.configureViewModel();

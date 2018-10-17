@@ -3,9 +3,11 @@ package com.hixel.hixel.ui.base;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import com.hixel.hixel.R;
 import com.hixel.hixel.ui.companycomparison.CompanyComparisonActivity;
 import com.hixel.hixel.ui.dashboard.DashboardActivity;
@@ -20,6 +22,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
 
     protected T binding;
     protected BottomNavigationView bottomNavigationView;
+    protected Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +37,22 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         overridePendingTransition(0, 0);
     }
 
-    public void configureDependencyInjection() {
-        // TODO
-    }
-
     public void bindView(int layoutId) {
         binding = DataBindingUtil.setContentView(this, layoutId);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+    }
+
+    public void setupToolbar(int title, boolean enableBackButton, boolean enableSearchWidget) {
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(title);
+        toolbar.setTitleTextColor(Color.WHITE);
+
+        setSupportActionBar(toolbar);
+
+    }
+
+    public void setToolbarTitle(String title) {
+        toolbar.setTitle(title);
     }
 
 

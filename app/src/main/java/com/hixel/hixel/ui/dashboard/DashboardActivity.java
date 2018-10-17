@@ -3,7 +3,6 @@ package com.hixel.hixel.ui.dashboard;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -65,11 +64,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         super.onCreate(savedInstanceState);
         bindView(R.layout.activity_dashboard);
 
-        // Setup the toolbar
-        binding.toolbar.toolbar.setTitle(R.string.dashboard);
-        binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(binding.toolbar.toolbar);
-
+        setupToolbar(R.string.dashboard, false, true);
         setupBottomNavigationView(R.id.home_button);
 
         setupChart();

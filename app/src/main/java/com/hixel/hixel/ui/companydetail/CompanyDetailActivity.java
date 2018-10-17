@@ -3,7 +3,6 @@ package com.hixel.hixel.ui.companydetail;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,12 +49,8 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         super.onCreate(savedInstanceState);
         bindView(R.layout.activity_company);
 
-        // General setup
-        binding.toolbar.toolbar.setTitleTextColor(Color.WHITE);
-        binding.toolbar.toolbar.setNavigationIcon(R.drawable.ic_close);
-        setSupportActionBar(binding.toolbar.toolbar);
+        setupToolbar(R.string.default_text, true, false);
         setupBottomNavigationView(R.id.home_button);
-
 
         String ticker = getIntent().getStringExtra("COMPANY_TICKER");
 
@@ -101,7 +96,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         if (company != null) {
             // Set the toolbar title to the company name
             String title = company.getFormattedName();
-            binding.toolbar.toolbar.setTitle(title);
+            setToolbarTitle(title);
 
             // Setup FAB
             binding.fab.setOnClickListener(v -> {
@@ -183,12 +178,6 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
 
@@ -202,5 +191,11 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
     public void onClick(String ratio) {
         selectedRatio = ratio;
         fragment.drawGraph(company, selectedRatio);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
