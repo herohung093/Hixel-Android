@@ -139,34 +139,18 @@ public class Company {
         return generateScore(this.returnOnAssets);
     }
 
-    /**
-     * Method returns the performance score of the company out of 5
-     * @return The performance score out of 5
-     */
     public int getPerformanceScore() {
         return generateScore(this.returnOnEquity);
     }
 
-    /**
-     * Method returns the strength score of the company out of 5
-     * @return The strength score out of 5
-     */
     public int getStrengthScore() {
         return generateScore(this.interestCoverage);
     }
 
-    /**
-     * Method returns the health score of the company out of 5
-     * @return The health score out of 5
-     */
     public int getHealthScore() {
         return generateScore(this.currentRatio);
     }
 
-    /**
-     * Method returns the safety score of the company out of 5
-     * @return The sagety score out of 5
-     */
     public int getSafetyScore() {
         return generateScore(this.currentDebtToEquity);
     }

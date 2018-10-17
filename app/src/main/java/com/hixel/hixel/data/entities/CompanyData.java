@@ -31,42 +31,5 @@ public class CompanyData {
         this.returnOnAssetsRatio = returnOnAssetsRatio;
         this.profitMarginRatio = profitMarginRatio;
     }
-
-    public double getProfitMarginRatio() {
-        return profitMarginRatio;
-    }
-
-    public double getReturnOnAssetsRatio() {
-        return returnOnAssetsRatio;
-    }
-
-    public double getDebtToEquityRatio() {
-        return debtToEquityRatio;
-    }
-
-    // Return on equity = NetIncome(Loss) / Equity
-    public double getReturnOnEquityRatio() {
-        return returnOnEquityRatio;
-    }
-
-    // Current ratio = AssetsCurrent / LiabilitiesCurrent
-    public double getCurrentRatio() {
-        return currentRatio;
-    }
-
-    // Dividend Yield = Annual Dividends per share/Price per share
-    public double getDividendYield() {
-        return 0;
-    }
-
-    // Interest coverage = EBIT / net interest expense
-    public double getInterestCoverage() {
-        return 0;
-    }
-
-    // Current Debt/Equity (D/E) Ratio = LiabilitiesCurrent/ Equity
-    public double getCurrentDebtToEquity() {
-        return 0;
-    }
 }
 

@@ -2,7 +2,6 @@ package com.hixel.hixel.data.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverters;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.entities.User;
 
@@ -11,7 +10,6 @@ import com.hixel.hixel.data.entities.User;
  */
 // TODO: schema and migration handling
 @Database(entities = {Company.class, User.class}, version = 20, exportSchema = false)
-@TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
