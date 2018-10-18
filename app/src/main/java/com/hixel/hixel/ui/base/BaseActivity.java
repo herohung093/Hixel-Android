@@ -14,7 +14,7 @@ import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import com.hixel.hixel.ui.profile.ProfileActivity;
 
 /**
- * Base activity that provides a Toolbar and BottomNavigationView
+ * Base activity that provides a Toolbar and BottomNavigationView for all views that extend it.
  *
  * @param <T> DataBinding for the Activity
  */

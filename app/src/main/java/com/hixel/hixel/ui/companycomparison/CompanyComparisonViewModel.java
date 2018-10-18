@@ -91,7 +91,9 @@ public class CompanyComparisonViewModel extends ViewModel {
         return comparisonCompanies;
     }
 
-    List<Company> getCompCompanies() { return compCompanies; }
+    List<Company> getCompCompanies() {
+        return compCompanies;
+    }
 
     /**
      * Method sets up the search for the Activity
@@ -130,7 +132,8 @@ public class CompanyComparisonViewModel extends ViewModel {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<ArrayList<Company>> call, @NonNull Throwable t) { }
+                    public void onFailure(@NonNull Call<ArrayList<Company>> call,
+                            @NonNull Throwable t) { }
                 });
     }
 }

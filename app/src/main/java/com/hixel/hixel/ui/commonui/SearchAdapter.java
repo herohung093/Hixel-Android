@@ -15,6 +15,9 @@ import com.hixel.hixel.data.models.SearchEntry;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Displays the search results retrieved form the server in a formatted list
+ */
 public class SearchAdapter extends ArrayAdapter<SearchEntry> {
 
     private Context context;

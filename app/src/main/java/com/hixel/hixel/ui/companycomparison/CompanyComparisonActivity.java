@@ -78,7 +78,8 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     }
 
     private void configureViewModel() {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CompanyComparisonViewModel.class);
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+                                      .get(CompanyComparisonViewModel.class);
         viewModel.init();
         viewModel.getUser().observe(this, this::updateDashboardCompanies);
 
@@ -118,8 +119,11 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
      */
     private void setupDashboardCompanyListAdapter(List<Company> companies) {
         if (companies != null) {
-            HorizontalCompanyListAdapter horizontalCompanyListAdapter = new HorizontalCompanyListAdapter(companies);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+            HorizontalCompanyListAdapter horizontalCompanyListAdapter =
+                    new HorizontalCompanyListAdapter(companies);
+
+            LinearLayoutManager layoutManager =
+                    new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
             dashboardCompaniesRecyclerView.setAdapter(horizontalCompanyListAdapter);
             dashboardCompaniesRecyclerView.setLayoutManager(layoutManager);
@@ -167,7 +171,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
      * Method enables dragging companies from the dashboard recycler view onto
      * the list of companies to compare
      */
-    private void dragDownToAdd(){
+    private void dragDownToAdd() {
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
                 new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.DOWN) {
 
@@ -180,7 +184,8 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
                 @Override
                 public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
                     if (viewHolder != null) {
-                        final View cardView = ((HorizontalCompanyListAdapter.ViewHolder) viewHolder).cardView;
+                        final View cardView =
+                                ((HorizontalCompanyListAdapter.ViewHolder) viewHolder).cardView;
                         getDefaultUIUtil().onSelected(cardView);
                     }
                 }
@@ -193,16 +198,23 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
                 }
 
                 @Override
-                public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                    final View cardView = ((HorizontalCompanyListAdapter.ViewHolder) viewHolder).cardView;
+                public void clearView(RecyclerView recyclerView,
+                        RecyclerView.ViewHolder viewHolder) {
+                    final View cardView =
+                            ((HorizontalCompanyListAdapter.ViewHolder) viewHolder).cardView;
                     getDefaultUIUtil().clearView(cardView);
                 }
 
                 @Override
                 public void onChildDraw(Canvas c, RecyclerView recyclerView,
-                    RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                    final View cardView = ((HorizontalCompanyListAdapter.ViewHolder) viewHolder).cardView;
-                    getDefaultUIUtil().onDraw(c, recyclerView, cardView, dX, dY, actionState, isCurrentlyActive);
+                        RecyclerView.ViewHolder viewHolder, float dX, float dY,
+                        int actionState, boolean isCurrentlyActive) {
+
+                    final View cardView =
+                            ((HorizontalCompanyListAdapter.ViewHolder) viewHolder).cardView;
+
+                    getDefaultUIUtil().onDraw(c, recyclerView,
+                            cardView, dX, dY, actionState, isCurrentlyActive);
                 }
 
                 @Override
@@ -220,18 +232,21 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
      * Method handles swiping to delete on the Comparison recycler view
      */
     private void setUpItemTouchHelper() {
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                RecyclerView.ViewHolder target) {
+                    RecyclerView.ViewHolder target) {
                 return true;
             }
 
             @Override
             public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-                if(viewHolder != null) {
-                    final View foreground = ((CompanyListAdapter.ViewHolder) viewHolder).getForeground();
+                if (viewHolder != null) {
+                    final View foreground =
+                            ((CompanyListAdapter.ViewHolder) viewHolder).getForeground();
+
                     getDefaultUIUtil().onSelected(foreground);
                 }
             }
@@ -241,6 +256,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
                 // Row is swiped from recycler view remove it from adapter
                 // comparisonCompaniesAdapter.removeItem(viewHolder.getAdapterPosition());
             }
+
             @Override
              public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 final View foreground = ((ViewHolder) viewHolder).getForeground();
@@ -249,9 +265,12 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView,
-                RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                    RecyclerView.ViewHolder viewHolder, float dX, float dY,
+                    int actionState, boolean isCurrentlyActive) {
+
                 final View foreground = ((ViewHolder) viewHolder).getForeground();
-                getDefaultUIUtil().onDraw(c, recyclerView, foreground, dX, dY, actionState, isCurrentlyActive);
+                getDefaultUIUtil().onDraw(
+                        c, recyclerView, foreground, dX, dY, actionState, isCurrentlyActive);
             }
 
             @Override
@@ -270,7 +289,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
      */
     private void setupSearchView() {
         // TODO: Figure out how to use databinding for search
-        SearchView search = (SearchView) binding.searchView;
+        SearchView search = binding.searchView;
 
         search.setQueryHint("Add companies...");
         search.setIconifiedByDefault(false);

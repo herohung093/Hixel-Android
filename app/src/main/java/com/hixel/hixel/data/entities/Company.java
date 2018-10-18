@@ -51,6 +51,17 @@ public class Company {
     @SerializedName("Interest Coverage")
     private double interestCoverage;
 
+    /**
+     * @param cik the unique identifier of the company
+     * @param name the name of the company
+     * @param ticker the ticker for the company
+     * @param currentRatio the companies current ratio
+     * @param debtToEquity the companies debt to equity ratio
+     * @param currentDebtToEquity the companies current debt to equity ratio
+     * @param returnOnEquity the companies return on equity ratio
+     * @param returnOnAssets the companies return on assets
+     * @param interestCoverage the companies interest coverage
+     */
     public Company(@NonNull String cik, String name, String ticker,
             double currentRatio, double debtToEquity, double currentDebtToEquity,
             double returnOnEquity, double returnOnAssets, double interestCoverage) {

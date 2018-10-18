@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.hixel.hixel.R;
 
+/**
+ * Displays a list of companies and their 'score' horizontally
+ */
 public class HorizontalListViewAdapter
         extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> {
 

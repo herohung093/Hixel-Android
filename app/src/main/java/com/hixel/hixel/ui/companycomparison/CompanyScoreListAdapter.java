@@ -13,7 +13,8 @@ import com.hixel.hixel.data.entities.Company;
 import java.util.List;
 import java.util.Random;
 
-public class CompanyScoreListAdapter extends RecyclerView.Adapter<CompanyScoreListAdapter.ViewHolder>{
+public class CompanyScoreListAdapter
+        extends RecyclerView.Adapter<CompanyScoreListAdapter.ViewHolder> {
 
     Context context;
     List<Company> companies;
