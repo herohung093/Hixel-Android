@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -197,9 +198,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
 
-
                     final Company temp = dashboardCompanies.get(viewHolder.getAdapterPosition());
-                    //final int deletedIndex = viewHolder.getAdapterPosition();
                     if (checkDuplicate(comparisonCompaniesAdapter.getDataSet(), temp.getTicker())
                         == false) {
                         selectedCompanies.add(temp);
@@ -382,7 +381,6 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
             public void onComplete() { }
         };
     }
-
     /**
      * Method displays the search results in the dropdown of the search view
      * @param searchResults The list of search results
@@ -401,7 +399,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
         for (Company c : companies) {
             if (c.getTicker().equalsIgnoreCase(ticker)
                 == true) {
-                Toast.makeText(this, "Company already exist in comparion list",
+                Toast.makeText(this, "Company already exist in comparison list",
                     Toast.LENGTH_LONG).show();
                 return true;
             }

@@ -109,7 +109,7 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
      * @param companies The companies to be added.
      */
     public void setCompanies(List<Company> companies) {
-        this.companies.addAll(companies);
+        this.companies=(companies);
         notifyDataSetChanged();
     }
     /**

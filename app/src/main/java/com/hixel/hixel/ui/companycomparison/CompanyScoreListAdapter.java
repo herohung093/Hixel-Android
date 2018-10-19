@@ -11,7 +11,6 @@ import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
 import java.util.List;
-import java.util.Random;
 
 public class CompanyScoreListAdapter
         extends RecyclerView.Adapter<CompanyScoreListAdapter.ViewHolder> {
@@ -41,7 +40,6 @@ public class CompanyScoreListAdapter
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyName.setText(companyName);
-        Random rand = new Random();
         holder.progressBar.setCurrentProgress(calculateScore(companies.get(position)));
     }
     private int calculateScore(Company company){
@@ -66,7 +64,6 @@ public class CompanyScoreListAdapter
             super(itemView);
             companyName= itemView.findViewById(R.id.textViewName41);
             progressBar = itemView.findViewById(R.id.progressBar);
-            //score= itemView.findViewById(R.id.textView41);
         }
     }
 }
