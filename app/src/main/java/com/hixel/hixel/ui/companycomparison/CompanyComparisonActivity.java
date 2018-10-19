@@ -16,13 +16,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
+import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.User;
+import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.databinding.ActivityComparisonBinding;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.commonui.CompanyListAdapter;
 import com.hixel.hixel.ui.commonui.CompanyListAdapter.ViewHolder;
-import com.hixel.hixel.data.entities.User;
-import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.ui.commonui.SearchAdapter;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
@@ -45,11 +45,11 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     private CompanyListAdapter comparisonCompaniesAdapter;
     private Button compareButton;
     private SearchAutoComplete searchAutoComplete;
-
+    private  HorizontalCompanyListAdapter horizontalCompanyListAdapter;
     // TODO: Change to List
-    ArrayList<String> tickers = new ArrayList<>();
     List<Company> dashboardCompanies;
     List<Company> comparisonCompanies;
+    List<Company> selectedCompanies = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +119,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
      */
     private void setupDashboardCompanyListAdapter(List<Company> companies) {
         if (companies != null) {
-            HorizontalCompanyListAdapter horizontalCompanyListAdapter =
+            horizontalCompanyListAdapter =
                     new HorizontalCompanyListAdapter(companies);
 
             LinearLayoutManager layoutManager =
@@ -157,14 +157,18 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     // TODO: Better name.
     private void setupButtons() {
         compareButton.setOnClickListener((View view) -> {
-            if (tickers.size() < 2) {
+            if (comparisonCompaniesAdapter.getDataSet() == null || comparisonCompaniesAdapter.getDataSet().size() < 2) {
                 Toast.makeText(getApplicationContext(),
                         "Select at least 2 companies!", Toast.LENGTH_LONG).show();
-            } else {
-                Intent moveToGraph = new Intent(this, GraphActivity.class);
-                moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES", tickers);
-                startActivity(moveToGraph);
+                return;
             }
+            Intent moveToGraph = new Intent(this, GraphActivity.class);
+
+            moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES",
+                extractTickers((ArrayList<Company>) comparisonCompaniesAdapter.getDataSet()));
+            moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES",extractTickers((ArrayList<Company>)comparisonCompaniesAdapter.getDataSet()));
+            startActivity(moveToGraph);
+
         });
     }
     /**
@@ -192,9 +196,17 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
 
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                    int position = viewHolder.getAdapterPosition();
-                    tickers.add(dashboardCompanies.get(position).getTicker());
-                    viewModel.addToComparisonCompanies(tickers);
+
+
+                    final Company temp = dashboardCompanies.get(viewHolder.getAdapterPosition());
+                    //final int deletedIndex = viewHolder.getAdapterPosition();
+                    if (checkDuplicate(comparisonCompaniesAdapter.getDataSet(), temp.getTicker())
+                        == false) {
+                        selectedCompanies.add(temp);
+                        //adapter.notifyDataSetChanged();
+                        horizontalCompanyListAdapter.removeItem(viewHolder.getAdapterPosition());
+                        comparisonCompaniesAdapter.addItem(temp);
+                    }
                 }
 
                 @Override
@@ -255,6 +267,17 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // Row is swiped from recycler view remove it from adapter
                 // comparisonCompaniesAdapter.removeItem(viewHolder.getAdapterPosition());
+                Company toBeRestoredCompany = comparisonCompaniesAdapter.getItem(viewHolder.getAdapterPosition());
+                Company a=null;
+                for(Company c: selectedCompanies){
+                    if( toBeRestoredCompany.getTicker().equalsIgnoreCase(c.getTicker())){
+                        horizontalCompanyListAdapter.addItem(toBeRestoredCompany);
+                        a=c;
+                    }
+                }
+                if(a!=null){
+                    selectedCompanies.remove(a);                    }
+                comparisonCompaniesAdapter.removeItem(viewHolder.getAdapterPosition());
             }
 
             @Override
@@ -306,11 +329,24 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
         searchAutoComplete.setOnItemClickListener((adapterView, view, itemIndex, id) -> {
             SearchEntry entry = (SearchEntry) adapterView.getItemAtPosition(itemIndex);
             String ticker = entry.getTicker();
-
+            ArrayList<String> tickers = new ArrayList<>();
             searchAutoComplete.setText("");
             tickers.add(ticker);
-            viewModel.addToComparisonCompanies(tickers);
-            search.clearFocus();
+            boolean duplicate = false;
+            if(comparisonCompaniesAdapter.getDataSet()!=null){
+                duplicate=checkDuplicate(comparisonCompaniesAdapter.getDataSet(),ticker);
+            }
+            if (!duplicate) {
+                List<Company> companies = viewModel.getComparisonCompanies().getValue();
+                int size = (companies == null) ? 0 : companies.size();
+
+                if (size <= 10) {
+                    viewModel.addToComparisonCompanies(tickers);
+                } else {
+                    Toast.makeText(this, "Reached comparison limit!", Toast.LENGTH_LONG)
+                        .show();
+                }
+            }
         });
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -359,5 +395,24 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
         if (!searchResults.isEmpty()) {
             searchAutoComplete.showDropDown();
         }
+    }
+    private boolean checkDuplicate(List<Company> companies, String ticker) {
+
+        for (Company c : companies) {
+            if (c.getTicker().equalsIgnoreCase(ticker)
+                == true) {
+                Toast.makeText(this, "Company already exist in comparion list",
+                    Toast.LENGTH_LONG).show();
+                return true;
+            }
+        }
+        return false;
+    }
+    private ArrayList<String> extractTickers(ArrayList<Company> companies){
+        ArrayList<String> tickers= new ArrayList<>();
+        for(Company c: companies){
+            tickers.add(c.getTicker());
+        }
+        return tickers;
     }
 }

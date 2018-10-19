@@ -100,7 +100,7 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
      */
     public void addItem(Company company) {
         companies.add(getItemCount(), company);
-        notifyItemInserted(getItemCount());
+        notifyDataSetChanged();
     }
 
     /**
@@ -109,10 +109,22 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
      * @param companies The companies to be added.
      */
     public void setCompanies(List<Company> companies) {
-        this.companies = companies;
+        this.companies.addAll(companies);
         notifyDataSetChanged();
     }
-
+    /**
+     * Get an item from the data set
+     * @param pos The position of the item
+     */
+    public Company getItem(int pos){
+        return this.getDataSet().get(pos);
+    }
+    /**
+     * Get Dataset of Adapter.
+     */
+    public List<Company> getDataSet(){
+        return companies;
+    }
     /**
      * Displays an individual Company in a row.
      */

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.RadarData;
@@ -27,12 +26,22 @@ import java.util.List;
 public class GenericChartFragment extends Fragment {
 
     private RadarChart radarChart;
-
+    ArrayList<Integer> colors =new ArrayList<>();
     public GenericChartFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        colors.add(Color.rgb(255,218,185));
+        colors.add(Color.rgb(139,136,120));
+        colors.add(Color.rgb(208,32,144));
+        colors.add(Color.rgb(	193,205,193));
+        colors.add(Color.rgb(230,230,250));
+        colors.add(Color.rgb(	100,149,237));
+        colors.add(Color.rgb(	106,90,205));
+        colors.add(Color.rgb(0,255,127));
+        colors.add(Color.rgb(255,215,0));
+        colors.add(Color.rgb(	205,92,92));
     }
 
     @Override
@@ -40,52 +49,28 @@ public class GenericChartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_generic_chart, container, false);
         radarChart = view.findViewById(R.id.radarChart);
-
         return view;
     }
 
+    private RadarDataSet radarDataSetup(Company company){
+        ArrayList<RadarEntry> entries= new ArrayList<>();
+        entries.add(new RadarEntry(company.getReturnsScore(),1));
+        entries.add(new RadarEntry(company.getPerformanceScore(),2));
+        entries.add(new RadarEntry(company.getStrengthScore(),3));
+        entries.add(new RadarEntry(company.getHealthScore(),4));
+        entries.add(new RadarEntry(company.getSafetyScore(),5));
+        RadarDataSet dataSet = new RadarDataSet(entries,company.getTicker());
+        return dataSet;
+    }
     public void drawGraph(List<Company> companies) {
 
-        ArrayList<RadarEntry> entries1= new ArrayList<>();
-
-        entries1.add(new RadarEntry(5f, 1));
-        entries1.add(new RadarEntry(2f, 2));
-        entries1.add(new RadarEntry(1f, 3));
-        entries1.add(new RadarEntry(3f, 4));
-        entries1.add(new RadarEntry(5f, 5));
-
-        ArrayList<RadarEntry> entries2 = new ArrayList<>();
-        entries2.add(new RadarEntry(1f, 1));
-        entries2.add(new RadarEntry(5f, 2));
-        entries2.add(new RadarEntry(4f, 3));
-        entries2.add(new RadarEntry(3f, 4));
-        entries2.add(new RadarEntry(4f, 5));
-
-        RadarDataSet dataSet_compA = new RadarDataSet(entries1,companies.get(0).getName());
-        RadarDataSet dataSet_compB = new RadarDataSet(entries2,companies.get(1).getName());
-
-        //set color
-        dataSet_compA.setDrawFilled(true);
-        dataSet_compA.setColor(Color.rgb(229, 13, 92));
-        dataSet_compA.setFillColor(Color.rgb(229, 13, 92));
-        dataSet_compA.setFillAlpha(90);
-        dataSet_compA.setLineWidth(1f);
-        dataSet_compA.setDrawHighlightCircleEnabled(true);
-        dataSet_compA.setDrawHighlightIndicators(false);
-        dataSet_compA.setValueTextColor(Color.GRAY);
-
-        dataSet_compB.setColor(Color.rgb(47, 237, 208));
-        dataSet_compB.setFillColor(Color.rgb(47, 237, 208));
-        dataSet_compB.setDrawFilled(true);
-        dataSet_compB.setFillAlpha(90);
-        dataSet_compB.setLineWidth(1f);
-        dataSet_compB.setDrawHighlightCircleEnabled(true);
-        dataSet_compB.setDrawHighlightIndicators(false);
-        dataSet_compB.setValueTextColor(Color.rgb(60, 220, 78));
-
         ArrayList<IRadarDataSet> sets = new ArrayList<>();
-        sets.add(dataSet_compA);
-        sets.add(dataSet_compB);
+        ArrayList<RadarDataSet> radarDataSets = new ArrayList<>();
+        for(Company c: companies){
+            radarDataSets.add(radarDataSetup(c));
+        }
+        setupDataSetStyle(radarDataSets);
+        sets.addAll(radarDataSets);
 
         RadarData data = new RadarData(sets);
 
@@ -99,7 +84,8 @@ public class GenericChartFragment extends Fragment {
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setFormSize(9f); // set the size of the legend forms/shapes
         legend.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
-        legend.setPosition(LegendPosition.BELOW_CHART_CENTER);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
 
         legend.setTextSize(14f);
         legend.setTextColor(Color.GRAY);
@@ -116,7 +102,7 @@ public class GenericChartFragment extends Fragment {
         //radarChart.setScaleX(1.1f);
         //radarChart.setScaleY(1.1f);
         radarChart.getDescription().setEnabled(false);
-        radarChart.setExtraOffsets(0f, 10f, 0f, 0f);
+        radarChart.setExtraOffsets(0f, 10f, 0f, 5f);
         XAxis xAxis = radarChart.getXAxis();
         //xAxis.setTypeface(mTfLight);
         xAxis.setDrawLabels(true);
@@ -140,7 +126,18 @@ public class GenericChartFragment extends Fragment {
 
         radarChart.invalidate();
     }
-
+    private void setupDataSetStyle(ArrayList<RadarDataSet> sets){
+        for(int i=0; i< sets.size();i++){
+            sets.get(i).setColor(colors.get(i));
+            sets.get(i).setFillColor(colors.get(i));
+            sets.get(i).setDrawFilled(true);
+            sets.get(i).setFillAlpha(90);
+            sets.get(i).setLineWidth(1f);
+            sets.get(i).setDrawHighlightCircleEnabled(true);
+            sets.get(i).setDrawHighlightIndicators(false);
+            sets.get(i).setValueTextColor(Color.rgb(60, 220, 78));
+        }
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

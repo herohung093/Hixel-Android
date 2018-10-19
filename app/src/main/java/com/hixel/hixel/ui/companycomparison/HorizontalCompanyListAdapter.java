@@ -54,11 +54,17 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
         this.companies = companies;
         notifyDataSetChanged();
     }
-
+    public void removeItem(int position) {
+        companies.remove(position);
+        notifyItemRemoved(position);
+    }
     public Company getCompany(int position) {
         return companies.get(position);
     }
-
+    public void addItem(Company company) {
+        companies.add(getItemCount(), company);
+        notifyDataSetChanged();
+    }
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView companyNameTV;
