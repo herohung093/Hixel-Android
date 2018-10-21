@@ -9,6 +9,7 @@ import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.api.TokenAuthenticator;
 import com.hixel.hixel.data.api.TokenInterceptor;
 import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.util.LiveDataCallAdapterFactory;
 import dagger.Module;
 import dagger.Provides;
 import java.security.cert.CertificateException;
@@ -120,6 +121,7 @@ public class NetModule {
         Retrofit.Builder retroBuilder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(new LiveDataCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create(gson));
 
         retroBuilder.client(client.build());
