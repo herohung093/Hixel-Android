@@ -1,4 +1,4 @@
-package com.hixel.hixel.data.models.resources;
+package com.hixel.hixel.data;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;

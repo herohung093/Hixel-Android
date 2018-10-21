@@ -1,12 +1,11 @@
 package com.hixel.hixel.data.api;
 
+import android.arch.lifecycle.LiveData;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.ApplicationUser;
 import com.hixel.hixel.data.models.LoginData;
 import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.data.entities.User;
-
-import java.util.ArrayList;
 
 import io.reactivex.Single;
 import java.util.List;
@@ -115,7 +114,7 @@ public interface ServerInterface {
      * @return an ArrayList of Company objects
      */
     @GET("/companydata")
-    Call<ArrayList<Company>> getCompanies(@Query("tickers") String tickers,
+    LiveData<ApiResponse<List<Company>>> getCompanies(@Query("tickers") String tickers,
             @Query("years") int years);
 
     /**

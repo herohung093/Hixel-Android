@@ -1,4 +1,4 @@
-package com.hixel.hixel.data.models.resources;
+package com.hixel.hixel.data;
 
 public enum Status {
     SUCCESS,
