@@ -2,6 +2,7 @@ package com.hixel.hixel.di.modules;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
+import com.hixel.hixel.AppExecutors;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.database.AppDatabase;
@@ -89,14 +90,14 @@ public class AppModule {
      *
      * @param serverInterface for api calls
      * @param companyDao the company dao for database operations
-     * @param executor executor for off UI thread operations
+     * @param appExecutors executor for off UI thread operations
      * @return the company repository
      */
     @Provides
     @Singleton
     CompanyRepository provideCompanyRepository(ServerInterface serverInterface,
-            CompanyDao companyDao, Executor executor) {
-        return new CompanyRepository(serverInterface, companyDao, executor);
+            CompanyDao companyDao, AppExecutors appExecutors) {
+        return new CompanyRepository(serverInterface, companyDao, appExecutors);
     }
 
     /**

@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +22,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
-import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
@@ -48,6 +46,9 @@ import javax.inject.Inject;
 public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         implements RecyclerItemTouchHelperListener {
 
+    // Temp.
+    List<String> tickers = new ArrayList<>();
+
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private DashboardViewModel viewModel;
@@ -63,6 +64,9 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bindView(R.layout.activity_dashboard);
+
+        tickers.add("AAPL");
+        tickers.add("TSLA");
 
         setupToolbar(R.string.dashboard, false, true);
         setupBottomNavigationView(R.id.home_button);
@@ -81,22 +85,9 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
     private void configureViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
-        viewModel.init();
-        viewModel.getUser().observe(this, this::updateCompanies);
-    }
-
-    /**
-     * Loads the companies via tickers provided by the User object
-     *
-     * @param user The current user
-     */
-    public void updateCompanies(User user) {
-        if (user != null) {
-            List<String> tickers = user.getPortfolio().getCompanies();
-
-            viewModel.loadCompanies(tickers);
-            viewModel.getCompanies().observe(this, this::updateUI);
-        }
+        viewModel.loadCompanies(tickers);
+        viewModel.getCompanies().observe(this, companiesResource
+                -> updateUI(companiesResource == null ? null : companiesResource.data));
     }
 
     private void updateUI(List<Company> companies) {
@@ -173,13 +164,13 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-
+        /*
         if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
             String name = viewModel.getCompanies().getValue().get(viewHolder.getAdapterPosition()).getName();
 
             // Backup item for undo purposes
-            final Company deletedCompany = viewModel.getCompanies()
+           final Company deletedCompany = viewModel.getCompanies()
                                                     .getValue()
                                                     .get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
@@ -193,7 +184,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
                     .restoreItem(deletedCompany, deletedIndex));
             snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.warning));
             snackbar.show();
-       }
+       }*/
     }
 
     @Override

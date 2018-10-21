@@ -52,7 +52,7 @@ public class CompanyDetailViewModel extends ViewModel {
             return;
         }
 
-        company = companyRepository.getCompany(ticker);
+        //company = companyRepository.getCompany(ticker);
     }
 
     public LiveData<User> getUser() { return user; }
@@ -66,7 +66,7 @@ public class CompanyDetailViewModel extends ViewModel {
      */
     void saveCompany(Company savedCompany, User updatedUser) {
         userRepository.updateUser(updatedUser);
-        companyRepository.saveCompany(savedCompany);
+        //companyRepository.saveCompany(savedCompany);
     }
 
     /**

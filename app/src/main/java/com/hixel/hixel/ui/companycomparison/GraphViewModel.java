@@ -29,7 +29,7 @@ public class GraphViewModel extends ViewModel {
             return;
         }
 
-        companies = repository.getComparisonCompanies(tickers);
+        //companies = repository.getComparisonCompanies(tickers);
     }
 
     MutableLiveData<List<Company>> getCompanies() {

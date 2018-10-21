@@ -3,10 +3,8 @@ package com.hixel.hixel.ui.dashboard;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.Resource;
-import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.CompanyRepository;
-import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.data.models.SearchEntry;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,26 +24,15 @@ import org.apache.commons.lang3.StringUtils;
 public class DashboardViewModel extends ViewModel {
 
     private CompanyRepository companyRepository;
-    private UserRepository userRepository;
 
     private LiveData<Resource<List<Company>>> companies;
-    private LiveData<User> user;
 
     private PublishSubject<String> publishSubject = PublishSubject.create();
     private CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
-    public DashboardViewModel(CompanyRepository companyRepository, UserRepository userRepository) {
+    public DashboardViewModel(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
-        this.userRepository = userRepository;
-    }
-
-    void init() {
-        if (user != null) {
-            return;
-        }
-
-        user = userRepository.getUser();
     }
 
     void loadCompanies(List<String> tickers) {
@@ -58,15 +45,13 @@ public class DashboardViewModel extends ViewModel {
         companies = companyRepository.loadCompanies(StringUtils.join(inputTickers));
     }
 
-    public LiveData<User> getUser() {
-        return user;
-    }
-
     public LiveData<Resource<List<Company>>> getCompanies() {
         return this.companies;
     }
 
-    // SEARCH.
+    // ****************************************
+    // *              SEARCH                  *
+    // ****************************************
     void setupSearch(DisposableObserver<List<SearchEntry>> observer) {
         disposable.add(publishSubject
                 .debounce(300, TimeUnit.MILLISECONDS)

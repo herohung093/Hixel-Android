@@ -77,7 +77,7 @@ public class CompanyComparisonViewModel extends ViewModel {
             return;
         }
 
-        dashboardCompanies = companyRepository.getCompanies(tickers);
+        //dashboardCompanies = companyRepository.getCompanies(tickers);
     }
 
     public LiveData<User> getUser() {
@@ -120,8 +120,9 @@ public class CompanyComparisonViewModel extends ViewModel {
         String[] tickers = new String[tickersList.size()];
         tickers = tickersList.toArray(tickers);
 
-        Client.getClient().create(ServerInterface.class)
-                .getCompanies(StringUtils.join(tickers, ','), 1)
+        //Client.getClient().create(ServerInterface.class)
+                //.getCompanies(StringUtils.join(tickers, ','), 1)
+                /*
                 .enqueue(new Callback<ArrayList<Company>>() {
                     @Override
                     public void onResponse(@NonNull Call<ArrayList<Company>> call,
@@ -143,7 +144,7 @@ public class CompanyComparisonViewModel extends ViewModel {
                     @Override
                     public void onFailure(@NonNull Call<ArrayList<Company>> call,
                             @NonNull Throwable t) { }
-                });
+                });*/
     }
 
 }
