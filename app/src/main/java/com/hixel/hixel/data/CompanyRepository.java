@@ -44,6 +44,7 @@ public class CompanyRepository {
     
     // TODO: Temp methods here, need to integrate into original methods.
     public LiveData<Resource<List<Company>>> loadCompanies(String tickers) {
+
         return new NetworkBoundResource<List<Company>, List<Company>>(appExecutors) {
 
             @Override
