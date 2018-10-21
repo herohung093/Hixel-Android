@@ -13,6 +13,7 @@ import io.reactivex.Single;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import timber.log.Timber;
 
 /**
  * Handles calls relating to CompanyData, stores Dashboard calls in the DAO to retrieve without
@@ -41,31 +42,35 @@ public class CompanyRepository {
         this.appExecutors = appExecutors;
     }
 
-    
-    // TODO: Temp methods here, need to integrate into original methods.
     public LiveData<Resource<List<Company>>> loadCompanies(String tickers) {
+        Timber.d(tickers);
 
         return new NetworkBoundResource<List<Company>, List<Company>>(appExecutors) {
 
             @Override
-            protected void saveCallResult(@NonNull List<Company> companies) {
-                companyDao.saveCompanies(companies);
+            protected void saveCallResult(@NonNull List<Company> item) {
+                Timber.w("Saving companies");
+                companyDao.insertCompanies(item);
             }
 
             @Override
             protected boolean shouldFetch(@Nullable List<Company> data) {
-                return data == null;
+                Timber.w("Is fetching: %b", data == null);
+                // TODO: Add a rate limiter so we automatically fetch at an interval.
+                return data == null || data.isEmpty();
             }
 
             @NonNull
             @Override
             protected LiveData<List<Company>> loadFromDb() {
-                return companyDao.load();
+                Timber.w("Getting from the db");
+                return companyDao.loadCompanies();
             }
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<List<Company>>> createCall() {
+                Timber.w("Talking to the server...");
                 return serverInterface.getCompanies(tickers, 1);
             }
         }.asLiveData();

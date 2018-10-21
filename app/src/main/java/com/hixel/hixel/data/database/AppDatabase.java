@@ -8,7 +8,6 @@ import com.hixel.hixel.data.entities.User;
 /**
  * Application database stores Company and User data.
  */
-// TODO: schema and migration handling
 @Database(entities = {Company.class, User.class}, version = 20, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -17,6 +16,7 @@ public abstract class AppDatabase extends RoomDatabase {
      *
      * NOTE: Do not remove. The INSTANCE is used by Dagger at compile time.
      */
+    // TODO: Check if this is needed
     private static AppDatabase INSTANCE;
 
     /**

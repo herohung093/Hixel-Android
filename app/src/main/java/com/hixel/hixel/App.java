@@ -10,6 +10,7 @@ import com.hixel.hixel.di.component.DaggerAppComponent;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import javax.inject.Inject;
+import timber.log.Timber;
 
 /**
  * Entry point for the application, creates the ActivityInjector for every subsequent activity,
@@ -30,6 +31,7 @@ public class App extends Application implements HasActivityInjector {
         context = getApplicationContext();
 
         Stetho.initializeWithDefaults(this);
+        Timber.plant(new Timber.DebugTree());
 
         DaggerAppComponent.builder().application(this).build().inject(this);
     }

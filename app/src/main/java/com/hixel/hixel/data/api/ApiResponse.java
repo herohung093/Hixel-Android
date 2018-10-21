@@ -13,8 +13,6 @@ import retrofit2.Response;
 public class ApiResponse<T> {
     private static final Pattern LINK_PATTERN = Pattern
             .compile("<([^>]*)>[\\s]*;[\\s]*rel=\"([a-zA-Z0-9]+)\"");
-    public static final Pattern PAGE_PATTERN = Pattern.compile("page=(\\d)+");
-    private static final String NEXT_LINK = "next";
     public final int code;
     @Nullable
     public final T body;
@@ -29,7 +27,6 @@ public class ApiResponse<T> {
         errorMessage = error.getMessage();
         links = Collections.emptyMap();
     }
-
 
     public ApiResponse(Response<T> response) {
         code = response.code();

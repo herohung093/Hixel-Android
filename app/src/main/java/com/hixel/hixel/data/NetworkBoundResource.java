@@ -28,7 +28,6 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
         result.setValue(Resource.loading(null));
         LiveData<ResultType> dbSource = loadFromDb();
 
-
         result.addSource(dbSource, data -> {
             result.removeSource(dbSource);
             if (shouldFetch(data)) {
@@ -50,7 +49,6 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
         LiveData<ApiResponse<RequestType>> apiResponse = createCall();
 
         result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
-
         result.addSource(apiResponse, response -> {
             result.removeSource(apiResponse);
             result.removeSource(dbSource);
@@ -58,10 +56,9 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
             if (response.isSuccessful()) {
                 appExecutors.diskIO().execute(() -> {
                     saveCallResult(processResponse(response));
-                    appExecutors.mainThread().execute(() -> {
+                    appExecutors.mainThread().execute(() ->
                         result.addSource(loadFromDb(),
-                                newData -> setValue(Resource.success(newData)));
-                    });
+                                newData -> setValue(Resource.success(newData))));
                 });
             } else {
                 onFetchFailed();
@@ -77,7 +74,6 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     public LiveData<Resource<ResultType>> asLiveData() {
         return result;
     }
-
 
     @WorkerThread
     protected RequestType processResponse(ApiResponse<RequestType> response) {

@@ -21,7 +21,7 @@ public interface CompanyDao {
      * @return LiveData List of all Company objects
      */
     @Query("SELECT * FROM companies")
-    LiveData<List<Company>> load();
+    LiveData<List<Company>> loadCompanies();
 
     /**
      * Inserts a List of companies into the database, using a replacement strategy for any
@@ -30,7 +30,7 @@ public interface CompanyDao {
      * @param companies List of companies to save
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void saveCompanies(List<Company> companies);
+    void insertCompanies(List<Company> companies);
 
     /**
      * Inserts a single company into the database, using a replacement strategy for any two

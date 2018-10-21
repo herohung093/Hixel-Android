@@ -105,4 +105,7 @@ dependencies {
     // Stetho
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }

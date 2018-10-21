@@ -114,8 +114,7 @@ public interface ServerInterface {
      * @return an ArrayList of Company objects
      */
     @GET("/companydata")
-    LiveData<ApiResponse<List<Company>>> getCompanies(@Query("tickers") String tickers,
-            @Query("years") int years);
+    LiveData<ApiResponse<List<Company>>> getCompanies(@Query("tickers") String tickers, @Query("years") int years);
 
     /**
      * API call to query the server for tickers related to a users query
