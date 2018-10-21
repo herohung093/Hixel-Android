@@ -23,7 +23,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
-import com.hixel.hixel.data.entities.CompanyData;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
@@ -99,9 +98,9 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
             t.add(c.getTicker());
         }
 
-        viewModel.loadCompanyData(t);
+        viewModel.loadCompanyData(t);/*
         viewModel.getCompanyData().observe(this, companyDataResource
-            -> updateChart(companyDataResource == null ? null : companyDataResource.data));
+            -> updateChart(companyDataResource == null ? null : companyDataResource.data));*/
     }
 
     private void updateUI(List<Company> companies) {
@@ -114,9 +113,9 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         }
     }
 
-    private void updateChart(List<CompanyData> companyData) {
-        if (companyData != null) {
-            List<Float> aggregateScores = viewModel.getChartData(companyData);
+    private void updateChart(List<Company> company) {
+        if (company != null) {
+            List<Float> aggregateScores = viewModel.getChartData(company);
             dataSet.clear();
 
             for (int i = 0; i < 5; i++) {

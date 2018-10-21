@@ -2,15 +2,9 @@ package com.hixel.hixel.di.modules;
 
 import android.support.annotation.NonNull;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.hixel.hixel.data.api.CompanyDataDeserializer;
-import com.hixel.hixel.data.api.CompanyDeserializer;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.api.TokenAuthenticator;
 import com.hixel.hixel.data.api.TokenInterceptor;
-import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.entities.CompanyData;
 import com.hixel.hixel.util.LiveDataCallAdapterFactory;
 import dagger.Module;
 import dagger.Provides;
@@ -114,18 +108,12 @@ public class NetModule {
             return chain.proceed(request);
         });
 
-        // Create Gson for custom deserialization
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Company.class, new CompanyDeserializer<Company>())
-                .registerTypeAdapter(CompanyData.class, new CompanyDataDeserializer<CompanyData>())
-                .create();
-
         //add retro builder
         Retrofit.Builder retroBuilder = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addCallAdapterFactory(new LiveDataCallAdapterFactory())
-                .addConverterFactory(GsonConverterFactory.create(gson));
+                .addConverterFactory(GsonConverterFactory.create());
 
         retroBuilder.client(client.build());
 

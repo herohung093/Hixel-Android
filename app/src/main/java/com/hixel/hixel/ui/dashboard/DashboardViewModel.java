@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.Resource;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.CompanyRepository;
-import com.hixel.hixel.data.entities.CompanyData;
 import com.hixel.hixel.data.models.SearchEntry;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -28,7 +27,6 @@ public class DashboardViewModel extends ViewModel {
     private CompanyRepository companyRepository;
 
     private LiveData<Resource<List<Company>>> companies;
-    private LiveData<Resource<List<CompanyData>>> companyData;
 
     private PublishSubject<String> publishSubject = PublishSubject.create();
     private CompositeDisposable disposable = new CompositeDisposable();
@@ -52,18 +50,13 @@ public class DashboardViewModel extends ViewModel {
     void loadCompanyData(List<String> tickers) {
         String[] inputTickers = new String[tickers.size()];
         inputTickers = tickers.toArray(inputTickers);
-        companyData = companyRepository.loadCompanyData(StringUtils.join(inputTickers, ','));
     }
 
     public LiveData<Resource<List<Company>>> getCompanies() {
         return this.companies;
     }
 
-    public LiveData<Resource<List<CompanyData>>> getCompanyData() {
-        return companyData;
-    }
-
-    public List<Float> getChartData(List<CompanyData> companyData) {
+    public List<Float> getChartData(List<Company> company) {
         List<Float> aggregateScores = new ArrayList<>();
 
         float returnsScore = 0.01f;
@@ -71,6 +64,7 @@ public class DashboardViewModel extends ViewModel {
         float strengthScore = 0.01f;
         float healthScore = 0.01f;
         float safetyScore = 0.01f;
+        /*
         int size = companyData.size();
 
         for (CompanyData cd : companyData) {
@@ -79,13 +73,13 @@ public class DashboardViewModel extends ViewModel {
             strengthScore += cd.getStrengthScore();
             healthScore += cd.getHealthScore();
             safetyScore += cd.getSafetyScore();
-        }
+        }*/
 
-        aggregateScores.add(returnsScore / size);
-        aggregateScores.add(performanceScore / size);
-        aggregateScores.add(strengthScore / size);
-        aggregateScores.add(healthScore / size);
-        aggregateScores.add(safetyScore / size);
+        aggregateScores.add(returnsScore);
+        aggregateScores.add(performanceScore);
+        aggregateScores.add(strengthScore);
+        aggregateScores.add(healthScore);
+        aggregateScores.add(safetyScore);
 
         return aggregateScores;
     }

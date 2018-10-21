@@ -6,7 +6,6 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.entities.CompanyData;
 import java.util.List;
 
 /**
@@ -27,9 +26,6 @@ public interface CompanyDao {
     @Query("SELECT * FROM companies WHERE ticker = :ticker")
     LiveData<Company> loadCompany(String ticker);
 
-    @Query("SELECT * FROM company_data WHERE cik = :cik")
-    LiveData<List<CompanyData>> loadCompanyData(String cik);
-
     /**
      * Inserts a List of companies into the database, using a replacement strategy for any
      * two companies that have the same primary key.
@@ -38,9 +34,6 @@ public interface CompanyDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCompanies(List<Company> companies);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertCompanyData(List<CompanyData> companyData);
 
     /**
      * Inserts a single company into the database, using a replacement strategy for any two

@@ -2,7 +2,6 @@ package com.hixel.hixel.data.api;
 
 import android.arch.lifecycle.LiveData;
 import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.entities.CompanyData;
 import com.hixel.hixel.data.models.ApplicationUser;
 import com.hixel.hixel.data.models.LoginData;
 import com.hixel.hixel.data.models.SearchEntry;
@@ -119,9 +118,6 @@ public interface ServerInterface {
 
     @GET("/companydata")
     LiveData<ApiResponse<Company>> getCompany(@Query("tickers") String tickers, @Query("years") int years);
-
-    @GET("/companydata")
-    LiveData<ApiResponse<List<CompanyData>>> getCompanyData(@Query("tickers") String tickers, @Query("years") int years);
 
     /**
      * API call to query the server for tickers related to a users query
