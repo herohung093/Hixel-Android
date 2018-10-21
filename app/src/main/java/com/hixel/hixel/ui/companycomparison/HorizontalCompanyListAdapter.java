@@ -9,14 +9,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.ui.commonui.HorizontalCompanyListOnClickListener;
 import java.util.List;
 
 public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<HorizontalCompanyListAdapter.ViewHolder>{
 
     private List<Company> companies;
-
-    public HorizontalCompanyListAdapter(List<Company> companies) {
+    private HorizontalCompanyListOnClickListener listener;
+    public HorizontalCompanyListAdapter(List<Company> companies, HorizontalCompanyListOnClickListener listener) {
         this.companies = companies;
+        this.listener = listener;
     }
 
     @NonNull
@@ -37,6 +39,9 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyNameTV.setText(companyName);
+        holder.cardView.setOnClickListener(view -> {
+            listener.onClick(companies.get(position));
+        });
     }
 
 
@@ -54,11 +59,30 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
         this.companies = companies;
         notifyDataSetChanged();
     }
+    public void removeItem(int position) {
+        companies.remove(position);
+        notifyItemRemoved(position);
+    }
+    public void removeItem(String ticker){
+        int index=-1;
+        for (Company c: companies){
+            if(c.getTicker().equalsIgnoreCase(ticker)){
+                index = companies.indexOf(c);
+            }
+        }
+        if(index!=-1){
+            companies.remove(index);
+            notifyDataSetChanged();
+        }
 
+    }
     public Company getCompany(int position) {
         return companies.get(position);
     }
-
+    public void addItem(Company company) {
+        companies.add(getItemCount(), company);
+        notifyDataSetChanged();
+    }
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView companyNameTV;

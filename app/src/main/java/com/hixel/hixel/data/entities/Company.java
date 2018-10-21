@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 /**
  * Immutable Company Entity containing all relevant ratios to be stored, as well as the
@@ -21,7 +22,7 @@ import com.google.gson.annotations.SerializedName;
  * Security/Safety: Current Debt/Equity (D/E) Ratio = LiabilitiesCurrent/ Equity
  */
 @Entity(tableName = "companies")
-public class Company {
+public class Company implements Serializable {
 
     @PrimaryKey
     @NonNull

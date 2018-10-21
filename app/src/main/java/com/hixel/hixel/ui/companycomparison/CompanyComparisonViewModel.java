@@ -20,6 +20,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
@@ -125,16 +126,25 @@ public class CompanyComparisonViewModel extends ViewModel {
                     @Override
                     public void onResponse(@NonNull Call<ArrayList<Company>> call,
                             @NonNull Response<ArrayList<Company>> response) {
-                        List<Company> temp = response.body();
+
+
+                        List<Company> current = comparisonCompanies.getValue();
+                        ArrayList<Company> temp = new ArrayList<>();
+
+                        if (current != null && !current.isEmpty()){
+                            for(int i=0;i<current.size();i++)
+                            {
+                                temp.add(current.get(i));
+                            }
+                        }
+                        temp.add(Objects.requireNonNull(response.body()).get(0));
                         comparisonCompanies.setValue(temp);
-
-                        compCompanies = response.body();
                     }
-
                     @Override
                     public void onFailure(@NonNull Call<ArrayList<Company>> call,
                             @NonNull Throwable t) { }
                 });
     }
+
 }
 
