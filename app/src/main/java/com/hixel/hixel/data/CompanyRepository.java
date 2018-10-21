@@ -2,15 +2,17 @@ package com.hixel.hixel.data;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import com.hixel.hixel.data.database.CompanyDao;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.SearchEntry;
+import com.hixel.hixel.data.models.resources.Resource;
+import com.hixel.hixel.data.models.resources.Status;
 import io.reactivex.Single;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
@@ -28,15 +30,13 @@ public class CompanyRepository {
 
     private ServerInterface serverInterface;
     private final CompanyDao companyDao;
-    /**
-     * Used to interact with Room so that the UI thread is not effected.
-     */
-    private final Executor executor;
 
     // TODO: Find a way to not use these vars
     // NOTE: THESE VARIABLES ARE TEMPORARY WORKAROUNDS
     private MutableLiveData<Company> company = new MutableLiveData<>();
     private MutableLiveData<List<Company>> comparisonCompanies = new MutableLiveData<>();
+
+    private MutableLiveData<Resource<List<Company>>> observableCompanies = new MutableLiveData<>();
 
     /**
      * Constructor for the repository, creates an instance of the server, company dao, and an
@@ -44,22 +44,111 @@ public class CompanyRepository {
      *
      * @param serverInterface an instance of the server interface
      * @param companyDao an instance of the company dao
-     * @param executor an instance of an executor
      */
     @Inject
-    public CompanyRepository(ServerInterface serverInterface,
-            CompanyDao companyDao, Executor executor) {
+    public CompanyRepository(ServerInterface serverInterface, CompanyDao companyDao) {
         this.serverInterface = serverInterface;
         this.companyDao = companyDao;
-        this.executor = executor;
+    }
+    
+    
+    // TODO: Temp methods here, need to integrate into original methods.
+    public void getAllCompanies() {
+        List<Company> loadingCompanies = null;
+        
+        if (observableCompanies.getValue() != null) {
+            loadingCompanies = observableCompanies.getValue().data;
+        }
+
+        observableCompanies.setValue(Resource.loading(loadingCompanies));
+        loadCompaniesFromDb();
+        loadCompaniesFromApi();
     }
 
+    public MutableLiveData<Resource<List<Company>>> getCompanies() {
+        // Return the cached LiveData
+        return observableCompanies;
+    }
+
+    private void loadCompaniesFromApi() {
+        // TODO: Get tickers from the User.
+        serverInterface.getCompanies("AAPL,TSLA", 1).enqueue(new Callback<ArrayList<Company>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Company>> call,
+                    Response<ArrayList<Company>> response) {
+                if (response.isSuccessful()) {
+                    setObservableCompaniesStatus(Status.SUCCESS, null);
+                    // TODO: See if I can put the response.body() straight into method call.
+                    List<Company> companies = response.body();
+                    insertCompaniesToDB(companies);
+                } else {
+                    // There has been some network error.
+                    // TODO: Need Timber for logging
+                    setObservableCompaniesStatus(Status.ERROR, String.valueOf(response.code()));
+                    switch (response.code()) {
+                        case 404:
+                            // TODO: Need Timber for logging
+                            break;
+                        case 500:
+                            // TODO: Need Timber for logging
+                            break;
+                        default:
+                            // TODO: Need Timber for logging
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Company>> call, Throwable t) {
+                // TODO: Need Timber for logging
+                setObservableCompaniesStatus(Status.ERROR, t.getMessage());
+            }
+        });
+    }
+
+    // TODO: Need to be able to check if the company is stale.
+    private void insertCompaniesToDB(List<Company> companies) {
+        new insertAsyncTask(companyDao).execute(companies);
+    }
+
+    private void loadCompaniesFromDb() {
+        new AsyncTask<Void, Void, List<Company>>() {
+            @Override
+            protected List<Company> doInBackground(Void... a) {
+                return companyDao.load();
+            }
+        }
+    }
+
+    private void setObservableCompaniesStatus(Status status, String message) {
+
+    }
+
+    private static class insertAsyncTask extends AsyncTask<List<Company>, Void, Void> {
+
+        private CompanyDao asyncCompanyDao;
+
+
+        insertAsyncTask(CompanyDao asyncCompanyDao) {
+            this.asyncCompanyDao = asyncCompanyDao;
+        }
+
+        @SafeVarargs
+        @Override
+        protected final Void doInBackground(List<Company>... params) {
+            asyncCompanyDao.saveCompanies(params[0]);
+
+            return null;
+        }
+    }
+    
     /**
-     * Calls the server to refresh the companies and save them to the dao and then retrieve them
+     * Calls the server to refresh the observableCompanies and save them to the dao and then retrieve them
      * from the dao. Subsequent calls simply retrieve from the dao.
      *
-     * @param tickers the tickers for the companies we want to retrieve.
-     * @return A list of companies that can be observer for changes.
+     * @param tickers the tickers for the observableCompanies we want to retrieve.
+     * @return A list of observableCompanies that can be observer for changes.
      */
     public LiveData<List<Company>> getCompanies(List<String> tickers) {
         String[] tickersArray = new String[tickers.size()];
@@ -97,12 +186,12 @@ public class CompanyRepository {
     }
 
     /**
-     * Retrieves a list of companies from the server, does not save them to the database.
+     * Retrieves a list of observableCompanies from the server, does not save them to the database.
      *
      * @param inputTickers the tickers to be retrieved from the server
-     * @return A list of companies that can be observed for changes.
+     * @return A list of observableCompanies that can be observed for changes.
      */
-    // TODO: Change to 'historical' companies
+    // TODO: Change to 'historical' observableCompanies
     public MutableLiveData<List<Company>> getComparisonCompanies(List<String> inputTickers) {
         String[] tickers = new String[inputTickers.size()];
         tickers = inputTickers.toArray(tickers);
@@ -136,8 +225,8 @@ public class CompanyRepository {
     }
 
     /**
-     * Requests a List of companies from the server.
-     * @param tickers The tickers for which companies we need from the server.
+     * Requests a List of observableCompanies from the server.
+     * @param tickers The tickers for which observableCompanies we need from the server.
      */
     private void refreshCompanies(final String[] tickers) {
         // Access room off the main thread
