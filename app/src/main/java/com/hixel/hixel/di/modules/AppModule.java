@@ -7,6 +7,7 @@ import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.database.AppDatabase;
 import com.hixel.hixel.data.database.CompanyDao;
+import com.hixel.hixel.data.database.CompanyDataDao;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.database.UserDao;
 import dagger.Module;
@@ -56,6 +57,12 @@ public class AppModule {
     @Singleton
     CompanyDao provideCompanyDao(AppDatabase database) {
         return database.companyDao();
+    }
+
+    @Provides
+    @Singleton
+    CompanyDataDao provideCompanyDataDao(AppDatabase database) {
+        return database.companyDataDao();
     }
 
     /**

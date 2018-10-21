@@ -116,7 +116,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         pieView.setPieInnerPadding(20);
 
         // TODO: Get an actual 'company overall score' from Company entity
-        float score = (float) ((company.getHealthScore() / 5.0) * 100.0);
+        float score = 0; //(float) ((company.getHealthScore() / 5.0) * 100.0);
         pieView.setPercentage(score);
         pieView.setPercentageBackgroundColor(getColorIndicator(score));
 

@@ -2,13 +2,17 @@ package com.hixel.hixel.data.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.CompanyData;
+import com.hixel.hixel.data.entities.CompanyDataTypeConverter;
 import com.hixel.hixel.data.entities.User;
 
 /**
  * Application database stores Company and User data.
  */
-@Database(entities = {Company.class, User.class}, version = 20, exportSchema = false)
+@Database(entities = {Company.class, CompanyData.class, User.class}, version = 21, exportSchema = false)
+@TypeConverters(CompanyDataTypeConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
     /**
@@ -25,6 +29,8 @@ public abstract class AppDatabase extends RoomDatabase {
      * @return CompanyDao Instance
      */
     public abstract CompanyDao companyDao();
+
+    public abstract CompanyDataDao companyDataDao();
 
     /**
      * Creates a UserDao Instance.

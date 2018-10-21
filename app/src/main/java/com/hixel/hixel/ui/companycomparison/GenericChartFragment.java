@@ -54,11 +54,13 @@ public class GenericChartFragment extends Fragment {
 
     private RadarDataSet radarDataSetup(Company company){
         ArrayList<RadarEntry> entries= new ArrayList<>();
+        /*
         entries.add(new RadarEntry(company.getReturnsScore(),1));
         entries.add(new RadarEntry(company.getPerformanceScore(),2));
         entries.add(new RadarEntry(company.getStrengthScore(),3));
         entries.add(new RadarEntry(company.getHealthScore(),4));
         entries.add(new RadarEntry(company.getSafetyScore(),5));
+        */
         RadarDataSet dataSet = new RadarDataSet(entries,company.getTicker());
         return dataSet;
     }

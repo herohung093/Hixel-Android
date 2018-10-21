@@ -8,6 +8,7 @@ import com.hixel.hixel.data.api.ApiResponse;
 import com.hixel.hixel.data.database.CompanyDao;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.CompanyData;
 import com.hixel.hixel.data.models.SearchEntry;
 import io.reactivex.Single;
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class CompanyRepository {
             @Override
             protected LiveData<ApiResponse<List<Company>>> createCall() {
                 Timber.w("Talking to the server...");
-                return serverInterface.getCompanies(tickers, 1);
+                return serverInterface.getCompanies(tickers, 5);
             }
         }.asLiveData();
     }
@@ -105,9 +106,39 @@ public class CompanyRepository {
             @Override
             protected LiveData<ApiResponse<Company>> createCall() {
                 Timber.w("Talking to the server...");
-                return serverInterface.getCompany(ticker, 1);
+                return serverInterface.getCompany(ticker, 5);
             }
         }.asLiveData();
+    }
+
+    public LiveData<Resource<List<CompanyData>>> loadCompanyData(String tickers) {
+        return new NetworkBoundResource<List<CompanyData>, List<CompanyData>>(appExecutors) {
+
+                @Override
+                protected void saveCallResult(@NonNull List<CompanyData> item) {
+                    Timber.w("Saving companies");
+                    companyDao.insertCompanyData(item);
+                }
+
+                @Override
+                protected boolean shouldFetch(@Nullable List<CompanyData> data) {
+                    return data == null || data.isEmpty();
+                }
+
+                @NonNull
+                @Override
+                protected LiveData<List<CompanyData>> loadFromDb() {
+                    Timber.w("Getting from the db");
+                    return companyDao.loadCompanyData(tickers);
+                }
+
+                @NonNull
+                @Override
+                protected LiveData<ApiResponse<List<CompanyData>>> createCall() {
+                    Timber.w("Talking to the server...");
+                    return serverInterface.getCompanyData(tickers, 0);
+                }
+            }.asLiveData();
     }
 
     public void addUserTickers(List<String> tickers) {

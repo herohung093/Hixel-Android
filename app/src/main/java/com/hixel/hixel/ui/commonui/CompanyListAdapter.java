@@ -42,7 +42,7 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        double companyScore = companies.get(position).getCurrentRatio();
+        double companyScore = 0; //companies.get(position).getCurrentRatio();
 
         holder.binding.companyName.setText(companies.get(position).getFormattedName());
         holder.binding.companyTicker.setText(companies.get(position).getFormattedTicker());

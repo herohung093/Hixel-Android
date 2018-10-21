@@ -5,7 +5,6 @@ import static com.hixel.hixel.data.api.Const.REQUEST_TIMEOUT;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.hixel.hixel.data.entities.Company;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -38,7 +37,7 @@ public class Client {
 
         if (retrofit == null) {
             Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(Company.class, new CompanyDeserializer<Company>())
+                    //.registerTypeAdapter(Company.class, new CompanyDeserializer<Company>())
                     .create();
 
             retrofit = new Retrofit.Builder()

@@ -4,11 +4,13 @@ import android.support.annotation.NonNull;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hixel.hixel.data.api.CompanyDataDeserializer;
 import com.hixel.hixel.data.api.CompanyDeserializer;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.api.TokenAuthenticator;
 import com.hixel.hixel.data.api.TokenInterceptor;
 import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.CompanyData;
 import com.hixel.hixel.util.LiveDataCallAdapterFactory;
 import dagger.Module;
 import dagger.Provides;
@@ -115,6 +117,7 @@ public class NetModule {
         // Create Gson for custom deserialization
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Company.class, new CompanyDeserializer<Company>())
+                .registerTypeAdapter(CompanyData.class, new CompanyDataDeserializer<CompanyData>())
                 .create();
 
         //add retro builder

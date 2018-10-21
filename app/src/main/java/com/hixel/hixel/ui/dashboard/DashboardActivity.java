@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
+import com.hixel.hixel.data.entities.CompanyData;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.Company;
@@ -42,7 +43,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * DashboardActivity displays a list of companies in a users profile.
+ * Dashboard Activity displays a list of companies in a users profile.
  */
 public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         implements RecyclerItemTouchHelperListener {
@@ -91,13 +92,40 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
                 -> updateUI(companiesResource == null ? null : companiesResource.data));
     }
 
+    private void getCompanyData(List<Company> companies) {
+        List<String> t = new ArrayList<>();
+
+        for (Company c : companies) {
+            t.add(c.getTicker());
+        }
+
+        viewModel.loadCompanyData(t);
+        viewModel.getCompanyData().observe(this, companyDataResource
+            -> updateChart(companyDataResource == null ? null : companyDataResource.data));
+    }
+
     private void updateUI(List<Company> companies) {
         if (companies != null) {
+            getCompanyData(companies);
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
-            updateChart(companies);
         } else {
             binding.progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateChart(List<CompanyData> companyData) {
+        if (companyData != null) {
+            List<Float> aggregateScores = viewModel.getChartData(companyData);
+            dataSet.clear();
+
+            for (int i = 0; i < 5; i++) {
+                dataSet.addEntry(new BarEntry(i, aggregateScores.get(i)));
+            }
+
+            data.notifyDataChanged();
+            chart.notifyDataSetChanged();
+            chart.invalidate();
         }
     }
 
@@ -229,40 +257,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         if (!searchResults.isEmpty()) {
             searchAutoComplete.showDropDown();
         }
-    }
-
-    private void updateChart(List<Company> companies) {
-        float returnsScore = 0.01f;
-        float performanceScore = 0.01f;
-        float strengthScore = 0.01f;
-        float healthScore = 0.01f;
-        float safetyScore = 0.01f;
-        int size = companies.size();
-
-        for (Company c : companies) {
-            returnsScore += c.getReturnsScore();
-            performanceScore += c.getPerformanceScore();
-            strengthScore += c.getStrengthScore();
-            healthScore += c.getHealthScore();
-            safetyScore += c.getSafetyScore();
-        }
-
-        returnsScore /= size;
-        performanceScore /= size;
-        strengthScore /= size;
-        healthScore /= size;
-        safetyScore /= size;
-
-        dataSet.clear();
-        dataSet.addEntry(new BarEntry(0, returnsScore));
-        dataSet.addEntry(new BarEntry(1, performanceScore));
-        dataSet.addEntry(new BarEntry(2, strengthScore));
-        dataSet.addEntry(new BarEntry(3, healthScore));
-        dataSet.addEntry(new BarEntry(4, safetyScore));
-
-        data.notifyDataChanged();
-        chart.notifyDataSetChanged();
-        chart.invalidate();
     }
 
     private void setupChart() {
