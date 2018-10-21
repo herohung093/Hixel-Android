@@ -43,6 +43,7 @@ public class DashboardViewModel extends ViewModel {
         String[] inputTickers = new String[tickers.size()];
         inputTickers = tickers.toArray(inputTickers);
         companies = companyRepository.loadCompanies(StringUtils.join(inputTickers, ','));
+        companyRepository.addUserTickers(tickers);
     }
 
     public LiveData<Resource<List<Company>>> getCompanies() {

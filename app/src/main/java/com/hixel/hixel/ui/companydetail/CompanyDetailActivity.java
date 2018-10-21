@@ -25,8 +25,8 @@ import com.hixel.hixel.ui.companycomparison.GraphFragment;
 
 import dagger.android.AndroidInjection;
 
-import java.util.List;
 import javax.inject.Inject;
+import timber.log.Timber;
 
 /**
  *  CompanyDetailActivity displays the UI for the details of one company
@@ -52,7 +52,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         setupBottomNavigationView(R.id.home_button);
 
         String ticker = getIntent().getStringExtra("COMPANY_TICKER");
-
+        Timber.d(ticker);
         this.configureDagger();
         this.configureViewModel(ticker);
 
@@ -74,11 +74,12 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
 
     /**
      * Updates the UI on LiveData changes
-     * @param companyList The current company
+     * @param company The current company
      */
-    private void updateUI(List<Company> companyList) {
-        if (companyList != null) {
-            Company company = companyList.get(0);
+    private void updateUI(Company company) {
+        if (company != null) {
+
+            Timber.d(company.getFormattedName());
 
             // Set the toolbar title to the company name
             String title = company.getFormattedName();
@@ -87,13 +88,12 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
             // Setup FAB
             binding.fab.setOnClickListener(v -> {
                 Intent backIntent = getIntent();
-                // user.getPortfolio().addCompany(company.getTicker());
-                // viewModel.saveCompany(company, user);
+                viewModel.saveCompany(company);
                 setResult(RESULT_OK, backIntent);
                 finish();
             });
 
-            if (viewModel.getIsInPortfolio()) {
+            if (viewModel.isInPortfolio(company.getTicker())) {
                 binding.fab.setVisibility(View.INVISIBLE);
             }
 
@@ -101,21 +101,6 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
             setupGenericChart(company);
         }
     }
-
-  /*  /**
-     * Loads the Company
-     * @param user The currently active user
-     * @param ticker The companies ticker
-     */
-    //private void updateCompany(User user, String ticker) {
-     //   if (user != null) {
-            //List<String> tickers = user.getPortfolio().getCompanies();
-            //viewModel.setIsInPortfolio(tickers, ticker);
-     //       viewModel.loadCompany(ticker);
-           // viewModel.getCompany().observe(this, (company) -> updateUI(company, user));
-     //   }
-   // }
-
 
     /**
      * UI setup for the Company PieChart

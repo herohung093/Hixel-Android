@@ -10,6 +10,7 @@ import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.SearchEntry;
 import io.reactivex.Single;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,6 +27,9 @@ public class CompanyRepository {
     private final ServerInterface serverInterface;
     private final CompanyDao companyDao;
     private final AppExecutors appExecutors;
+
+    // TEMPORARY
+    private final List<String> userTickers = new ArrayList<>();
 
     /**
      * Constructor for the repository, creates an instance of the server, company dao, and an
@@ -72,6 +76,47 @@ public class CompanyRepository {
                 return serverInterface.getCompanies(tickers, 1);
             }
         }.asLiveData();
+    }
+
+    public LiveData<Resource<Company>> loadCompany(String ticker) {
+        return new NetworkBoundResource<Company, Company>(appExecutors) {
+
+            @Override
+            protected void saveCallResult(@NonNull Company item) {
+                Timber.w("Saving companies");
+                companyDao.insertCompany(item);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable Company data) {
+                Timber.w("Is fetching: %b", data == null);
+                // TODO: Add a rate limiter so we automatically fetch at an interval.
+                return data == null;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<Company> loadFromDb() {
+                Timber.w("Getting from the db");
+                return companyDao.loadCompany(ticker);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<Company>> createCall() {
+                Timber.w("Talking to the server...");
+                return serverInterface.getCompany(ticker, 1);
+            }
+        }.asLiveData();
+    }
+
+    public void addUserTickers(List<String> tickers) {
+        userTickers.addAll(tickers);
+    }
+
+
+    public List<String> getUserTickers() {
+        return userTickers;
     }
 
     /**

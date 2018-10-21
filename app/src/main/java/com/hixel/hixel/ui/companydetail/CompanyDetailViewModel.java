@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.Resource;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.CompanyRepository;
-import com.hixel.hixel.data.entities.User;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -20,7 +20,7 @@ public class CompanyDetailViewModel extends ViewModel {
 
     private CompanyRepository companyRepository;
 
-    private LiveData<Resource<List<Company>>> company;
+    private LiveData<Resource<Company>> company;
 
     @Inject
     CompanyDetailViewModel(CompanyRepository companyRepository) {
@@ -36,35 +36,32 @@ public class CompanyDetailViewModel extends ViewModel {
             return;
         }
 
-        company = companyRepository.loadCompanies(ticker);
+        company = companyRepository.loadCompany(ticker);
     }
 
-    public LiveData<Resource<List<Company>>> getCompany() { return this.company; }
+    public LiveData<Resource<Company>> getCompany() { return this.company; }
 
     /**
      * Saves the company to the users portfolio and company database.
-     * @param savedCompany Company the user wants to save.
-     * @param updatedUser The updated user object.
+     * @param company Company the user wants to save.
      */
-    void saveCompany(Company savedCompany, User updatedUser) {
-        // userRepository.updateUser(updatedUser);
-        //companyRepository.saveCompany(savedCompany);
+    void saveCompany(Company company) {
+        List<String> ticker = new ArrayList<>();
+        ticker.add(company.getTicker());
+        companyRepository.addUserTickers(ticker);
     }
 
     /**
      * Checks whether the Company is in the users portfolio.
-     * @param usersTickers Users tickers.
-     * @param companyTicker Current companies ticker.
      */
-    void setIsInPortfolio(List<String> usersTickers, String companyTicker) {
-        for (String t : usersTickers) {
-            if (t.equals(companyTicker)) {
-                // isInPortfolio = true;
+    // TODO: This is an not a good implementation.
+    boolean isInPortfolio(String currentTicker) {
+        for (String ticker : companyRepository.getUserTickers()) {
+            if (currentTicker.equals(ticker)) {
+                return true;
             }
         }
-    }
 
-    boolean getIsInPortfolio() {
-        return false; //isInPortfolio;
+        return false;
     }
 }

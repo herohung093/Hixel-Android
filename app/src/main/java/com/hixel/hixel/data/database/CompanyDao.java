@@ -23,6 +23,9 @@ public interface CompanyDao {
     @Query("SELECT * FROM companies")
     LiveData<List<Company>> loadCompanies();
 
+    @Query("SELECT * FROM companies WHERE ticker = :ticker")
+    LiveData<Company> loadCompany(String ticker);
+
     /**
      * Inserts a List of companies into the database, using a replacement strategy for any
      * two companies that have the same primary key.
@@ -39,5 +42,7 @@ public interface CompanyDao {
      * @param company The company to insert into the database.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void saveCompany(Company company);
+    void insertCompany(Company company);
+
+
 }
