@@ -109,7 +109,7 @@ public interface ServerInterface {
     /**
      * API call to receive an ArrayList of Company objects based upon the sent tickers.
      *
-     * @param tickers the tickers of the companies requireed
+     * @param tickers the tickers of the companies required
      * @param years the number of years of data for each company
      * @return an ArrayList of Company objects
      */

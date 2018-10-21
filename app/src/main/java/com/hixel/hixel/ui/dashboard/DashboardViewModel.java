@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
-import timber.log.Timber;
 
 /**
  * Exposes the list of companies in the users portfolio to the dashboard screen.
@@ -40,8 +39,6 @@ public class DashboardViewModel extends ViewModel {
         if (this.companies != null) {
             return;
         }
-
-        Timber.d("HERE");
 
         String[] inputTickers = new String[tickers.size()];
         inputTickers = tickers.toArray(inputTickers);

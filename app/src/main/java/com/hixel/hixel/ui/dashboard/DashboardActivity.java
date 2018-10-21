@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,7 +47,7 @@ import javax.inject.Inject;
 public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         implements RecyclerItemTouchHelperListener {
 
-    // Temp.
+    // TODO: TEMPORARY - NEED TO GET FROM USER
     List<String> tickers = new ArrayList<>();
 
     @Inject
@@ -164,15 +165,16 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        /*
         if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
-            String name = viewModel.getCompanies().getValue().get(viewHolder.getAdapterPosition()).getName();
+            String name = viewModel.getCompanies().getValue().data.get(viewHolder.getAdapterPosition()).getName();
 
             // Backup item for undo purposes
            final Company deletedCompany = viewModel.getCompanies()
                                                     .getValue()
+                                                    .data
                                                     .get(viewHolder.getAdapterPosition());
+
             final int deletedIndex = viewHolder.getAdapterPosition();
 
             companyListAdapter.removeItem(viewHolder.getAdapterPosition());
@@ -184,7 +186,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
                     .restoreItem(deletedCompany, deletedIndex));
             snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.warning));
             snackbar.show();
-       }*/
+       }
     }
 
     @Override

@@ -43,8 +43,6 @@ public class CompanyRepository {
     }
 
     public LiveData<Resource<List<Company>>> loadCompanies(String tickers) {
-        Timber.d(tickers);
-
         return new NetworkBoundResource<List<Company>, List<Company>>(appExecutors) {
 
             @Override

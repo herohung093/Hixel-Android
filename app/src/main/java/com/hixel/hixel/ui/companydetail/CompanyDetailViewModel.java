@@ -1,9 +1,8 @@
 package com.hixel.hixel.ui.companydetail;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import com.hixel.hixel.data.UserRepository;
+import com.hixel.hixel.data.Resource;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.entities.User;
@@ -20,27 +19,12 @@ import javax.inject.Inject;
 public class CompanyDetailViewModel extends ViewModel {
 
     private CompanyRepository companyRepository;
-    private UserRepository userRepository;
 
-    private MutableLiveData<Company> company;
-    private LiveData<User> user;
-    private boolean isInPortfolio;
+    private LiveData<Resource<List<Company>>> company;
 
     @Inject
-    CompanyDetailViewModel(CompanyRepository companyRepository, UserRepository userRepository) {
+    CompanyDetailViewModel(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
-        this.userRepository = userRepository;
-    }
-
-    /**
-     * Calls the UserRepository if no User exists, otherwise it returns nothing.
-     */
-    void init() {
-        if (this.user != null) {
-            return;
-        }
-
-        user = userRepository.getUser();
     }
 
     /**
@@ -52,12 +36,10 @@ public class CompanyDetailViewModel extends ViewModel {
             return;
         }
 
-        //company = companyRepository.getCompany(ticker);
+        company = companyRepository.loadCompanies(ticker);
     }
 
-    public LiveData<User> getUser() { return user; }
-
-    public MutableLiveData<Company> getCompany() { return this.company; }
+    public LiveData<Resource<List<Company>>> getCompany() { return this.company; }
 
     /**
      * Saves the company to the users portfolio and company database.
@@ -65,7 +47,7 @@ public class CompanyDetailViewModel extends ViewModel {
      * @param updatedUser The updated user object.
      */
     void saveCompany(Company savedCompany, User updatedUser) {
-        userRepository.updateUser(updatedUser);
+        // userRepository.updateUser(updatedUser);
         //companyRepository.saveCompany(savedCompany);
     }
 
@@ -77,12 +59,12 @@ public class CompanyDetailViewModel extends ViewModel {
     void setIsInPortfolio(List<String> usersTickers, String companyTicker) {
         for (String t : usersTickers) {
             if (t.equals(companyTicker)) {
-                isInPortfolio = true;
+                // isInPortfolio = true;
             }
         }
     }
 
     boolean getIsInPortfolio() {
-        return isInPortfolio;
+        return false; //isInPortfolio;
     }
 }

@@ -17,7 +17,6 @@ import az.plainpie.animation.PieAngleAnimation;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.entities.User;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
@@ -68,32 +67,19 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
     private void configureViewModel(String ticker) {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                                       .get(CompanyDetailViewModel.class);
-
-        viewModel.init();
-        viewModel.getUser().observe(this, (user) -> updateCompany(user, ticker));
-    }
-
-    /**
-     * Loads the Company
-     * @param user The currently active user
-     * @param ticker The companies ticker
-     */
-    private void updateCompany(User user, String ticker) {
-        if (user != null) {
-            List<String> tickers = user.getPortfolio().getCompanies();
-            viewModel.setIsInPortfolio(tickers, ticker);
-            viewModel.loadCompany(ticker);
-            viewModel.getCompany().observe(this, (company) -> updateUI(company, user));
-        }
+        viewModel.loadCompany(ticker);
+        viewModel.getCompany().observe(this, companyResource
+                -> updateUI(companyResource == null ? null : companyResource.data));
     }
 
     /**
      * Updates the UI on LiveData changes
-     * @param company The current company
-     * @param user The currently active user
+     * @param companyList The current company
      */
-    private void updateUI(Company company, User user) {
-        if (company != null) {
+    private void updateUI(List<Company> companyList) {
+        if (companyList != null) {
+            Company company = companyList.get(0);
+
             // Set the toolbar title to the company name
             String title = company.getFormattedName();
             setToolbarTitle(title);
@@ -101,8 +87,8 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
             // Setup FAB
             binding.fab.setOnClickListener(v -> {
                 Intent backIntent = getIntent();
-                user.getPortfolio().addCompany(company.getTicker());
-                viewModel.saveCompany(company, user);
+                // user.getPortfolio().addCompany(company.getTicker());
+                // viewModel.saveCompany(company, user);
                 setResult(RESULT_OK, backIntent);
                 finish();
             });
@@ -115,6 +101,21 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
             setupGenericChart(company);
         }
     }
+
+  /*  /**
+     * Loads the Company
+     * @param user The currently active user
+     * @param ticker The companies ticker
+     */
+    //private void updateCompany(User user, String ticker) {
+     //   if (user != null) {
+            //List<String> tickers = user.getPortfolio().getCompanies();
+            //viewModel.setIsInPortfolio(tickers, ticker);
+     //       viewModel.loadCompany(ticker);
+           // viewModel.getCompany().observe(this, (company) -> updateUI(company, user));
+     //   }
+   // }
+
 
     /**
      * UI setup for the Company PieChart
