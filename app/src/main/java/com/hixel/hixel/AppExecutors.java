@@ -8,6 +8,11 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+
+/**
+ * Common class withing Android, allows us to have all our threads in one place to call them
+ * with ease and avoid async errors.
+ */
 @Singleton
 public class AppExecutors {
 

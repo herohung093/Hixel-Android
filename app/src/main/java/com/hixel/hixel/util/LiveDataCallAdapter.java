@@ -10,7 +10,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Helper class to deserialize api responses to LiveData Objects
+ * Helper class to deserialize api responses to LiveData Objects.
+ *
  * @param <R>
  */
 public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<ApiResponse<R>>> {

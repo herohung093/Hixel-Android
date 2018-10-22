@@ -11,6 +11,7 @@ import com.hixel.hixel.data.api.ApiResponse;
 import java.util.Objects;
 
 /**
+ * Manages where to get data from, either api or db.
  *
  * @param <ResultType> Type for the Resource data.
  * @param <RequestType> Type for the API response.

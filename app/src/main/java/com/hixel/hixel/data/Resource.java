@@ -3,6 +3,10 @@ package com.hixel.hixel.data;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+/**
+ *
+ * @param <T>
+ */
 public class Resource<T> {
     @NonNull
     public final Status status;

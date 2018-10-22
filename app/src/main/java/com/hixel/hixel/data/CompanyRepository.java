@@ -17,9 +17,11 @@ import javax.inject.Singleton;
 import timber.log.Timber;
 
 /**
- * Handles calls relating to CompanyData, stores Dashboard calls in the DAO to retrieve without
- * requiring a network call. All return values are either LiveData or Observable so that updates
- * to the data will be reflected in the views.
+ * Handles requests from ViewModels for Company data. Utilises the NetworkBoundResource to
+ * determine where to retreive the data from, either the api, or db.
+ *
+ * Only db responses are subscribed to, allowing the db to be a single source of truth for all
+ * data.
  */
 @Singleton
 public class CompanyRepository {

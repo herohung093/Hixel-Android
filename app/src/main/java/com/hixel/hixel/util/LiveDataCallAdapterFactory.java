@@ -8,6 +8,9 @@ import java.lang.reflect.Type;
 import retrofit2.CallAdapter;
 import retrofit2.Retrofit;
 
+/**
+ * Factor method to aid in adapting server repsonses into LiveData.
+ */
 public class LiveDataCallAdapterFactory extends CallAdapter.Factory {
 
     @Override
