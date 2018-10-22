@@ -7,7 +7,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Immutable Company Entity containing all the identifying information for a company.
+ * Company POJO containing all the identifying information for a company.
+ * The Identifiers and FinancialDataEntries are both Entities, and are stored in the db,
+ * this class acts as a wrapper so we have less queries to make and nicer looking code.
  */
 public class Company implements Serializable {
     @Embedded

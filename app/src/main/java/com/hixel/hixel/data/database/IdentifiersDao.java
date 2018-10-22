@@ -12,6 +12,10 @@ import com.hixel.hixel.data.entities.Identifiers;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entry point for handling database request due to this being the 'root' class
+ * for Api. Ensures we map data correctly when reading Company objects into the db.
+ */
 @Dao
 public abstract class IdentifiersDao {
 
