@@ -7,7 +7,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
-import com.hixel.hixel.data.entities.User;
+import com.hixel.hixel.data.entities.user.User;
 import java.util.List;
 
 /**

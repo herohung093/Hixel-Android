@@ -1,4 +1,4 @@
-package com.hixel.hixel.data.entities;
+package com.hixel.hixel.data.entities.company;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
@@ -20,6 +20,12 @@ public class Identifiers {
     private String name;
     @SerializedName("ticker")
     private String ticker;
+
+    public Identifiers(@NonNull String cik, String name, String ticker) {
+        this.cik = cik;
+        this.name = name;
+        this.ticker = ticker;
+    }
 
     public void setName(String name) {
         this.name = name;

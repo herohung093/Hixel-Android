@@ -18,7 +18,7 @@ import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.hixel.hixel.R;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.company.Company;
 import java.util.ArrayList;
 import java.util.List;
 

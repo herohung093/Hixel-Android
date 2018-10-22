@@ -3,7 +3,7 @@ package com.hixel.hixel.ui.profile;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.UserRepository;
-import com.hixel.hixel.data.entities.User;
+import com.hixel.hixel.data.entities.user.User;
 import javax.inject.Inject;
 
 /**

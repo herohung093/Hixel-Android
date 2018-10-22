@@ -1,4 +1,4 @@
-package com.hixel.hixel.data.entities;
+package com.hixel.hixel.data.entities.company;
 
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Ignore;
@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class Company implements Serializable {
     @Embedded
+    @SerializedName("identifiers")
     private Identifiers identifiers;
 
     @Ignore

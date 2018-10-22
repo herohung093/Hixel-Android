@@ -1,4 +1,4 @@
-package com.hixel.hixel.data.entities;
+package com.hixel.hixel.data.entities.user;
 
 import android.arch.persistence.room.TypeConverters;
 import com.google.gson.annotations.SerializedName;

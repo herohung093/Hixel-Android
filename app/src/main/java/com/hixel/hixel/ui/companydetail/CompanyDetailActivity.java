@@ -16,7 +16,7 @@ import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 
 import com.hixel.hixel.R;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;

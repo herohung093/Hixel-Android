@@ -1,4 +1,4 @@
-package com.hixel.hixel.data.entities;
+package com.hixel.hixel.data.entities.company;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
@@ -9,16 +9,24 @@ import com.google.gson.annotations.SerializedName;
  * (to be re-implemented), and the cik of the Company that is responsible for
  * the entries.
  */
+/*
+@Entity(tableName = "data_entries",
+        foreignKeys = {
+            @ForeignKey(entity = Identifiers.class,
+                    parentColumns = "cik",
+                    childColumns = "cik",
+                    onDelete = ForeignKey.CASCADE)},
+        indices = {@Index(value = {"cik"})
+})*/
+
 @Entity
 public class FinancialDataEntries {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-
+    private String cik;
     @SerializedName("year")
     private int year;
-
-    private String identifiersCik;
 
     public int getId() {
         return id;
@@ -36,11 +44,11 @@ public class FinancialDataEntries {
         this.year = year;
     }
 
-    public String getIdentifiersCik() {
-        return identifiersCik;
+    public String getCik() {
+        return cik;
     }
 
-    public void setIdentifiersCik(String identifier_cik) {
-        this.identifiersCik = identifier_cik;
+    public void setCik(String cik) {
+        this.cik = cik;
     }
 }

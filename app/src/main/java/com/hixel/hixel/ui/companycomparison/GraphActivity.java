@@ -11,7 +11,7 @@ import android.view.Gravity;
 import android.widget.ImageView;
 
 import com.hixel.hixel.R;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.databinding.ActivityGraphBinding;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;

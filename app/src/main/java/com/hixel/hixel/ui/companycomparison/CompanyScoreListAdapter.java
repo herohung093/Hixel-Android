@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 import com.hixel.hixel.R;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.company.Company;
 import java.util.List;
 
 public class CompanyScoreListAdapter

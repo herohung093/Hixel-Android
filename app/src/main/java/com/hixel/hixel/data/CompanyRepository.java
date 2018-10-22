@@ -7,7 +7,7 @@ import com.hixel.hixel.AppExecutors;
 import com.hixel.hixel.data.api.ApiResponse;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.database.IdentifiersDao;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.data.models.SearchEntry;
 import io.reactivex.Single;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import timber.log.Timber;
 
 /**
  * Handles requests from ViewModels for Company data. Utilises the NetworkBoundResource to
- * determine where to retreive the data from, either the api, or db.
+ * determine where to retrieve the data from, either the api, or db.
  *
  * Only db responses are subscribed to, allowing the db to be a single source of truth for all
  * data.
@@ -59,7 +59,7 @@ public class CompanyRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<Company> data) {
-                Timber.w("Is fetching: %b", data == null);
+                Timber.w("Is fetching: %b", !(data == null));
                 // TODO: Add a rate limiter so we automatically fetch at an interval.
                 return data == null || data.isEmpty();
             }
@@ -74,7 +74,7 @@ public class CompanyRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<List<Company>>> createCall() {
-                Timber.w("Talking to the server...");
+                Timber.w("Fetching data from the server");
                 return serverInterface.getCompanies(tickers, 5);
             }
         }.asLiveData();
@@ -100,7 +100,7 @@ public class CompanyRepository {
             @Override
             protected LiveData<Company> loadFromDb() {
                 Timber.w("Getting from the db");
-                return null; //companyDao.loadCompany(ticker);
+                return null; // companyDao.loadCompany(ticker);
             }
 
             @NonNull

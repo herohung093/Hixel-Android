@@ -3,7 +3,7 @@ package com.hixel.hixel.ui.companycomparison;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.CompanyRepository;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.company.Company;
 import java.util.List;
 import javax.inject.Inject;
 

@@ -6,11 +6,12 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
-import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.entities.FinancialDataEntries;
-import com.hixel.hixel.data.entities.Identifiers;
-import java.util.ArrayList;
+import android.arch.persistence.room.Transaction;
+import com.hixel.hixel.data.entities.company.Company;
+import com.hixel.hixel.data.entities.company.FinancialDataEntries;
+import com.hixel.hixel.data.entities.company.Identifiers;
 import java.util.List;
+import timber.log.Timber;
 
 /**
  * Entry point for handling database request due to this being the 'root' class
@@ -19,36 +20,33 @@ import java.util.List;
 @Dao
 public abstract class IdentifiersDao {
 
-    public void insertCompanies(List<Company> companies) {
-        List<Identifiers> identifiers = new ArrayList<>();
-
-        for (Company company : companies) {
-            Identifiers identifier = company.getIdentifiers();
-            identifiers.add(identifier);
-
-            insertDataEntries(company.getDataEntries(), identifier.getCik());
-        }
-
-        _insertIdentifiers(identifiers);
-    }
-
-    private void insertDataEntries(List<FinancialDataEntries> dataEntries, String cik) {
-        for (FinancialDataEntries entry : dataEntries) {
-            entry.setIdentifiersCik(cik);
-        }
-
-        _insertDataEntries(dataEntries);
-    }
-
     @Query("SELECT * FROM Identifiers")
+    @Transaction
     public abstract LiveData<List<Company>> loadCompanies();
+
+    public void insertCompanies(List<Company> companies) {
+        Timber.d("HERE");
+        for (Company c : companies) {
+            Timber.w(c.getIdentifiers().getName());
+
+            if (c.getDataEntries() != null) {
+                insertDataEntries(c, c.getDataEntries());
+            }
+        }
+    }
+
+    public void insertDataEntries(Company c, List<FinancialDataEntries> dataEntries) {
+        for (FinancialDataEntries entry : dataEntries) {
+            entry.setCik(c.getIdentifiers().getCik());
+        }
+
+        _insertAllDataEntries(dataEntries);
+    }
+
 
     @Insert(onConflict = REPLACE)
     abstract void insertIdentifiers(List<Identifiers> identifier);
 
     @Insert
-    abstract void _insertIdentifiers(List<Identifiers> identifiers);
-
-    @Insert
-    abstract void _insertDataEntries(List<FinancialDataEntries> dataEntries);
+    abstract void _insertAllDataEntries(List<FinancialDataEntries> dataEntries);
 }

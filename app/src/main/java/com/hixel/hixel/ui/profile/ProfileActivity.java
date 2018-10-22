@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import com.hixel.hixel.R;
 import com.hixel.hixel.ui.base.BaseActivity;
-import com.hixel.hixel.data.entities.User;
+import com.hixel.hixel.data.entities.user.User;
 import com.hixel.hixel.databinding.ActivityProfileBinding;
 import com.hixel.hixel.ui.login.LoginActivity;
 import dagger.android.AndroidInjection;

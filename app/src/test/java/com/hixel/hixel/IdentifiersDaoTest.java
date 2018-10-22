@@ -7,8 +7,8 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.persistence.room.Room;
 import com.hixel.hixel.data.database.AppDatabase;
 import com.hixel.hixel.data.database.IdentifiersDao;
-import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.entities.Identifiers;
+import com.hixel.hixel.data.entities.company.Company;
+import com.hixel.hixel.data.entities.company.Identifiers;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -16,8 +16,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 public class IdentifiersDaoTest {
     @Rule

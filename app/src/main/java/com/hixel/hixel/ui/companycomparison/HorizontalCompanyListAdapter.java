@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.hixel.hixel.R;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.ui.commonui.HorizontalCompanyListOnClickListener;
 import java.util.List;
 

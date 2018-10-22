@@ -1,11 +1,11 @@
 package com.hixel.hixel.data.api;
 
 import android.arch.lifecycle.LiveData;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.data.models.ApplicationUser;
 import com.hixel.hixel.data.models.LoginData;
 import com.hixel.hixel.data.models.SearchEntry;
-import com.hixel.hixel.data.entities.User;
+import com.hixel.hixel.data.entities.user.User;
 
 import io.reactivex.Single;
 import java.util.List;

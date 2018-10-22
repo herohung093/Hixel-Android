@@ -3,7 +3,7 @@ package com.hixel.hixel.ui.dashboard;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.Resource;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.models.SearchEntry;
 import io.reactivex.Single;

@@ -2,7 +2,7 @@ package com.hixel.hixel.data.database;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
-import com.hixel.hixel.data.entities.FinancialDataEntries;
+import com.hixel.hixel.data.entities.company.FinancialDataEntries;
 import java.util.List;
 
 /**

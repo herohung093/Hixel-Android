@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.database.UserDao;
-import com.hixel.hixel.data.entities.User;
+import com.hixel.hixel.data.entities.user.User;
 import java.util.concurrent.Executor;
 import javax.inject.Inject;
 import javax.inject.Singleton;

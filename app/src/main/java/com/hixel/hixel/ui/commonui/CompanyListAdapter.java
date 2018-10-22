@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.company.Company;
 
 import com.hixel.hixel.databinding.RowBinding;
 import java.util.List;
@@ -42,7 +42,7 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        double companyScore = 0; //companies.get(position).getCurrentRatio();
+        double companyScore = 0; // companies.get(position).getCurrentRatio();
 
         holder.binding.companyName.setText(companies.get(position).getIdentifiers().getFormattedName());
         holder.binding.companyTicker.setText(companies.get(position).getIdentifiers().getFormattedTicker());

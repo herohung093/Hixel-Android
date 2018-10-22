@@ -3,7 +3,7 @@ package com.hixel.hixel.ui.companydetail;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.Resource;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.data.CompanyRepository;
 import java.util.ArrayList;
 import java.util.List;

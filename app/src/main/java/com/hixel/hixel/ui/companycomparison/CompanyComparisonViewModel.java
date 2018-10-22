@@ -3,13 +3,10 @@ package com.hixel.hixel.ui.companycomparison;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.UserRepository;
-import com.hixel.hixel.data.api.Client;
-import com.hixel.hixel.data.api.ServerInterface;
-import com.hixel.hixel.data.entities.Company;
-import com.hixel.hixel.data.entities.User;
+import com.hixel.hixel.data.entities.company.Company;
+import com.hixel.hixel.data.entities.user.User;
 import com.hixel.hixel.data.models.SearchEntry;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -20,13 +17,8 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * ViewModel for interacting with the ComparisonActivity, pulls data from the
