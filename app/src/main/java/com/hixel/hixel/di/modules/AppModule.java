@@ -6,8 +6,9 @@ import com.hixel.hixel.AppExecutors;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.database.AppDatabase;
-import com.hixel.hixel.data.database.CompanyDao;
 import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.data.database.FinancialDataEntryDao;
+import com.hixel.hixel.data.database.IdentifiersDao;
 import com.hixel.hixel.data.database.UserDao;
 import dagger.Module;
 import dagger.Provides;
@@ -47,18 +48,6 @@ public class AppModule {
 
 
     /**
-     * Provides an instance of the company dao
-     *
-     * @param database the application database
-     * @return company dao
-     */
-    @Provides
-    @Singleton
-    CompanyDao provideCompanyDao(AppDatabase database) {
-        return database.companyDao();
-    }
-
-    /**
      * Provides and instance of the user dao
      *
      * @param database the application database
@@ -69,6 +58,16 @@ public class AppModule {
     UserDao provideUserDao(AppDatabase database) {
         return database.userDao();
     }
+
+    @Provides
+    @Singleton
+    IdentifiersDao provideIdentifiersDao(AppDatabase database) { return database.identifiersDao(); }
+
+    /*
+    @Provides
+    @Singleton
+    FinancialDataEntryDao provideFinancialDataEntryDao(AppDatabase database) { return database.financialDataEntryDao(); }
+    */
 
     // ***************************************
     // Repository Injections
@@ -89,15 +88,14 @@ public class AppModule {
      * with Company data.
      *
      * @param serverInterface for api calls
-     * @param companyDao the company dao for database operations
      * @param appExecutors executor for off UI thread operations
      * @return the company repository
      */
     @Provides
     @Singleton
-    CompanyRepository provideCompanyRepository(ServerInterface serverInterface,
-            CompanyDao companyDao, AppExecutors appExecutors) {
-        return new CompanyRepository(serverInterface, companyDao, appExecutors);
+    CompanyRepository provideCompanyRepository(ServerInterface serverInterface, IdentifiersDao identifiersDao,
+            AppExecutors appExecutors) {
+        return new CompanyRepository(serverInterface, identifiersDao, appExecutors);
     }
 
     /**

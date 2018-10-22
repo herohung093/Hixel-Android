@@ -44,8 +44,8 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         double companyScore = 0; //companies.get(position).getCurrentRatio();
 
-        holder.binding.companyName.setText(companies.get(position).getFormattedName());
-        holder.binding.companyTicker.setText(companies.get(position).getFormattedTicker());
+        holder.binding.companyName.setText(companies.get(position).getIdentifiers().getFormattedName());
+        holder.binding.companyTicker.setText(companies.get(position).getIdentifiers().getFormattedTicker());
 
         // Set the indicator based upon the current ratio
         if (companyScore < 1.0) {
@@ -60,7 +60,7 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
         }
 
         holder.binding.foreground.setOnClickListener((View view) -> {
-            String ticker = companies.get(position).getTicker();
+            String ticker = companies.get(position).getIdentifiers().getTicker();
 
             Intent intent = new Intent(context, CompanyDetailActivity.class);
             intent.putExtra("COMPANY_TICKER", ticker);

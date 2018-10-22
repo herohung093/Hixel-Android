@@ -33,6 +33,7 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         String companyName = companies.get(position)
+                .getIdentifiers()
                                       .getName()
                                       .split("[\\s, ]")[0]
                                       .toLowerCase();
@@ -66,7 +67,7 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
     public void removeItem(String ticker){
         int index=-1;
         for (Company c: companies){
-            if(c.getTicker().equalsIgnoreCase(ticker)){
+            if(c.getIdentifiers().getTicker().equalsIgnoreCase(ticker)){
                 index = companies.indexOf(c);
             }
         }

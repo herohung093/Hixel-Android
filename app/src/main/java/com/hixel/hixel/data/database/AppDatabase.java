@@ -2,13 +2,15 @@ package com.hixel.hixel.data.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
-import com.hixel.hixel.data.entities.Company;
+import com.hixel.hixel.data.entities.FinancialDataEntries;
+import com.hixel.hixel.data.entities.Identifiers;
 import com.hixel.hixel.data.entities.User;
 
 /**
  * Application database stores Company and User data.
  */
-@Database(entities = {Company.class, User.class}, version = 22, exportSchema = false)
+@Database(entities = {Identifiers.class, FinancialDataEntries.class, User.class},
+        version = 24, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     /**
@@ -19,12 +21,9 @@ public abstract class AppDatabase extends RoomDatabase {
     // TODO: Check if this is needed
     private static AppDatabase INSTANCE;
 
-    /**
-     * Create a CompanyDao Instance
-     *
-     * @return CompanyDao Instance
-     */
-    public abstract CompanyDao companyDao();
+    public abstract IdentifiersDao identifiersDao();
+
+    public abstract FinancialDataEntryDao financialDataEntryDao();
 
     /**
      * Creates a UserDao Instance.

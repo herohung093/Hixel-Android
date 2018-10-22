@@ -47,7 +47,7 @@ import javax.inject.Inject;
 public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         implements RecyclerItemTouchHelperListener {
 
-    // TODO: TEMPORARY - NEED TO GET FROM USER
+    // Temporary variable while we transition networking.
     List<String> tickers = new ArrayList<>();
 
     @Inject
@@ -56,8 +56,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
     private SearchAutoComplete searchAutoComplete;
     private CompanyListAdapter companyListAdapter;
-    private BarChart chart;
-    private MainBarDataSet dataSet;
     List<BarEntry> entries;
     BarData data;
 
@@ -80,6 +78,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         viewModel.setupSearch(getSearchObserver());
     }
 
+
     private void configureDagger() {
         AndroidInjection.inject(this);
     }
@@ -91,40 +90,12 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
                 -> updateUI(companiesResource == null ? null : companiesResource.data));
     }
 
-    private void getCompanyData(List<Company> companies) {
-        List<String> t = new ArrayList<>();
-
-        for (Company c : companies) {
-            t.add(c.getTicker());
-        }
-
-        viewModel.loadCompanyData(t);/*
-        viewModel.getCompanyData().observe(this, companyDataResource
-            -> updateChart(companyDataResource == null ? null : companyDataResource.data));*/
-    }
-
     private void updateUI(List<Company> companies) {
         if (companies != null) {
-            getCompanyData(companies);
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
         } else {
             binding.progressBar.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void updateChart(List<Company> company) {
-        if (company != null) {
-            List<Float> aggregateScores = viewModel.getChartData(company);
-            dataSet.clear();
-
-            for (int i = 0; i < 5; i++) {
-                dataSet.addEntry(new BarEntry(i, aggregateScores.get(i)));
-            }
-
-            data.notifyDataChanged();
-            chart.notifyDataSetChanged();
-            chart.invalidate();
         }
     }
 
@@ -194,7 +165,10 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
-            String name = viewModel.getCompanies().getValue().data.get(viewHolder.getAdapterPosition()).getName();
+            String name = viewModel.getCompanies()
+                    .getValue()
+                    .data
+                    .get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
 
             // Backup item for undo purposes
            final Company deletedCompany = viewModel.getCompanies()
@@ -207,7 +181,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
             companyListAdapter.removeItem(viewHolder.getAdapterPosition());
 
             // Remove Company from RecyclerView
-            Snackbar snackbar = Snackbar.make(binding.getRoot(), name + " removed from portfolio", Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(binding.getRoot(), name
+                    + " removed from portfolio", Snackbar.LENGTH_LONG);
 
             snackbar.setAction("UNDO", view -> companyListAdapter
                     .restoreItem(deletedCompany, deletedIndex));
@@ -259,12 +234,13 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     }
 
     private void setupChart() {
-        chart = binding.chart;
+        BarChart chart = binding.chart;
 
         entries = new ArrayList<>();
-        dataSet = new MainBarDataSet(entries, "");
+        MainBarDataSet dataSet = new MainBarDataSet(entries, "");
 
-        chart.setRenderer(new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
+        chart.setRenderer(new MainBarChartRenderer(chart,
+                chart.getAnimator(), chart.getViewPortHandler()));
         chart.getLegend().setEnabled(false);
         chart.getDescription().setEnabled(false);
         chart.setDrawValueAboveBar(false);

@@ -13,7 +13,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
@@ -47,41 +46,8 @@ public class DashboardViewModel extends ViewModel {
         companyRepository.addUserTickers(tickers);
     }
 
-    void loadCompanyData(List<String> tickers) {
-        String[] inputTickers = new String[tickers.size()];
-        inputTickers = tickers.toArray(inputTickers);
-    }
-
     public LiveData<Resource<List<Company>>> getCompanies() {
         return this.companies;
-    }
-
-    public List<Float> getChartData(List<Company> company) {
-        List<Float> aggregateScores = new ArrayList<>();
-
-        float returnsScore = 0.01f;
-        float performanceScore = 0.01f;
-        float strengthScore = 0.01f;
-        float healthScore = 0.01f;
-        float safetyScore = 0.01f;
-        /*
-        int size = companyData.size();
-
-        for (CompanyData cd : companyData) {
-            returnsScore += cd.getReturnsScore();
-            performanceScore += cd.getPerformanceScore();
-            strengthScore += cd.getStrengthScore();
-            healthScore += cd.getHealthScore();
-            safetyScore += cd.getSafetyScore();
-        }*/
-
-        aggregateScores.add(returnsScore);
-        aggregateScores.add(performanceScore);
-        aggregateScores.add(strengthScore);
-        aggregateScores.add(healthScore);
-        aggregateScores.add(safetyScore);
-
-        return aggregateScores;
     }
 
     // ****************************************

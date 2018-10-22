@@ -205,7 +205,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
 
                     final Company temp = dashboardCompanies.get(viewHolder.getAdapterPosition());
-                    if (checkDuplicate(comparisonCompaniesAdapter.getDataSet(), temp.getTicker())
+                    if (checkDuplicate(comparisonCompaniesAdapter.getDataSet(), temp.getIdentifiers().getTicker())
                         == false) {
                         selectedCompanies.add(temp);
                         //adapter.notifyDataSetChanged();
@@ -276,7 +276,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
                         .getItem(viewHolder.getAdapterPosition());
                     Company a = null;
                     for (Company c : selectedCompanies) {
-                        if (toBeRestoredCompany.getTicker().equalsIgnoreCase(c.getTicker())) {
+                        if (toBeRestoredCompany.getIdentifiers().getTicker().equalsIgnoreCase(c.getIdentifiers().getTicker())) {
                             horizontalCompanyListAdapter.addItem(toBeRestoredCompany);
                             a = c;
                         }
@@ -411,8 +411,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     private boolean checkDuplicate(List<Company> companies, String ticker) {
 
         for (Company c : companies) {
-            if (c.getTicker().equalsIgnoreCase(ticker)
-                == true) {
+            if (c.getIdentifiers().getTicker().equalsIgnoreCase(ticker) == true) {
                 Toast.makeText(this, "Company already exist in comparison list",
                     Toast.LENGTH_LONG).show();
                 return true;
@@ -424,7 +423,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     private ArrayList<String> extractTickers(ArrayList<Company> companies) {
         ArrayList<String> tickers = new ArrayList<>();
         for (Company c : companies) {
-            tickers.add(c.getTicker());
+            tickers.add(c.getIdentifiers().getTicker());
         }
         return tickers;
     }
@@ -432,12 +431,12 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     @Override
     public void onClick(Company company) {
 
-        if (checkDuplicate(comparisonCompaniesAdapter.getDataSet(), company.getTicker())
-            == false) {
+        if (checkDuplicate(comparisonCompaniesAdapter.getDataSet(),
+                company.getIdentifiers().getTicker()) == false) {
             selectedCompanies.add(company);
             //adapter.notifyDataSetChanged();
 
-            horizontalCompanyListAdapter.removeItem(company.getTicker());
+            horizontalCompanyListAdapter.removeItem(company.getIdentifiers().getTicker());
             comparisonCompaniesAdapter.addItem(company);
         }
     }

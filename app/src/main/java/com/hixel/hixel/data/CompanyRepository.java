@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.hixel.hixel.AppExecutors;
 import com.hixel.hixel.data.api.ApiResponse;
-import com.hixel.hixel.data.database.CompanyDao;
 import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.data.database.IdentifiersDao;
 import com.hixel.hixel.data.entities.Company;
 import com.hixel.hixel.data.models.SearchEntry;
 import io.reactivex.Single;
@@ -25,8 +25,8 @@ import timber.log.Timber;
 public class CompanyRepository {
 
     private final ServerInterface serverInterface;
-    private final CompanyDao companyDao;
     private final AppExecutors appExecutors;
+    private final IdentifiersDao identifiersDao;
 
     // TEMPORARY
     private final List<String> userTickers = new ArrayList<>();
@@ -36,15 +36,15 @@ public class CompanyRepository {
      * executor to perform operations off the main UI thread.
      *
      * @param serverInterface an instance of the server interface
-     * @param companyDao an instance of the company dao
      */
     @Inject
-    public CompanyRepository(ServerInterface serverInterface, CompanyDao companyDao,
+    public CompanyRepository(ServerInterface serverInterface, IdentifiersDao identifiersDao,
             AppExecutors appExecutors) {
         this.serverInterface = serverInterface;
-        this.companyDao = companyDao;
         this.appExecutors = appExecutors;
+        this.identifiersDao = identifiersDao;
     }
+
 
     public LiveData<Resource<List<Company>>> loadCompanies(String tickers) {
         return new NetworkBoundResource<List<Company>, List<Company>>(appExecutors) {
@@ -52,7 +52,7 @@ public class CompanyRepository {
             @Override
             protected void saveCallResult(@NonNull List<Company> item) {
                 Timber.w("Saving companies");
-                companyDao.insertCompanies(item);
+                identifiersDao.insertCompanies(item);
             }
 
             @Override
@@ -66,7 +66,7 @@ public class CompanyRepository {
             @Override
             protected LiveData<List<Company>> loadFromDb() {
                 Timber.w("Getting from the db");
-                return companyDao.loadCompanies();
+                return identifiersDao.loadCompanies();
             }
 
             @NonNull
@@ -84,7 +84,7 @@ public class CompanyRepository {
             @Override
             protected void saveCallResult(@NonNull Company item) {
                 Timber.w("Saving companies");
-                companyDao.insertCompany(item);
+                //companyDao.insertCompany(item);
             }
 
             @Override
@@ -98,7 +98,7 @@ public class CompanyRepository {
             @Override
             protected LiveData<Company> loadFromDb() {
                 Timber.w("Getting from the db");
-                return companyDao.loadCompany(ticker);
+                return null; //companyDao.loadCompany(ticker);
             }
 
             @NonNull

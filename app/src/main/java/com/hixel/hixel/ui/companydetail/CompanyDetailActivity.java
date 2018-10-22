@@ -79,10 +79,10 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
     private void updateUI(Company company) {
         if (company != null) {
 
-            Timber.d(company.getFormattedName());
+            Timber.d(company.getIdentifiers().getFormattedName());
 
             // Set the toolbar title to the company name
-            String title = company.getFormattedName();
+            String title = company.getIdentifiers().getFormattedName();
             setToolbarTitle(title);
 
             // Setup FAB
@@ -93,7 +93,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
                 finish();
             });
 
-            if (viewModel.isInPortfolio(company.getTicker())) {
+            if (viewModel.isInPortfolio(company.getIdentifiers().getTicker())) {
                 binding.fab.setVisibility(View.INVISIBLE);
             }
 
