@@ -25,28 +25,27 @@ public abstract class IdentifiersDao {
     public abstract LiveData<List<Company>> loadCompanies();
 
     public void insertCompanies(List<Company> companies) {
-        Timber.d("HERE");
         for (Company c : companies) {
             Timber.w(c.getIdentifiers().getName());
-
             if (c.getDataEntries() != null) {
                 insertDataEntries(c, c.getDataEntries());
             }
         }
     }
 
-    public void insertDataEntries(Company c, List<FinancialDataEntries> dataEntries) {
+    private void insertDataEntries(Company c, List<FinancialDataEntries> dataEntries) {
         for (FinancialDataEntries entry : dataEntries) {
             entry.setCik(c.getIdentifiers().getCik());
+            _insertIdentifier(c.getIdentifiers());
         }
 
         _insertAllDataEntries(dataEntries);
     }
 
-
     @Insert(onConflict = REPLACE)
-    abstract void insertIdentifiers(List<Identifiers> identifier);
+    abstract void _insertIdentifier(Identifiers identifier);
 
     @Insert
     abstract void _insertAllDataEntries(List<FinancialDataEntries> dataEntries);
+
 }
