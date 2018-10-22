@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import com.hixel.hixel.view.ui.LoginActivity;
+import com.hixel.hixel.ui.login.LoginActivity;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

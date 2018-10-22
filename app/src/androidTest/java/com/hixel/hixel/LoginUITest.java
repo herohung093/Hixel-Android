@@ -6,7 +6,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import android.support.test.rule.ActivityTestRule;
-import com.hixel.hixel.view.ui.LoginActivity;
+import com.hixel.hixel.ui.login.LoginActivity;
 import org.junit.Rule;
 import org.junit.Test;
 public class LoginUITest {

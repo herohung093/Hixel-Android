@@ -26,7 +26,7 @@ public class DashboardActivityTest {
 
     @Test
     public void toolbarDisplaysDashboardAsTitle() {
-        onView(withId(R.id.toolbar_title))
+        onView(withId(R.id.toolbar))
                 .check(matches(withText(containsString("Dashboard"))));
     }
 
