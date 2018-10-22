@@ -34,9 +34,9 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
 
         String companyName = companies.get(position)
                 .getIdentifiers()
-                                      .getName()
-                                      .split("[\\s, ]")[0]
-                                      .toLowerCase();
+                .getName()
+                .split("[\\s, ]")[0]
+                .toLowerCase();
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyNameTV.setText(companyName);
@@ -60,10 +60,12 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
         this.companies = companies;
         notifyDataSetChanged();
     }
+
     public void removeItem(int position) {
         companies.remove(position);
         notifyItemRemoved(position);
     }
+
     public void removeItem(String ticker){
         int index=-1;
         for (Company c: companies){
@@ -77,9 +79,11 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
         }
 
     }
+
     public Company getCompany(int position) {
         return companies.get(position);
     }
+
     public void addItem(Company company) {
         companies.add(getItemCount(), company);
         notifyDataSetChanged();

@@ -24,6 +24,9 @@ public abstract class IdentifiersDao {
     @Transaction
     public abstract LiveData<List<Company>> loadCompanies();
 
+    @Query("SELECT * FROM Identifiers WHERE ticker = :ticker")
+    public abstract LiveData<Company> loadCompany(String ticker);
+
     public void insertCompanies(List<Company> companies) {
         for (Company c : companies) {
             Timber.w(c.getIdentifiers().getName());
@@ -33,6 +36,16 @@ public abstract class IdentifiersDao {
         }
     }
 
+    public void insertCompany(Company company) {
+        for (FinancialDataEntries entry : company.getDataEntries()) {
+            entry.setCik(company.getIdentifiers().getCik());
+        }
+
+        _insertIdentifier(company.getIdentifiers());
+        _insertAllDataEntries(company.getDataEntries());
+    }
+
+
     private void insertDataEntries(Company c, List<FinancialDataEntries> dataEntries) {
         for (FinancialDataEntries entry : dataEntries) {
             entry.setCik(c.getIdentifiers().getCik());
@@ -41,6 +54,8 @@ public abstract class IdentifiersDao {
 
         _insertAllDataEntries(dataEntries);
     }
+
+
 
     @Insert(onConflict = REPLACE)
     abstract void _insertIdentifier(Identifiers identifier);

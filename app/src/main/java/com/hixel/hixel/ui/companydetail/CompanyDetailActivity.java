@@ -21,7 +21,7 @@ import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
 import com.hixel.hixel.ui.commonui.HorizontalListViewOnClickListener;
-import com.hixel.hixel.ui.companycomparison.GraphFragment;
+import com.hixel.hixel.ui.commonui.GraphFragment;
 
 import dagger.android.AndroidInjection;
 
@@ -116,7 +116,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         pieView.setPieInnerPadding(20);
 
         // TODO: Get an actual 'company overall score' from Company entity
-        float score = 0; //(float) ((company.getHealthScore() / 5.0) * 100.0);
+        float score = 50.0f; //(float) ((company.getDataEntries().get(0).get / 5.0) * 100.0);
         pieView.setPercentage(score);
         pieView.setPercentageBackgroundColor(getColorIndicator(score));
 

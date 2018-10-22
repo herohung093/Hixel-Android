@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import timber.log.Timber;
 
 /**
  * Dashboard Activity displays a list of companies in a users profile.
@@ -93,7 +92,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
     private void updateUI(List<Company> companies) {
         if (companies != null) {
-            Timber.d("updateUI called");
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
         } else {
@@ -102,18 +100,14 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     }
 
     public void setupDashboardAdapter(List<Company> companies) {
-
-        for (Company c : companies) {
-            Timber.d("+++++++++");
-            Timber.d(c.getIdentifiers().getName());
-        }
         RecyclerView recyclerView = binding.recyclerView;
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
 
-        SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        SimpleCallback itemTouchHelperCallback =
+                new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
 
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
@@ -172,10 +166,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
-            String name = viewModel.getCompanies()
-                    .getValue()
-                    .data
-                    .get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
+            String name = viewModel.getCompanies().getValue().data.get(
+                    viewHolder.getAdapterPosition()).getIdentifiers().getName();
 
             // Backup item for undo purposes
            final Company deletedCompany = viewModel.getCompanies()
@@ -229,7 +221,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         };
     }
 
-    //TODO: Move the following functions into a an ActivityWithSearch base class.
     public void showSearchResults(List<SearchEntry> searchResults) {
         SearchAdapter adapter = new SearchAdapter(this, searchResults);
         searchAutoComplete.setAdapter(adapter);

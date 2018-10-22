@@ -1,4 +1,4 @@
-package com.hixel.hixel.ui.companycomparison;
+package com.hixel.hixel.ui.commonui;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * Displays a line chart of the historical performance of the companies
  */
-// TODO: This class is extremely similar the the one in the companydetail, can they be merged?
 public class GraphFragment extends Fragment {
 
     private CombinedChart chart;
@@ -52,7 +51,8 @@ public class GraphFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
         chart =  view.findViewById(R.id.chart1);
@@ -140,25 +140,25 @@ public class GraphFragment extends Fragment {
 
         switch (selectedRatio) {
             case "Returns":
-               // entry = new Entry(index, (float) company.getReturnsScore());
+               entry = new Entry(index, 3f);// (float) company.getReturnsScore());
                 break;
             case "Performance":
-              //  entry = new Entry(index, (float) company.getPerformanceScore());
+                entry = new Entry(index, 3f);// (float) company.getPerformanceScore());
                 break;
             case "Strength":
-              //  entry = new Entry(index, (float) company.getStrengthScore());
+               entry = new Entry(index, 3f);// (float) company.getStrengthScore());
                 break;
             case "Health":
-              //  entry = new Entry(index, (float) company.getHealthScore());
+                entry = new Entry(index, 3f);// (float) company.getHealthScore());
                 break;
             case "Safety":
-               // entry = new Entry(index, (float) company.getSafetyScore());
+                entry = new Entry(index, 3f);// (float) company.getSafetyScore());
                 break;
             default:
-               // entry = new Entry(index, (float) company.getCurrentRatio());
+                entry = new Entry(index, 3f);// (float) company.getCurrentRatio());
         }
 
-        return null; // entry;
+        return entry;
     }
 
     /**
@@ -171,7 +171,7 @@ public class GraphFragment extends Fragment {
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setValueFormatter((value, axis) -> {
-            if(value == 0) {
+            if (value == 0) {
                 return "N/A";
             } else {
                 return String.valueOf(value);

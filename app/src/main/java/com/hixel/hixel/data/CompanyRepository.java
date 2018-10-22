@@ -86,7 +86,7 @@ public class CompanyRepository {
             @Override
             protected void saveCallResult(@NonNull Company item) {
                 Timber.w("Saving companies");
-                //companyDao.insertCompany(item);
+                identifiersDao.insertCompany(item);
             }
 
             @Override
@@ -100,7 +100,7 @@ public class CompanyRepository {
             @Override
             protected LiveData<Company> loadFromDb() {
                 Timber.w("Getting from the db");
-                return null; // companyDao.loadCompany(ticker);
+                return identifiersDao.loadCompany(ticker);
             }
 
             @NonNull

@@ -14,6 +14,7 @@ import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.databinding.ActivityGraphBinding;
 import com.hixel.hixel.ui.base.BaseActivity;
+import com.hixel.hixel.ui.commonui.GraphFragment;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
 import com.hixel.hixel.ui.commonui.HorizontalListViewOnClickListener;
 
@@ -26,7 +27,6 @@ import javax.inject.Inject;
 /**
  * Displays the Line and Radar charts for the companies being compared.
  */
-// TODO: Change to AppCompat not FragmentActivity
 // TODO: Databinding
 public class GraphActivity extends BaseActivity<ActivityGraphBinding>
         implements HorizontalListViewOnClickListener {
