@@ -1,11 +1,13 @@
 package com.hixel.hixel.ui.companycomparison;
 
-import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.CompanyRepository;
+import com.hixel.hixel.data.Resource;
 import com.hixel.hixel.data.entities.company.Company;
 import java.util.List;
 import javax.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Exposes the Companies the user wishes to compare.
@@ -13,7 +15,7 @@ import javax.inject.Inject;
 public class GraphViewModel extends ViewModel {
 
     private CompanyRepository repository;
-    private MutableLiveData<List<Company>> companies;
+    private LiveData<Resource<List<Company>>> companies;
 
     @Inject
     GraphViewModel(CompanyRepository repository) {
@@ -29,10 +31,12 @@ public class GraphViewModel extends ViewModel {
             return;
         }
 
-        //companies = repository.getComparisonCompanies(tickers);
+        String[] inputTickers = new String[tickers.size()];
+        inputTickers = tickers.toArray(inputTickers);
+        companies = repository.loadCompanies(StringUtils.join(inputTickers, ','));
     }
 
-    MutableLiveData<List<Company>> getCompanies() {
+    LiveData<Resource<List<Company>>> getCompanies() {
         return companies;
     }
 

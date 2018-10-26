@@ -112,6 +112,38 @@ public class CompanyRepository {
         }.asLiveData();
     }
 
+    public LiveData<Resource<List<Company>>> loadComparisonCompanies(String tickers) {
+        return new NetworkBoundResource<List<Company>, List<Company>>(appExecutors) {
+
+            @Override
+            protected void saveCallResult(@NonNull List<Company> item) {
+                Timber.w("Saving companies");
+                identifiersDao.insertCompanies(item);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<Company> data) {
+                Timber.w("Is fetching: %b", !(data == null));
+                // TODO: Add a rate limiter so we automatically fetch at an interval.
+                return data == null || data.isEmpty();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<List<Company>> loadFromDb() {
+                Timber.w("Getting from the db");
+                return identifiersDao.loadCompanies();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<List<Company>>> createCall() {
+                Timber.w("Fetching data from the server");
+                return serverInterface.getCompanies(tickers, 5);
+            }
+        }.asLiveData();
+    }
+
     public void addUserTickers(List<String> tickers) {
         userTickers.addAll(tickers);
     }

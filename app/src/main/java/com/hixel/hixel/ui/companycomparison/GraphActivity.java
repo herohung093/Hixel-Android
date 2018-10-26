@@ -99,7 +99,8 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(GraphViewModel.class);
         viewModel.init(tickers);
-        viewModel.getCompanies().observe(this, this::updateUI);
+        viewModel.getCompanies().observe(this, companiesResource
+                -> updateUI(companiesResource == null ? null : companiesResource.data));
     }
 
     private void updateUI(List<Company> companies) {

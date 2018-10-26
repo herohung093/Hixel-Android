@@ -98,7 +98,8 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
             List<String> tickers = user.getPortfolio().getCompanies();
 
             viewModel.loadDashboardCompanies(tickers);
-            viewModel.getDashboardCompanies().observe(this, this::setupDashboardCompanyListAdapter);
+            viewModel.getDashboardCompanies().observe(this, companiesResource
+                    -> setupDashboardCompanyListAdapter(companiesResource == null ? null : companiesResource.data));
             viewModel.getComparisonCompanies().observe(this, this::updateComparisonCompanies);
         }
     }

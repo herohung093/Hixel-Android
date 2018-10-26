@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.CompanyRepository;
+import com.hixel.hixel.data.Resource;
 import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.data.entities.user.User;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * ViewModel for interacting with the ComparisonActivity, pulls data from the
@@ -31,7 +33,7 @@ public class CompanyComparisonViewModel extends ViewModel {
     private CompanyRepository companyRepository;
     private UserRepository userRepository;
 
-    private LiveData<List<Company>> dashboardCompanies;
+    private LiveData<Resource<List<Company>>> dashboardCompanies;
     private LiveData<User> user;
 
     private PublishSubject<String> publishSubject = PublishSubject.create();
@@ -68,15 +70,16 @@ public class CompanyComparisonViewModel extends ViewModel {
         if (this.dashboardCompanies != null) {
             return;
         }
-
-        //dashboardCompanies = companyRepository.getCompanies(tickers);
+        String[] inputTickers = new String[tickers.size()];
+        inputTickers = tickers.toArray(inputTickers);
+        dashboardCompanies = companyRepository.loadCompanies(StringUtils.join(inputTickers, ','));
     }
 
     public LiveData<User> getUser() {
         return user;
     }
 
-    LiveData<List<Company>> getDashboardCompanies() {
+    LiveData<Resource<List<Company>>> getDashboardCompanies() {
         return dashboardCompanies;
     }
 
