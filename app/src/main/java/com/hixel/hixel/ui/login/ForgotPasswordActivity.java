@@ -49,6 +49,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 onSendCodeSuccess();
             }
         });
+
+        configureDagger();
+        configureViewModel();
     }
 
     private void configureDagger() {

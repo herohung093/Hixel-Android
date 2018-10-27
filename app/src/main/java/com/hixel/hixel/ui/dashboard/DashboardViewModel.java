@@ -42,7 +42,7 @@ public class DashboardViewModel extends ViewModel {
 
         String[] inputTickers = new String[tickers.size()];
         inputTickers = tickers.toArray(inputTickers);
-        companies = companyRepository.loadCompanies(StringUtils.join(inputTickers, ','));
+        companies = companyRepository.loadCompanies("AAPL");
         companyRepository.addUserTickers(tickers);
     }
 
