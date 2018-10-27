@@ -2,6 +2,7 @@ package com.hixel.hixel.data.api;
 
 import android.arch.lifecycle.LiveData;
 import com.hixel.hixel.data.entities.company.Company;
+import com.hixel.hixel.data.entities.user.Portfolio;
 import com.hixel.hixel.data.models.ApplicationUser;
 import com.hixel.hixel.data.models.LoginData;
 import com.hixel.hixel.data.models.SearchEntry;
@@ -11,6 +12,7 @@ import io.reactivex.Single;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -61,6 +63,24 @@ public interface ServerInterface {
      */
     @GET("/users/profile")
     Call<User> userData();
+
+    /**
+     * Adds a company to the current user's portfolio
+     *
+     * @param ticker The ticker symbol of the company that the user is adding to their portfolio
+     * @return The current user's portfolio
+     */
+    @POST("/users/portfolio/company")
+    Call<Portfolio> addCompany(@Query("ticker") String ticker);
+
+    /**
+     * Removes a company from the current user's portfolio
+     *
+     * @param ticker The ticker symbol of the company that the user is removing from their portfolio
+     * @return The current user's portfolio
+     */
+    @DELETE("/users/portfolio/company")
+    Call<Portfolio> removeCompany(@Query("ticker") String ticker);
 
     /**
      * Sends a reset code and users email
