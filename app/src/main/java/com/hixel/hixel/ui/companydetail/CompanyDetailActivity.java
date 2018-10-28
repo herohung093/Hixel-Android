@@ -52,12 +52,11 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         setupBottomNavigationView(R.id.home_button);
 
         String ticker = getIntent().getStringExtra("COMPANY_TICKER");
-        Timber.d(ticker);
+        fragment = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_generic_overtime);
+
         this.configureDagger();
         this.configureViewModel(ticker);
 
-        // TODO: Correct way to do this?
-        fragment = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_generic_overtime);
     }
 
     private void configureDagger() {
@@ -68,8 +67,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                                       .get(CompanyDetailViewModel.class);
         viewModel.loadCompany(ticker);
-        viewModel.getCompany().observe(this, companyResource
-                -> updateUI(companyResource == null ? null : companyResource.data));
+        viewModel.getCompany().observe(this, this::updateUI);
     }
 
     /**
@@ -78,8 +76,6 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
      */
     private void updateUI(Company company) {
         if (company != null) {
-
-            Timber.d(company.getIdentifiers().getFormattedName());
 
             // Set the toolbar title to the company name
             String title = company.getIdentifiers().getFormattedName();
@@ -115,8 +111,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
                 ContextCompat.getColor(this, R.color.secondary_background));
         pieView.setPieInnerPadding(20);
 
-        // TODO: Get an actual 'company overall score' from Company entity
-        float score = 50.0f; //(float) ((company.getDataEntries().get(0).get / 5.0) * 100.0);
+        float score = (float) company.getDataEntries().get(0).overallScore();
         pieView.setPercentage(score);
         pieView.setPercentageBackgroundColor(getColorIndicator(score));
 
@@ -147,7 +142,6 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         this.company = company;
     }
 
-    // TODO: Breakpoints need to be in line with confluence ratio proposal
     /**
      * Returns the color based upon the inputted value
      * @param value The 'score' of the Company

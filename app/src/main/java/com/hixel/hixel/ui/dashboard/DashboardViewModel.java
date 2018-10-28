@@ -36,13 +36,12 @@ public class DashboardViewModel extends ViewModel {
         this.companyRepository = companyRepository;
     }
 
-    void loadCompanies(List<String> tickers) {
+    void loadCompanies() {
         if (this.companies != null) {
             return;
         }
-        companyRepository.addUserTickers(tickers);
 
-        LiveData<Resource<List<Company>>> response = companyRepository.loadCompanies("AAPL");
+        LiveData<Resource<List<Company>>> response = companyRepository.loadCompanies("AAPL,TSLA");
 
         companies = Transformations.map(response,
                 input -> {

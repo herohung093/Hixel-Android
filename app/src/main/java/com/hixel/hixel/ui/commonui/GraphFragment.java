@@ -140,22 +140,22 @@ public class GraphFragment extends Fragment {
 
         switch (selectedRatio) {
             case "Returns":
-               entry = new Entry(index, 3f);// (float) company.getReturnsScore());
+               entry = new Entry(index, (float) company.getDataEntries().get(0).getReturns());
                 break;
             case "Performance":
-                entry = new Entry(index, 3f);// (float) company.getPerformanceScore());
+                entry = new Entry(index, (float) company.getDataEntries().get(0).getPerformance());
                 break;
             case "Strength":
-               entry = new Entry(index, 3f);// (float) company.getStrengthScore());
+               entry = new Entry(index, (float) company.getDataEntries().get(0).getStrength());
                 break;
             case "Health":
-                entry = new Entry(index, 3f);// (float) company.getHealthScore());
+                entry = new Entry(index, (float) company.getDataEntries().get(0).getHealth());
                 break;
             case "Safety":
-                entry = new Entry(index, 3f);// (float) company.getSafetyScore());
+                entry = new Entry(index, (float) company.getDataEntries().get(0).getSafety());
                 break;
             default:
-                entry = new Entry(index, 3f);// (float) company.getCurrentRatio());
+                entry = new Entry(index, (float) company.getDataEntries().get(0).getRatios().debtToEquityRatio);
         }
 
         return entry;

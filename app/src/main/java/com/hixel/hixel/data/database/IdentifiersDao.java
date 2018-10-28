@@ -17,19 +17,14 @@ import java.util.List;
  */
 @Dao
 public interface IdentifiersDao {
-
-    //@Query("SELECT * FROM Identifiers " +
-    //"INNER JOIN FinancialDataEntries ON FinancialDataEntries.identifier_id = Identifiers.id")
     @Query("SELECT * FROM Identifiers")
     @Transaction
     LiveData<List<Company>> loadAllCompanies();
 
-    @Query("SELECT * FROM Identifiers")
-    LiveData<List<Identifiers>> getAllIdentifiers();
+    @Query("SELECT * FROM Identifiers WHERE ticker = :ticker")
+    @Transaction
+    LiveData<Company> loadCompany(String ticker);
 
     @Insert(onConflict = REPLACE)
     void insertIdentifier(Identifiers identifiers);
-
-    @Query("DELETE FROM Identifiers")
-    void deleteAll();
 }

@@ -47,9 +47,6 @@ import javax.inject.Inject;
 public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         implements RecyclerItemTouchHelperListener {
 
-    // Temporary variable while we transition networking.
-    List<String> tickers = new ArrayList<>();
-
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private DashboardViewModel viewModel;
@@ -65,9 +62,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bindView(R.layout.activity_dashboard);
-
-        tickers.add("AAPL");
-        tickers.add("TSLA");
 
         setupToolbar(R.string.dashboard, false, true);
         setupBottomNavigationView(R.id.home_button);
@@ -87,7 +81,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
     private void configureViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
-        viewModel.loadCompanies(tickers);
+        viewModel.loadCompanies();
         viewModel.getCompanies().observe(this, this::updateUI);
     }
 
