@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import timber.log.Timber;
 
 /**
  * Dashboard Activity displays a list of companies in a users profile.
@@ -59,6 +58,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     private CompanyListAdapter companyListAdapter;
     List<BarEntry> entries;
     BarData data;
+    BarChart chart;
+    MainBarDataSet dataSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,8 +167,10 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
-            String name = viewModel.getCompanies().getValue().get(
-                    viewHolder.getAdapterPosition()).getIdentifiers().getName();
+            String name = viewModel
+                    .getCompanies()
+                    .getValue()
+                    .get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
 
             // Backup item for undo purposes
            final Company deletedCompany = viewModel.getCompanies()
@@ -231,13 +234,19 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     }
 
     private void setupChart() {
-        BarChart chart = binding.chart;
+        chart = binding.chart;
 
         entries = new ArrayList<>();
-        MainBarDataSet dataSet = new MainBarDataSet(entries, "");
+        entries.add(new BarEntry(0, 2f));
+        entries.add(new BarEntry(1, 2f));
+        entries.add(new BarEntry(2, 2f));
+        entries.add(new BarEntry(3, 2f));
+        entries.add(new BarEntry(4, 2f));
 
-        chart.setRenderer(new MainBarChartRenderer(chart,
-                chart.getAnimator(), chart.getViewPortHandler()));
+        dataSet = new MainBarDataSet(entries, "");
+
+        chart.setRenderer(
+                new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
         chart.getLegend().setEnabled(false);
         chart.getDescription().setEnabled(false);
         chart.setDrawValueAboveBar(false);
@@ -249,7 +258,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         labels.add("Strength");
         labels.add("Health");
         labels.add("Safety");
-
 
         int[] colours = {
                 ContextCompat.getColor(this, R.color.good),
