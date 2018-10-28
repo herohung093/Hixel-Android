@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -40,6 +41,9 @@ public class SignupActivity extends AppCompatActivity {
             startActivity(moveToLogin);
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });
+
+        configureDagger();
+        configureViewModel();
     }
 
     private void configureDagger() {
@@ -112,22 +116,22 @@ public class SignupActivity extends AppCompatActivity {
     public boolean validate(String firstName, String lastName, String email, String password) {
         boolean valid = true;
 
-        if (viewModel.isValidName(firstName)) {
+        if (!viewModel.isValidName(firstName)) {
             binding.firstNameWrapper.setError("Name can't be empty!");
             valid = false;
         }
 
-        if (viewModel.isValidName(lastName)) {
+        if (!viewModel.isValidName(lastName)) {
             binding.lastnameWrapper.setError("Name can't be empty!");
         }
 
 
-        if (viewModel.isValidEmail(email)) {
+        if (!viewModel.isValidEmail(email)) {
             binding.signupEmailWrapper.setError("Invalid email address");
             valid = false;
         }
 
-        if (viewModel.isValidPassword(password)) {
+        if (!viewModel.isValidPassword(password)) {
             binding.signupPassWrapper.setError("Must contain at least 4 characters");
             valid = false;
         }

@@ -7,6 +7,7 @@ import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.database.AppDatabase;
 import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.data.database.FinancialDataEntryDao;
 import com.hixel.hixel.data.database.IdentifiersDao;
 import com.hixel.hixel.data.database.UserDao;
 import dagger.Module;
@@ -62,11 +63,11 @@ public class AppModule {
     @Singleton
     IdentifiersDao provideIdentifiersDao(AppDatabase database) { return database.identifiersDao(); }
 
-    /*
+
     @Provides
     @Singleton
     FinancialDataEntryDao provideFinancialDataEntryDao(AppDatabase database) { return database.financialDataEntryDao(); }
-    */
+
 
     // ***************************************
     // Repository Injections

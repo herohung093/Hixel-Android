@@ -12,6 +12,6 @@ import java.util.List;
 @Dao
 public interface FinancialDataEntryDao {
 
-    @Query("SELECT * FROM FinancialDataEntries")
+    @Query("SELECT * FROM data_entries")
     List<FinancialDataEntries> getAllYears();
 }

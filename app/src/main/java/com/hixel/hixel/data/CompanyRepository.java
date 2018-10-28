@@ -86,7 +86,7 @@ public class CompanyRepository {
             @Override
             protected void saveCallResult(@NonNull Company item) {
                 Timber.w("Saving companies");
-                identifiersDao.insertCompany(item);
+                //identifiersDao.insertCompany(item);
             }
 
             @Override

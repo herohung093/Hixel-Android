@@ -1,7 +1,7 @@
 package com.hixel.hixel.data.entities.company;
 
 import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Relation;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
@@ -16,7 +16,11 @@ public class Company implements Serializable {
     @SerializedName("identifiers")
     private Identifiers identifiers;
 
-    @Ignore
+    @Relation(
+            parentColumn = "cik",
+            entityColumn = "cik",
+            entity = FinancialDataEntries.class
+    )
     @SerializedName("financialDataEntries")
     private List<FinancialDataEntries> dataEntries;
 

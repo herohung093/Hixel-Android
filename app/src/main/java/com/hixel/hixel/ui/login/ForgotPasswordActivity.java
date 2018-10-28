@@ -39,13 +39,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
 
         binding.btnSubmit.setOnClickListener(event -> {
-            // TODO: show notification and get respond from server here
             if (!validate()) {
                 Toast.makeText(getBaseContext(),
                         "Invalid email address! Try again", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getBaseContext(), "check your email for further information",
                     Toast.LENGTH_LONG + 3).show();
+                viewModel.resetPassword();
                 onSendCodeSuccess();
             }
         });
@@ -84,14 +84,4 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
     }
-
-    /* TODO: Check if this is needed
-    public String getEmail() {
-        EditText editText = emailIdText.getEditText();
-
-        if (editText == null)
-            return "";
-
-        return editText.getText().toString().trim();
-    }*/
 }
