@@ -69,7 +69,7 @@ public class GenericChartFragment extends Fragment {
         for(Company c: companies){
             radarDataSets.add(radarDataSetup(c));
         }
-        //setupDataSetStyle(radarDataSets);
+        // setupDataSetStyle(radarDataSets);
         ArrayList<IRadarDataSet> sets = new ArrayList<>(radarDataSets);
 
         RadarData data = new RadarData(sets);

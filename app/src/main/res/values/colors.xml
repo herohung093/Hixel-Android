@@ -7,7 +7,7 @@
 
   <!-- Buttons and Accents -->
   <color name="highlight">#1CC5EC</color>
-  <color name="accent">#00A7FE</color>
+  <color name="accent">#00a7fe</color>
 
   <!-- Text colour -->
   <color name="text_main_dark">#172b4d</color>
