@@ -17,6 +17,8 @@ import az.plainpie.animation.PieAngleAnimation;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.company.Company;
+import com.hixel.hixel.data.entities.user.Ticker;
+import com.hixel.hixel.data.entities.user.User;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
@@ -25,6 +27,7 @@ import com.hixel.hixel.ui.commonui.GraphFragment;
 
 import dagger.android.AndroidInjection;
 
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -40,7 +43,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
 
     private GraphFragment fragment;
     private String selectedRatio = "Returns";
-    private Company company;
+    private List<String> tickers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +69,19 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                                       .get(CompanyDetailViewModel.class);
         viewModel.loadCompany(ticker);
-        viewModel.getCompany().observe(this, this::updateUI);
+        viewModel.loadUser();
+        viewModel.getUser().observe(this, this::configureCompany);
+
+    }
+
+    private void configureCompany(User user) {
+        if (user != null ) {
+            viewModel.getCompany().observe(this, this::updateUI);
+
+            for (Ticker t : user.getPortfolio().getCompanies()) {
+                tickers.add(t.getTicker());
+            }
+        }
     }
 
     /**
@@ -88,7 +103,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
                 finish();
             });
 
-            if (viewModel.isInPortfolio(company.getIdentifiers().getTicker())) {
+            if (viewModel.isInPortfolio(company.getIdentifiers().getTicker(), tickers)) {
                 binding.fab.setVisibility(View.INVISIBLE);
             }
 
@@ -137,8 +152,6 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         recyclerView.setAdapter(adapter);
 
         fragment.drawGraph(company, selectedRatio);
-
-        this.company = company;
     }
 
     /**
@@ -169,7 +182,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
     @Override
     public void onClick(String ratio) {
         selectedRatio = ratio;
-        fragment.drawGraph(company, selectedRatio);
+        // fragment.drawGraph(company, selectedRatio);
     }
 
     @Override

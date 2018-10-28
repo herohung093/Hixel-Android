@@ -13,10 +13,10 @@ import com.hixel.hixel.data.entities.company.FinancialDataEntries;
 import com.hixel.hixel.data.entities.company.Identifiers;
 import com.hixel.hixel.data.models.SearchEntry;
 import io.reactivex.Single;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Handles requests from ViewModels for Company data. Utilises the NetworkBoundResource to
@@ -48,6 +48,42 @@ public class CompanyRepository {
         this.financialDataEntryDao = financialDataEntryDao;
     }
 
+    public LiveData<Resource<List<Company>>> loadPortfolioCompanies(List<String> tickers) {
+
+        String tickersString = StringUtils.join(tickers, ",");
+
+        return new NetworkBoundResource<List<Company>, List<Company>>(appExecutors) {
+            @Override
+            protected void saveCallResult(@NonNull List<Company> item) {
+                for (Company c : item) {
+                    Identifiers i = c.getIdentifiers();
+                    identifiersDao.insertIdentifier(i);
+
+                    for (FinancialDataEntries financialDataEntries : c.getDataEntries()) {
+                        financialDataEntries.setIdentifierId(c.getIdentifiers().getId());
+                        financialDataEntryDao.insertFinancialDataEntry(financialDataEntries);
+                    }
+                }
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<Company> data) {
+                return true; // data == null || data.isEmpty();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<List<Company>> loadFromDb() {
+                return identifiersDao.getPortfolioCompanies(tickers);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<List<Company>>> createCall() {
+                return serverInterface.getCompanies(tickersString, 5);
+            }
+        }.asLiveData();
+    }
 
     public LiveData<Resource<List<Company>>> loadCompanies(String tickers) {
 
@@ -67,7 +103,7 @@ public class CompanyRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<Company> data) {
-                return data == null || data.isEmpty();
+                return true; // data == null || data.isEmpty();
             }
 
             @NonNull

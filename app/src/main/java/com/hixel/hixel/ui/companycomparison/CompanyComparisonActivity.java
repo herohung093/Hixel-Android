@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.company.Company;
+import com.hixel.hixel.data.entities.user.Ticker;
 import com.hixel.hixel.data.entities.user.User;
 import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.databinding.ActivityComparisonBinding;
@@ -95,7 +96,11 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
      */
     public void updateDashboardCompanies(User user) {
         if (user != null) {
-            List<String> tickers = user.getPortfolio().getCompanies();
+            List<String> tickers = new ArrayList<>();
+
+            for (Ticker t : user.getPortfolio().getCompanies()) {
+                tickers.add(t.getTicker());
+            }
 
             viewModel.loadDashboardCompanies(tickers);
             viewModel.getDashboardCompanies().observe(this, companiesResource

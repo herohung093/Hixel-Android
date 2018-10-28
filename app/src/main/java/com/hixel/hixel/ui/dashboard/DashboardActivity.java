@@ -1,5 +1,6 @@
 package com.hixel.hixel.ui.dashboard;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -23,6 +24,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
+import com.hixel.hixel.data.entities.user.Ticker;
+import com.hixel.hixel.data.entities.user.User;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.company.Company;
@@ -62,18 +65,13 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bindView(R.layout.activity_dashboard);
-
         setupToolbar(R.string.dashboard, false, true);
         setupBottomNavigationView(R.id.home_button);
-
         setupChart();
-
         this.configureDagger();
         this.configureViewModel();
-
         viewModel.setupSearch(getSearchObserver());
     }
-
 
     private void configureDagger() {
         AndroidInjection.inject(this);
@@ -81,9 +79,22 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
     private void configureViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
-        viewModel.loadCompanies();
-        viewModel.getCompanies().observe(this,
-                resource -> updateUI(resource == null ? null : resource.data));
+        viewModel.loadUser();
+        viewModel.getUser().observe(this, this::configureCompanies);
+    }
+
+    private void configureCompanies(User user) {
+        if (user != null) {
+            List<String> tickers = new ArrayList<>();
+
+            for (Ticker t : user.getPortfolio().getCompanies()) {
+                tickers.add(t.getTicker());
+            }
+
+            viewModel.loadCompanies(tickers);
+            viewModel.getCompanies().observe(this,
+                    resource -> updateUI(resource == null ? null : resource.data));
+        }
     }
 
     private void updateUI(List<Company> companies) {

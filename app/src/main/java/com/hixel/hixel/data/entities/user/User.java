@@ -9,7 +9,6 @@ import com.google.gson.annotations.SerializedName;
 /**
  * User Entity, stores pertinent data from the server in the application
  */
-// TODO: Need a string of tickers from the user.
 @Entity(tableName = "user")
 public class User {
 
@@ -28,6 +27,7 @@ public class User {
      * Allows storing the List of tickers in the db.
      */
     @Embedded
+    @SerializedName("portfolio")
     private Portfolio portfolio;
 
 

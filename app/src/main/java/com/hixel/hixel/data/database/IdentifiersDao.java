@@ -21,6 +21,10 @@ public interface IdentifiersDao {
     @Transaction
     LiveData<List<Company>> loadAllCompanies();
 
+    @Query("SELECT * FROM Identifiers WHERE ticker IN(:tickers)")
+    @Transaction
+    LiveData<List<Company>> getPortfolioCompanies(List<String> tickers);
+
     @Query("SELECT * FROM Identifiers WHERE ticker = :ticker")
     @Transaction
     LiveData<Company> loadCompany(String ticker);
