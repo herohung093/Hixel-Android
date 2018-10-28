@@ -43,7 +43,6 @@ public class CompanyDetailViewModel extends ViewModel {
                     if (input.data != null) {
                         for (Company c : input.data) {
                             if (c.getIdentifiers().getTicker().equals(ticker)) {
-                                Timber.d("NAME: %s", c.getIdentifiers().getName());
                                 return c;
                             }
                         }

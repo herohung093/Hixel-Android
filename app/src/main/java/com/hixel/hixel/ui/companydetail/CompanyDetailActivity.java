@@ -110,7 +110,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
                 ContextCompat.getColor(this, R.color.secondary_background));
         pieView.setPieInnerPadding(20);
 
-        float score = (float) company.getDataEntries().get(0).overallScore();
+        float score = (float) company.getDataEntries().get(0).overallScore() * 100;
         pieView.setPercentage(score);
         pieView.setPercentageBackgroundColor(getColorIndicator(score));
 
