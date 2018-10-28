@@ -6,8 +6,11 @@ import android.support.annotation.Nullable;
 import com.hixel.hixel.AppExecutors;
 import com.hixel.hixel.data.api.ApiResponse;
 import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.data.database.FinancialDataEntryDao;
 import com.hixel.hixel.data.database.IdentifiersDao;
 import com.hixel.hixel.data.entities.company.Company;
+import com.hixel.hixel.data.entities.company.FinancialDataEntries;
+import com.hixel.hixel.data.entities.company.Identifiers;
 import com.hixel.hixel.data.models.SearchEntry;
 import io.reactivex.Single;
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ public class CompanyRepository {
     private final ServerInterface serverInterface;
     private final AppExecutors appExecutors;
     private final IdentifiersDao identifiersDao;
+    private final FinancialDataEntryDao financialDataEntryDao;
 
     // TEMPORARY
     private final List<String> userTickers = new ArrayList<>();
@@ -41,34 +45,47 @@ public class CompanyRepository {
      */
     @Inject
     public CompanyRepository(ServerInterface serverInterface, IdentifiersDao identifiersDao,
-            AppExecutors appExecutors) {
+            FinancialDataEntryDao financialDataEntryDao, AppExecutors appExecutors) {
         this.serverInterface = serverInterface;
         this.appExecutors = appExecutors;
         this.identifiersDao = identifiersDao;
+        this.financialDataEntryDao = financialDataEntryDao;
     }
 
 
     public LiveData<Resource<List<Company>>> loadCompanies(String tickers) {
+
         return new NetworkBoundResource<List<Company>, List<Company>>(appExecutors) {
 
             @Override
             protected void saveCallResult(@NonNull List<Company> item) {
                 Timber.w("Saving companies");
-                identifiersDao.insertCompanies(item);
+                for (Company c : item) {
+                    Identifiers i = c.getIdentifiers();
+
+                    Timber.d("%s %s %s", i.id, i.name, i.ticker);
+
+                    identifiersDao.insertIdentifier(i);
+
+                    for (FinancialDataEntries financialDataEntries : c.getDataEntries()) {
+                        financialDataEntries.identifierId = c.getIdentifiers().id;
+                        financialDataEntryDao.insertFinancialDataEntry(financialDataEntries);
+                    }
+                }
             }
 
             @Override
             protected boolean shouldFetch(@Nullable List<Company> data) {
                 Timber.w("Is fetching: %b", !(data == null));
                 // TODO: Add a rate limiter so we automatically fetch at an interval.
-                return data == null || data.isEmpty();
+                return true; // data == null || data.isEmpty();
             }
 
             @NonNull
             @Override
             protected LiveData<List<Company>> loadFromDb() {
                 Timber.w("Getting from the db");
-                return identifiersDao.loadCompanies();
+                return identifiersDao.loadAllCompanies();
             }
 
             @NonNull
@@ -100,7 +117,7 @@ public class CompanyRepository {
             @Override
             protected LiveData<Company> loadFromDb() {
                 Timber.w("Getting from the db");
-                return identifiersDao.loadCompany(ticker);
+                return null; //identifiersDao.loadCompany(ticker);
             }
 
             @NonNull
@@ -118,7 +135,7 @@ public class CompanyRepository {
             @Override
             protected void saveCallResult(@NonNull List<Company> item) {
                 Timber.w("Saving companies");
-                identifiersDao.insertCompanies(item);
+                //identifiersDao.insertCompanies(item);
             }
 
             @Override
@@ -132,7 +149,7 @@ public class CompanyRepository {
             @Override
             protected LiveData<List<Company>> loadFromDb() {
                 Timber.w("Getting from the db");
-                return identifiersDao.loadCompanies();
+                return null; //identifiersDao.loadCompanies();
             }
 
             @NonNull

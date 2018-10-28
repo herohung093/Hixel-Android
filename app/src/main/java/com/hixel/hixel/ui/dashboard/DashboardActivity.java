@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import timber.log.Timber;
 
 /**
  * Dashboard Activity displays a list of companies in a users profile.
@@ -92,6 +93,9 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
     private void updateUI(List<Company> companies) {
         if (companies != null) {
+            for (Company c : companies) {
+                Timber.d("SIZE: %d", c.getDataEntries().size());
+            }
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
         } else {
@@ -167,7 +171,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
             String name = viewModel.getCompanies().getValue().data.get(
-                    viewHolder.getAdapterPosition()).getIdentifiers().getName();
+                    viewHolder.getAdapterPosition()).getIdentifiers().name;
 
             // Backup item for undo purposes
            final Company deletedCompany = viewModel.getCompanies()

@@ -47,7 +47,7 @@ public class CompanyDetailViewModel extends ViewModel {
      */
     void saveCompany(Company company) {
         List<String> ticker = new ArrayList<>();
-        ticker.add(company.getIdentifiers().getTicker());
+        ticker.add(company.getIdentifiers().ticker);
         companyRepository.addUserTickers(ticker);
     }
 

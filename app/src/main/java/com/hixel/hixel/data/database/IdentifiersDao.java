@@ -1,5 +1,6 @@
 package com.hixel.hixel.data.database;
 
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -7,7 +8,6 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import com.hixel.hixel.data.entities.company.Company;
-import com.hixel.hixel.data.entities.company.FinancialDataEntries;
 import com.hixel.hixel.data.entities.company.Identifiers;
 import java.util.List;
 
@@ -16,27 +16,20 @@ import java.util.List;
  * for Api. Ensures we map data correctly when reading Company objects into the db.
  */
 @Dao
-public abstract class IdentifiersDao {
+public interface IdentifiersDao {
+
+    @Query("SELECT Identifiers.id, Identifiers.ticker, Identifiers.name, FinancialDataEntries.year FROM Identifiers " +
+    "INNER JOIN FinancialDataEntries ON FinancialDataEntries.identifier_id = Identifiers.id")
+    @Transaction
+    LiveData<List<Company>> loadAllCompanies();
+
 
     @Query("SELECT * FROM Identifiers")
-    @Transaction
-    public abstract LiveData<List<Company>> loadCompanies();
+    LiveData<List<Identifiers>> getAllIdentifiers();
 
-    @Query("SELECT * FROM Identifiers WHERE ticker = :ticker")
-    @Transaction
-    public abstract LiveData<Company> loadCompany(String ticker);
+    @Insert(onConflict = REPLACE)
+    void insertIdentifier(Identifiers identifiers);
 
-    public void insertCompanies(List<Company> companies) {
-        for (Company c : companies) {
-            insertIdentifiers(c.getIdentifiers());
-            insertFinancialData(c.getDataEntries());
-        }
-    }
-
-    @Insert
-    abstract void insertIdentifiers(Identifiers identifier);
-
-    @Insert
-    abstract void insertFinancialData(List<FinancialDataEntries> dataEntry);
-
+    @Query("DELETE FROM Identifiers")
+    void deleteAll();
 }

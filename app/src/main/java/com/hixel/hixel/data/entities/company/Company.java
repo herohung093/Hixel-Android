@@ -1,6 +1,8 @@
 package com.hixel.hixel.data.entities.company;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Relation;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
@@ -17,8 +19,8 @@ public class Company implements Serializable {
     private Identifiers identifiers;
 
     @Relation(
-            parentColumn = "cik",
-            entityColumn = "cik",
+            parentColumn = "id",
+            entityColumn = "identifier_id",
             entity = FinancialDataEntries.class
     )
     @SerializedName("financialDataEntries")

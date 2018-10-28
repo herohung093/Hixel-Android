@@ -10,7 +10,7 @@ import com.hixel.hixel.data.entities.user.User;
  * Application database stores Company and User data.
  */
 @Database(entities = {Identifiers.class, FinancialDataEntries.class, User.class},
-        version = 28, exportSchema = false)
+        version = 30, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     /**

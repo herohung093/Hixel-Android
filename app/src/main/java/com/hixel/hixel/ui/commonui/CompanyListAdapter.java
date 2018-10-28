@@ -42,7 +42,7 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        double companyScore = 0; // companies.get(position).getCurrentRatio();
+        double companyScore = 1.0; // companies.get(position).getDataEntries().get(0).getRatios().get(0).getCurrentDebtToEquityRatio();
 
         holder.binding.companyName.setText(companies.get(position).getIdentifiers().getFormattedName());
         holder.binding.companyTicker.setText(companies.get(position).getIdentifiers().getFormattedTicker());
@@ -60,7 +60,7 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
         }
 
         holder.binding.foreground.setOnClickListener((View view) -> {
-            String ticker = companies.get(position).getIdentifiers().getTicker();
+            String ticker = companies.get(position).getIdentifiers().ticker;
 
             Intent intent = new Intent(context, CompanyDetailActivity.class);
             intent.putExtra("COMPANY_TICKER", ticker);

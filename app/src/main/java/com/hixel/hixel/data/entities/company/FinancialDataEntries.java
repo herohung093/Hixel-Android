@@ -1,5 +1,6 @@
 package com.hixel.hixel.data.entities.company;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
@@ -11,47 +12,24 @@ import com.google.gson.annotations.SerializedName;
  * (to be re-implemented), and the cik of the Company that is responsible for
  * the entries.
  */
-@Entity(
-        tableName = "data_entries",
-        foreignKeys = @ForeignKey(
-            entity = Identifiers.class, parentColumns = "cik", childColumns = "cik"
-        ),
-        indices = @Index(value = "cik", name = "cik")
+@Entity(foreignKeys = {
+                @ForeignKey(
+                    entity = Identifiers.class,
+                    parentColumns = "id",
+                    childColumns = "identifier_id"
+        )}//,
+        //indices = @Index(value = "identifier_id", name = "id")
 )
 public class FinancialDataEntries {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
-    private String cik;
+    public int id;
+
     @SerializedName("year")
-    private int year;
-
-    //@Embedded
-    //@TypeConverters(RatioConverter.class)
-    //private List<Ratios> ratios;
+    @ColumnInfo(name="year")
+    public int year;
 
 
-    public String getCik() {
-        return cik;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setCik(String cik) {
-        this.cik = cik;
-    }
+    @ColumnInfo(name="identifier_id")
+    public String identifierId;
 }

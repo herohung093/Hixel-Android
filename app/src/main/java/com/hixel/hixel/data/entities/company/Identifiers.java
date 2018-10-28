@@ -15,42 +15,11 @@ public class Identifiers {
     @PrimaryKey
     @NonNull
     @SerializedName("cik")
-    private String cik;
+    public String id;
     @SerializedName("name")
-    private String name;
+    public String name;
     @SerializedName("ticker")
-    private String ticker;
-
-    public Identifiers(@NonNull String cik, String name, String ticker) {
-        this.cik = cik;
-        this.name = name;
-        this.ticker = ticker;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setTicker(String ticker) {
-        this.ticker = ticker;
-    }
-
-    public void setCik(@NonNull String cik) {
-        this.cik = cik;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getTicker() {
-        return ticker;
-    }
-
-    @NonNull
-    public String getCik() {
-        return cik;
-    }
+    public String ticker;
 
     /**
      * Method formats the companies name, ensures all companies
@@ -60,10 +29,10 @@ public class Identifiers {
      */
     public String getFormattedName() {
         try {
-            return (this.getName()
+            return (this.name
                     .split("[\\s, ]")[0]
                     .toLowerCase()
-                    .substring(0, 1).toUpperCase()) + this.getName().substring(1);
+                    .substring(0, 1).toUpperCase()) + this.name.substring(1);
         } catch (NullPointerException e) {
             return "";
         }
@@ -77,7 +46,7 @@ public class Identifiers {
      */
     public String getFormattedTicker() {
         try {
-            return String.format("NASDAQ: %s", getTicker());
+            return String.format("NASDAQ: %s", this.ticker);
         } catch (NullPointerException e) {
             return "";
         }
