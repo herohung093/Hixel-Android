@@ -15,16 +15,29 @@ public class Identifiers {
     @PrimaryKey
     @NonNull
     @SerializedName("cik")
-    public String id;
+    private String id;
     @SerializedName("name")
-    public String name;
+    private String name;
     @SerializedName("ticker")
-    public String ticker;
+    private  String ticker;
 
     public Identifiers(@NonNull String id, String name, String ticker) {
         this.id = id;
         this.name = name;
         this.ticker = ticker;
+    }
+
+    public String getTicker() {
+        return ticker;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
     }
 
     /**

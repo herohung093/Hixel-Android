@@ -26,50 +26,44 @@ import com.google.gson.annotations.SerializedName;
 public class FinancialDataEntries {
 
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    private int id;
 
     @SerializedName("year")
     @ColumnInfo(name="year")
-    public int year;
+    private int year;
 
     @ColumnInfo(name="identifier_id")
-    public String identifierId;
+    private String identifierId;
 
     @Embedded
     @SerializedName("ratios")
-    public Ratios ratios;
+    private Ratios ratios;
 
-    public FinancialDataEntries() {}
 
-    public int getYear() {
-        return year;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public FinancialDataEntries(int id, int year, String identifierId, Ratios ratios) {
         this.id = id;
-    }
-
-    public void setYear(int year) {
         this.year = year;
-    }
-
-    public void setIdentifierId(String identifierId) {
         this.identifierId = identifierId;
-    }
-
-    public String getIdentifierId() {
-        return identifierId;
+        this.ratios = ratios;
     }
 
     public Ratios getRatios() {
         return ratios;
     }
 
-    public void setRatios(Ratios ratios) {
-        this.ratios = ratios;
+    public String getIdentifierId() {
+        return identifierId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setIdentifierId(String identifierId) {
+        this.identifierId = identifierId;
     }
 }

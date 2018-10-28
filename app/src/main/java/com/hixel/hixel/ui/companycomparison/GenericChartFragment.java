@@ -61,7 +61,7 @@ public class GenericChartFragment extends Fragment {
         entries.add(new RadarEntry(company.getHealthScore(),4));
         entries.add(new RadarEntry(company.getSafetyScore(),5));
         */
-        RadarDataSet dataSet = new RadarDataSet(entries,company.getIdentifiers().ticker);
+        RadarDataSet dataSet = new RadarDataSet(entries,company.getIdentifiers().getTicker());
         return dataSet;
     }
     public void drawGraph(List<Company> companies) {

@@ -87,15 +87,11 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     private void configureViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
         viewModel.loadCompanies(tickers);
-        viewModel.getCompanies().observe(this, companiesResource
-                -> updateUI(companiesResource == null ? null : companiesResource));
+        viewModel.getCompanies().observe(this, this::updateUI);
     }
 
     private void updateUI(List<Company> companies) {
         if (companies != null) {
-            for (Company c : companies) {
-                Timber.d("RATIO: %.2f", c.getDataEntries().get(0).ratios.currentDebtToEquityRatio);
-            }
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
         } else {
@@ -171,7 +167,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
             String name = viewModel.getCompanies().getValue().get(
-                    viewHolder.getAdapterPosition()).getIdentifiers().name;
+                    viewHolder.getAdapterPosition()).getIdentifiers().getName();
 
             // Backup item for undo purposes
            final Company deletedCompany = viewModel.getCompanies()

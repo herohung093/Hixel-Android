@@ -34,7 +34,7 @@ public class CompanyScoreListAdapter
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String companyName = companies.get(position)
-                .getIdentifiers().name
+                .getIdentifiers().getName()
                 .split("[\\s, ]")[0]
                 .toLowerCase();
 

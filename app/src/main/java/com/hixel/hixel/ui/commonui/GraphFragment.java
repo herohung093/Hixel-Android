@@ -131,7 +131,7 @@ public class GraphFragment extends Fragment {
             compEntry.add(getCompanyEntry(i, selectedRatio, company));
         }
 
-        return new LineDataSet(compEntry, company.getIdentifiers().ticker);
+        return new LineDataSet(compEntry, company.getIdentifiers().getTicker());
     }
 
     // TODO: Needs to be done in a cleaner way or moved out of the fragment.

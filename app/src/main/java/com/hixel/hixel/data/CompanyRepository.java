@@ -63,11 +63,10 @@ public class CompanyRepository {
 
                 for (Company c : item) {
                     Identifiers i = c.getIdentifiers();
-
                     identifiersDao.insertIdentifier(i);
 
                     for (FinancialDataEntries financialDataEntries : c.getDataEntries()) {
-                        financialDataEntries.identifierId = c.getIdentifiers().id;
+                        financialDataEntries.setIdentifierId(c.getIdentifiers().getId());
                         financialDataEntryDao.insertFinancialDataEntry(financialDataEntries);
                     }
                 }

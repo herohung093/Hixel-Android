@@ -60,7 +60,7 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
         }
 
         holder.binding.foreground.setOnClickListener((View view) -> {
-            String ticker = companies.get(position).getIdentifiers().ticker;
+            String ticker = companies.get(position).getIdentifiers().getTicker();
 
             Intent intent = new Intent(context, CompanyDetailActivity.class);
             intent.putExtra("COMPANY_TICKER", ticker);

@@ -93,7 +93,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
                 finish();
             });
 
-            if (viewModel.isInPortfolio(company.getIdentifiers().ticker)) {
+            if (viewModel.isInPortfolio(company.getIdentifiers().getTicker())) {
                 binding.fab.setVisibility(View.INVISIBLE);
             }
 
