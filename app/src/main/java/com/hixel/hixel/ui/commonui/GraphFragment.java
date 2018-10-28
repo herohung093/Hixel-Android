@@ -89,11 +89,13 @@ public class GraphFragment extends Fragment {
     public void drawGraph(List<Company> companies, String selectedRatio) {
         LineData lineData = new LineData();
         ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
+        LineDataSet setComp = null;
 
         for(int i = 0; i < companies.size(); i++){
-            LineDataSet setComp = lineChartDataSetup(selectedRatio, companies.get(i));
-            lineDataSets.add(setComp);
+            setComp = lineChartDataSetup(selectedRatio, companies.get(i));
         }
+
+        lineDataSets.add(setComp);
 
         setupDatasetStyle(lineDataSets);
 

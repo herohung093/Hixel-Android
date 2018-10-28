@@ -1,6 +1,5 @@
 package com.hixel.hixel.ui.dashboard;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;

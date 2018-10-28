@@ -61,18 +61,16 @@ public class GenericChartFragment extends Fragment {
         entries.add(new RadarEntry(company.getDataEntries().get(0).getHealth(),4));
         entries.add(new RadarEntry(company.getDataEntries().get(0).getSafety(),5));
 
-        RadarDataSet dataSet = new RadarDataSet(entries,company.getIdentifiers().getTicker());
-        return dataSet;
+        return new RadarDataSet(entries,company.getIdentifiers().getTicker());
     }
     public void drawGraph(List<Company> companies) {
 
-        ArrayList<IRadarDataSet> sets = new ArrayList<>();
         ArrayList<RadarDataSet> radarDataSets = new ArrayList<>();
         for(Company c: companies){
             radarDataSets.add(radarDataSetup(c));
         }
-        setupDataSetStyle(radarDataSets);
-        sets.addAll(radarDataSets);
+        //setupDataSetStyle(radarDataSets);
+        ArrayList<IRadarDataSet> sets = new ArrayList<>(radarDataSets);
 
         RadarData data = new RadarData(sets);
 
@@ -129,7 +127,7 @@ public class GenericChartFragment extends Fragment {
         radarChart.invalidate();
     }
     private void setupDataSetStyle(ArrayList<RadarDataSet> sets){
-        for(int i=0; i< sets.size();i++){
+        for(int i=0; i < sets.size(); i++){
             sets.get(i).setColor(colors.get(i));
             sets.get(i).setFillColor(colors.get(i));
             sets.get(i).setDrawFilled(true);

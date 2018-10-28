@@ -9,6 +9,7 @@ import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.data.entities.user.User;
 
 import io.reactivex.Single;
+import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -103,8 +104,7 @@ public interface ServerInterface {
      */
     @GET("/users/reset-password")
     @Headers("No-Authentication: true")
-    Call<Void> resetPassword(@Query("email") String email,
-            @Query("code") String code, @Query("password") String password);
+    Call<Void> resetPassword(@Query("email") String email, @Query("code") String code, @Query("password") String password);
 
     /**
      * API call to change the currently active users password.
@@ -147,4 +147,8 @@ public interface ServerInterface {
      */
     @GET("/search")
     Single<List<SearchEntry>> doSearchQuery(@Query("query") String query);
+
+    @GET("/companydata")
+    Call<ArrayList<Company>> getSyncCompanies(@Query("tickers") String tickers, @Query("years") int years);
+
 }
