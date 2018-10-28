@@ -13,5 +13,45 @@ public class Ratios {
     public double returnOnAssetsRatio;
     @SerializedName("Interest Coverage")
     public double interestCoverageRatio;
+
+    public double getDebtToEquityRatio() {
+        return debtToEquityRatio;
+    }
+
+    public double getReturnOnEquityRatio() {
+        return returnOnEquityRatio;
+    }
+
+    public double getReturnOnAssetsRatio() {
+        return returnOnAssetsRatio;
+    }
+
+    public double getInterestCoverageRatio() {
+        return interestCoverageRatio;
+    }
+
+    public double getCurrentDebtToEquityRatio() {
+        return currentDebtToEquityRatio;
+    }
+
+    public void setDebtToEquityRatio(double debtToEquityRatio) {
+        this.debtToEquityRatio = debtToEquityRatio;
+    }
+
+    public void setCurrentDebtToEquityRatio(double currentDebtToEquityRatio) {
+        this.currentDebtToEquityRatio = currentDebtToEquityRatio;
+    }
+
+    public void setReturnOnEquityRatio(double returnOnEquityRatio) {
+        this.returnOnEquityRatio = returnOnEquityRatio;
+    }
+
+    public void setReturnOnAssetsRatio(double returnOnAssetsRatio) {
+        this.returnOnAssetsRatio = returnOnAssetsRatio;
+    }
+
+    public void setInterestCoverageRatio(double interestCoverageRatio) {
+        this.interestCoverageRatio = interestCoverageRatio;
+    }
 }
 

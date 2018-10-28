@@ -78,14 +78,14 @@ public class CompanyRepository {
             protected boolean shouldFetch(@Nullable List<Company> data) {
                 Timber.w("Is fetching: %b", !(data == null));
                 // TODO: Add a rate limiter so we automatically fetch at an interval.
-                return true; // data == null || data.isEmpty();
+                return data == null || data.isEmpty();
             }
 
             @NonNull
             @Override
             protected LiveData<List<Company>> loadFromDb() {
                 Timber.w("Getting from the db");
-                return identifiersDao.loadAllCompanies();
+                return financialDataEntryDao.getAllCompanies();
             }
 
             @NonNull

@@ -18,11 +18,10 @@ import java.util.List;
 @Dao
 public interface IdentifiersDao {
 
-    @Query("SELECT Identifiers.id, Identifiers.ticker, Identifiers.name, FinancialDataEntries.year FROM Identifiers " +
+    @Query("SELECT * FROM Identifiers " +
     "INNER JOIN FinancialDataEntries ON FinancialDataEntries.identifier_id = Identifiers.id")
     @Transaction
     LiveData<List<Company>> loadAllCompanies();
-
 
     @Query("SELECT * FROM Identifiers")
     LiveData<List<Identifiers>> getAllIdentifiers();

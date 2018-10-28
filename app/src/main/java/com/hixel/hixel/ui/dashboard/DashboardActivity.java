@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
+import com.hixel.hixel.data.entities.company.FinancialDataEntries;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.company.Company;
@@ -93,8 +94,15 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
     private void updateUI(List<Company> companies) {
         if (companies != null) {
+            Timber.d("INSIDE UPDATE UI");
+            Timber.d("SIZE OF COMPANIES: %d", companies.size());
+
             for (Company c : companies) {
                 Timber.d("SIZE: %d", c.getDataEntries().size());
+                for (FinancialDataEntries f : c.getDataEntries()) {
+                    Timber.d("YEAR: %d", f.getYear());
+                    Timber.d("RATIO: %.2f", f.ratios.currentDebtToEquityRatio);
+                }
             }
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
