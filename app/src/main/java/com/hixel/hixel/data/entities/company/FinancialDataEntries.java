@@ -1,9 +1,12 @@
 package com.hixel.hixel.data.entities.company;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,9 +19,9 @@ import com.google.gson.annotations.SerializedName;
                 @ForeignKey(
                     entity = Identifiers.class,
                     parentColumns = "id",
-                    childColumns = "identifier_id"
-        )}// ,
-        // indices = @Index(value = "identifier_id", name = "id")
+                    childColumns = "identifier_id",
+                    onDelete = CASCADE
+        )}, indices = @Index("identifier_id")
 )
 public class FinancialDataEntries {
 

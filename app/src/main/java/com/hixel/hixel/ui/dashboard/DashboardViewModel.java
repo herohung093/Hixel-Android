@@ -1,6 +1,7 @@
 package com.hixel.hixel.ui.dashboard;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.Resource;
 import com.hixel.hixel.data.entities.company.Company;
@@ -13,10 +14,10 @@ import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Exposes the list of companies in the users portfolio to the dashboard screen.
@@ -25,7 +26,7 @@ public class DashboardViewModel extends ViewModel {
 
     private CompanyRepository companyRepository;
 
-    private LiveData<Resource<List<Company>>> companies;
+    private LiveData<List<Company>> companies;
 
     private PublishSubject<String> publishSubject = PublishSubject.create();
     private CompositeDisposable disposable = new CompositeDisposable();
@@ -39,14 +40,23 @@ public class DashboardViewModel extends ViewModel {
         if (this.companies != null) {
             return;
         }
-
-        String[] inputTickers = new String[tickers.size()];
-        inputTickers = tickers.toArray(inputTickers);
-        companies = companyRepository.loadCompanies("AAPL");
         companyRepository.addUserTickers(tickers);
+
+        LiveData<Resource<List<Company>>> response = companyRepository.loadCompanies("AAPL");
+
+        companies = Transformations.map(response,
+                input -> {
+                    List<Company> retVal = new ArrayList<>();
+
+                    if (input.data != null) {
+                        retVal.addAll(input.data);
+                    }
+
+                    return retVal;
+                });
     }
 
-    public LiveData<Resource<List<Company>>> getCompanies() {
+    public LiveData<List<Company>> getCompanies() {
         return this.companies;
     }
 

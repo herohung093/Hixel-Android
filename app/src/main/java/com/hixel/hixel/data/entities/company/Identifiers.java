@@ -21,6 +21,12 @@ public class Identifiers {
     @SerializedName("ticker")
     public String ticker;
 
+    public Identifiers(@NonNull String id, String name, String ticker) {
+        this.id = id;
+        this.name = name;
+        this.ticker = ticker;
+    }
+
     /**
      * Method formats the companies name, ensures all companies
      * names look alike

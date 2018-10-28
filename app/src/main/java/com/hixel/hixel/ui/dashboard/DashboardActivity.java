@@ -23,7 +23,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
-import com.hixel.hixel.data.entities.company.FinancialDataEntries;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.company.Company;
@@ -89,20 +88,13 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
         viewModel.loadCompanies(tickers);
         viewModel.getCompanies().observe(this, companiesResource
-                -> updateUI(companiesResource == null ? null : companiesResource.data));
+                -> updateUI(companiesResource == null ? null : companiesResource));
     }
 
     private void updateUI(List<Company> companies) {
         if (companies != null) {
-            Timber.d("INSIDE UPDATE UI");
-            Timber.d("SIZE OF COMPANIES: %d", companies.size());
-
             for (Company c : companies) {
-                Timber.d("SIZE: %d", c.getDataEntries().size());
-                for (FinancialDataEntries f : c.getDataEntries()) {
-                    Timber.d("YEAR: %d", f.getYear());
-                    Timber.d("RATIO: %.2f", f.ratios.currentDebtToEquityRatio);
-                }
+                Timber.d("RATIO: %.2f", c.getDataEntries().get(0).ratios.currentDebtToEquityRatio);
             }
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
@@ -178,13 +170,12 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
-            String name = viewModel.getCompanies().getValue().data.get(
+            String name = viewModel.getCompanies().getValue().get(
                     viewHolder.getAdapterPosition()).getIdentifiers().name;
 
             // Backup item for undo purposes
            final Company deletedCompany = viewModel.getCompanies()
                                                     .getValue()
-                                                    .data
                                                     .get(viewHolder.getAdapterPosition());
 
             final int deletedIndex = viewHolder.getAdapterPosition();

@@ -18,8 +18,9 @@ import java.util.List;
 @Dao
 public interface IdentifiersDao {
 
-    @Query("SELECT * FROM Identifiers " +
-    "INNER JOIN FinancialDataEntries ON FinancialDataEntries.identifier_id = Identifiers.id")
+    //@Query("SELECT * FROM Identifiers " +
+    //"INNER JOIN FinancialDataEntries ON FinancialDataEntries.identifier_id = Identifiers.id")
+    @Query("SELECT * FROM Identifiers")
     @Transaction
     LiveData<List<Company>> loadAllCompanies();
 

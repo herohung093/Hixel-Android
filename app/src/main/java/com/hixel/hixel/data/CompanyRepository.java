@@ -60,10 +60,9 @@ public class CompanyRepository {
             @Override
             protected void saveCallResult(@NonNull List<Company> item) {
                 Timber.w("Saving companies");
+
                 for (Company c : item) {
                     Identifiers i = c.getIdentifiers();
-
-                    Timber.d("%s %s %s", i.id, i.name, i.ticker);
 
                     identifiersDao.insertIdentifier(i);
 
@@ -85,7 +84,7 @@ public class CompanyRepository {
             @Override
             protected LiveData<List<Company>> loadFromDb() {
                 Timber.w("Getting from the db");
-                return financialDataEntryDao.getAllCompanies();
+                return identifiersDao.loadAllCompanies();
             }
 
             @NonNull
