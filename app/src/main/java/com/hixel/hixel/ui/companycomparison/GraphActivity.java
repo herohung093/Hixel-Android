@@ -27,7 +27,6 @@ import javax.inject.Inject;
 /**
  * Displays the Line and Radar charts for the companies being compared.
  */
-// TODO: Databinding
 public class GraphActivity extends BaseActivity<ActivityGraphBinding>
         implements HorizontalListViewOnClickListener {
 
@@ -46,7 +45,6 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
     private String selectedRatio = "Returns";
     List<Company> companies;
 
-    // TODO: Large method, see if it can be refactored sensibly.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +52,6 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
 
         progressDialog = new ProgressDialog(this);
 
-        // TODO: Get rid of warning.
         progressDialog.getWindow().setGravity(Gravity.CENTER);
 
         progressDialog.setIndeterminate(true);
@@ -76,8 +73,6 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
         infoButton.setOnClickListener(view -> {
             final Dialog dialog= new Dialog(this);
             dialog.setContentView(R.layout.information_popup_window);
-
-            // TODO: Get rid of warning.
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             dialog.setTitle("Title...");
             int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);

@@ -320,7 +320,6 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
      * Method sets up the main search view
      */
     private void setupSearchView() {
-        // TODO: Figure out how to use databinding for search
         SearchView search = binding.searchView;
 
         search.setQueryHint("Add companies...");
@@ -331,7 +330,6 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
         searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         // Styling the search bar
-        // TODO: Use Hixel styles.
         searchAutoComplete.setHintTextColor(Color.GRAY);
         searchAutoComplete.setTextColor(Color.GRAY);
 
@@ -412,7 +410,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     private boolean checkDuplicate(List<Company> companies, String ticker) {
 
         for (Company c : companies) {
-            if (c.getIdentifiers().getTicker().equalsIgnoreCase(ticker) == true) {
+            if (c.getIdentifiers().getTicker().equalsIgnoreCase(ticker)) {
                 Toast.makeText(this, "Company already exist in comparison list",
                     Toast.LENGTH_LONG).show();
                 return true;
@@ -432,8 +430,8 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     @Override
     public void onClick(Company company) {
 
-        if (checkDuplicate(comparisonCompaniesAdapter.getDataSet(),
-                company.getIdentifiers().getTicker()) == false) {
+        if (!checkDuplicate(comparisonCompaniesAdapter.getDataSet(),
+                company.getIdentifiers().getTicker())) {
             selectedCompanies.add(company);
             //adapter.notifyDataSetChanged();
 
