@@ -67,7 +67,7 @@ public class CompanyRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<Company> data) {
-                return data == null || data.isEmpty();
+                return true; // data == null || data.isEmpty();
             }
 
             @NonNull

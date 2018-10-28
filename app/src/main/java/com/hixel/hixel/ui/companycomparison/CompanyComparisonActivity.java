@@ -48,7 +48,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     private Button compareButton;
     private SearchAutoComplete searchAutoComplete;
     private HorizontalCompanyListAdapter horizontalCompanyListAdapter;
-    // TODO: Change to List
+
     List<Company> dashboardCompanies;
     List<Company> comparisonCompanies;
     List<Company> selectedCompanies = new ArrayList<>();

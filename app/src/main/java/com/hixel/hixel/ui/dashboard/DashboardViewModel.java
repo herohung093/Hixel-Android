@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import retrofit2.Response;
 
 /**
  * Exposes the list of companies in the users portfolio to the dashboard screen.
@@ -26,7 +27,7 @@ public class DashboardViewModel extends ViewModel {
 
     private CompanyRepository companyRepository;
 
-    private LiveData<List<Company>> companies;
+    private LiveData<Resource<List<Company>>> companies;
 
     private PublishSubject<String> publishSubject = PublishSubject.create();
     private CompositeDisposable disposable = new CompositeDisposable();
@@ -41,21 +42,10 @@ public class DashboardViewModel extends ViewModel {
             return;
         }
 
-        LiveData<Resource<List<Company>>> response = companyRepository.loadCompanies("AAPL,TSLA");
-
-        companies = Transformations.map(response,
-                input -> {
-                    List<Company> retVal = new ArrayList<>();
-
-                    if (input.data != null) {
-                        retVal.addAll(input.data);
-                    }
-
-                    return retVal;
-                });
+        companies = companyRepository.loadCompanies("AAPL,TSLA");
     }
 
-    public LiveData<List<Company>> getCompanies() {
+    public LiveData<Resource<List<Company>>> getCompanies() {
         return this.companies;
     }
 

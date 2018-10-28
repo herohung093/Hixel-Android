@@ -26,7 +26,6 @@ import com.hixel.hixel.ui.commonui.GraphFragment;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
-import timber.log.Timber;
 
 /**
  *  CompanyDetailActivity displays the UI for the details of one company

@@ -96,7 +96,7 @@ public class FinancialDataEntries {
         return generateScore(ratios.currentDebtToEquityRatio);
     }
 
-    public int generateScore(double ratio) {
+    private int generateScore(double ratio) {
         int score;
 
         if (ratio < .5) {

@@ -32,15 +32,11 @@ public class CompanyComparisonViewModel extends ViewModel {
 
     private CompanyRepository companyRepository;
     private UserRepository userRepository;
-
     private LiveData<Resource<List<Company>>> dashboardCompanies;
     private LiveData<User> user;
-
     private PublishSubject<String> publishSubject = PublishSubject.create();
     private CompositeDisposable disposable = new CompositeDisposable();
-
     private MutableLiveData<List<Company>> comparisonCompanies = new MutableLiveData<>();
-
     private List<Company> compCompanies = new ArrayList<>();
 
     @Inject

@@ -82,7 +82,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     private void configureViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
         viewModel.loadCompanies();
-        viewModel.getCompanies().observe(this, this::updateUI);
+        viewModel.getCompanies().observe(this,
+                resource -> updateUI(resource == null ? null : resource.data));
     }
 
     private void updateUI(List<Company> companies) {
@@ -164,11 +165,13 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
             String name = viewModel
                     .getCompanies()
                     .getValue()
+                    .data
                     .get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
 
             // Backup item for undo purposes
            final Company deletedCompany = viewModel.getCompanies()
                                                     .getValue()
+                                                    .data
                                                     .get(viewHolder.getAdapterPosition());
 
             final int deletedIndex = viewHolder.getAdapterPosition();

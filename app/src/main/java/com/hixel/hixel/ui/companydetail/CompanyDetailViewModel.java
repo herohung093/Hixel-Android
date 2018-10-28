@@ -62,19 +62,18 @@ public class CompanyDetailViewModel extends ViewModel {
     void saveCompany(Company company) {
         List<String> ticker = new ArrayList<>();
         ticker.add(company.getIdentifiers().getTicker());
-        companyRepository.addUserTickers(ticker);
     }
 
     /**
      * Checks whether the Company is in the users portfolio.
      */
     boolean isInPortfolio(String currentTicker) {
-        for (String ticker : companyRepository.getUserTickers()) {
-            if (currentTicker.equals(ticker)) {
+        //for (String ticker : companyRepository.getUserTickers()) {
+        //   if (currentTicker.equals(ticker)) {
                 return true;
-            }
-        }
+        //    }
+        // }
 
-        return false;
+       // return false;
     }
 }
