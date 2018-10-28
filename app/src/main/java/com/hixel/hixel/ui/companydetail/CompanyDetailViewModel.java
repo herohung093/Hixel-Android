@@ -11,6 +11,7 @@ import com.hixel.hixel.data.entities.user.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import timber.log.Timber;
 
 /**
  * ViewModel for the CompanyDetail screen.
@@ -73,7 +74,7 @@ public class CompanyDetailViewModel extends ViewModel {
     void saveCompany(Company company) {
         List<String> ticker = new ArrayList<>();
         ticker.add(company.getIdentifiers().getTicker());
-
+        Timber.d("ADDING TICKER %s", ticker);
         userRepository.addCompany(ticker);
     }
 

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -96,12 +97,16 @@ public class UserRepository {
     }
 
     public void addCompany(List<String> ticker) {
-        Timber.d("TICKER %s", ticker.get(0));
+        String tickerString = StringUtils.join(ticker, ",");
 
-        serverInterface.addCompany("AAPL").enqueue(new Callback<Portfolio>() {
+        serverInterface.addCompany(tickerString).enqueue(new Callback<Portfolio>() {
             @Override
             public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
-                Timber.d("RESPONSE");
+                executor.execute(() -> {
+                    User user = userDao.get();
+                    user.setPortfolio(response.body());
+                    userDao.saveUser(user);
+                });
             }
 
             @Override

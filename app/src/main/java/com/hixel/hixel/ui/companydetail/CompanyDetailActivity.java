@@ -27,6 +27,7 @@ import com.hixel.hixel.ui.commonui.GraphFragment;
 
 import dagger.android.AndroidInjection;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -43,7 +44,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
 
     private GraphFragment fragment;
     private String selectedRatio = "Returns";
-    private List<String> tickers;
+    private List<String> tickers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
