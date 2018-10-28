@@ -81,4 +81,8 @@ public class DashboardViewModel extends ViewModel {
     void loadSearchResults(String query) {
         publishSubject.onNext(query);
     }
+
+    public void deleteCompany(Company deletedCompany) {
+        userRepository.deleteCompany(deletedCompany.getIdentifiers().getTicker());
+    }
 }

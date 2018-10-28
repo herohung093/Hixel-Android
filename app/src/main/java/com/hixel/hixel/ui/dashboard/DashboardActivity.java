@@ -201,8 +201,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
-            String name = viewModel.getCompanies().getValue()
-                    .data.get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
+            String name = viewModel.getCompanies().getValue().data.get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
 
             // Backup item for undo purposes
            final Company deletedCompany = viewModel.getCompanies()
@@ -222,6 +221,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
                     .restoreItem(deletedCompany, deletedIndex));
             snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.warning));
             snackbar.show();
+
+            viewModel.deleteCompany(deletedCompany);
        }
     }
 

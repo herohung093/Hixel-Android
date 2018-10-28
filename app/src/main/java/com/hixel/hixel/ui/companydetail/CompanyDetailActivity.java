@@ -45,6 +45,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
     private GraphFragment fragment;
     private String selectedRatio = "Returns";
     private List<String> tickers = new ArrayList<>();
+    private Company currentCompany;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
 
             companyChartSetup(company);
             setupGenericChart(company);
+            currentCompany = company;
         }
     }
 
@@ -183,7 +185,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
     @Override
     public void onClick(String ratio) {
         selectedRatio = ratio;
-        // fragment.drawGraph(company, selectedRatio);
+        fragment.drawGraph(currentCompany, selectedRatio);
     }
 
     @Override

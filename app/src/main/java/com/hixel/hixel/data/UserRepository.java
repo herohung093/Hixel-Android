@@ -115,4 +115,22 @@ public class UserRepository {
             }
         });
     }
+
+    public void deleteCompany(String ticker) {
+        serverInterface.removeCompany(ticker).enqueue(new Callback<Portfolio>() {
+            @Override
+            public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
+                executor.execute(() -> {
+                    User user = userDao.get();
+                    user.setPortfolio(response.body());
+                    userDao.saveUser(user);
+                });
+            }
+
+            @Override
+            public void onFailure(Call<Portfolio> call, Throwable t) {
+                Timber.d("FAILED");
+            }
+        });
+    }
 }
