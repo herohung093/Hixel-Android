@@ -68,12 +68,7 @@ public class FinancialDataEntries {
     }
 
     public double overallScore() {
-        return (ratios.returnOnEquityRatio
-                + ratios.interestCoverageRatio
-                + ratios.currentDebtToEquityRatio
-                + ratios.returnOnAssetsRatio
-                + ratios.debtToEquityRatio)
-                / 5;
+        return (getHealth() + getPerformance() + getReturns() + getSafety() + getPerformance()) / 5;
     }
 
     public int getReturns() {
