@@ -77,35 +77,92 @@ public class FinancialDataEntries {
     }
 
     public int getReturns() {
-        return generateScore(ratios.returnOnAssetsRatio);
+        double ratio = ratios.returnOnAssetsRatio;
+        int score;
+
+        if (ratio < 0.005) {
+            score = 1;
+        } else if (ratio < 0.01) {
+            score = 2;
+        } else if (ratio < 0.05) {
+            score = 3;
+        } else if (ratio < 1.0) {
+            score = 4;
+        } else {
+            score = 5;
+        }
+
+        return score;
     }
 
     public int getPerformance() {
-        return generateScore(ratios.returnOnEquityRatio);
+        double ratio = ratios.returnOnEquityRatio;
+        int score;
+
+        if (ratio < 0.05) {
+            score = 1;
+        } else if (ratio < 0.10) {
+            score = 2;
+        } else if (ratio < 0.20) {
+            score = 3;
+        } else if (ratio < 0.25) {
+            score = 4;
+        } else {
+            score = 5;
+        }
+
+        return score;
     }
 
     public int getStrength() {
-        return generateScore(ratios.interestCoverageRatio);
+        double ratio = ratios.interestCoverageRatio;
+        int score;
+
+        if (ratio < 1.5) {
+            score = 1;
+        } else if (ratio < 3.0) {
+            score = 2;
+        } else if (ratio < 4.5) {
+            score = 3;
+        } else if (ratio < 6.0) {
+            score = 4;
+        } else {
+            score = 5;
+        }
+
+        return score;
     }
 
     public int getHealth() {
-        return generateScore(ratios.returnOnAssetsRatio);
+        double ratio = ratios.debtToEquityRatio;
+        int score;
+
+        if (ratio < 1.5) {
+            score = 1;
+        } else if (ratio < 3.0) {
+            score = 2;
+        } else if (ratio < 4.5) {
+            score = 3;
+        } else if (ratio < 6.0) {
+            score = 4;
+        } else {
+            score = 5;
+        }
+
+        return score;
     }
 
     public int getSafety() {
-        return generateScore(ratios.currentDebtToEquityRatio);
-    }
-
-    private int generateScore(double ratio) {
+        double ratio = ratios.currentDebtToEquityRatio;
         int score;
 
-        if (ratio < .5) {
+        if (ratio > 10.0) {
             score = 1;
-        } else if (ratio < 1) {
+        } else if (ratio < 4.0) {
             score = 2;
-        } else if (ratio < 1.5) {
+        } else if (ratio > 1.5) {
             score = 3;
-        } else if (ratio < 2.0) {
+        } else if (ratio > 0.5) {
             score = 4;
         } else {
             score = 5;
