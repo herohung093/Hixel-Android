@@ -90,6 +90,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         if (companies != null) {
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
+            updateChart(companies);
         } else {
             binding.progressBar.setVisibility(View.VISIBLE);
         }
@@ -110,6 +111,33 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         companyListAdapter = new CompanyListAdapter(this, companies);
         recyclerView.setAdapter(companyListAdapter);
     }
+
+    private void updateChart(List<Company> companies) {
+        dataSet.clear();
+        entries.clear();
+
+        int returns = 0 , performance = 0, strength = 0, health = 0, safety  = 0;
+
+        for (int i = 0; i < companies.size(); i++) {
+            returns += companies.get(i).getDataEntries().get(0).getReturns();
+            performance += companies.get(i).getDataEntries().get(0).getPerformance();
+            strength += companies.get(i).getDataEntries().get(0).getStrength();
+            health += companies.get(i).getDataEntries().get(0).getHealth();
+            safety += companies.get(i).getDataEntries().get(0).getSafety();
+        }
+
+        dataSet.addEntry(new BarEntry(0, returns));
+        dataSet.addEntry(new BarEntry(1, performance));
+        dataSet.addEntry(new BarEntry(2, strength));
+        dataSet.addEntry(new BarEntry(3, health));
+        dataSet.addEntry(new BarEntry(4, safety));
+
+        dataSet.notifyDataSetChanged();
+        chart.notifyDataSetChanged();
+        chart.invalidate();
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -162,11 +190,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
-            String name = viewModel
-                    .getCompanies()
-                    .getValue()
-                    .data
-                    .get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
+            String name = viewModel.getCompanies().getValue()
+                    .data.get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
 
             // Backup item for undo purposes
            final Company deletedCompany = viewModel.getCompanies()
@@ -211,10 +236,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
             public void onNext(List<SearchEntry> searchResults) {
                 showSearchResults(searchResults);
             }
-
             @Override
             public void onError(Throwable e) { }
-
             @Override
             public void onComplete() { }
         };

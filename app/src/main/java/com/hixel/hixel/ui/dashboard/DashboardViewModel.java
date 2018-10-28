@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.Resource;
+import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.models.SearchEntry;
