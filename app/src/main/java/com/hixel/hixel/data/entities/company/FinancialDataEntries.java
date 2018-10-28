@@ -66,4 +66,51 @@ public class FinancialDataEntries {
     public void setIdentifierId(String identifierId) {
         this.identifierId = identifierId;
     }
+
+    public double overallScore() {
+        return (ratios.returnOnEquityRatio
+                + ratios.interestCoverageRatio
+                + ratios.currentDebtToEquityRatio
+                + ratios.returnOnAssetsRatio
+                + ratios.debtToEquityRatio)
+                / 5;
+    }
+
+    public int getReturns() {
+        return generateScore(ratios.returnOnAssetsRatio);
+    }
+
+    public int getPerformance() {
+        return generateScore(ratios.returnOnEquityRatio);
+    }
+
+    public int getStrength() {
+        return generateScore(ratios.interestCoverageRatio);
+    }
+
+    public int getHealth() {
+        return generateScore(ratios.returnOnAssetsRatio);
+    }
+
+    public int getSafety() {
+        return generateScore(ratios.currentDebtToEquityRatio);
+    }
+
+    public int generateScore(double ratio) {
+        int score;
+
+        if (ratio < .5) {
+            score = 1;
+        } else if (ratio < 1) {
+            score = 2;
+        } else if (ratio < 1.5) {
+            score = 3;
+        } else if (ratio < 2.0) {
+            score = 4;
+        } else {
+            score = 5;
+        }
+
+        return score;
+    }
 }
