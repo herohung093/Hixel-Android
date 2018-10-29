@@ -19,6 +19,7 @@ public class Ratios {
     public double dividendYield;
     @SerializedName("Profit-Margin Ratio")
     public double profitMarginRatio;
+
     public Ratios(double debtToEquityRatio, double currentDebtToEquityRatio,
             double returnOnAssetsRatio, double interestCoverageRatio) {
         this.debtToEquityRatio = debtToEquityRatio;
