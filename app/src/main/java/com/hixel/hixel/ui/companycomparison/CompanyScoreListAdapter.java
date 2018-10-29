@@ -39,9 +39,8 @@ public class CompanyScoreListAdapter
         holder.companyName.setText(companyName);
         holder.progressBar.setCurrentProgress(calculateScore(companies.get(position)));
     }
-    private int calculateScore(Company company){
-        //int score = ((company.getHealthScore() + company.getReturnsScore() + company.getPerformanceScore() + company.getSafetyScore() + company.getStrengthScore())*4);
-        return 1;
+    private float calculateScore(Company company){
+         return (float)company.getDataEntries().get(0).overallScore();
     }
     @Override
     public int getItemCount() {
