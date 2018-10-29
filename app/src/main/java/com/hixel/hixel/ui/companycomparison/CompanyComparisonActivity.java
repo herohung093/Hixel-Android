@@ -163,7 +163,6 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     /**
      * Method adds an onClickListener to the compare button to move to the compare charts
      */
-    // TODO: Better name.
     private void setupButtons() {
         compareButton.setOnClickListener((View view) -> {
             if (comparisonCompaniesAdapter.getDataSet() == null
@@ -385,12 +384,10 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
             }
 
             @Override
-            public void onError(Throwable e) {
-            }
+            public void onError(Throwable e) { }
 
             @Override
-            public void onComplete() {
-            }
+            public void onComplete() { }
         };
     }
 
