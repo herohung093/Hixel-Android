@@ -4,7 +4,6 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
-import java.util.regex.Pattern;
 
 /**
  * Holds basic information about the Company, the cik, name, and ticker.
