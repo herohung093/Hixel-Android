@@ -64,7 +64,7 @@ These are tools to ensure code consistency and quality:
 
 ### Further Reading
 
-- [Library documentation](/Users/braydenkilleen/Documents/hixel-android-app/docs/libraries.md)
-- [Architecture documentation](/Users/braydenkilleen/Documents/hixel-android-app/docs/architecture-guide.md)
-- [Code style documentation](/Users/braydenkilleen/Documents/hixel-android-app/docs/hixel_android_style_guidelines.md)
+- [Library documentation](/docs/libraries.md)
+- [Architecture documentation](/docs/architecture-guide.md)
+- [Code style documentation](/docs/hixel_android_style_guidelines.md)
 
