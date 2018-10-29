@@ -19,13 +19,12 @@ import java.util.List;
 public class Onboarding extends AhoyOnboarderActivity {
 
     static String COMPLETED_ONBOARDING_PREF_NAME = "onboarding_initiated";
-    private List<Integer> colorList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        colorList = new ArrayList<>();
+        List<Integer> colorList = new ArrayList<>();
         colorList.add(R.color.onboarding_green);
         colorList.add(R.color.onboarding_blue);
         colorList.add(R.color.onboarding_alt_orange);
@@ -73,13 +72,13 @@ public class Onboarding extends AhoyOnboarderActivity {
         List<AhoyOnboarderCard> cards = new ArrayList<>();
         cards.add(new AhoyOnboarderCard(
                 "No crazy analysis!",
-                "We use easy to understand charts, and assign a company a score out of 100.",
+                "We measure a company by 5 factors, on a 1-5 scale.",
                 R.drawable.onboarding_alternate_barchart)
         );
 
         cards.add(new AhoyOnboarderCard(
-                "Companies you care about.",
-                "Add and remove companies as you like, and compare them to see whose best.",
+                "Details when it matters",
+                "Powerful charts and a comparison tool to go deep when you need it.",
                 R.drawable.onboarding_compare)
         );
 
@@ -91,9 +90,9 @@ public class Onboarding extends AhoyOnboarderActivity {
 
 
         for (int i = 0; i < cards.size(); i++) {
-            cards.get(i).setDescriptionColor(R.color.white);
-            cards.get(i).setTitleColor(R.color.white);
-            cards.get(i).setBackgroundColor(colorList.get(i));
+            cards.get(i).setDescriptionColor(R.color.text_main_dark);
+            cards.get(i).setTitleColor(R.color.text_main_dark);
+            cards.get(i).setBackgroundColor(R.color.white);
         }
 
         return cards;
