@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
+import java.util.regex.Pattern;
 
 /**
  * Holds basic information about the Company, the cik, name, and ticker.
@@ -48,12 +49,10 @@ public class Identifiers {
      */
     public String getFormattedName() {
         try {
-            return (this.name
-                    .split("[\\s, ]")[0]
-                    .toLowerCase()
-                    .substring(0, 1).toUpperCase()) + this.name.substring(1);
+            String formatted = this.name.split("[\\s,]")[0].toLowerCase();
+            return Character.toUpperCase(formatted.charAt(0)) + formatted.substring(1);
         } catch (NullPointerException e) {
-            return "";
+            return "----";
         }
     }
 
@@ -67,7 +66,7 @@ public class Identifiers {
         try {
             return String.format("NASDAQ: %s", this.ticker);
         } catch (NullPointerException e) {
-            return "";
+            return "----";
         }
     }
 }
