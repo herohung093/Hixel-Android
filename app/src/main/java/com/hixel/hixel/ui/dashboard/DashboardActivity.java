@@ -314,7 +314,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         dataSet.setColors(colours);
 
         data = new BarData(dataSet);
-        data.setBarWidth(0.2f);
+        data.setBarWidth(0.3f);
         data.setDrawValues(false);
 
         XAxis xAxis = chart.getXAxis();
@@ -339,6 +339,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         yAxisLeft.setDrawAxisLine(false);
         YAxis yAxisRight = chart.getAxisRight();
         yAxisRight.setEnabled(false);
+
+        chart.setTouchEnabled(false);
 
         chart.setData(data);
         chart.invalidate();
