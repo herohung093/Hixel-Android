@@ -51,6 +51,10 @@ public interface UserDao {
     @Query("SELECT companies FROM user")
     List<String> getTickers();
 
+
+    @Query("DELETE FROM user")
+    void deleteAll();
+
     /**
      * Updates the currently active user.
      *

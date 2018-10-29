@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.database.UserDao;
 import com.hixel.hixel.data.entities.user.Portfolio;
+import com.hixel.hixel.data.entities.user.Ticker;
 import com.hixel.hixel.data.entities.user.User;
 import java.util.concurrent.Executor;
 import javax.inject.Inject;
@@ -54,6 +55,12 @@ public class UserRepository {
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 executor.execute(() -> {
                     User user = response.body();
+
+                    Timber.d(user.getEmail());
+                    Timber.d("TICKERS:");
+                    for (Ticker t : user.getPortfolio().getCompanies()) {
+                        Timber.d(t.getTicker());
+                    }
                     userDao.saveUser(user);
                 });
             }
@@ -96,7 +103,7 @@ public class UserRepository {
     public void addCompany(String ticker) {
         serverInterface.addCompany(ticker).enqueue(new Callback<Portfolio>() {
             @Override
-            public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
+            public void onResponse(@NonNull Call<Portfolio> call, @NonNull Response<Portfolio> response) {
                 executor.execute(() -> {
                     User user = userDao.get();
                     user.setPortfolio(response.body());
@@ -105,7 +112,7 @@ public class UserRepository {
             }
 
             @Override
-            public void onFailure(Call<Portfolio> call, Throwable t) {
+            public void onFailure(@NonNull Call<Portfolio> call, @NonNull Throwable t) {
                 Timber.d("FAILED");
             }
         });
@@ -114,14 +121,14 @@ public class UserRepository {
     public void deleteCompany(String ticker) {
         serverInterface.removeCompany(ticker).enqueue(new Callback<Portfolio>() {
             @Override
-            public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
+            public void onResponse(@NonNull Call<Portfolio> call, @NonNull Response<Portfolio> response) {
                 executor.execute(() -> {
                     userDao.get().setPortfolio(response.body());
                 });
             }
 
             @Override
-            public void onFailure(Call<Portfolio> call, Throwable t) {
+            public void onFailure(@NonNull Call<Portfolio> call, @NonNull Throwable t) {
                 Timber.d("FAILED");
             }
         });

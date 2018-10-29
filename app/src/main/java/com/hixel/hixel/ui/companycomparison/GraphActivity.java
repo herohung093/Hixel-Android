@@ -138,7 +138,6 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
         mAdapter = new HorizontalListViewAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
-
         fragmentA.drawGraph(companies, selectedRatio);
         this.companies = companies;
 
