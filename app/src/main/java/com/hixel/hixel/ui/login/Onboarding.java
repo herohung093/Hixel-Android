@@ -57,7 +57,7 @@ public class Onboarding extends AhoyOnboarderActivity {
         super.onStop();
         SharedPreferences.Editor sharedPreferencesEditor =
                 PreferenceManager.getDefaultSharedPreferences(this).edit();
-        sharedPreferencesEditor.putBoolean(COMPLETED_ONBOARDING_PREF_NAME, true);
+        sharedPreferencesEditor.putBoolean(COMPLETED_ONBOARDING_PREF_NAME, false);
         sharedPreferencesEditor.apply();
     }
 
