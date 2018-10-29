@@ -337,6 +337,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         yAxisLeft.setGranularity(1f); // set interval
         yAxisLeft.setDrawLabels(true);
         yAxisLeft.setDrawAxisLine(false);
+
         YAxis yAxisRight = chart.getAxisRight();
         yAxisRight.setEnabled(false);
 
