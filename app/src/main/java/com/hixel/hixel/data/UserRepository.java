@@ -26,7 +26,7 @@ public class UserRepository {
     private ServerInterface serverInterface;
     private final UserDao userDao;
     private final Executor executor;
-
+    private boolean shouldRefresh = true;
     private final List<Ticker> tickers = new ArrayList<>();
 
     /**
@@ -45,7 +45,11 @@ public class UserRepository {
     }
 
     public LiveData<User> getUser() {
-        saveUser();
+        if (shouldRefresh) {
+            saveUser();
+            shouldRefresh = false;
+        }
+
         return userDao.getUser();
     }
 
@@ -60,7 +64,7 @@ public class UserRepository {
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 executor.execute(() -> {
                     User user = response.body();
-                    user.getPortfolio().setCompanies(tickers);
+                    // user.getPortfolio().setCompanies(tickers);
 
                     Timber.d("INITIAL USER LOAD");
                     Timber.d(user.getEmail());
@@ -101,6 +105,22 @@ public class UserRepository {
                 Timber.d(t1.getTicker());
             }
             tickers.add(t);
+
+            addToServer(ticker);
+        });
+    }
+
+    public void addToServer(String ticker) {
+        serverInterface.addCompany(ticker).enqueue(new Callback<Portfolio>() {
+            @Override
+            public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Portfolio> call, Throwable t) {
+
+            }
         });
     }
 
@@ -126,8 +146,25 @@ public class UserRepository {
             }
 
             tickers.removeIf(tick -> t.getTicker().equals(tick.getTicker()));
+
+            removeFromServer(ticker);
         });
     }
+
+    public void removeFromServer(String ticker) {
+        serverInterface.removeCompany(ticker).enqueue(new Callback<Portfolio>() {
+            @Override
+            public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Portfolio> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     public void deleteAllUserTickers() {
         executor.execute(()

@@ -101,7 +101,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
             for (Ticker t : user.getPortfolio().getCompanies()) {
                 tickers.add(t.getTicker());
             }
-            System.out.println("tickers from dashboard in comparison view: "+tickers.size());
+
             viewModel.loadDashboardCompanies(tickers);
             viewModel.getDashboardCompanies().observe(this, companiesResource
                     -> setupDashboardCompanyListAdapter(companiesResource == null ? null : companiesResource.data));
@@ -117,7 +117,6 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     public void updateComparisonCompanies(List<Company> companies) {
         if (companies != null && companies.size() >= 1) {
             comparisonCompaniesAdapter.setCompanies(companies);
-
             comparisonCompanies = viewModel.getCompCompanies();
         }
     }
@@ -129,8 +128,8 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
      */
     private void setupDashboardCompanyListAdapter(List<Company> companies) {
         if (companies != null) {
-            horizontalCompanyListAdapter =
-                new HorizontalCompanyListAdapter(companies,this::onClick);
+            horizontalCompanyListAdapter
+                    = new HorizontalCompanyListAdapter(companies, this);
 
             LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -177,8 +176,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
 
             moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES",
                 extractTickers((ArrayList<Company>) comparisonCompaniesAdapter.getDataSet()));
-            /*moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES",
-                extractTickers((ArrayList<Company>) comparisonCompaniesAdapter.getDataSet()));*/
+
             startActivity(moveToGraph);
 
         });
@@ -211,8 +209,9 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
 
                     final Company temp = dashboardCompanies.get(viewHolder.getAdapterPosition());
-                    if (checkDuplicate(comparisonCompaniesAdapter.getDataSet(), temp.getIdentifiers().getTicker())
-                        == false) {
+
+                    if (!checkDuplicate(comparisonCompaniesAdapter.getDataSet(),
+                            temp.getIdentifiers().getTicker())) {
                         selectedCompanies.add(temp);
                         //adapter.notifyDataSetChanged();
                         horizontalCompanyListAdapter.removeItem(viewHolder.getAdapterPosition());
@@ -355,8 +354,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
                 if (size <= 10) {
                     viewModel.addToComparisonCompanies(tickers);
                 } else {
-                    Toast.makeText(this, "Reached comparison limit!", Toast.LENGTH_LONG)
-                        .show();
+                    Toast.makeText(this, "Reached comparison limit!", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -434,11 +432,10 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
 
     @Override
     public void onClick(Company company) {
-
         if (!checkDuplicate(comparisonCompaniesAdapter.getDataSet(),
                 company.getIdentifiers().getTicker())) {
             selectedCompanies.add(company);
-            //adapter.notifyDataSetChanged();
+            // adapter.notifyDataSetChanged();
 
             horizontalCompanyListAdapter.removeItem(company.getIdentifiers().getTicker());
             comparisonCompaniesAdapter.addItem(company);
