@@ -11,6 +11,7 @@ import com.hixel.hixel.data.entities.user.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import timber.log.Timber;
 
 /**
@@ -72,10 +73,7 @@ public class CompanyDetailViewModel extends ViewModel {
      * @param company Company the user wants to save.
      */
     void saveCompany(Company company) {
-        List<String> ticker = new ArrayList<>();
-        ticker.add(company.getIdentifiers().getTicker());
-        Timber.d("ADDING TICKER %s", ticker);
-        userRepository.addCompany(ticker);
+        userRepository.addCompany(company.getIdentifiers().getTicker());
     }
 
     /**

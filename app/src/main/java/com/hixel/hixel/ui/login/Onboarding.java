@@ -43,11 +43,11 @@ public class Onboarding extends AhoyOnboarderActivity {
         showNavigationControls(false);
 
         // Set finish button text
-        setFinishButtonTitle("Get Started");
+        setFinishButtonTitle(R.string.get_started);
 
         // Set the finish button style
         setFinishButtonDrawableStyle(
-                ContextCompat.getDrawable(this, R.drawable.onboarding_button_style));
+                ContextCompat.getDrawable(this, R.drawable.onboarding_btn_alt));
 
         setOnboardPages(getOnBoardingCards());
     }
@@ -65,6 +65,7 @@ public class Onboarding extends AhoyOnboarderActivity {
     public void onFinishButtonPressed() {
         Intent moveToSignup = new Intent(getApplicationContext(), SignupActivity.class);
         startActivity(moveToSignup);
+        finish();
     }
 
     /**

@@ -60,6 +60,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     BarChart chart;
     MainBarDataSet dataSet;
 
+    String quickAdd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,15 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         this.configureDagger();
         this.configureViewModel();
         viewModel.setupSearch(getSearchObserver());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (getIntent().getExtras() != null) {
+            quickAdd = getIntent().getStringExtra("COMPANY_TICKER");
+        }
     }
 
     private void configureDagger() {
@@ -88,6 +99,11 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
             for (Ticker t : user.getPortfolio().getCompanies()) {
                 tickers.add(t.getTicker());
+
+                if (quickAdd != null) {
+                    tickers.add(quickAdd);
+                    quickAdd = null;
+                }
             }
 
             viewModel.loadCompanies(tickers);
@@ -146,8 +162,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         chart.notifyDataSetChanged();
         chart.invalidate();
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -222,6 +236,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
             snackbar.show();
 
             viewModel.deleteCompany(deletedCompany);
+
        }
     }
 

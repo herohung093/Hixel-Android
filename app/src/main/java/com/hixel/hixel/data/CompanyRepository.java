@@ -129,4 +129,14 @@ public class CompanyRepository {
     public Single<List<SearchEntry>> search(String searchTerm) {
         return serverInterface.doSearchQuery(searchTerm);
     }
+
+    public void addCompany(Company company) {
+        appExecutors.diskIO().execute(() -> {
+                identifiersDao.insertIdentifier(company.getIdentifiers());
+                for (FinancialDataEntries fde : company.getDataEntries()) {
+                    fde.setIdentifierId(company.getIdentifiers().getId());
+                    financialDataEntryDao.insertFinancialDataEntry(fde);
+                }
+        });
+    }
 }

@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Checks to see if Onboarding should be launched.
-        if (!sharedPreferences.getBoolean(Onboarding.COMPLETED_ONBOARDING_PREF_NAME, false)) {
+        if (sharedPreferences.getBoolean(Onboarding.COMPLETED_ONBOARDING_PREF_NAME, false)) {
             startActivity(new Intent(this, Onboarding.class));
         }
 
