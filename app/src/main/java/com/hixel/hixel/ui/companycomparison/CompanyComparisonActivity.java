@@ -176,7 +176,6 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
 
             moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES",
                 extractTickers((ArrayList<Company>) comparisonCompaniesAdapter.getDataSet()));
-
             startActivity(moveToGraph);
 
         });

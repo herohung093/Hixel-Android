@@ -68,7 +68,7 @@ public class FinancialDataEntries {
     }
 
     public double overallScore() {
-        return ((getHealth() + getPerformance() + getReturns() + getSafety() + getStrength()) * 4);
+        return ((getHealth() + getPerformance() + getReturns() + getSafety() + getStrength()) *4);
 
     }
 
