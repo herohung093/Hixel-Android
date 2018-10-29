@@ -34,6 +34,7 @@ public class GraphViewModel extends ViewModel {
         String[] inputTickers = new String[tickers.size()];
         inputTickers = tickers.toArray(inputTickers);
         companies = repository.loadCompanies(StringUtils.join(inputTickers, ','));
+
     }
 
     LiveData<Resource<List<Company>>> getCompanies() {

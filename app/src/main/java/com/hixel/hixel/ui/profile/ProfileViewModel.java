@@ -51,6 +51,5 @@ public class ProfileViewModel extends ViewModel {
      * @param newPassword The users new password after the change.
      */
     void updateUserPassword(String oldPassword, String newPassword) {
-        repository.updateUserPassword(oldPassword, newPassword);
     }
 }

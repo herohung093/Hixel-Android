@@ -46,10 +46,11 @@ public class UserRepository {
         return userDao.getUser();
     }
 
+
     /**
      * Calls the server for user data information, if successful return a user
      */
-    public void saveUser() {
+    private void saveUser() {
         serverInterface.userData().enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
@@ -62,6 +63,8 @@ public class UserRepository {
                         Timber.d(t.getTicker());
                     }
                     userDao.saveUser(user);
+
+
                 });
             }
 
@@ -70,36 +73,71 @@ public class UserRepository {
         });
     }
 
-    /**
-     * Updates the user object, we have to pass the entire object to Room as single updates
-     * become more expensive.
-     *
-     * @param user The updates user object.
-     */
-    public void updateUser(User user) {
-        executor.execute(() -> userDao.updateUser(user));
+
+    public void addCompany(String ticker) {
+        executor.execute(() -> {
+            // Get our current user from the db.
+            User user = userDao.get();
+            // Get the ticker we want to add.
+            Ticker t = new Ticker();
+            t.setTicker(ticker);
+
+            // Add the ticker to the user.
+            user.getPortfolio().getCompanies().add(t);
+
+            // Save the user back into the db.
+            userDao.saveUser(user);
+
+            Timber.d("ADDING A USER");
+            Timber.d(user.getEmail());
+            Timber.d("TICKERS:");
+            for (Ticker t1 : user.getPortfolio().getCompanies()) {
+                Timber.d(t1.getTicker());
+            }
+        });
     }
 
-    /**
-     * Updates the users password, note that this does not involve a database operation as we
-     * don't want to store password information.
-     *
-     * @param oldPassword the users old password
-     * @param newPassword the users new password
-     */
-    public void updateUserPassword(String oldPassword, String newPassword) {
-        executor.execute(() -> serverInterface.changePassword(oldPassword, newPassword)
-                .enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Void> call,
-                            @NonNull Response<Void> response) { }
+    public void deleteCompany(String ticker) {
+        executor.execute(() -> {
+            // Get our current user from the db.
+            User user = userDao.get();
+            // Get the ticker we want to add.
+            Ticker t = new Ticker();
+            t.setTicker(ticker);
 
-                    @Override
-                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) { }
-                })
-        );
+            // Remove the ticker.
+            user.getPortfolio().getCompanies().removeIf(tick -> t.getTicker().equals(tick.getTicker()));
+
+            // Save the user back into the db.
+            userDao.saveUser(user);
+
+            Timber.d("DELETING A USER");
+            Timber.d(user.getEmail());
+            Timber.d("TICKERS:");
+            for (Ticker t1 : user.getPortfolio().getCompanies()) {
+                Timber.d(t1.getTicker());
+            }
+
+        });
     }
 
+    public void deleteAllUserTickers() {
+        executor.execute(()
+                -> serverInterface.removeCompany("MU,SNA,FB,SNAP,AAPL,AAPL,FSCT,TSLA,FEYE").enqueue(
+                new Callback<Portfolio>() {
+                    @Override
+                    public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
+                        // DONT DO ANYTHING YET
+                    }
+
+                    @Override
+                    public void onFailure(Call<Portfolio> call, Throwable t) {
+                        Timber.d("API CALL ERROR DELETING TICKERS");
+                    }
+                }));
+    }
+
+    /*
     public void addCompany(String ticker) {
         serverInterface.addCompany(ticker).enqueue(new Callback<Portfolio>() {
             @Override
@@ -132,5 +170,5 @@ public class UserRepository {
                 Timber.d("FAILED");
             }
         });
-    }
+    }*/
 }

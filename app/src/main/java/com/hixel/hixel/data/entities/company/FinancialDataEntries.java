@@ -68,20 +68,23 @@ public class FinancialDataEntries {
     }
 
     public double overallScore() {
-        return ((getHealth() + getPerformance() + getReturns() + getSafety() + getPerformance()) *4);
+        System.out.println("YEAR: "+getYear());
+        System.out.println("health: "+getHealth() + " Perform: "+ getPerformance()+" safe: "+ getSafety()+" strength: "+getStrength()+ " return: "+getReturns());
+        return ((getHealth() + getPerformance() + getReturns() + getSafety() + getStrength()) *4);
+
     }
 
     public int getReturns() {
-        double ratio = ratios.returnOnAssetsRatio;
+        double ratio = ratios.dividendYield;
         int score;
 
-        if (ratio < 0.05) {
+        if (ratio < 0.005) {
             score = 1;
-        } else if (ratio < 0.07) {
+        } else if (ratio > 0.005 && ratio < 0.01) {
             score = 2;
-        } else if (ratio < 1.0) {
+        } else if (ratio > 0.01 && ratio < 0.05) {
             score = 3;
-        } else if (ratio < 1.2) {
+        } else if (ratio >0.05 && ratio < 0.1) {
             score = 4;
         } else {
             score = 5;
@@ -94,13 +97,13 @@ public class FinancialDataEntries {
         double ratio = ratios.returnOnEquityRatio;
         int score;
 
-        if (ratio < 0.05) {
+        if (ratio < 0.005) {
             score = 1;
-        } else if (ratio < 0.10) {
+        } else if (ratio > 0.005 && ratio < 0.10) {
             score = 2;
-        } else if (ratio < 0.20) {
+        } else if (ratio >0.1 && ratio < 0.20) {
             score = 3;
-        } else if (ratio < 0.25) {
+        } else if (ratio >0.2 && ratio < 0.25) {
             score = 4;
         } else {
             score = 5;
@@ -115,11 +118,11 @@ public class FinancialDataEntries {
 
         if (ratio < 1.5) {
             score = 1;
-        } else if (ratio < 3.0) {
+        } else if (ratio > 1.5 && ratio < 3.0) {
             score = 2;
-        } else if (ratio < 4.5) {
+        } else if (ratio >3 && ratio < 4.5) {
             score = 3;
-        } else if (ratio < 6.0) {
+        } else if (ratio > 4.5 && ratio < 6.0) {
             score = 4;
         } else {
             score = 5;
@@ -129,16 +132,16 @@ public class FinancialDataEntries {
     }
 
     public int getHealth() {
-        double ratio = ratios.debtToEquityRatio;
+        double ratio = ratios.currentRatio;
         int score;
 
-        if (ratio < 1.5) {
+        if (ratio < 0.5) {
             score = 1;
-        } else if (ratio < 3.0) {
+        } else if (ratio >0.5 && ratio < 1.0) {
             score = 2;
-        } else if (ratio < 4.5) {
+        } else if (ratio > 1.0 && ratio < 1.5) {
             score = 3;
-        } else if (ratio < 6.0) {
+        } else if (ratio >1.5 && ratio < 2.0) {
             score = 4;
         } else {
             score = 5;
@@ -153,7 +156,7 @@ public class FinancialDataEntries {
 
         if (ratio > 10.0) {
             score = 1;
-        } else if (ratio < 4.0) {
+        } else if (ratio > 4.0) {
             score = 2;
         } else if (ratio > 1.5) {
             score = 3;

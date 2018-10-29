@@ -101,7 +101,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
             for (Ticker t : user.getPortfolio().getCompanies()) {
                 tickers.add(t.getTicker());
             }
-
+            System.out.println("tickers from dashboard in comparison view: "+tickers.size());
             viewModel.loadDashboardCompanies(tickers);
             viewModel.getDashboardCompanies().observe(this, companiesResource
                     -> setupDashboardCompanyListAdapter(companiesResource == null ? null : companiesResource.data));
@@ -177,8 +177,8 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
 
             moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES",
                 extractTickers((ArrayList<Company>) comparisonCompaniesAdapter.getDataSet()));
-            moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES",
-                extractTickers((ArrayList<Company>) comparisonCompaniesAdapter.getDataSet()));
+            /*moveToGraph.putStringArrayListExtra("COMPARISON_COMPANIES",
+                extractTickers((ArrayList<Company>) comparisonCompaniesAdapter.getDataSet()));*/
             startActivity(moveToGraph);
 
         });

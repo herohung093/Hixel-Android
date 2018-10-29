@@ -59,7 +59,7 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
         progressDialog.show();
 
         ArrayList<String> tickers = getIntent().getStringArrayListExtra("COMPARISON_COMPANIES");
-
+        System.out.println("received companies at graphAct:" + tickers.size());
         this.configureDagger();
         this.configureViewModel(tickers);
 
