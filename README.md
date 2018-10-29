@@ -64,7 +64,7 @@ These are tools to ensure code consistency and quality:
 
 ### Further Reading
 
-- Library documentation
-- Architecture documentation
-- Code style documentation
-- JavaDoc
+- [Library documentation](/docs/libraries.md)
+- [Architecture documentation](/docs/architecture-guide.md)
+- [Code style documentation](/docs/hixel_android_style_guidelines.md)
+

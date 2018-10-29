@@ -75,13 +75,13 @@ public class FinancialDataEntries {
         double ratio = ratios.returnOnAssetsRatio;
         int score;
 
-        if (ratio < 0.005) {
+        if (ratio < 0.05) {
             score = 1;
-        } else if (ratio < 0.01) {
+        } else if (ratio < 0.07) {
             score = 2;
-        } else if (ratio < 0.05) {
-            score = 3;
         } else if (ratio < 1.0) {
+            score = 3;
+        } else if (ratio < 1.2) {
             score = 4;
         } else {
             score = 5;
