@@ -25,9 +25,14 @@ public class Onboarding extends AhoyOnboarderActivity {
         super.onCreate(savedInstanceState);
 
         List<Integer> colorList = new ArrayList<>();
-        colorList.add(R.color.onboarding_green);
+        /*colorList.add(R.color.onboarding_green);
         colorList.add(R.color.onboarding_blue);
-        colorList.add(R.color.onboarding_alt_orange);
+        colorList.add(R.color.onboarding_alt_orange);*/
+
+        colorList.add(R.color.good);
+        colorList.add(R.color.average);
+        colorList.add(R.color.bad);
+
         setColorBackground(colorList);
 
         // Available properties
