@@ -31,7 +31,7 @@ public interface UserDao {
      *
      * @return a LiveData user
      */
-    @Query("SELECT * FROM user")
+    @Query("SELECT * FROM user LIMIT 1")
     LiveData<User> getUser();
 
     /**
@@ -40,7 +40,7 @@ public interface UserDao {
      *
      * @return a User object
      */
-    @Query("SELECT * FROM user")
+    @Query("SELECT * FROM user LIMIT 1")
     User get();
 
     /**
@@ -57,5 +57,5 @@ public interface UserDao {
      * @param user the updated user object.
      */
     @Update
-    void updateUser(User user);
+    void updateUser(User... user);
 }

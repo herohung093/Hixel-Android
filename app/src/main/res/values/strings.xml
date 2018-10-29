@@ -79,7 +79,7 @@
 
   <!-- Onboarding -->
   <string name="dot">&#xb7;</string>
-  <string name="get_started"><b>Get Started</b></string>
+  <string name="get_started"><font fgcolor="#172b4d"><b>Get Started</b></font></string>
 
   <!--information popup window -->
   <string name="returns_explanatory">How much a company pays out in dividends each year relative to its share price. It measures how much \"bang for your buck\" you are getting from dividends.</string>
@@ -110,7 +110,7 @@
   <string name="profile">Profile</string>
 
   <string name="first_name">First Name</string>
-  <string name="second_name">Second Name</string>
+  <string name="second_name">Last Name</string>
 
   <!-- Ratios Array -->
   <string-array name="ratios_array">

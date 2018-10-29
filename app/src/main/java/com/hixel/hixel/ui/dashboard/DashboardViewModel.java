@@ -82,7 +82,7 @@ public class DashboardViewModel extends ViewModel {
         publishSubject.onNext(query);
     }
 
-    public void deleteCompany(Company deletedCompany) {
+    void deleteCompany(Company deletedCompany) {
         userRepository.deleteCompany(deletedCompany.getIdentifiers().getTicker());
     }
 }

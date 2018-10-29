@@ -25,6 +25,7 @@ import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
 import com.hixel.hixel.ui.commonui.HorizontalListViewOnClickListener;
 import com.hixel.hixel.ui.commonui.GraphFragment;
 
+import com.hixel.hixel.ui.dashboard.DashboardActivity;
 import dagger.android.AndroidInjection;
 
 import java.util.ArrayList;
@@ -73,7 +74,6 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         viewModel.loadCompany(ticker);
         viewModel.loadUser();
         viewModel.getUser().observe(this, this::configureCompany);
-
     }
 
     private void configureCompany(User user) {
@@ -99,9 +99,10 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
 
             // Setup FAB
             binding.fab.setOnClickListener(v -> {
-                Intent backIntent = getIntent();
                 viewModel.saveCompany(company);
-                setResult(RESULT_OK, backIntent);
+                Intent intent = new Intent(this, DashboardActivity.class);
+                intent.putExtra("QUICK_ADD", company.getIdentifiers().getTicker());
+                startActivity(intent);
                 finish();
             });
 

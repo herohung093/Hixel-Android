@@ -6,11 +6,9 @@ import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.database.UserDao;
 import com.hixel.hixel.data.entities.user.Portfolio;
 import com.hixel.hixel.data.entities.user.User;
-import java.util.List;
 import java.util.concurrent.Executor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,7 +54,6 @@ public class UserRepository {
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 executor.execute(() -> {
                     User user = response.body();
-                    Timber.d("GOT A USER");
                     userDao.saveUser(user);
                 });
             }
@@ -96,10 +93,8 @@ public class UserRepository {
         );
     }
 
-    public void addCompany(List<String> ticker) {
-        String tickerString = StringUtils.join(ticker, ",");
-
-        serverInterface.addCompany(tickerString).enqueue(new Callback<Portfolio>() {
+    public void addCompany(String ticker) {
+        serverInterface.addCompany(ticker).enqueue(new Callback<Portfolio>() {
             @Override
             public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
                 executor.execute(() -> {
@@ -121,9 +116,7 @@ public class UserRepository {
             @Override
             public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
                 executor.execute(() -> {
-                    User user = userDao.get();
-                    user.setPortfolio(response.body());
-                    userDao.saveUser(user);
+                    userDao.get().setPortfolio(response.body());
                 });
             }
 

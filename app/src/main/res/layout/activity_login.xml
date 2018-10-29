@@ -2,27 +2,28 @@
 <layout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/login_root_layout">
-
   <data/>
 
   <ScrollView
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/secondary_background"
+    android:background="@color/white"
     android:fitsSystemWindows="true">
 
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingTop="56dp"
+      android:paddingTop="0dp"
+      android:paddingBottom="0dp"
       android:paddingLeft="24dp"
       android:paddingRight="24dp"
       android:orientation="vertical">
 
       <ImageView
-        android:layout_width="153dp"
-        android:layout_height="158dp"
-        android:layout_marginBottom="24dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="0dp"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@string/logo_description"
         android:src="@mipmap/ic_logo"/>
@@ -32,9 +33,10 @@
         android:id="@+id/emailWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:hint="@string/email_hint">
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="0dp"
+        android:hint="@string/email_hint"
+        >
 
         <android.support.design.widget.TextInputEditText
           android:id="@+id/input_email"
@@ -42,8 +44,7 @@
           android:layout_height="wrap_content"
           android:drawableLeft="@drawable/email"
           android:inputType="textEmailAddress"
-          android:textColor="@color/text_main_dark"
-          android:textColorHint="@color/text_main_dark"/>
+          android:textColor="@color/text_main_dark"/>
 
       </android.support.design.widget.TextInputLayout>
 
@@ -52,7 +53,7 @@
         android:id="@+id/passwordWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="8dp"
         android:hint="@string/password_hint">
         <android.support.design.widget.TextInputEditText
@@ -70,7 +71,7 @@
         android:id="@+id/btn_login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="10dp"
         android:padding="12dp"
         android:paddingTop="16dp"
@@ -83,6 +84,7 @@
         android:id="@+id/link_forgot_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="10dp"
         android:gravity="center"
         android:text="@string/forgot_your_password"
