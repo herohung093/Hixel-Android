@@ -4,12 +4,13 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.widget.ImageView;
-
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.databinding.ActivityGraphBinding;
@@ -17,9 +18,9 @@ import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.commonui.GraphFragment;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
 import com.hixel.hixel.ui.commonui.HorizontalListViewOnClickListener;
-
+import com.hixel.hixel.ui.dashboard.DashboardActivity;
+import com.hixel.hixel.ui.profile.ProfileActivity;
 import dagger.android.AndroidInjection;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -37,7 +38,7 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
     RecyclerView mRecyclerView, companyRecyclerView;
     RecyclerView.Adapter mAdapter, companyListAdapter;
     RecyclerView.LayoutManager mLayoutManager;
-
+    BottomNavigationView bottomNavigationView;
     GraphFragment fragmentA;
     ProgressDialog progressDialog;
 
@@ -59,15 +60,14 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
         progressDialog.show();
 
         ArrayList<String> tickers = getIntent().getStringArrayListExtra("COMPARISON_COMPANIES");
-        System.out.println("received companies at graphAct:" + tickers.size());
         this.configureDagger();
         this.configureViewModel(tickers);
 
         fragmentA = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_bar_chart);
 
         progressDialog.dismiss();
-
-
+        bottomNavigationView = findViewById(R.id.bottom_navigation11);
+        setupBottomNavigationView(bottomNavigationView);
         ImageView infoButton = findViewById(R.id.imageView3);
 
         infoButton.setOnClickListener(view -> {
@@ -138,7 +138,6 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
         mAdapter = new HorizontalListViewAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
-        System.out.println("companies to draw at graphAct:" + companies.size());
         fragmentA.drawGraph(companies, selectedRatio);
         this.companies = companies;
 
@@ -152,5 +151,28 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
     public void onClick(String ratio) {
         selectedRatio = ratio;
         fragmentA.drawGraph(companies, selectedRatio);
+    }
+    public void setupBottomNavigationView(BottomNavigationView bottomNavigationView) {
+
+        bottomNavigationView.setSelectedItemId(R.id.compare_button);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home_button:
+                    startActivity(new Intent(this, DashboardActivity.class));
+                    break;
+                case R.id.compare_button:
+                    Intent moveToCompare = new Intent(this, CompanyComparisonActivity.class);
+                    startActivity(moveToCompare);
+                    break;
+                case R.id.profile_button:
+                    Intent moveToProfile = new Intent(this, ProfileActivity.class);
+                    startActivity(moveToProfile);
+                    break;
+                default:
+                    break;
+            }
+
+            return true;
+        });
     }
 }

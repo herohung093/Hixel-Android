@@ -68,8 +68,6 @@ public class FinancialDataEntries {
     }
 
     public double overallScore() {
-        System.out.println("YEAR: "+getYear());
-        System.out.println("health: "+getHealth() + " Perform: "+ getPerformance()+" safe: "+ getSafety()+" strength: "+getStrength()+ " return: "+getReturns());
         return ((getHealth() + getPerformance() + getReturns() + getSafety() + getStrength()) *4);
 
     }

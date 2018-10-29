@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendOrientation;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.RadarData;
@@ -32,7 +33,7 @@ public class GenericChartFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        colors.add(Color.rgb(255,218,185));
+        colors.add(Color.rgb(205,92,92));
         colors.add(Color.rgb(139,136,120));
         colors.add(Color.rgb(208,32,144));
         colors.add(Color.rgb(193,205,193));
@@ -41,7 +42,7 @@ public class GenericChartFragment extends Fragment {
         colors.add(Color.rgb(106,90,205));
         colors.add(Color.rgb(0,255,127));
         colors.add(Color.rgb(255,215,0));
-        colors.add(Color.rgb(205,92,92));
+        colors.add(Color.rgb(255,218,185));
     }
 
     @Override
@@ -69,7 +70,7 @@ public class GenericChartFragment extends Fragment {
         for(Company c: companies){
             radarDataSets.add(radarDataSetup(c));
         }
-        // setupDataSetStyle(radarDataSets);
+         setupDataSetStyle(radarDataSets);
         ArrayList<IRadarDataSet> sets = new ArrayList<>(radarDataSets);
 
         RadarData data = new RadarData(sets);
@@ -81,7 +82,7 @@ public class GenericChartFragment extends Fragment {
 
         Legend legend = radarChart.getLegend();
         legend.setEnabled(true);
-        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setOrientation(LegendOrientation.HORIZONTAL);
         legend.setFormSize(9f); // set the size of the legend forms/shapes
         legend.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
@@ -118,12 +119,11 @@ public class GenericChartFragment extends Fragment {
         xAxis.setTextColor(Color.rgb(232, 163, 34));
         xAxis.setYOffset(0f);
         xAxis.setXOffset(0f);
+
         YAxis yAxis = radarChart.getYAxis();
 
         yAxis.setLabelCount(5, true);
-
         yAxis.setDrawLabels(false);
-
         radarChart.invalidate();
     }
     private void setupDataSetStyle(ArrayList<RadarDataSet> sets){

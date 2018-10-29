@@ -37,7 +37,7 @@ public class GraphFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        colors.add(Color.rgb(255,218,185));
+        colors.add(Color.rgb(205,92,92));
         colors.add(Color.rgb(139,136,120));
         colors.add(Color.rgb(208,32,144));
         colors.add(Color.rgb(193,205,193));
@@ -46,7 +46,7 @@ public class GraphFragment extends Fragment {
         colors.add(Color.rgb(106,90,205));
         colors.add(Color.rgb(0,255,127));
         colors.add(Color.rgb(255,215,0));
-        colors.add(Color.rgb(205,92,92));
+        colors.add(Color.rgb(255,218,185));
     }
 
     @Override
@@ -93,9 +93,8 @@ public class GraphFragment extends Fragment {
 
         for(int i = 0; i < companies.size(); i++){
             setComp = lineChartDataSetup(selectedRatio, companies.get(i));
+            lineDataSets.add(setComp);
         }
-
-        lineDataSets.add(setComp);
 
         setupDatasetStyle(lineDataSets);
 
@@ -204,6 +203,8 @@ public class GraphFragment extends Fragment {
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
+        legend.setFormSize(9f); // set the size of the legend forms/shapes
     }
 
     public void setupAxis(XAxis xAxis, YAxis yAxis) {

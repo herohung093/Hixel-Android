@@ -9,7 +9,7 @@
     <ScrollView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_above="@+id/graph_generic_navigator"
+      android:layout_above="@+id/bottom_navigation11"
       android:layout_alignParentStart="true"
       android:layout_alignParentTop="true">
 
@@ -128,7 +128,7 @@
     </ScrollView>
 
     <include
-      android:id="@id/bottom_navigation"
+      android:id="@id/bottom_navigation11"
       layout="@layout/bottom_navigation"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
