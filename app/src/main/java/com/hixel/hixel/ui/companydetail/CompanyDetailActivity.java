@@ -113,6 +113,8 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
             companyChartSetup(company);
             setupGenericChart(company);
             currentCompany = company;
+        } else {
+            // TODO: Loading.
         }
     }
 
@@ -127,7 +129,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         pieView.setTextColor(ContextCompat.getColor(this, R.color.text_main_light));
         pieView.setMainBackgroundColor(
                 ContextCompat.getColor(this, R.color.secondary_background));
-        pieView.setPieInnerPadding(20);
+        pieView.setPieInnerPadding(22);
 
         float score = (float) company.getDataEntries().get(0).overallScore();
         pieView.setPercentage(score);

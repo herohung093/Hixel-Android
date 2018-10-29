@@ -25,13 +25,6 @@ public class LoginViewModel extends ViewModel {
     }
 
     /**
-     * Method saves the User to the db via the UserRepository
-     */
-    void saveUser() {
-        repository.saveUser();
-    }
-
-    /**
      * Performs logic checks to esnure the user entered email is valid.
      *
      * @param email The email entered in y the user.
