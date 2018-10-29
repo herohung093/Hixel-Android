@@ -28,7 +28,6 @@ import java.util.List;
 public class GraphFragment extends Fragment {
 
     private CombinedChart chart;
-    // TODO: This needs to be done in a model.
     private String[] years = {"2014", "2015", "2016", "2017", "2018"};
     ArrayList<Integer> colors = new ArrayList<>();
 
@@ -41,13 +40,13 @@ public class GraphFragment extends Fragment {
         colors.add(Color.rgb(255,218,185));
         colors.add(Color.rgb(139,136,120));
         colors.add(Color.rgb(208,32,144));
-        colors.add(Color.rgb(	193,205,193));
+        colors.add(Color.rgb(193,205,193));
         colors.add(Color.rgb(230,230,250));
-        colors.add(Color.rgb(	100,149,237));
-        colors.add(Color.rgb(	106,90,205));
+        colors.add(Color.rgb(100,149,237));
+        colors.add(Color.rgb(106,90,205));
         colors.add(Color.rgb(0,255,127));
         colors.add(Color.rgb(255,215,0));
-        colors.add(Color.rgb(	205,92,92));
+        colors.add(Color.rgb(205,92,92));
     }
 
     @Override
@@ -90,11 +89,13 @@ public class GraphFragment extends Fragment {
     public void drawGraph(List<Company> companies, String selectedRatio) {
         LineData lineData = new LineData();
         ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
+        LineDataSet setComp = null;
 
         for(int i = 0; i < companies.size(); i++){
-            LineDataSet setComp = lineChartDataSetup(selectedRatio, companies.get(i));
-            lineDataSets.add(setComp);
+            setComp = lineChartDataSetup(selectedRatio, companies.get(i));
         }
+
+        lineDataSets.add(setComp);
 
         setupDatasetStyle(lineDataSets);
 
@@ -123,7 +124,6 @@ public class GraphFragment extends Fragment {
      * @param company The company to display.
      * @return The LineDataSet of the company.
      */
-    // TODO: Make this display 5 years of data
     public LineDataSet lineChartDataSetup(String selectedRatio, Company company){
         List<Entry> compEntry = new ArrayList<>();
 
@@ -134,28 +134,27 @@ public class GraphFragment extends Fragment {
         return new LineDataSet(compEntry, company.getIdentifiers().getTicker());
     }
 
-    // TODO: Needs to be done in a cleaner way or moved out of the fragment.
     private Entry getCompanyEntry(int index, String selectedRatio, Company company) {
         Entry entry;
 
         switch (selectedRatio) {
             case "Returns":
-               entry = new Entry(index, 3f);// (float) company.getReturnsScore());
+               entry = new Entry(index, (float) company.getDataEntries().get(index).getReturns());
                 break;
             case "Performance":
-                entry = new Entry(index, 3f);// (float) company.getPerformanceScore());
+                entry = new Entry(index, (float) company.getDataEntries().get(index).getPerformance());
                 break;
             case "Strength":
-               entry = new Entry(index, 3f);// (float) company.getStrengthScore());
+               entry = new Entry(index, (float) company.getDataEntries().get(index).getStrength());
                 break;
             case "Health":
-                entry = new Entry(index, 3f);// (float) company.getHealthScore());
+                entry = new Entry(index, (float) company.getDataEntries().get(index).getHealth());
                 break;
             case "Safety":
-                entry = new Entry(index, 3f);// (float) company.getSafetyScore());
+                entry = new Entry(index, (float) company.getDataEntries().get(index).getSafety());
                 break;
             default:
-                entry = new Entry(index, 3f);// (float) company.getCurrentRatio());
+                entry = new Entry(index, (float) company.getDataEntries().get(index).getRatios().debtToEquityRatio);
         }
 
         return entry;

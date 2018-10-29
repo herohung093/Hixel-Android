@@ -18,7 +18,7 @@ public class CompanyScoreListAdapter
     Context context;
     List<Company> companies;
 
-    public CompanyScoreListAdapter(Context context, List<Company> companies) {
+    CompanyScoreListAdapter(Context context, List<Company> companies) {
         this.context = context;
         this.companies = companies;
     }
@@ -33,18 +33,15 @@ public class CompanyScoreListAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String companyName = companies.get(position)
-                .getIdentifiers().getName()
-                .split("[\\s, ]")[0]
-                .toLowerCase();
+        String companyName = companies.get(position).getIdentifiers().getFormattedName();
 
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyName.setText(companyName);
         holder.progressBar.setCurrentProgress(calculateScore(companies.get(position)));
     }
     private int calculateScore(Company company){
-        int score = 0; //((company.getHealthScore() + company.getReturnsScore() + company.getPerformanceScore() + company.getSafetyScore() + company.getStrengthScore())*4);
-        return score;
+        //int score = ((company.getHealthScore() + company.getReturnsScore() + company.getPerformanceScore() + company.getSafetyScore() + company.getStrengthScore())*4);
+        return 1;
     }
     @Override
     public int getItemCount() {

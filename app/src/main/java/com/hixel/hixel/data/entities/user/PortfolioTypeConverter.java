@@ -3,6 +3,7 @@ package com.hixel.hixel.data.entities.user;
 import android.arch.persistence.room.TypeConverter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.hixel.hixel.data.entities.company.Ratios;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
@@ -12,33 +13,21 @@ import java.util.List;
  * Type of data when entering and leaving the RoomDB.
  */
 public class PortfolioTypeConverter {
-    private static Gson gson = new Gson();
-
-    /**
-     * Converts a String into a List of strings for retrieving the data from room.
-     *
-     * @param data the string of data stored in Room
-     * @return a list of tickers
-     */
     @TypeConverter
-    public static List<String> stringToSomeObjectList(String data) {
+    public static List<Ticker> stringToSomeObjectList(String data) {
+        Gson gson = new Gson();
         if (data == null) {
             return Collections.emptyList();
         }
 
-        Type listType = new TypeToken<List<String>>() {}.getType();
+        Type listType = new TypeToken<List<Ticker>>() {}.getType();
 
         return gson.fromJson(data, listType);
     }
 
-    /**
-     * Converts a List of Strings into a single string to store the data in Room.
-     *
-     * @param someObjects the tickers
-     * @return a single String of those tickers.
-     */
     @TypeConverter
-    public static String someObjectListToString(List<String> someObjects) {
+    public static String someObjectListToString(List<Ticker> someObjects) {
+        Gson gson = new Gson();
         return gson.toJson(someObjects);
     }
 }

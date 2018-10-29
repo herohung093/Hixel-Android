@@ -6,15 +6,17 @@ import android.support.annotation.Nullable;
 import com.hixel.hixel.AppExecutors;
 import com.hixel.hixel.data.api.ApiResponse;
 import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.data.database.FinancialDataEntryDao;
 import com.hixel.hixel.data.database.IdentifiersDao;
 import com.hixel.hixel.data.entities.company.Company;
+import com.hixel.hixel.data.entities.company.FinancialDataEntries;
+import com.hixel.hixel.data.entities.company.Identifiers;
 import com.hixel.hixel.data.models.SearchEntry;
 import io.reactivex.Single;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import timber.log.Timber;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Handles requests from ViewModels for Company data. Utilises the NetworkBoundResource to
@@ -29,9 +31,7 @@ public class CompanyRepository {
     private final ServerInterface serverInterface;
     private final AppExecutors appExecutors;
     private final IdentifiersDao identifiersDao;
-
-    // TEMPORARY
-    private final List<String> userTickers = new ArrayList<>();
+    private final FinancialDataEntryDao financialDataEntryDao;
 
     /**
      * Constructor for the repository, creates an instance of the server, company dao, and an
@@ -41,115 +41,83 @@ public class CompanyRepository {
      */
     @Inject
     public CompanyRepository(ServerInterface serverInterface, IdentifiersDao identifiersDao,
-            AppExecutors appExecutors) {
+            FinancialDataEntryDao financialDataEntryDao, AppExecutors appExecutors) {
         this.serverInterface = serverInterface;
         this.appExecutors = appExecutors;
         this.identifiersDao = identifiersDao;
+        this.financialDataEntryDao = financialDataEntryDao;
     }
 
+    public LiveData<Resource<List<Company>>> loadPortfolioCompanies(List<String> tickers) {
+
+        String tickersString = StringUtils.join(tickers, ",");
+
+        return new NetworkBoundResource<List<Company>, List<Company>>(appExecutors) {
+            @Override
+            protected void saveCallResult(@NonNull List<Company> item) {
+                for (Company c : item) {
+                    Identifiers i = c.getIdentifiers();
+                    identifiersDao.insertIdentifier(i);
+
+                    for (FinancialDataEntries financialDataEntries : c.getDataEntries()) {
+                        financialDataEntries.setIdentifierId(c.getIdentifiers().getId());
+                        financialDataEntryDao.insertFinancialDataEntry(financialDataEntries);
+                    }
+                }
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<Company> data) {
+                return true; // data == null || data.isEmpty();
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<List<Company>> loadFromDb() {
+                return identifiersDao.getPortfolioCompanies(tickers);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<List<Company>>> createCall() {
+                return serverInterface.getCompanies(tickersString, 5);
+            }
+        }.asLiveData();
+    }
 
     public LiveData<Resource<List<Company>>> loadCompanies(String tickers) {
-        return new NetworkBoundResource<List<Company>, List<Company>>(appExecutors) {
 
+        return new NetworkBoundResource<List<Company>, List<Company>>(appExecutors) {
             @Override
             protected void saveCallResult(@NonNull List<Company> item) {
-                Timber.w("Saving companies");
-                identifiersDao.insertCompanies(item);
+                for (Company c : item) {
+                    Identifiers i = c.getIdentifiers();
+                    identifiersDao.insertIdentifier(i);
+
+                    for (FinancialDataEntries financialDataEntries : c.getDataEntries()) {
+                        financialDataEntries.setIdentifierId(c.getIdentifiers().getId());
+                        financialDataEntryDao.insertFinancialDataEntry(financialDataEntries);
+                    }
+                }
             }
 
             @Override
             protected boolean shouldFetch(@Nullable List<Company> data) {
-                Timber.w("Is fetching: %b", !(data == null));
-                // TODO: Add a rate limiter so we automatically fetch at an interval.
-                return data == null || data.isEmpty();
+                return true; // data == null || data.isEmpty();
             }
 
             @NonNull
             @Override
             protected LiveData<List<Company>> loadFromDb() {
-                Timber.w("Getting from the db");
-                return identifiersDao.loadCompanies();
+                return identifiersDao.loadAllCompanies();
             }
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<List<Company>>> createCall() {
-                Timber.w("Fetching data from the server");
                 return serverInterface.getCompanies(tickers, 5);
             }
         }.asLiveData();
-    }
-
-    public LiveData<Resource<Company>> loadCompany(String ticker) {
-        return new NetworkBoundResource<Company, Company>(appExecutors) {
-
-            @Override
-            protected void saveCallResult(@NonNull Company item) {
-                Timber.w("Saving companies");
-                identifiersDao.insertCompany(item);
-            }
-
-            @Override
-            protected boolean shouldFetch(@Nullable Company data) {
-                Timber.w("Is fetching: %b", data == null);
-                // TODO: Add a rate limiter so we automatically fetch at an interval.
-                return data == null;
-            }
-
-            @NonNull
-            @Override
-            protected LiveData<Company> loadFromDb() {
-                Timber.w("Getting from the db");
-                return identifiersDao.loadCompany(ticker);
-            }
-
-            @NonNull
-            @Override
-            protected LiveData<ApiResponse<Company>> createCall() {
-                Timber.w("Talking to the server...");
-                return serverInterface.getCompany(ticker, 5);
-            }
-        }.asLiveData();
-    }
-
-    public LiveData<Resource<List<Company>>> loadComparisonCompanies(String tickers) {
-        return new NetworkBoundResource<List<Company>, List<Company>>(appExecutors) {
-
-            @Override
-            protected void saveCallResult(@NonNull List<Company> item) {
-                Timber.w("Saving companies");
-                identifiersDao.insertCompanies(item);
-            }
-
-            @Override
-            protected boolean shouldFetch(@Nullable List<Company> data) {
-                Timber.w("Is fetching: %b", !(data == null));
-                // TODO: Add a rate limiter so we automatically fetch at an interval.
-                return data == null || data.isEmpty();
-            }
-
-            @NonNull
-            @Override
-            protected LiveData<List<Company>> loadFromDb() {
-                Timber.w("Getting from the db");
-                return identifiersDao.loadCompanies();
-            }
-
-            @NonNull
-            @Override
-            protected LiveData<ApiResponse<List<Company>>> createCall() {
-                Timber.w("Fetching data from the server");
-                return serverInterface.getCompanies(tickers, 5);
-            }
-        }.asLiveData();
-    }
-
-    public void addUserTickers(List<String> tickers) {
-        userTickers.addAll(tickers);
-    }
-
-    public List<String> getUserTickers() {
-        return userTickers;
     }
 
     /**
@@ -158,7 +126,6 @@ public class CompanyRepository {
      * @param searchTerm The user entered search term.
      * @return An observable List of Search entries;
      */
-    // TODO: Move this out into its own class.
     public Single<List<SearchEntry>> search(String searchTerm) {
         return serverInterface.doSearchQuery(searchTerm);
     }

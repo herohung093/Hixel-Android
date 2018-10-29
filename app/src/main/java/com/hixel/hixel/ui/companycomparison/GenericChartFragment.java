@@ -35,13 +35,13 @@ public class GenericChartFragment extends Fragment {
         colors.add(Color.rgb(255,218,185));
         colors.add(Color.rgb(139,136,120));
         colors.add(Color.rgb(208,32,144));
-        colors.add(Color.rgb(	193,205,193));
+        colors.add(Color.rgb(193,205,193));
         colors.add(Color.rgb(230,230,250));
-        colors.add(Color.rgb(	100,149,237));
-        colors.add(Color.rgb(	106,90,205));
+        colors.add(Color.rgb(100,149,237));
+        colors.add(Color.rgb(106,90,205));
         colors.add(Color.rgb(0,255,127));
         colors.add(Color.rgb(255,215,0));
-        colors.add(Color.rgb(	205,92,92));
+        colors.add(Color.rgb(205,92,92));
     }
 
     @Override
@@ -54,25 +54,23 @@ public class GenericChartFragment extends Fragment {
 
     private RadarDataSet radarDataSetup(Company company){
         ArrayList<RadarEntry> entries= new ArrayList<>();
-        /*
-        entries.add(new RadarEntry(company.getReturnsScore(),1));
-        entries.add(new RadarEntry(company.getPerformanceScore(),2));
-        entries.add(new RadarEntry(company.getStrengthScore(),3));
-        entries.add(new RadarEntry(company.getHealthScore(),4));
-        entries.add(new RadarEntry(company.getSafetyScore(),5));
-        */
-        RadarDataSet dataSet = new RadarDataSet(entries,company.getIdentifiers().getTicker());
-        return dataSet;
+
+        entries.add(new RadarEntry(company.getDataEntries().get(0).getReturns(),1));
+        entries.add(new RadarEntry(company.getDataEntries().get(0).getPerformance(),2));
+        entries.add(new RadarEntry(company.getDataEntries().get(0).getStrength(),3));
+        entries.add(new RadarEntry(company.getDataEntries().get(0).getHealth(),4));
+        entries.add(new RadarEntry(company.getDataEntries().get(0).getSafety(),5));
+
+        return new RadarDataSet(entries,company.getIdentifiers().getTicker());
     }
     public void drawGraph(List<Company> companies) {
 
-        ArrayList<IRadarDataSet> sets = new ArrayList<>();
         ArrayList<RadarDataSet> radarDataSets = new ArrayList<>();
         for(Company c: companies){
             radarDataSets.add(radarDataSetup(c));
         }
-        setupDataSetStyle(radarDataSets);
-        sets.addAll(radarDataSets);
+        // setupDataSetStyle(radarDataSets);
+        ArrayList<IRadarDataSet> sets = new ArrayList<>(radarDataSets);
 
         RadarData data = new RadarData(sets);
 
@@ -129,7 +127,7 @@ public class GenericChartFragment extends Fragment {
         radarChart.invalidate();
     }
     private void setupDataSetStyle(ArrayList<RadarDataSet> sets){
-        for(int i=0; i< sets.size();i++){
+        for(int i=0; i < sets.size(); i++){
             sets.get(i).setColor(colors.get(i));
             sets.get(i).setFillColor(colors.get(i));
             sets.get(i).setDrawFilled(true);

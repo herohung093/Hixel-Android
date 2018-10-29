@@ -23,6 +23,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.YAxisLabelPosition;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarEntry;
+import com.hixel.hixel.data.entities.user.Ticker;
+import com.hixel.hixel.data.entities.user.User;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.companydetail.CompanyDetailActivity;
 import com.hixel.hixel.data.entities.company.Company;
@@ -47,9 +49,6 @@ import javax.inject.Inject;
 public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         implements RecyclerItemTouchHelperListener {
 
-    // Temporary variable while we transition networking.
-    List<String> tickers = new ArrayList<>();
-
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private DashboardViewModel viewModel;
@@ -58,26 +57,20 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     private CompanyListAdapter companyListAdapter;
     List<BarEntry> entries;
     BarData data;
+    BarChart chart;
+    MainBarDataSet dataSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bindView(R.layout.activity_dashboard);
-
-        tickers.add("AAPL");
-        tickers.add("TSLA");
-
         setupToolbar(R.string.dashboard, false, true);
         setupBottomNavigationView(R.id.home_button);
-
         setupChart();
-
         this.configureDagger();
         this.configureViewModel();
-
         viewModel.setupSearch(getSearchObserver());
     }
-
 
     private void configureDagger() {
         AndroidInjection.inject(this);
@@ -85,15 +78,29 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
     private void configureViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
-        viewModel.loadCompanies(tickers);
-        viewModel.getCompanies().observe(this, companiesResource
-                -> updateUI(companiesResource == null ? null : companiesResource.data));
+        viewModel.loadUser();
+        viewModel.getUser().observe(this, this::configureCompanies);
+    }
+
+    private void configureCompanies(User user) {
+        if (user != null) {
+            List<String> tickers = new ArrayList<>();
+
+            for (Ticker t : user.getPortfolio().getCompanies()) {
+                tickers.add(t.getTicker());
+            }
+
+            viewModel.loadCompanies(tickers);
+            viewModel.getCompanies().observe(this,
+                    resource -> updateUI(resource == null ? null : resource.data));
+        }
     }
 
     private void updateUI(List<Company> companies) {
         if (companies != null) {
             binding.progressBar.setVisibility(View.INVISIBLE);
             setupDashboardAdapter(companies);
+            updateChart(companies);
         } else {
             binding.progressBar.setVisibility(View.VISIBLE);
         }
@@ -114,6 +121,33 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         companyListAdapter = new CompanyListAdapter(this, companies);
         recyclerView.setAdapter(companyListAdapter);
     }
+
+    private void updateChart(List<Company> companies) {
+        dataSet.clear();
+        entries.clear();
+
+        int returns = 0 , performance = 0, strength = 0, health = 0, safety  = 0;
+
+        for (int i = 0; i < companies.size(); i++) {
+            returns += companies.get(i).getDataEntries().get(0).getReturns();
+            performance += companies.get(i).getDataEntries().get(0).getPerformance();
+            strength += companies.get(i).getDataEntries().get(0).getStrength();
+            health += companies.get(i).getDataEntries().get(0).getHealth();
+            safety += companies.get(i).getDataEntries().get(0).getSafety();
+        }
+
+        dataSet.addEntry(new BarEntry(0, returns));
+        dataSet.addEntry(new BarEntry(1, performance));
+        dataSet.addEntry(new BarEntry(2, strength));
+        dataSet.addEntry(new BarEntry(3, health));
+        dataSet.addEntry(new BarEntry(4, safety));
+
+        dataSet.notifyDataSetChanged();
+        chart.notifyDataSetChanged();
+        chart.invalidate();
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -166,8 +200,7 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof CompanyListAdapter.ViewHolder) {
             // Get name of removed item
-            String name = viewModel.getCompanies().getValue().data.get(
-                    viewHolder.getAdapterPosition()).getIdentifiers().getName();
+            String name = viewModel.getCompanies().getValue().data.get(viewHolder.getAdapterPosition()).getIdentifiers().getName();
 
             // Backup item for undo purposes
            final Company deletedCompany = viewModel.getCompanies()
@@ -187,6 +220,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
                     .restoreItem(deletedCompany, deletedIndex));
             snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.warning));
             snackbar.show();
+
+            viewModel.deleteCompany(deletedCompany);
        }
     }
 
@@ -212,10 +247,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
             public void onNext(List<SearchEntry> searchResults) {
                 showSearchResults(searchResults);
             }
-
             @Override
             public void onError(Throwable e) { }
-
             @Override
             public void onComplete() { }
         };
@@ -232,13 +265,19 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     }
 
     private void setupChart() {
-        BarChart chart = binding.chart;
+        chart = binding.chart;
 
         entries = new ArrayList<>();
-        MainBarDataSet dataSet = new MainBarDataSet(entries, "");
+        entries.add(new BarEntry(0, 2f));
+        entries.add(new BarEntry(1, 2f));
+        entries.add(new BarEntry(2, 2f));
+        entries.add(new BarEntry(3, 2f));
+        entries.add(new BarEntry(4, 2f));
 
-        chart.setRenderer(new MainBarChartRenderer(chart,
-                chart.getAnimator(), chart.getViewPortHandler()));
+        dataSet = new MainBarDataSet(entries, "");
+
+        chart.setRenderer(
+                new MainBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler()));
         chart.getLegend().setEnabled(false);
         chart.getDescription().setEnabled(false);
         chart.setDrawValueAboveBar(false);
@@ -250,7 +289,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         labels.add("Strength");
         labels.add("Health");
         labels.add("Safety");
-
 
         int[] colours = {
                 ContextCompat.getColor(this, R.color.good),

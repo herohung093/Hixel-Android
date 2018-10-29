@@ -4,13 +4,17 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.database.UserDao;
+import com.hixel.hixel.data.entities.user.Portfolio;
 import com.hixel.hixel.data.entities.user.User;
+import java.util.List;
 import java.util.concurrent.Executor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Exposes User data to the ViewModels and saves necessary information in the AppDatabase.
@@ -44,7 +48,7 @@ public class UserRepository {
     }
 
     /**
-     * Calls the server for user data information, if successful  returns a boy.
+     * Calls the server for user data information, if successful return a user
      */
     public void saveUser() {
         serverInterface.userData().enqueue(new Callback<User>() {
@@ -52,14 +56,13 @@ public class UserRepository {
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 executor.execute(() -> {
                     User user = response.body();
+                    Timber.d("GOT A USER");
                     userDao.saveUser(user);
                 });
             }
 
             @Override
-            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-
-            }
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) { }
         });
     }
 
@@ -91,5 +94,43 @@ public class UserRepository {
                     public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) { }
                 })
         );
+    }
+
+    public void addCompany(List<String> ticker) {
+        String tickerString = StringUtils.join(ticker, ",");
+
+        serverInterface.addCompany(tickerString).enqueue(new Callback<Portfolio>() {
+            @Override
+            public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
+                executor.execute(() -> {
+                    User user = userDao.get();
+                    user.setPortfolio(response.body());
+                    userDao.saveUser(user);
+                });
+            }
+
+            @Override
+            public void onFailure(Call<Portfolio> call, Throwable t) {
+                Timber.d("FAILED");
+            }
+        });
+    }
+
+    public void deleteCompany(String ticker) {
+        serverInterface.removeCompany(ticker).enqueue(new Callback<Portfolio>() {
+            @Override
+            public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
+                executor.execute(() -> {
+                    User user = userDao.get();
+                    user.setPortfolio(response.body());
+                    userDao.saveUser(user);
+                });
+            }
+
+            @Override
+            public void onFailure(Call<Portfolio> call, Throwable t) {
+                Timber.d("FAILED");
+            }
+        });
     }
 }

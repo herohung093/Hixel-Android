@@ -17,6 +17,8 @@ import az.plainpie.animation.PieAngleAnimation;
 
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.company.Company;
+import com.hixel.hixel.data.entities.user.Ticker;
+import com.hixel.hixel.data.entities.user.User;
 import com.hixel.hixel.databinding.ActivityCompanyBinding;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.ui.commonui.HorizontalListViewAdapter;
@@ -25,8 +27,9 @@ import com.hixel.hixel.ui.commonui.GraphFragment;
 
 import dagger.android.AndroidInjection;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
-import timber.log.Timber;
 
 /**
  *  CompanyDetailActivity displays the UI for the details of one company
@@ -41,7 +44,8 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
 
     private GraphFragment fragment;
     private String selectedRatio = "Returns";
-    private Company company;
+    private List<String> tickers = new ArrayList<>();
+    private Company currentCompany;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +56,11 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         setupBottomNavigationView(R.id.home_button);
 
         String ticker = getIntent().getStringExtra("COMPANY_TICKER");
-        Timber.d(ticker);
+        fragment = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_generic_overtime);
+
         this.configureDagger();
         this.configureViewModel(ticker);
 
-        // TODO: Correct way to do this?
-        fragment = (GraphFragment) getFragmentManager().findFragmentById(R.id.fragment_generic_overtime);
     }
 
     private void configureDagger() {
@@ -68,8 +71,19 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                                       .get(CompanyDetailViewModel.class);
         viewModel.loadCompany(ticker);
-        viewModel.getCompany().observe(this, companyResource
-                -> updateUI(companyResource == null ? null : companyResource.data));
+        viewModel.loadUser();
+        viewModel.getUser().observe(this, this::configureCompany);
+
+    }
+
+    private void configureCompany(User user) {
+        if (user != null ) {
+            viewModel.getCompany().observe(this, this::updateUI);
+
+            for (Ticker t : user.getPortfolio().getCompanies()) {
+                tickers.add(t.getTicker());
+            }
+        }
     }
 
     /**
@@ -78,8 +92,6 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
      */
     private void updateUI(Company company) {
         if (company != null) {
-
-            Timber.d(company.getIdentifiers().getFormattedName());
 
             // Set the toolbar title to the company name
             String title = company.getIdentifiers().getFormattedName();
@@ -93,12 +105,13 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
                 finish();
             });
 
-            if (viewModel.isInPortfolio(company.getIdentifiers().getTicker())) {
+            if (viewModel.isInPortfolio(company.getIdentifiers().getTicker(), tickers)) {
                 binding.fab.setVisibility(View.INVISIBLE);
             }
 
             companyChartSetup(company);
             setupGenericChart(company);
+            currentCompany = company;
         }
     }
 
@@ -115,8 +128,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
                 ContextCompat.getColor(this, R.color.secondary_background));
         pieView.setPieInnerPadding(20);
 
-        // TODO: Get an actual 'company overall score' from Company entity
-        float score = 50.0f; //(float) ((company.getDataEntries().get(0).get / 5.0) * 100.0);
+        float score = (float) company.getDataEntries().get(0).overallScore() * 100;
         pieView.setPercentage(score);
         pieView.setPercentageBackgroundColor(getColorIndicator(score));
 
@@ -143,11 +155,8 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         recyclerView.setAdapter(adapter);
 
         fragment.drawGraph(company, selectedRatio);
-
-        this.company = company;
     }
 
-    // TODO: Breakpoints need to be in line with confluence ratio proposal
     /**
      * Returns the color based upon the inputted value
      * @param value The 'score' of the Company
@@ -176,7 +185,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
     @Override
     public void onClick(String ratio) {
         selectedRatio = ratio;
-        fragment.drawGraph(company, selectedRatio);
+        fragment.drawGraph(currentCompany, selectedRatio);
     }
 
     @Override

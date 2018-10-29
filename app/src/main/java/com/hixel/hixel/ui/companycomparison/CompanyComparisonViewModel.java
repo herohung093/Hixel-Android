@@ -3,9 +3,12 @@ package com.hixel.hixel.ui.companycomparison;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.Resource;
 import com.hixel.hixel.data.UserRepository;
+import com.hixel.hixel.data.api.Client;
+import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.data.entities.user.User;
 import com.hixel.hixel.data.models.SearchEntry;
@@ -18,9 +21,13 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * ViewModel for interacting with the ComparisonActivity, pulls data from the
@@ -32,15 +39,11 @@ public class CompanyComparisonViewModel extends ViewModel {
 
     private CompanyRepository companyRepository;
     private UserRepository userRepository;
-
     private LiveData<Resource<List<Company>>> dashboardCompanies;
     private LiveData<User> user;
-
     private PublishSubject<String> publishSubject = PublishSubject.create();
     private CompositeDisposable disposable = new CompositeDisposable();
-
     private MutableLiveData<List<Company>> comparisonCompanies = new MutableLiveData<>();
-
     private List<Company> compCompanies = new ArrayList<>();
 
     @Inject
@@ -70,9 +73,7 @@ public class CompanyComparisonViewModel extends ViewModel {
         if (this.dashboardCompanies != null) {
             return;
         }
-        String[] inputTickers = new String[tickers.size()];
-        inputTickers = tickers.toArray(inputTickers);
-        dashboardCompanies = companyRepository.loadCompanies(StringUtils.join(inputTickers, ','));
+        dashboardCompanies = companyRepository.loadPortfolioCompanies(tickers);
     }
 
     public LiveData<User> getUser() {
@@ -115,31 +116,27 @@ public class CompanyComparisonViewModel extends ViewModel {
         String[] tickers = new String[tickersList.size()];
         tickers = tickersList.toArray(tickers);
 
-        //Client.getClient().create(ServerInterface.class)
-                //.getCompanies(StringUtils.join(tickers, ','), 1)
-                /*
+        Client.getClient().create(ServerInterface.class)
+                .getSyncCompanies(StringUtils.join(tickers, ','), 1)
                 .enqueue(new Callback<ArrayList<Company>>() {
                     @Override
                     public void onResponse(@NonNull Call<ArrayList<Company>> call,
                             @NonNull Response<ArrayList<Company>> response) {
 
-
                         List<Company> current = comparisonCompanies.getValue();
                         ArrayList<Company> temp = new ArrayList<>();
 
                         if (current != null && !current.isEmpty()){
-                            for(int i=0;i<current.size();i++)
-                            {
-                                temp.add(current.get(i));
-                            }
+                            temp.addAll(current);
                         }
+
                         temp.add(Objects.requireNonNull(response.body()).get(0));
                         comparisonCompanies.setValue(temp);
                     }
                     @Override
                     public void onFailure(@NonNull Call<ArrayList<Company>> call,
                             @NonNull Throwable t) { }
-                });*/
+                });
     }
 
 }

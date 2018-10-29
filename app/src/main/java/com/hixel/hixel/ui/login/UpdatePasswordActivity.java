@@ -37,6 +37,9 @@ public class UpdatePasswordActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
             }
         });
+
+        configureDagger();
+        configureViewModel();
     }
 
     private void configureDagger() {

@@ -21,7 +21,6 @@ public class HorizontalListViewAdapter
 
     private HorizontalListViewOnClickListener listener;
 
-    // TODO: XML or Const file?
     private static final String[] ratios =
             {"Returns", "Performance", "Strength", "Health", "Safety"};
 
@@ -52,14 +51,11 @@ public class HorizontalListViewAdapter
         }
 
         holder.tvSpecies.setText(ratios[position]);
-
-        // TODO: This is messy.
         holder.tvSpecies.setOnClickListener(view -> {
-            //fragmentGraph.drawGraph(companies,ratios.get(position));
+            // fragmentGraph.drawGraph(companies,ratios.get(position));
             notifyItemChanged(rowIndex);
             rowIndex = position;
             notifyItemChanged(rowIndex);
-
             listener.onClick(ratios[position]);
         });
     }

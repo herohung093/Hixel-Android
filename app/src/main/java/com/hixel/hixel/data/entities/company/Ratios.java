@@ -4,27 +4,22 @@ import com.google.gson.annotations.SerializedName;
 
 public class Ratios {
     @SerializedName("Debt-to-Equity Ratio")
-    private double debtToEquityRatio;
+    public double debtToEquityRatio;
     @SerializedName("Current Debt-to-Equity Ratio")
-    private double currentDebtToEquityRatio;
+    public double currentDebtToEquityRatio;
     @SerializedName("Return-on-Equity Ratio")
-    private double returnOnEquityRatio;
+    public double returnOnEquityRatio;
     @SerializedName("Return-on-Assets Ratio")
-    private double returnOnAssetsRatio;
+    public double returnOnAssetsRatio;
     @SerializedName("Interest Coverage")
-    private double interestCoverageRatio;
+    public double interestCoverageRatio;
 
     public Ratios(double debtToEquityRatio, double currentDebtToEquityRatio,
-            double returnOnEquityRatio, double returnOnAssetsRatio, double interestCoverageRatio) {
+            double returnOnAssetsRatio, double interestCoverageRatio) {
         this.debtToEquityRatio = debtToEquityRatio;
         this.currentDebtToEquityRatio = currentDebtToEquityRatio;
-        this.returnOnAssetsRatio = returnOnAssetsRatio;
-        this.returnOnEquityRatio = returnOnEquityRatio;
+        this.returnOnEquityRatio = returnOnAssetsRatio;
         this.interestCoverageRatio = interestCoverageRatio;
-    }
-
-    public double getReturnOnAssetsRatio() {
-        return returnOnAssetsRatio;
     }
 
     public double getDebtToEquityRatio() {
@@ -35,12 +30,16 @@ public class Ratios {
         return returnOnEquityRatio;
     }
 
-    public double getCurrentDebtToEquityRatio() {
-        return currentDebtToEquityRatio;
+    public double getReturnOnAssetsRatio() {
+        return returnOnAssetsRatio;
     }
 
     public double getInterestCoverageRatio() {
         return interestCoverageRatio;
+    }
+
+    public double getCurrentDebtToEquityRatio() {
+        return currentDebtToEquityRatio;
     }
 }
 

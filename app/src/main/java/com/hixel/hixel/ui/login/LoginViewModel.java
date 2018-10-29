@@ -2,6 +2,8 @@ package com.hixel.hixel.ui.login;
 
 import android.arch.lifecycle.ViewModel;
 import com.hixel.hixel.data.UserRepository;
+import com.hixel.hixel.data.api.Client;
+import com.hixel.hixel.data.api.ServerInterface;
 import javax.inject.Inject;
 
 /**
@@ -71,8 +73,13 @@ public class LoginViewModel extends ViewModel {
         return !name.isEmpty();
     }
 
-
     boolean validatePasswordUpdate(String firstPassword, String reenteredPassword) {
         return firstPassword.compareTo(reenteredPassword) != 0;
     }
+
+
+    void resetPassword() {
+        Client.getClient().create(ServerInterface.class).resetCode("18531092@students.latrobe.edu.au", "1234");
+    }
+
 }

@@ -9,20 +9,15 @@ import java.util.List;
  * of company tickers without needing to manually deserialize.
  */
 public class Portfolio {
-
     @SerializedName("companies")
     @TypeConverters(PortfolioTypeConverter.class)
-    private List<String> companies;
+    private List<Ticker> companies;
 
-    public List<String> getCompanies() {
+    public List<Ticker> getCompanies() {
         return companies;
     }
 
-    public void setCompanies(List<String> companies) {
+    public void setCompanies(List<Ticker> companies) {
         this.companies = companies;
-    }
-
-    public void addCompany(String ticker) {
-        this.companies.add(ticker);
     }
 }

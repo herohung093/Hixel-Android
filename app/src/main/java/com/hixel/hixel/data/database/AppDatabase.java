@@ -2,15 +2,18 @@ package com.hixel.hixel.data.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import com.hixel.hixel.data.entities.company.FinancialDataEntries;
 import com.hixel.hixel.data.entities.company.Identifiers;
+import com.hixel.hixel.data.entities.company.RatioConverter;
 import com.hixel.hixel.data.entities.user.User;
 
 /**
  * Application database stores Company and User data.
  */
 @Database(entities = {Identifiers.class, FinancialDataEntries.class, User.class},
-        version = 26, exportSchema = false)
+        version = 38, exportSchema = false)
+@TypeConverters(RatioConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
     /**

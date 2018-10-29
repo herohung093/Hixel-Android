@@ -16,7 +16,8 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
 
     private List<Company> companies;
     private HorizontalCompanyListOnClickListener listener;
-    public HorizontalCompanyListAdapter(List<Company> companies, HorizontalCompanyListOnClickListener listener) {
+
+    HorizontalCompanyListAdapter(List<Company> companies, HorizontalCompanyListOnClickListener listener) {
         this.companies = companies;
         this.listener = listener;
     }
@@ -31,13 +32,7 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        String companyName = companies.get(position)
-                .getIdentifiers()
-                .getName()
-                .split("[\\s, ]")[0]
-                .toLowerCase();
-
+        String companyName = companies.get(position).getIdentifiers().getFormattedName();
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyNameTV.setText(companyName);
         holder.cardView.setOnClickListener(view -> {

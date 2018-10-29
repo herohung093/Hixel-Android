@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.company.Company;
+import com.hixel.hixel.data.entities.user.Ticker;
 import com.hixel.hixel.data.entities.user.User;
 import com.hixel.hixel.data.models.SearchEntry;
 import com.hixel.hixel.databinding.ActivityComparisonBinding;
@@ -48,7 +49,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     private Button compareButton;
     private SearchAutoComplete searchAutoComplete;
     private HorizontalCompanyListAdapter horizontalCompanyListAdapter;
-    // TODO: Change to List
+
     List<Company> dashboardCompanies;
     List<Company> comparisonCompanies;
     List<Company> selectedCompanies = new ArrayList<>();
@@ -95,7 +96,11 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
      */
     public void updateDashboardCompanies(User user) {
         if (user != null) {
-            List<String> tickers = user.getPortfolio().getCompanies();
+            List<String> tickers = new ArrayList<>();
+
+            for (Ticker t : user.getPortfolio().getCompanies()) {
+                tickers.add(t.getTicker());
+            }
 
             viewModel.loadDashboardCompanies(tickers);
             viewModel.getDashboardCompanies().observe(this, companiesResource
@@ -320,7 +325,6 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
      * Method sets up the main search view
      */
     private void setupSearchView() {
-        // TODO: Figure out how to use databinding for search
         SearchView search = binding.searchView;
 
         search.setQueryHint("Add companies...");
@@ -331,7 +335,6 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
         searchAutoComplete = search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
         // Styling the search bar
-        // TODO: Use Hixel styles.
         searchAutoComplete.setHintTextColor(Color.GRAY);
         searchAutoComplete.setTextColor(Color.GRAY);
 
@@ -412,7 +415,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     private boolean checkDuplicate(List<Company> companies, String ticker) {
 
         for (Company c : companies) {
-            if (c.getIdentifiers().getTicker().equalsIgnoreCase(ticker) == true) {
+            if (c.getIdentifiers().getTicker().equalsIgnoreCase(ticker)) {
                 Toast.makeText(this, "Company already exist in comparison list",
                     Toast.LENGTH_LONG).show();
                 return true;
@@ -432,8 +435,8 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     @Override
     public void onClick(Company company) {
 
-        if (checkDuplicate(comparisonCompaniesAdapter.getDataSet(),
-                company.getIdentifiers().getTicker()) == false) {
+        if (!checkDuplicate(comparisonCompaniesAdapter.getDataSet(),
+                company.getIdentifiers().getTicker())) {
             selectedCompanies.add(company);
             //adapter.notifyDataSetChanged();
 

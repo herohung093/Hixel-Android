@@ -1,6 +1,10 @@
 package com.hixel.hixel.data.database;
 
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import com.hixel.hixel.data.entities.company.FinancialDataEntries;
 import java.util.List;
@@ -13,5 +17,11 @@ import java.util.List;
 public interface FinancialDataEntryDao {
 
     @Query("SELECT * FROM FinancialDataEntries")
-    List<FinancialDataEntries> getAllYears();
+    LiveData<List<FinancialDataEntries>> getAllFinancialDataEntries();
+
+    @Insert(onConflict = REPLACE)
+    void insertFinancialDataEntry(FinancialDataEntries financialDataEntries);
+
+    @Query("DELETE FROM FinancialDataEntries")
+    void deleteAll();
 }

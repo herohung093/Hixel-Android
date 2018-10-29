@@ -8,59 +8,27 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import com.hixel.hixel.data.entities.company.Company;
-import com.hixel.hixel.data.entities.company.FinancialDataEntries;
 import com.hixel.hixel.data.entities.company.Identifiers;
 import java.util.List;
-import timber.log.Timber;
 
 /**
  * Entry point for handling database request due to this being the 'root' class
  * for Api. Ensures we map data correctly when reading Company objects into the db.
  */
 @Dao
-public abstract class IdentifiersDao {
-
+public interface IdentifiersDao {
     @Query("SELECT * FROM Identifiers")
     @Transaction
-    public abstract LiveData<List<Company>> loadCompanies();
+    LiveData<List<Company>> loadAllCompanies();
+
+    @Query("SELECT * FROM Identifiers WHERE ticker IN(:tickers)")
+    @Transaction
+    LiveData<List<Company>> getPortfolioCompanies(List<String> tickers);
 
     @Query("SELECT * FROM Identifiers WHERE ticker = :ticker")
-    public abstract LiveData<Company> loadCompany(String ticker);
-
-    public void insertCompanies(List<Company> companies) {
-        for (Company c : companies) {
-            Timber.w(c.getIdentifiers().getName());
-            if (c.getDataEntries() != null) {
-                insertDataEntries(c, c.getDataEntries());
-            }
-        }
-    }
-
-    public void insertCompany(Company company) {
-        for (FinancialDataEntries entry : company.getDataEntries()) {
-            entry.setCik(company.getIdentifiers().getCik());
-        }
-
-        _insertIdentifier(company.getIdentifiers());
-        _insertAllDataEntries(company.getDataEntries());
-    }
-
-
-    private void insertDataEntries(Company c, List<FinancialDataEntries> dataEntries) {
-        for (FinancialDataEntries entry : dataEntries) {
-            entry.setCik(c.getIdentifiers().getCik());
-            _insertIdentifier(c.getIdentifiers());
-        }
-
-        _insertAllDataEntries(dataEntries);
-    }
-
-
+    @Transaction
+    LiveData<Company> loadCompany(String ticker);
 
     @Insert(onConflict = REPLACE)
-    abstract void _insertIdentifier(Identifiers identifier);
-
-    @Insert
-    abstract void _insertAllDataEntries(List<FinancialDataEntries> dataEntries);
-
+    void insertIdentifier(Identifiers identifiers);
 }
