@@ -59,7 +59,7 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
         progressDialog.show();
 
         ArrayList<String> tickers = getIntent().getStringArrayListExtra("COMPARISON_COMPANIES");
-
+        System.out.println("received companies at graphAct:" + tickers.size());
         this.configureDagger();
         this.configureViewModel(tickers);
 
@@ -138,7 +138,7 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
         mAdapter = new HorizontalListViewAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
-
+        System.out.println("companies to draw at graphAct:" + companies.size());
         fragmentA.drawGraph(companies, selectedRatio);
         this.companies = companies;
 
