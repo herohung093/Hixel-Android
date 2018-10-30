@@ -1,7 +1,6 @@
 <resources>
   <!-- Common -->
-  <!-- TODO: Change app_name to CorpReport -->
-  <string name="app_name">Hixel</string>
+  <string name="app_name">CorpReport</string>
   <string name="default_text">Default</string>
   <string name="long_default_text">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</string>
 

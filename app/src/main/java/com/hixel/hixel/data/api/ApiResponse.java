@@ -23,6 +23,7 @@ public class ApiResponse<T> {
     public final T body;
     @Nullable
     public final String errorMessage;
+    @SuppressWarnings("WeakerAccess")
     @NonNull
     public final Map<String, String> links;
 

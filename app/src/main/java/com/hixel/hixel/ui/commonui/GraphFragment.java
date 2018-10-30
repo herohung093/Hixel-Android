@@ -19,6 +19,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.entities.company.Company;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -28,14 +29,21 @@ import java.util.List;
 public class GraphFragment extends Fragment {
 
     private CombinedChart chart;
-    private final String[] years = {"2014", "2015", "2016", "2017", "2018"};
-    final ArrayList<Integer> colors = new ArrayList<>();
+
+    private ArrayList<String> years = new ArrayList<>();
+    ArrayList<Integer> colors = new ArrayList<>();
 
     public GraphFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Integer current_year = Calendar.getInstance().get(Calendar.YEAR);
+
+        for (Integer y = current_year - 5; y > current_year; ++y) {
+            years.add(y.toString());
+        }
 
         colors.add(Color.rgb(205,92,92));
         colors.add(Color.rgb(139,136,120));
@@ -211,7 +219,7 @@ public class GraphFragment extends Fragment {
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
         xAxis.setAxisMinimum(0.0f);
 
-        IAxisValueFormatter formatter = (value, axis) -> years[(int) value];
+        IAxisValueFormatter formatter = (value, axis) -> years.get((int) value);
         xAxis.setValueFormatter(formatter);
 
         xAxis.setTextSize(12f);

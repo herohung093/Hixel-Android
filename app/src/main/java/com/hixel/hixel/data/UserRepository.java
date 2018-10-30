@@ -26,7 +26,7 @@ public class UserRepository {
     private final ServerInterface serverInterface;
     private final UserDao userDao;
     private final Executor executor;
-
+    private boolean shouldRefresh = true;
     private final List<Ticker> tickers = new ArrayList<>();
 
     /**
@@ -45,7 +45,11 @@ public class UserRepository {
     }
 
     public LiveData<User> getUser() {
-        saveUser();
+        if (shouldRefresh) {
+            saveUser();
+            shouldRefresh = false;
+        }
+
         return userDao.getUser();
     }
 
@@ -54,7 +58,6 @@ public class UserRepository {
      * Calls the server for user data information, if successful return a user
      */
     private void saveUser() {
-        // TODO: GET THE RESPONSE FROM THE SERVER.
         serverInterface.userData().enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
@@ -110,6 +113,24 @@ public class UserRepository {
                 Timber.d(t1.getTicker());
             }
             tickers.add(t);
+
+            addToServer(ticker);
+        });
+    }
+
+    private void addToServer(String ticker) {
+        serverInterface.addCompany(ticker).enqueue(new Callback<Portfolio>() {
+            @Override
+            public void onResponse(@NonNull Call<Portfolio> call, @NonNull Response<Portfolio> response) {
+                // TODO: Replace the current portfolio with the returned portfolio
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Portfolio> call, @NonNull Throwable t) {
+                // TODO: Handle failure
+                // The company is already added on the frontend.
+                // If the network call fails, the call can either be queued and retried or the company can just be removed on the frontend.
+            }
         });
     }
 
@@ -135,9 +156,29 @@ public class UserRepository {
             }
 
             tickers.removeIf(tick -> t.getTicker().equals(tick.getTicker()));
+
+            removeFromServer(ticker);
         });
     }
 
+    private void removeFromServer(String ticker) {
+        serverInterface.removeCompany(ticker).enqueue(new Callback<Portfolio>() {
+            @Override
+            public void onResponse(@NonNull Call<Portfolio> call, @NonNull Response<Portfolio> response) {
+                // TODO: Replace the current portfolio with the returned portfolio
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Portfolio> call, @NonNull Throwable t) {
+                // TODO: Handle failure
+                // The company is already removed on the frontend.
+                // If the network call fails, the call can either be queued and retried or the company can just be added back on the frontend.
+            }
+        });
+    }
+
+
+    @SuppressWarnings("unused")
     public void deleteAllUserTickers() {
         executor.execute(()
                 -> serverInterface.removeCompany("TSLA").enqueue(

@@ -2,9 +2,15 @@ package com.hixel.hixel.ui.profile;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
 import com.hixel.hixel.data.UserRepository;
+import com.hixel.hixel.data.api.Client;
+import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.entities.user.User;
 import javax.inject.Inject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * ViewModel for interacting between the UserRepository and ProfileActivity, exposes the User
@@ -51,5 +57,20 @@ public class ProfileViewModel extends ViewModel {
      * @param newPassword The users new password after the change.
      */
     void updateUserPassword(String oldPassword, String newPassword) {
+        Call<Void> call = Client
+            .getClient().create(ServerInterface.class).changePassword(oldPassword,newPassword);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                // do something to close the dialog
+                System.out.println("Response code from change password:"+ response.code());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+            }
+        });
     }
-}
+   }
+

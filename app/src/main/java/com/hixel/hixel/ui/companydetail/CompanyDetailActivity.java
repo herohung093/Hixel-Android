@@ -95,7 +95,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
         if (company != null) {
 
             // Set the toolbar title to the company name
-            String title = company.getIdentifiers().getFormattedName();
+            String title = company.getIdentifiers().getName();
             setToolbarTitle(title);
 
             // Setup FAB
