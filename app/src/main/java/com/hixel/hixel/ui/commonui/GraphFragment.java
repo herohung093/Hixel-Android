@@ -28,7 +28,7 @@ import java.util.List;
 public class GraphFragment extends Fragment {
 
     private CombinedChart chart;
-    private String[] years = {"2014", "2015", "2016", "2017", "2018"};
+    private String[] years = { "2013", "2014", "2015", "2016", "2017",};
     ArrayList<Integer> colors = new ArrayList<>();
 
     public GraphFragment() { }
