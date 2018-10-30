@@ -430,8 +430,8 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
 
     @Override
     public void onClick(Company company) {
-        if (!checkDuplicate(comparisonCompaniesAdapter.getDataSet(),
-                company.getIdentifiers().getTicker())) {
+        if (checkDuplicate(comparisonCompaniesAdapter.getDataSet(), company.getIdentifiers().getTicker())
+            == false) {
             selectedCompanies.add(company);
             // adapter.notifyDataSetChanged();
 

@@ -99,7 +99,7 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
      * @param company The company to be inserted.
      */
     public void addItem(Company company) {
-        companies.add(getItemCount(), company);
+        companies.add(company);
         notifyDataSetChanged();
     }
 
@@ -109,7 +109,7 @@ public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.
      * @param companies The companies to be added.
      */
     public void setCompanies(List<Company> companies) {
-        this.companies=(companies);
+        this.companies.addAll(companies);
         notifyDataSetChanged();
     }
     /**

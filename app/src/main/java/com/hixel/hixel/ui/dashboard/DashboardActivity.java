@@ -230,8 +230,13 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
             Snackbar snackbar = Snackbar.make(binding.getRoot(), name
                     + " removed from portfolio", Snackbar.LENGTH_LONG);
 
-            snackbar.setAction("UNDO", view -> companyListAdapter
-                    .restoreItem(deletedCompany, deletedIndex));
+            snackbar.setAction("UNDO", view -> {
+                companyListAdapter
+                    .restoreItem(deletedCompany, deletedIndex);
+                dataSet.notifyDataSetChanged();
+                chart.notifyDataSetChanged();
+                chart.invalidate();
+            });
             snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.warning));
             snackbar.show();
 
