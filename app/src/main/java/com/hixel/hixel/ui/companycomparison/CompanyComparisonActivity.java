@@ -31,6 +31,7 @@ import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import timber.log.Timber;
 
 /**
  * Entry point for comparing companies. User adds companies to the comparison
@@ -100,6 +101,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
 
             for (Ticker t : user.getPortfolio().getCompanies()) {
                 tickers.add(t.getTicker());
+                Timber.d(t.getTicker());
             }
 
             viewModel.loadDashboardCompanies(tickers);

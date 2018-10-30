@@ -33,7 +33,7 @@ public class GraphViewModel extends ViewModel {
 
         String[] inputTickers = new String[tickers.size()];
         inputTickers = tickers.toArray(inputTickers);
-        companies = repository.loadCompanies(StringUtils.join(inputTickers, ','));
+        companies = repository.loadPortfolioCompanies(tickers);
 
     }
 
