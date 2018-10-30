@@ -23,7 +23,7 @@ import timber.log.Timber;
 @Singleton
 public class UserRepository {
 
-    private ServerInterface serverInterface;
+    private final ServerInterface serverInterface;
     private final UserDao userDao;
     private final Executor executor;
 
@@ -60,7 +60,16 @@ public class UserRepository {
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 executor.execute(() -> {
                     User user = response.body();
-                    user.getPortfolio().setCompanies(tickers);
+
+                    if (user == null)
+                        return;
+
+                    Portfolio portfolio = user.getPortfolio();
+
+                    if (portfolio == null)
+                        return;
+
+                    portfolio.setCompanies(tickers);
 
                     Timber.d("INITIAL USER LOAD");
                     Timber.d(user.getEmail());
@@ -134,15 +143,15 @@ public class UserRepository {
                 -> serverInterface.removeCompany("TSLA").enqueue(
                 new Callback<Portfolio>() {
                     @Override
-                    public void onResponse(Call<Portfolio> call, Response<Portfolio> response) {
+                    public void onResponse(@NonNull Call<Portfolio> call, @NonNull Response<Portfolio> response) {
                         // DON'T DO ANYTHING YET
 
-                        executor.execute(() -> userDao.deleteAll());
+                        executor.execute(userDao::deleteAll);
 
                     }
 
                     @Override
-                    public void onFailure(Call<Portfolio> call, Throwable t) {
+                    public void onFailure(@NonNull Call<Portfolio> call, @NonNull Throwable t) {
                         Timber.d("API CALL ERROR DELETING TICKERS");
                     }
                 }));

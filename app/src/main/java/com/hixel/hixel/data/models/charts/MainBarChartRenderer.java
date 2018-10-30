@@ -34,7 +34,7 @@ public class MainBarChartRenderer extends BarChartRenderer {
     /**
      * Create a rectangle for the bar chart shadow.
      */
-    private RectF barShadowRectBuffer = new RectF();
+    private final RectF barShadowRectBuffer = new RectF();
 
     /**
      * Method to draw the data set onto the canvas

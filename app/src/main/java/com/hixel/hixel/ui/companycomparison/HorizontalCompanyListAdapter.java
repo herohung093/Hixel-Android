@@ -15,7 +15,7 @@ import java.util.List;
 public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<HorizontalCompanyListAdapter.ViewHolder>{
 
     private List<Company> companies;
-    private HorizontalCompanyListOnClickListener listener;
+    private final HorizontalCompanyListOnClickListener listener;
 
     HorizontalCompanyListAdapter(List<Company> companies, HorizontalCompanyListOnClickListener listener) {
         this.companies = companies;
@@ -35,9 +35,7 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
         String companyName = companies.get(position).getIdentifiers().getFormattedName();
         companyName = companyName.substring(0, 1).toUpperCase() + companyName.substring(1);
         holder.companyNameTV.setText(companyName);
-        holder.cardView.setOnClickListener(view -> {
-            listener.onClick(companies.get(position));
-        });
+        holder.cardView.setOnClickListener(view -> listener.onClick(companies.get(position)));
     }
 
 
@@ -85,8 +83,8 @@ public class HorizontalCompanyListAdapter extends RecyclerView.Adapter<Horizonta
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView companyNameTV;
-        public CardView cardView;
+        final TextView companyNameTV;
+        public final CardView cardView;
 
         ViewHolder(View itemView) {
             super(itemView);

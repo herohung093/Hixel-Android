@@ -37,14 +37,14 @@ import retrofit2.Response;
  */
 public class CompanyComparisonViewModel extends ViewModel {
 
-    private CompanyRepository companyRepository;
-    private UserRepository userRepository;
+    private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
     private LiveData<Resource<List<Company>>> dashboardCompanies;
     private LiveData<User> user;
-    private PublishSubject<String> publishSubject = PublishSubject.create();
-    private CompositeDisposable disposable = new CompositeDisposable();
-    private MutableLiveData<List<Company>> comparisonCompanies = new MutableLiveData<>();
-    private List<Company> compCompanies = new ArrayList<>();
+    private final PublishSubject<String> publishSubject = PublishSubject.create();
+    private final CompositeDisposable disposable = new CompositeDisposable();
+    private final MutableLiveData<List<Company>> comparisonCompanies = new MutableLiveData<>();
+    private final List<Company> compCompanies = new ArrayList<>();
 
     @Inject
     CompanyComparisonViewModel(CompanyRepository companyRepository, UserRepository userRepository) {

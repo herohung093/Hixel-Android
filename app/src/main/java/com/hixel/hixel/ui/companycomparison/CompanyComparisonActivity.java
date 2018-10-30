@@ -52,7 +52,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
 
     List<Company> dashboardCompanies;
     List<Company> comparisonCompanies;
-    List<Company> selectedCompanies = new ArrayList<>();
+    final List<Company> selectedCompanies = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +130,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
     private void setupDashboardCompanyListAdapter(List<Company> companies) {
         if (companies != null) {
             horizontalCompanyListAdapter =
-                new HorizontalCompanyListAdapter(companies,this::onClick);
+                new HorizontalCompanyListAdapter(companies, this);
 
             LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -209,8 +209,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
 
                     final Company temp = dashboardCompanies.get(viewHolder.getAdapterPosition());
-                    if (checkDuplicate(comparisonCompaniesAdapter.getDataSet(), temp.getIdentifiers().getTicker())
-                        == false) {
+                    if (!checkDuplicate(comparisonCompaniesAdapter.getDataSet(), temp.getIdentifiers().getTicker())) {
                         selectedCompanies.add(temp);
                         //adapter.notifyDataSetChanged();
                         horizontalCompanyListAdapter.removeItem(viewHolder.getAdapterPosition());
@@ -238,6 +237,7 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
                         cardView, dX, dY, actionState, isCurrentlyActive);
                 }
 
+                @SuppressWarnings("EmptyMethod")
                 @Override
                 public int convertToAbsoluteDirection(int flags, int layoutDirection) {
                     return super.convertToAbsoluteDirection(flags, layoutDirection);

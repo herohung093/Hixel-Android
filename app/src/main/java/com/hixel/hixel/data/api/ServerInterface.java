@@ -90,6 +90,7 @@ public interface ServerInterface {
      * @param code the code the user has received
      * @return void
      */
+    @SuppressWarnings("UnusedReturnValue")
     @GET("/users/reset-code")
     @Headers("No-Authentication: true")
     Call<Void> resetCode(@Query("email") String email, @Query("code") String code);

@@ -26,18 +26,18 @@ import com.google.gson.annotations.SerializedName;
 public class FinancialDataEntries {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private final int id;
 
     @SerializedName("year")
     @ColumnInfo(name="year")
-    private int year;
+    private final int year;
 
     @ColumnInfo(name="identifier_id")
     private String identifierId;
 
     @Embedded
     @SerializedName("ratios")
-    private Ratios ratios;
+    private final Ratios ratios;
 
 
     public FinancialDataEntries(int id, int year, String identifierId, Ratios ratios) {

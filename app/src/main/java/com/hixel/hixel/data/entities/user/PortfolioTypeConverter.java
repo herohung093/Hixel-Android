@@ -3,7 +3,7 @@ package com.hixel.hixel.data.entities.user;
 import android.arch.persistence.room.TypeConverter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.hixel.hixel.data.entities.company.Ratios;
+
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;

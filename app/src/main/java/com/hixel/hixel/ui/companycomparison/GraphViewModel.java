@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class GraphViewModel extends ViewModel {
 
-    private CompanyRepository repository;
+    private final CompanyRepository repository;
     private LiveData<Resource<List<Company>>> companies;
 
     @Inject

@@ -8,9 +8,9 @@ import com.hixel.hixel.ui.commonui.CompanyListAdapter.ViewHolder;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
-    private RecyclerItemTouchHelperListener listener;
+    private final RecyclerItemTouchHelperListener listener;
 
-    RecyclerItemTouchHelper(int dragDirs, int swipeDirs,RecyclerItemTouchHelperListener listener) {
+    RecyclerItemTouchHelper(@SuppressWarnings("SameParameterValue") int dragDirs, int swipeDirs, RecyclerItemTouchHelperListener listener) {
         super(dragDirs, swipeDirs);
         this.listener = listener;
     }
@@ -52,6 +52,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         }
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public int convertToAbsoluteDirection(int flags, int layoutDirection) {
         return super.convertToAbsoluteDirection(flags, layoutDirection);

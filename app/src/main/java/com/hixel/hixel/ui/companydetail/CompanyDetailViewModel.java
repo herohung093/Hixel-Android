@@ -8,11 +8,9 @@ import com.hixel.hixel.data.UserRepository;
 import com.hixel.hixel.data.entities.company.Company;
 import com.hixel.hixel.data.CompanyRepository;
 import com.hixel.hixel.data.entities.user.User;
-import java.util.ArrayList;
+
 import java.util.List;
 import javax.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import timber.log.Timber;
 
 /**
  * ViewModel for the CompanyDetail screen.
@@ -23,8 +21,8 @@ import timber.log.Timber;
  */
 public class CompanyDetailViewModel extends ViewModel {
 
-    private CompanyRepository companyRepository;
-    private UserRepository userRepository;
+    private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
     private LiveData<Company> company;
     private LiveData<User> user;
 

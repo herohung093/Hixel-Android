@@ -10,7 +10,7 @@ import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.database.FinancialDataEntryDao;
 import com.hixel.hixel.data.database.IdentifiersDao;
 import com.hixel.hixel.data.database.UserDao;
-import com.hixel.hixel.data.entities.company.FinancialDataEntries;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.AndroidInjectionModule;

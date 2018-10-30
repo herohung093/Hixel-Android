@@ -16,10 +16,10 @@ import com.hixel.hixel.R;
 public class HorizontalListViewAdapter
         extends RecyclerView.Adapter<HorizontalListViewAdapter.ViewHolder> {
 
-    private Context context;
+    private final Context context;
     private int rowIndex = 0;
 
-    private HorizontalListViewOnClickListener listener;
+    private final HorizontalListViewOnClickListener listener;
 
     private static final String[] ratios =
             {"Returns", "Performance", "Strength", "Health", "Safety"};
@@ -66,8 +66,8 @@ public class HorizontalListViewAdapter
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder  {
-        public CardView cardView;
-        TextView tvSpecies;
+        public final CardView cardView;
+        final TextView tvSpecies;
 
         ViewHolder(View itemView) {
             super(itemView);

@@ -45,7 +45,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
 
     private GraphFragment fragment;
     private String selectedRatio = "Returns";
-    private List<String> tickers = new ArrayList<>();
+    private final List<String> tickers = new ArrayList<>();
     private Company currentCompany;
 
     @Override
@@ -90,6 +90,7 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
      * Updates the UI on LiveData changes
      * @param company The current company
      */
+    @SuppressWarnings("StatementWithEmptyBody")
     private void updateUI(Company company) {
         if (company != null) {
 

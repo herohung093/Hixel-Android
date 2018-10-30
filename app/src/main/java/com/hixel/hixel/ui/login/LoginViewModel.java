@@ -12,7 +12,7 @@ import javax.inject.Inject;
  */
 public class LoginViewModel extends ViewModel {
 
-    private UserRepository repository;
+    private final UserRepository repository;
 
     /**
      * Instantiates the LoginViewModel and injects the UserRepository
@@ -30,6 +30,7 @@ public class LoginViewModel extends ViewModel {
      * @param email The email entered in y the user.
      * @return A boolean indicating whether the password is valid.
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean isValidEmail(String email) {
         boolean isValid = true;
 
@@ -62,6 +63,7 @@ public class LoginViewModel extends ViewModel {
      * @param name The user entered name.
      * @return A boolean indicating whether the user enter name is valid
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean isValidName(String name) {
         return !name.isEmpty();
     }

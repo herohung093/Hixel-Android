@@ -28,8 +28,8 @@ import java.util.List;
 public class GraphFragment extends Fragment {
 
     private CombinedChart chart;
-    private String[] years = {"2014", "2015", "2016", "2017", "2018"};
-    ArrayList<Integer> colors = new ArrayList<>();
+    private final String[] years = {"2014", "2015", "2016", "2017", "2018"};
+    final ArrayList<Integer> colors = new ArrayList<>();
 
     public GraphFragment() { }
 
@@ -89,7 +89,7 @@ public class GraphFragment extends Fragment {
     public void drawGraph(List<Company> companies, String selectedRatio) {
         LineData lineData = new LineData();
         ArrayList<LineDataSet> lineDataSets = new ArrayList<>();
-        LineDataSet setComp = null;
+        LineDataSet setComp;
 
         for(int i = 0; i < companies.size(); i++){
             setComp = lineChartDataSetup(selectedRatio, companies.get(i));
@@ -230,6 +230,7 @@ public class GraphFragment extends Fragment {
         chart.getAxisRight().setGranularity(1f);
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

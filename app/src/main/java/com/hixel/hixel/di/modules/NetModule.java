@@ -8,13 +8,8 @@ import com.hixel.hixel.data.api.TokenInterceptor;
 import com.hixel.hixel.util.LiveDataCallAdapterFactory;
 import dagger.Module;
 import dagger.Provides;
-import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 import okhttp3.OkHttpClient.Builder;
 import okhttp3.Request;
@@ -57,44 +52,11 @@ public class NetModule {
     @NonNull
     Retrofit provideRetrofit(OkHttpClient.Builder client, TokenInterceptor tokenInterceptor,
             TokenAuthenticator tokenAuthenticator) {
-
-        // Create a trust manager that does not validate certificate chains
-        final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-            @Override
-            public void checkClientTrusted(java.security.cert.X509Certificate[] chain,
-                    String authType) throws CertificateException { }
-
-            @Override
-            public void checkServerTrusted(java.security.cert.X509Certificate[] chain,
-                    String authType) throws CertificateException { }
-
-            @Override
-            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                return new java.security.cert.X509Certificate[0];
-            }
-        } };
-
-        // Install the all-trusting trust manager
-        SSLContext sslContext = null;
-        try {
-            sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, trustAllCerts,
-                    new java.security.SecureRandom());
-        } catch (Exception ignored) {
-            // TODO: Exception handling
-        }
-
-        // Create an ssl socket factory with our all-trusting manager
-        final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
         client.addNetworkInterceptor(new StethoInterceptor())
                 .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(tokenInterceptor)
-                .authenticator(tokenAuthenticator)
-                .sslSocketFactory(sslSocketFactory)
-                .hostnameVerifier(
-                        org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+                .authenticator(tokenAuthenticator);
 
         client.addInterceptor(chain -> {
             Request original = chain.request();

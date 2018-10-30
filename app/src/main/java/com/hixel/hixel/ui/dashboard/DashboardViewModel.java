@@ -24,14 +24,14 @@ import javax.inject.Inject;
  */
 public class DashboardViewModel extends ViewModel {
 
-    private CompanyRepository companyRepository;
-    private UserRepository userRepository;
+    private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
 
     private LiveData<Resource<List<Company>>> companies;
     private LiveData<User> user;
 
-    private PublishSubject<String> publishSubject = PublishSubject.create();
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private final PublishSubject<String> publishSubject = PublishSubject.create();
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
     public DashboardViewModel(CompanyRepository companyRepository, UserRepository userRepository) {

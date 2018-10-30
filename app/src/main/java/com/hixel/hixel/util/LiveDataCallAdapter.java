@@ -1,6 +1,8 @@
 package com.hixel.hixel.util;
 
 import android.arch.lifecycle.LiveData;
+import android.support.annotation.NonNull;
+
 import com.hixel.hixel.data.api.ApiResponse;
 import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -28,9 +30,9 @@ public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<ApiRespon
     }
 
     @Override
-    public LiveData<ApiResponse<R>> adapt(Call<R> call) {
+    public LiveData<ApiResponse<R>> adapt(@NonNull Call<R> call) {
         return new LiveData<ApiResponse<R>>() {
-            AtomicBoolean started = new AtomicBoolean(false);
+            final AtomicBoolean started = new AtomicBoolean(false);
             @Override
             protected void onActive() {
                 super.onActive();
@@ -38,13 +40,13 @@ public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<ApiRespon
                 if (started.compareAndSet(false, true)) {
                     call.enqueue(new Callback<R>() {
                         @Override
-                        public void onResponse(Call<R> call, Response<R> response) {
-                            postValue(new ApiResponse<R>(response));
+                        public void onResponse(@NonNull Call<R> call, @NonNull Response<R> response) {
+                            postValue(new ApiResponse<>(response));
                         }
 
                         @Override
-                        public void onFailure(Call<R> call, Throwable t) {
-                            postValue(new ApiResponse<R>(t));
+                        public void onFailure(@NonNull Call<R> call, @NonNull Throwable t) {
+                            postValue(new ApiResponse<>(t));
                         }
                     });
                 }

@@ -1,9 +1,14 @@
 package com.hixel.hixel.deprecatedTests;
 
+//Normally I wouldn't comment out a whole file like this, but it's throwing all kinds of nasty warnings up.
+
+/*
 import static net.bytebuddy.matcher.ElementMatchers.is;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.persistence.room.Room;
+import android.support.test.InstrumentationRegistry;
+
 import com.hixel.hixel.data.database.AppDatabase;
 import com.hixel.hixel.data.database.IdentifiersDao;
 import com.hixel.hixel.data.entities.company.Company;
@@ -102,17 +107,16 @@ public class CompanyDataTest {
 
     public static class IdentifiersDaoTest {
         @Rule
-        public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule()();
+        public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
         private AppDatabase database;
         private IdentifiersDao identifiersDao;
 
         @Before
         public void initDb() throws Exception {
-            database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext()),
-                    AppDatabase.class)
-                    .allowMainThreadQueries()
-                    .build();
+            database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), AppDatabase.class)
+                           .allowMainThreadQueries()
+                           .build();
 
             identifiersDao = database.identifiersDao();
         }
@@ -147,3 +151,4 @@ public class CompanyDataTest {
         }
     }
 }
+*/

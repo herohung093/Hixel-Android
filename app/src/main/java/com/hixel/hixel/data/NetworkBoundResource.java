@@ -84,6 +84,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     @WorkerThread
     protected abstract void saveCallResult(@NonNull RequestType item);
 
+    @SuppressWarnings("SameReturnValue")
     @MainThread
     protected abstract boolean shouldFetch(@Nullable ResultType data);
 

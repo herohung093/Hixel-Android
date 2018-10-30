@@ -4,7 +4,6 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
-import java.util.regex.Pattern;
 
 /**
  * Holds basic information about the Company, the cik, name, and ticker.
@@ -16,11 +15,11 @@ public class Identifiers {
     @PrimaryKey
     @NonNull
     @SerializedName("cik")
-    private String id;
+    private final String id;
     @SerializedName("name")
-    private String name;
+    private final String name;
     @SerializedName("ticker")
-    private  String ticker;
+    private final String ticker;
 
     public Identifiers(@NonNull String id, String name, String ticker) {
         this.id = id;

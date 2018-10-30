@@ -4,9 +4,9 @@ package com.hixel.hixel.data.models;
  * Simple model to read in search results from the server.
  */
 public class SearchEntry {
-    private String ticker;
-    private String name;
-    private String exchange;
+    private final String ticker;
+    private final String name;
+    private final String exchange;
 
     /**
      * Constructor for a SearchEntry object

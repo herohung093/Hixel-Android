@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class CompanyListAdapter extends RecyclerView.Adapter<CompanyListAdapter.ViewHolder> {
 
-    private Context context;
+    private final Context context;
     private List<Company> companies;
 
     public CompanyListAdapter(Context context, List<Company> companies) {

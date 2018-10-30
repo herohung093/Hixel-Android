@@ -15,8 +15,8 @@ import java.util.List;
 public class CompanyScoreListAdapter
         extends RecyclerView.Adapter<CompanyScoreListAdapter.ViewHolder> {
 
-    Context context;
-    List<Company> companies;
+    final Context context;
+    final List<Company> companies;
 
     CompanyScoreListAdapter(Context context, List<Company> companies) {
         this.context = context;
@@ -53,8 +53,9 @@ public class CompanyScoreListAdapter
         notifyDataSetChanged();
     }
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView companyName,score;
-        private CircularProgressIndicator progressBar;
+        final TextView companyName;
+        TextView score;
+        private final CircularProgressIndicator progressBar;
 
         ViewHolder(View itemView) {
             super(itemView);

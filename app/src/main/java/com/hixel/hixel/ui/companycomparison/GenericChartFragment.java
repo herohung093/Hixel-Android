@@ -27,7 +27,7 @@ import java.util.List;
 public class GenericChartFragment extends Fragment {
 
     private RadarChart radarChart;
-    ArrayList<Integer> colors =new ArrayList<>();
+    final ArrayList<Integer> colors =new ArrayList<>();
     public GenericChartFragment() { }
 
     @Override
@@ -109,7 +109,7 @@ public class GenericChartFragment extends Fragment {
         xAxis.setDrawLabels(true);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
-            private String[] mActivities = new String[]{"Returns","Performance","Strength","Health","Safety"};
+            private final String[] mActivities = new String[]{"Returns","Performance","Strength","Health","Safety"};
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {

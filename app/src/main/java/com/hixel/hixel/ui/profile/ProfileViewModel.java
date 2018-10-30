@@ -13,7 +13,7 @@ import javax.inject.Inject;
 public class ProfileViewModel extends ViewModel {
 
     private LiveData<User> user;
-    private UserRepository repository;
+    private final UserRepository repository;
 
     @Inject
     ProfileViewModel(UserRepository repository) {

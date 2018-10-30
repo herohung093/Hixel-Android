@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class SearchAdapter extends ArrayAdapter<SearchEntry> {
 
-    private Context context;
-    private List<SearchEntry> searchEntries;
+    private final Context context;
+    private final List<SearchEntry> searchEntries;
 
     public SearchAdapter(@NonNull Context context, List<SearchEntry> searchEntries) {
         super(context, 0, searchEntries);

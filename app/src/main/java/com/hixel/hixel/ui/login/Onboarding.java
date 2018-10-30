@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class Onboarding extends AhoyOnboarderActivity {
 
-    static String COMPLETED_ONBOARDING_PREF_NAME = "onboarding_initiated";
+    static final String COMPLETED_ONBOARDING_PREF_NAME = "onboarding_initiated";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
