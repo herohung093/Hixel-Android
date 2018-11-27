@@ -2,6 +2,7 @@ package com.hixel.hixel.data;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
+
 import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.data.database.UserDao;
 import com.hixel.hixel.data.entities.user.Portfolio;
@@ -26,8 +27,7 @@ public class UserRepository {
     private final ServerInterface serverInterface;
     private final UserDao userDao;
     private final Executor executor;
-    private boolean shouldRefresh = true;
-    private final List<Ticker> tickers = new ArrayList<>();
+    private boolean init = true;
 
     /**
      * Constructor that gets an instance of the server for api calls, user dao to store user data,
@@ -45,9 +45,9 @@ public class UserRepository {
     }
 
     public LiveData<User> getUser() {
-        if (shouldRefresh) {
-            saveUser();
-            shouldRefresh = false;
+        if (init) {
+            loadUserFromServer();
+            init = false;
         }
 
         return userDao.getUser();
@@ -57,30 +57,26 @@ public class UserRepository {
     /**
      * Calls the server for user data information, if successful return a user
      */
-    private void saveUser() {
+    private void loadUserFromServer() {
         serverInterface.userData().enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 executor.execute(() -> {
                     User user = response.body();
 
-                    if (user == null)
+                    if (user == null) {
+                        Timber.d("User was null.");
                         return;
-
+                    }
                     Portfolio portfolio = user.getPortfolio();
 
-                    if (portfolio == null)
+                    if (portfolio == null) {
+                        Timber.d("Portfolio was null.");
                         return;
-
-                    portfolio.setCompanies(tickers);
-
-                    Timber.d("INITIAL USER LOAD");
-                    Timber.d(user.getEmail());
-                    Timber.d("TICKERS:");
-                    for (Ticker t : user.getPortfolio().getCompanies()) {
-                        Timber.d(t.getTicker());
                     }
 
+                    Timber.d("User loaded from server: %s", user.getEmail());
+                    Timber.d("Portfolio: %s", user.getPortfolio().toString());
 
                     userDao.saveUser(user);
                 });
@@ -106,13 +102,8 @@ public class UserRepository {
             // Save the user back into the db.
             userDao.saveUser(user);
 
-            Timber.d("ADDING A USER");
-            Timber.d(user.getEmail());
-            Timber.d("TICKERS:");
-            for (Ticker t1 : user.getPortfolio().getCompanies()) {
-                Timber.d(t1.getTicker());
-            }
-            tickers.add(t);
+            Timber.d("Adding new company to portfolio");
+            Timber.d("Portfolio: %s", user.getPortfolio().toString());
 
             addToServer(ticker);
         });
@@ -122,7 +113,7 @@ public class UserRepository {
         serverInterface.addCompany(ticker).enqueue(new Callback<Portfolio>() {
             @Override
             public void onResponse(@NonNull Call<Portfolio> call, @NonNull Response<Portfolio> response) {
-                // TODO: Replace the current portfolio with the returned portfolio
+                executor.execute(() -> portfolioUpdateCallback(response.body()));
             }
 
             @Override
@@ -148,14 +139,8 @@ public class UserRepository {
             // Save the user back into the db.
             userDao.saveUser(user);
 
-            Timber.d("DELETING A USER");
-            Timber.d(user.getEmail());
-            Timber.d("TICKERS:");
-            for (Ticker t1 : user.getPortfolio().getCompanies()) {
-                Timber.d(t1.getTicker());
-            }
-
-            tickers.removeIf(tick -> t.getTicker().equals(tick.getTicker()));
+            Timber.d("Deleting a company from the portfolio");
+            Timber.d("Portfolio: %s", user.getPortfolio().toString());
 
             removeFromServer(ticker);
         });
@@ -165,7 +150,7 @@ public class UserRepository {
         serverInterface.removeCompany(ticker).enqueue(new Callback<Portfolio>() {
             @Override
             public void onResponse(@NonNull Call<Portfolio> call, @NonNull Response<Portfolio> response) {
-                // TODO: Replace the current portfolio with the returned portfolio
+                executor.execute(() -> portfolioUpdateCallback(response.body()));
             }
 
             @Override
@@ -177,24 +162,27 @@ public class UserRepository {
         });
     }
 
+    private void portfolioUpdateCallback(Portfolio portfolioUpdate)
+    {
+        // Get our current user from the db.
+        User user = userDao.get();
 
-    @SuppressWarnings("unused")
-    public void deleteAllUserTickers() {
-        executor.execute(()
-                -> serverInterface.removeCompany("TSLA").enqueue(
-                new Callback<Portfolio>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Portfolio> call, @NonNull Response<Portfolio> response) {
-                        // DON'T DO ANYTHING YET
+        if (portfolioUpdate == null) {
+            Timber.w("Received null portfolio update from the server");
+            return;
+        }
 
-                        executor.execute(userDao::deleteAll);
+        user.setPortfolio(portfolioUpdate);
 
-                    }
+        Timber.d("Received portfolio update from the server");
+        Timber.d("New Portfolio: %s", portfolioUpdate.toString());
 
-                    @Override
-                    public void onFailure(@NonNull Call<Portfolio> call, @NonNull Throwable t) {
-                        Timber.d("API CALL ERROR DELETING TICKERS");
-                    }
-                }));
+        userDao.saveUser(user);
+        Timber.d("Saved");
+    }
+
+    public void deleteUser() {
+        executor.execute(userDao::deleteAll);
+        init = true;
     }
 }

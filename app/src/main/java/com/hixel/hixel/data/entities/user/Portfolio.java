@@ -20,4 +20,10 @@ public class Portfolio {
     public void setCompanies(List<Ticker> companies) {
         this.companies = companies;
     }
+
+    @Override
+    public String toString()
+    {
+        return PortfolioTypeConverter.tickerListToString(companies);
+    }
 }

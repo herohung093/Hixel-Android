@@ -20,8 +20,8 @@
       android:orientation="vertical">
 
       <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="0dp"
         android:layout_gravity="center_horizontal"
@@ -42,7 +42,7 @@
           android:id="@+id/input_email"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:drawableLeft="@drawable/email"
+          android:drawableStart="@drawable/email"
           android:inputType="textEmailAddress"
           android:textColor="@color/text_main_dark"/>
 
@@ -60,10 +60,11 @@
           android:id="@+id/input_password"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:drawableLeft="@drawable/password_logo"
+          android:drawableStart="@drawable/password_logo"
           android:inputType="textPassword"
           android:textColor="@color/text_main_dark"
-          android:textColorHint="@color/text_main_dark"/>
+          android:textColorHint="@color/text_main_dark"
+          android:imeOptions="actionDone"/>
 
       </android.support.design.widget.TextInputLayout>
 

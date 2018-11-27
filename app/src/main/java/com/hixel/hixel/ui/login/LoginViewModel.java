@@ -22,12 +22,13 @@ public class LoginViewModel extends ViewModel {
     @Inject
     LoginViewModel(UserRepository repository) {
         this.repository = repository;
+        this.repository.deleteUser();
     }
 
     /**
-     * Performs logic checks to esnure the user entered email is valid.
+     * Performs logic checks to ensure the user entered email is valid.
      *
-     * @param email The email entered in y the user.
+     * @param email The email entered in by the user.
      * @return A boolean indicating whether the password is valid.
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -47,6 +48,7 @@ public class LoginViewModel extends ViewModel {
      * @param password The user entered password.
      * @return A boolean indicating whether the password is valid.
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean isValidPassword(String password) {
         boolean isValid = true;
 
@@ -58,7 +60,7 @@ public class LoginViewModel extends ViewModel {
     }
 
     /**
-     * Ensures the name meets criteria
+     * Ensures the name meets validation requirements
      *
      * @param name The user entered name.
      * @return A boolean indicating whether the user enter name is valid
@@ -67,14 +69,4 @@ public class LoginViewModel extends ViewModel {
     boolean isValidName(String name) {
         return !name.isEmpty();
     }
-
-    boolean validatePasswordUpdate(String firstPassword, String reenteredPassword) {
-        return firstPassword.compareTo(reenteredPassword) != 0;
-    }
-
-
-    void resetPassword() {
-        Client.getClient().create(ServerInterface.class).resetCode("18531092@students.latrobe.edu.au", "1234");
-    }
-
 }

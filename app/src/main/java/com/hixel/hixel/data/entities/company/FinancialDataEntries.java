@@ -10,10 +10,11 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Db Entity that holds the year of the entry, a list of Ratios for that year
- * (to be re-implemented), and the cik of the Company that is responsible for
- * the entries.
+ * and the cik of the Company that is responsible for the entries.
  */
 @Entity(foreignKeys = {
                 @ForeignKey(
@@ -23,7 +24,7 @@ import com.google.gson.annotations.SerializedName;
                     onDelete = CASCADE
         )}, indices = @Index("identifier_id")
 )
-public class FinancialDataEntries {
+public class FinancialDataEntries implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private final int id;
@@ -73,16 +74,16 @@ public class FinancialDataEntries {
     }
 
     public int getReturns() {
-        double ratio = ratios.dividendYield;
+        double ratio = ratios.getReturnOnEquityRatio();
         int score;
 
         if (ratio < 0.005) {
             score = 1;
-        } else if (ratio > 0.005 && ratio < 0.01) {
+        } else if (ratio > 0.005 && ratio < 0.10) {
             score = 2;
-        } else if (ratio > 0.01 && ratio < 0.05) {
+        } else if (ratio > 0.1 && ratio < 0.20) {
             score = 3;
-        } else if (ratio >0.05 && ratio < 0.1) {
+        } else if (ratio > 0.2 && ratio < 0.25) {
             score = 4;
         } else {
             score = 5;
@@ -92,16 +93,16 @@ public class FinancialDataEntries {
     }
 
     public int getPerformance() {
-        double ratio = ratios.returnOnEquityRatio;
+        double ratio = ratios.getProfitMarginRatio();
         int score;
 
         if (ratio < 0.005) {
             score = 1;
         } else if (ratio > 0.005 && ratio < 0.10) {
             score = 2;
-        } else if (ratio >0.1 && ratio < 0.20) {
+        } else if (ratio > 0.1 && ratio < 0.20) {
             score = 3;
-        } else if (ratio >0.2 && ratio < 0.25) {
+        } else if (ratio > 0.2 && ratio < 0.25) {
             score = 4;
         } else {
             score = 5;
@@ -111,14 +112,14 @@ public class FinancialDataEntries {
     }
 
     public int getStrength() {
-        double ratio = ratios.interestCoverageRatio;
+        double ratio = ratios.getInterestCoverageRatio();
         int score;
 
         if (ratio < 1.5) {
             score = 1;
         } else if (ratio > 1.5 && ratio < 3.0) {
             score = 2;
-        } else if (ratio >3 && ratio < 4.5) {
+        } else if (ratio > 3 && ratio < 4.5) {
             score = 3;
         } else if (ratio > 4.5 && ratio < 6.0) {
             score = 4;
@@ -130,16 +131,16 @@ public class FinancialDataEntries {
     }
 
     public int getHealth() {
-        double ratio = ratios.currentRatio;
+        double ratio = ratios.getCurrentRatio();
         int score;
 
         if (ratio < 0.5) {
             score = 1;
-        } else if (ratio >0.5 && ratio < 1.0) {
+        } else if (ratio > 0.5 && ratio < 1.0) {
             score = 2;
         } else if (ratio > 1.0 && ratio < 1.5) {
             score = 3;
-        } else if (ratio >1.5 && ratio < 2.0) {
+        } else if (ratio > 1.5 && ratio < 2.0) {
             score = 4;
         } else {
             score = 5;
@@ -149,7 +150,7 @@ public class FinancialDataEntries {
     }
 
     public int getSafety() {
-        double ratio = ratios.currentDebtToEquityRatio;
+        double ratio = ratios.getCurrentDebtToEquityRatio();
         int score;
 
         if (ratio > 10.0) {

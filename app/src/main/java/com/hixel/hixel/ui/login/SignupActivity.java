@@ -8,6 +8,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Toast;
 import com.hixel.hixel.R;
 import com.hixel.hixel.data.api.Client;
@@ -34,6 +35,14 @@ public class SignupActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
 
         binding.btnSignup.setOnClickListener(view -> signup());
+
+        binding.inputPassword.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.btnSignup.performClick();
+                return true;
+            }
+            return false;
+        });
 
         binding.linkLogin.setOnClickListener(view -> {
             Intent moveToLogin = new Intent(getApplicationContext(), LoginActivity.class);

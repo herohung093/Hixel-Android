@@ -102,7 +102,6 @@ public class CompanyDetailActivity extends BaseActivity<ActivityCompanyBinding>
             binding.fab.setOnClickListener(v -> {
                 viewModel.saveCompany(company);
                 Intent intent = new Intent(this, DashboardActivity.class);
-                intent.putExtra("QUICK_ADD", company.getIdentifiers().getTicker());
                 startActivity(intent);
                 finish();
             });

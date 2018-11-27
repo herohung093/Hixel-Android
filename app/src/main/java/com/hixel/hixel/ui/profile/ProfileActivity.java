@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,12 +13,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
 import com.hixel.hixel.R;
+import com.hixel.hixel.data.api.Client;
+import com.hixel.hixel.data.api.ServerInterface;
 import com.hixel.hixel.ui.base.BaseActivity;
 import com.hixel.hixel.data.entities.user.User;
 import com.hixel.hixel.databinding.ActivityProfileBinding;
 import com.hixel.hixel.ui.login.LoginActivity;
 import dagger.android.AndroidInjection;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import timber.log.Timber;
+
 import javax.inject.Inject;
 
 /**
@@ -123,6 +133,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding>  {
      */
     public void setupLogout() {
         binding.logoutButton.setOnClickListener(view -> {
+            viewModel.deleteUserData();
             Intent moveToLogin = new Intent(this, LoginActivity.class);
             startActivity(moveToLogin);
         });
@@ -157,19 +168,51 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding>  {
         String first = newPassword.getText().toString();
         String second = retypedPassword.getText().toString();
 
-        if (viewModel.isValidPassword(first, second)) {
-            viewModel.updateUserPassword(old, first);
-        } else {
-            displaySnackbar("Error with passwords. Try again.");
+        if (!first.equals(second)) {
+            displayToast("Your passwords do not match.");
+            return;
         }
+
+        if (first.length() < 4) {
+            displayToast("Passwords must be 4 characters or more.");
+            return;
+        }
+
+        Call<Void> call = Client.getClient()
+                                .create(ServerInterface.class)
+                                .changePassword(old, first);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                switch (response.code()) {
+                    case 200:
+                        Timber.d("UPDATED");
+                        displayToast("Your password has been updated.");
+                        dialog.dismiss();
+                        break;
+
+                    case 401:
+                        Timber.d("NOT UPDATED");
+                        displayToast("Current Password was incorrect.");
+                        break;
+                }
+            }
+
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                displayToast("Couldn't connect to server!");
+            }
+        });
     }
 
     /**
      * Method displays a snackbar message to the UI
      * @param message The message to display
      */
-    public void displaySnackbar(String message) {
-        Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG);
+    public void displayToast(String message) {
+        Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override

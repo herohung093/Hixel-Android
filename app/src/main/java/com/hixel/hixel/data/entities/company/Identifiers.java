@@ -5,13 +5,15 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Holds basic information about the Company, the cik, name, and ticker.
  * The cik is used as a Foreign Key for other Entities so that a relationship exists between
  * them.
  */
 @Entity
-public class Identifiers {
+public class Identifiers implements Serializable{
     @PrimaryKey
     @NonNull
     @SerializedName("cik")

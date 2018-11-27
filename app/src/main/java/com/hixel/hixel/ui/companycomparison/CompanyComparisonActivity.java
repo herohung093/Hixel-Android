@@ -60,6 +60,8 @@ public class CompanyComparisonActivity extends BaseActivity<ActivityComparisonBi
         super.onCreate(savedInstanceState);
         bindView(R.layout.activity_comparison);
 
+        setupToolbar(R.string.comparison_title, false, false);
+
         comparisonCompaniesRecyclerView = binding.comparisonRecyclerView;
         dashboardCompaniesRecyclerView = binding.dashboardCompRecyclerView;
 

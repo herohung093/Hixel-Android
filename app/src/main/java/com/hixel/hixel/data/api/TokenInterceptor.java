@@ -32,7 +32,7 @@ public class TokenInterceptor implements Interceptor {
         boolean needsCredentials = request.header(NO_AUTHENTICATION) == null;
 
         SharedPreferences preferences = App.preferences();
-        String authToken = preferences.getString("AUTH_TOKEN", null);
+        String authToken = preferences.getString("ACCESS_TOKEN", null);
 
         if (needsCredentials) {
             requestBuilder.addHeader("Authorization", "Bearer " + authToken);

@@ -30,7 +30,6 @@ public class User {
     @SerializedName("portfolio")
     private Portfolio portfolio;
 
-
     /**
      * Minimal User constructor to lower db overhead.
      *

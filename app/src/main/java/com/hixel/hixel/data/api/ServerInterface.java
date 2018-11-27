@@ -105,7 +105,8 @@ public interface ServerInterface {
      */
     @GET("/users/reset-password")
     @Headers("No-Authentication: true")
-    Call<Void> resetPassword(@Query("email") String email, @Query("code") String code, @Query("password") String password);
+    Call<Void> resetPassword(@Query("email") String email, @Query("code") String code,
+                             @Query("password") String password);
 
     /**
      * API call to change the currently active users password.
@@ -114,9 +115,9 @@ public interface ServerInterface {
      * @param newPassword the new password
      * @return void
      */
-    @GET("/users/change-password")
-    Call<Void> changePassword(@Query("code") String oldPassword,
-            @Query("password") String newPassword);
+    @POST("/users/change-password")
+    Call<Void> changePassword(@Query("oldPassword") String oldPassword,
+                              @Query("newPassword") String newPassword);
 
     /**
      * API call to refresh the access token

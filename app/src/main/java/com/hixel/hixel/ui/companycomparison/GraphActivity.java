@@ -56,7 +56,7 @@ public class GraphActivity extends BaseActivity<ActivityGraphBinding>
         progressDialog.getWindow().setGravity(Gravity.CENTER);
 
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setMessage("Loading...");
         progressDialog.show();
 
         ArrayList<String> tickers = getIntent().getStringArrayListExtra("COMPARISON_COMPANIES");

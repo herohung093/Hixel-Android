@@ -79,7 +79,7 @@ public class CompanyDetailViewModel extends ViewModel {
      */
     boolean isInPortfolio(String currentTicker, List<String> userTickers) {
         for (String ticker : userTickers) {
-            if (currentTicker.equals(ticker)) {
+            if (currentTicker.equalsIgnoreCase(ticker)) {
                 return true;
             }
         }

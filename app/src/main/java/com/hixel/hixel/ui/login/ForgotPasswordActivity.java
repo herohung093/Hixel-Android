@@ -5,12 +5,22 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.Toast;
 import com.hixel.hixel.R;
+import com.hixel.hixel.data.api.Client;
+import com.hixel.hixel.data.api.ServerInterface;
+import com.hixel.hixel.data.entities.user.User;
 import com.hixel.hixel.databinding.ActivityForgotPasswordBinding;
 import dagger.android.AndroidInjection;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import javax.inject.Inject;
 
 /**
@@ -43,12 +53,42 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(),
                         "Invalid email address! Try again", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getBaseContext(), "check your email for further information",
-                    Toast.LENGTH_LONG + 3).show();
-                viewModel.resetPassword();
-                onSendCodeSuccess();
+                Toast.makeText(getBaseContext(), "Check your email for further information.",
+                        Toast.LENGTH_LONG + 3).show();
+
+                Call<Void> call = Client.getClient()
+                        .create(ServerInterface.class)
+                        .resetEmail(getEmailString());
+
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Void> call,
+                                           @NonNull Response<Void> response) {
+                        switch (response.code()) {
+                            case 200:
+                                Toast.makeText(getBaseContext(), "Check your email now!",
+                                        Toast.LENGTH_LONG + 3).show();
+                                onSendCodeSuccess();
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                        Toast.makeText(getBaseContext(), "Network error: Try again", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
+
+        binding.inputRegisteredEmail.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.btnSubmit.performClick();
+                return true;
+            }
+            return false;
+        });
+
 
         configureDagger();
         configureViewModel();
@@ -62,8 +102,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
     }
 
+    private String getEmailString() {
+        EditText editText = emailIdText.getEditText();
+
+        return (editText != null) ? editText.getText().toString().trim() : "";
+    }
+
     private boolean validate() {
-        String email = emailIdText.getEditText().getText().toString().trim();
+        String email = getEmailString();
 
         if (!viewModel.isValidEmail(email)) {
             emailIdText.setError("Invalid email address");
@@ -75,6 +121,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     public void onSendCodeSuccess() {
         Intent moveToPinInput = new Intent(this, PinInputActivity.class);
+        moveToPinInput.putExtra("PASSWORD_RESET_EMAIL", getEmailString());
+
         startActivity(moveToPinInput);
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }

@@ -12,7 +12,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.hixel.hixel.App;
 import com.hixel.hixel.R;
@@ -47,12 +51,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Checks to see if Onboarding should be launched.
-        //if (sharedPreferences.getBoolean(Onboarding.COMPLETED_ONBOARDING_PREF_NAME, false)) {
-            //startActivity(new Intent(this, Onboarding.class));
-        //}
+        if (!preferences.getBoolean(Onboarding.COMPLETED_ONBOARDING_PREF_NAME, false)) {
+            startActivity(new Intent(this, Onboarding.class));
+        }
 
         loginButton = findViewById(R.id.btn_login);
         emailText = findViewById(R.id.emailWrapper);
@@ -83,6 +87,14 @@ public class LoginActivity extends AppCompatActivity {
     private void setupUI() {
         loginButton.setOnClickListener(view -> login());
 
+        binding.inputPassword.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                loginButton.performClick();
+                return true;
+            }
+            return false;
+        });
+
         binding.linkSignup.setOnClickListener(view -> {
             Intent moveToSignup = new Intent(getApplicationContext(), SignupActivity.class);
             startActivity(moveToSignup);
@@ -96,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(moveToForgotView);
             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
         });
-
     }
 
     /**
@@ -134,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences preferences = App.preferences();
 
                         preferences.edit()
-                                .putString("AUTH_TOKEN", response.headers().get("Authorization"))
+                                .putString("ACCESS_TOKEN", response.headers().get("Authorization"))
                                 .apply();
 
                         preferences.edit()
@@ -160,13 +171,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Method disables the ability to return to the previous Activity.
-     */
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
 
     /**
      * Method moves to the DashboardActivity.class and destroys the LoginActivity.class
@@ -210,5 +214,13 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    /**
+     * Override method: Disables the back button.
+     */
+    @Override
+    public void onBackPressed() {
+        // No going back to the logout screen.
     }
 }

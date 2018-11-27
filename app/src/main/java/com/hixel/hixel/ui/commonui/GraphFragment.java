@@ -41,7 +41,7 @@ public class GraphFragment extends Fragment {
 
         Integer current_year = Calendar.getInstance().get(Calendar.YEAR);
 
-        for (Integer y = current_year - 5; y > current_year; ++y) {
+        for (Integer y = current_year - 5; y < current_year; ++y) {
             years.add(y.toString());
         }
 
@@ -146,22 +146,22 @@ public class GraphFragment extends Fragment {
 
         switch (selectedRatio) {
             case "Returns":
-               entry = new Entry(index, (float) company.getDataEntries().get(index).getReturns());
+                entry = new Entry(index, company.getDataEntries().get(index).getReturns());
                 break;
             case "Performance":
-                entry = new Entry(index, (float) company.getDataEntries().get(index).getPerformance());
+                entry = new Entry(index, company.getDataEntries().get(index).getPerformance());
                 break;
             case "Strength":
-               entry = new Entry(index, (float) company.getDataEntries().get(index).getStrength());
+                entry = new Entry(index, company.getDataEntries().get(index).getStrength());
                 break;
             case "Health":
-                entry = new Entry(index, (float) company.getDataEntries().get(index).getHealth());
+                entry = new Entry(index, company.getDataEntries().get(index).getHealth());
                 break;
             case "Safety":
-                entry = new Entry(index, (float) company.getDataEntries().get(index).getSafety());
+                entry = new Entry(index, company.getDataEntries().get(index).getSafety());
                 break;
             default:
-                entry = new Entry(index, (float) company.getDataEntries().get(index).getRatios().debtToEquityRatio);
+                entry = new Entry(index, 0);
         }
 
         return entry;

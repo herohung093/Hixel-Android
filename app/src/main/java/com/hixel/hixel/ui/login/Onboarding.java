@@ -18,16 +18,13 @@ import java.util.List;
  */
 public class Onboarding extends AhoyOnboarderActivity {
 
-    static final String COMPLETED_ONBOARDING_PREF_NAME = "onboarding_initiated";
+    static final String COMPLETED_ONBOARDING_PREF_NAME = "ONBOARDING_COMPLETE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         List<Integer> colorList = new ArrayList<>();
-        /*colorList.add(R.color.onboarding_green);
-        colorList.add(R.color.onboarding_blue);
-        colorList.add(R.color.onboarding_alt_orange);*/
 
         colorList.add(R.color.good);
         colorList.add(R.color.average);
@@ -57,7 +54,7 @@ public class Onboarding extends AhoyOnboarderActivity {
         super.onStop();
         SharedPreferences.Editor sharedPreferencesEditor =
                 PreferenceManager.getDefaultSharedPreferences(this).edit();
-        sharedPreferencesEditor.putBoolean(COMPLETED_ONBOARDING_PREF_NAME, false);
+        sharedPreferencesEditor.putBoolean(COMPLETED_ONBOARDING_PREF_NAME, true);
         sharedPreferencesEditor.apply();
     }
 

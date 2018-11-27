@@ -2,31 +2,30 @@ package com.hixel.hixel.data.entities.company;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Ratios {
-    @SerializedName("Debt-to-Equity Ratio")
-    public double debtToEquityRatio;
-    @SerializedName("Current Debt-to-Equity Ratio")
-    public double currentDebtToEquityRatio;
-    @SerializedName("Return-on-Equity Ratio")
-    public double returnOnEquityRatio;
-    @SerializedName("Return-on-Assets Ratio")
-    public double returnOnAssetsRatio;
-    @SerializedName("Interest Coverage")
-    public double interestCoverageRatio;
-    @SerializedName("Current Ratio")
-    public double currentRatio;
-    @SerializedName("Dividend Yield")
-    public double dividendYield;
-    @SerializedName("Profit-Margin Ratio")
-    public double profitMarginRatio;
+import java.io.Serializable;
 
-    public Ratios(double debtToEquityRatio, double currentDebtToEquityRatio,
-            double returnOnAssetsRatio, double interestCoverageRatio) {
-        this.debtToEquityRatio = debtToEquityRatio;
-        this.currentDebtToEquityRatio = currentDebtToEquityRatio;
-        this.returnOnEquityRatio = returnOnAssetsRatio;
-        this.interestCoverageRatio = interestCoverageRatio;
-    }
+@SuppressWarnings("unused")
+public class Ratios implements Serializable {
+    @SerializedName("Current Ratio")
+    private double currentRatio;
+
+    @SerializedName("Debt-to-Equity Ratio")
+    private double debtToEquityRatio;
+
+    @SerializedName("Current Debt-to-Equity Ratio")
+    private double currentDebtToEquityRatio;
+
+    @SerializedName("Return-on-Equity Ratio")
+    private double returnOnEquityRatio;
+
+    @SerializedName("Return-on-Assets Ratio")
+    private double returnOnAssetsRatio;
+
+    @SerializedName("Profit-Margin Ratio")
+    private double profitMarginRatio;
+
+    @SerializedName("Interest Coverage")
+    private double interestCoverageRatio;
 
     public double getDebtToEquityRatio() {
         return debtToEquityRatio;
@@ -52,12 +51,36 @@ public class Ratios {
         return currentRatio;
     }
 
-    public double getDividendYield() {
-        return dividendYield;
-    }
-
     public double getProfitMarginRatio() {
         return profitMarginRatio;
+    }
+
+    public void setCurrentRatio(double currentRatio) {
+        this.currentRatio = currentRatio;
+    }
+
+    public void setDebtToEquityRatio(double debtToEquityRatio) {
+        this.debtToEquityRatio = debtToEquityRatio;
+    }
+
+    public void setCurrentDebtToEquityRatio(double currentDebtToEquityRatio) {
+        this.currentDebtToEquityRatio = currentDebtToEquityRatio;
+    }
+
+    public void setReturnOnEquityRatio(double returnOnEquityRatio) {
+        this.returnOnEquityRatio = returnOnEquityRatio;
+    }
+
+    public void setReturnOnAssetsRatio(double returnOnAssetsRatio) {
+        this.returnOnAssetsRatio = returnOnAssetsRatio;
+    }
+
+    public void setProfitMarginRatio(double profitMarginRatio) {
+        this.profitMarginRatio = profitMarginRatio;
+    }
+
+    public void setInterestCoverageRatio(double interestCoverageRatio) {
+        this.interestCoverageRatio = interestCoverageRatio;
     }
 }
 

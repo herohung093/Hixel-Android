@@ -42,35 +42,9 @@ public class ProfileViewModel extends ViewModel {
         return user;
     }
 
-    /**
-     * Method validates the users password
-     * @return The boolean resulting from the validity of the password.
-     */
-    boolean isValidPassword(String first, String second) {
-        return first.equals(second) && first.length() < 4;
+    public void deleteUserData()
+    {
+        repository.deleteUser();
     }
-
-    /**
-     * Takes the old and new password and updates to the new password.
-     *
-     * @param oldPassword The users password before the change.
-     * @param newPassword The users new password after the change.
-     */
-    void updateUserPassword(String oldPassword, String newPassword) {
-        Call<Void> call = Client
-            .getClient().create(ServerInterface.class).changePassword(oldPassword,newPassword);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                // do something to close the dialog
-                System.out.println("Response code from change password:"+ response.code());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-
-            }
-        });
-    }
-   }
+}
 

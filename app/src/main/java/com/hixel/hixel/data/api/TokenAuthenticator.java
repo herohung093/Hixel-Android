@@ -13,6 +13,7 @@ import okhttp3.Request;
 import okhttp3.Route;
 import okhttp3.Response;
 import retrofit2.Call;
+import timber.log.Timber;
 
 import static com.hixel.hixel.data.api.Const.NO_AUTHENTICATION;
 
@@ -39,17 +40,26 @@ public class TokenAuthenticator implements Authenticator {
             retrofit2.Response<Void> refreshResponse = refreshCall.execute();
 
             if (refreshResponse != null && refreshResponse.code() == 200) {
-                String newAuthToken = refreshResponse.headers().get("Authorization");
+                String newAccessToken = refreshResponse.headers().get("Authorization");
+                String newRefreshToken = refreshResponse.headers().get("Refresh");
 
-                if (newAuthToken != null) {
-                    newAuthToken = newAuthToken.replace("Bearer ", "");
+                if (newAccessToken != null) {
+                    Timber.d("New access token received: %s", newAccessToken);
 
                     preferences.edit()
-                            .putString("AUTH_TOKEN", newAuthToken)
+                            .putString("ACCESS_TOKEN", newAccessToken.replace("Bearer ", ""))
                             .commit();
 
+                    if (newRefreshToken != null) {
+                        Timber.d("New refresh token received: %s", newRefreshToken);
+
+                        preferences.edit()
+                                .putString("REFRESH_TOKEN", newRefreshToken)
+                                .commit();
+                    }
+
                     return response.request().newBuilder()
-                            .header("Authorization", "Bearer " + newAuthToken)
+                            .header("Authorization", "Bearer " + newAccessToken)
                             .build();
                 }
             }

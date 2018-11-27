@@ -38,6 +38,8 @@ import com.hixel.hixel.ui.commonui.SearchAdapter;
 import com.hixel.hixel.ui.dashboard.RecyclerItemTouchHelper.RecyclerItemTouchHelperListener;
 import dagger.android.AndroidInjection;
 import io.reactivex.observers.DisposableObserver;
+import timber.log.Timber;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +62,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
     BarChart chart;
     MainBarDataSet dataSet;
 
-    String quickAdd;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,15 +72,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         this.configureDagger();
         this.configureViewModel();
         viewModel.setupSearch(getSearchObserver());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (getIntent().getExtras() != null) {
-            quickAdd = getIntent().getStringExtra("COMPANY_TICKER");
-        }
     }
 
     private void configureDagger() {
@@ -99,11 +90,6 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
             for (Ticker t : user.getPortfolio().getCompanies()) {
                 tickers.add(t.getTicker());
-
-                if (quickAdd != null) {
-                    tickers.add(quickAdd);
-                    quickAdd = null;
-                }
             }
 
             viewModel.loadCompanies(tickers);
@@ -144,12 +130,20 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
         int returns = 0 , performance = 0, strength = 0, health = 0, safety  = 0;
 
-        for (int i = 0; i < companies.size(); i++) {
-            returns += companies.get(i).getDataEntries().get(0).getReturns();
-            performance += companies.get(i).getDataEntries().get(0).getPerformance();
-            strength += companies.get(i).getDataEntries().get(0).getStrength();
-            health += companies.get(i).getDataEntries().get(0).getHealth();
-            safety += companies.get(i).getDataEntries().get(0).getSafety();
+        if (!companies.isEmpty()) {
+            for (int i = 0; i < companies.size(); i++) {
+                returns += companies.get(i).getDataEntries().get(0).getReturns();
+                performance += companies.get(i).getDataEntries().get(0).getPerformance();
+                strength += companies.get(i).getDataEntries().get(0).getStrength();
+                health += companies.get(i).getDataEntries().get(0).getHealth();
+                safety += companies.get(i).getDataEntries().get(0).getSafety();
+            }
+
+            returns /= companies.size();
+            performance /= companies.size();
+            strength /= companies.size();
+            health /= companies.size();
+            safety /= companies.size();
         }
 
         dataSet.addEntry(new BarEntry(0, returns));
@@ -222,39 +216,22 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
                                                     .data
                                                     .get(viewHolder.getAdapterPosition());
 
-            final int deletedIndex = viewHolder.getAdapterPosition();
-
             companyListAdapter.removeItem(viewHolder.getAdapterPosition());
 
             // Remove Company from RecyclerView
             Snackbar snackbar = Snackbar.make(binding.getRoot(), name
                     + " removed from portfolio", Snackbar.LENGTH_LONG);
 
-            snackbar.setAction("UNDO", view -> {
-                companyListAdapter
-                    .restoreItem(deletedCompany, deletedIndex);
-                dataSet.notifyDataSetChanged();
-                chart.notifyDataSetChanged();
-                chart.invalidate();
+            snackbar.setAction("Undo", view -> {
+                addItem(deletedCompany);
+                viewModel.saveCompany(deletedCompany);
             });
+
             snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.warning));
             snackbar.show();
 
             viewModel.deleteCompany(deletedCompany);
-
        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                Company mCompanyReturned = ((Company) data.getSerializableExtra("COMPANY_ADD"));
-                this.addItem(mCompanyReturned);
-            }
-        }
     }
 
     public void addItem(Company company) {
@@ -288,11 +265,11 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
         chart = binding.chart;
 
         entries = new ArrayList<>();
-        entries.add(new BarEntry(0, 2f));
-        entries.add(new BarEntry(1, 2f));
-        entries.add(new BarEntry(2, 2f));
-        entries.add(new BarEntry(3, 2f));
-        entries.add(new BarEntry(4, 2f));
+        entries.add(new BarEntry(0, 0f));
+        entries.add(new BarEntry(1, 0f));
+        entries.add(new BarEntry(2, 0f));
+        entries.add(new BarEntry(3, 0f));
+        entries.add(new BarEntry(4, 0f));
 
         dataSet = new MainBarDataSet(entries, "");
 
@@ -350,5 +327,13 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding>
 
         chart.setData(data);
         chart.invalidate();
+    }
+
+    /**
+     * Override method: Disables the back button.
+     */
+    @Override
+    public void onBackPressed() {
+        // No going back to the login screen.
     }
 }

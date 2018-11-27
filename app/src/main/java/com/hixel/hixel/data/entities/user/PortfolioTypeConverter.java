@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class PortfolioTypeConverter {
     @TypeConverter
-    public static List<Ticker> stringToSomeObjectList(String data) {
+    public static List<Ticker> stringToTickerList(String data) {
         Gson gson = new Gson();
         if (data == null) {
             return Collections.emptyList();
@@ -26,7 +26,7 @@ public class PortfolioTypeConverter {
     }
 
     @TypeConverter
-    public static String someObjectListToString(List<Ticker> someObjects) {
+    public static String tickerListToString(List<Ticker> someObjects) {
         Gson gson = new Gson();
         return gson.toJson(someObjects);
     }

@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
 import okhttp3.OkHttpClient.Builder;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -36,6 +37,13 @@ public class NetModule {
     @Provides
     @Singleton
     @NonNull
+    HttpLoggingInterceptor provideLoggingInterceptor() {
+        return new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+    }
+
+    @Provides
+    @Singleton
+    @NonNull
     TokenAuthenticator provideTokenAuthenticator() {
         return new TokenAuthenticator();
     }
@@ -50,11 +58,12 @@ public class NetModule {
     @Provides
     @Singleton
     @NonNull
-    Retrofit provideRetrofit(OkHttpClient.Builder client, TokenInterceptor tokenInterceptor,
-            TokenAuthenticator tokenAuthenticator) {
+    Retrofit provideRetrofit(OkHttpClient.Builder client, HttpLoggingInterceptor loggingInterceptor,
+                             TokenInterceptor tokenInterceptor, TokenAuthenticator tokenAuthenticator) {
         client.addNetworkInterceptor(new StethoInterceptor())
                 .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
+                .addInterceptor(loggingInterceptor)
                 .addInterceptor(tokenInterceptor)
                 .authenticator(tokenAuthenticator);
 

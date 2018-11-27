@@ -64,9 +64,6 @@ public class DashboardViewModel extends ViewModel {
     }
 
 
-
-
-
     // ****************************************
     // *              SEARCH                  *
     // ****************************************
@@ -86,7 +83,19 @@ public class DashboardViewModel extends ViewModel {
         publishSubject.onNext(query);
     }
 
-    void deleteCompany(Company deletedCompany) {
-        userRepository.deleteCompany(deletedCompany.getIdentifiers().getTicker());
+    /**
+     * Saves the company to the users portfolio and company database.
+     * @param company Company the user wants to save.
+     */
+    void saveCompany(Company company) {
+        userRepository.addCompany(company.getIdentifiers().getTicker());
+    }
+
+    /**
+     * Removes the company from the users portfolio and company database.
+     * @param company Company the user wants to remove
+     */
+    void deleteCompany(Company company) {
+        userRepository.deleteCompany(company.getIdentifiers().getTicker());
     }
 }
